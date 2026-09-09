@@ -1,0 +1,46 @@
+# arpipe configuration. Every threshold that a human might want to re-fit
+# against a labelled sample lives here rather than in code.
+
+universe:
+  years: [2010, 2025]           # FY-end years, inclusive
+  segments: [main_board]        # add sme_board to include BSE SME / NSE Emerge
+  cap_bands: [large, mid, small, micro]
+
+discover:
+  sources: [nse, bse, screener] # tried in this order; first hit wins per year
+  min_interval_seconds: 1.5     # per host
+  workers: 4
+
+triage:
+  min_chars_per_page: 120
+  min_chars_dense: 600
+  max_mojibake_ratio: 0.02
+  big_image_area_frac: 0.55
+  hybrid_image_area_frac: 0.25
+
+ocr:
+  ladder:
+    - {engine: tesseract, lang_map: {latin: eng, devanagari: hin}, psm: 3}
+    - {engine: vlm, url: "${ARPIPE_VLM_URL}", model: PaddlePaddle/PaddleOCR-VL}
+    - {engine: textract, region: ap-south-1}     # Latin scripts only
+  dpi: {min: 200, default: 300, max: 400}
+  quality_gate: {min_words: 40, min_conf: 0.72, max_nonword_frac: 0.35}
+  index_stride: 6               # 1-in-N sampling for the locate pass
+  front_pages: 14
+
+segment:
+  max_mda_pages: 60
+  min_mda_words: 250
+  llm:
+    enabled: false
+    model: "claude-sonnet"      # or a local 7B; only the residue reaches it
+    max_pages_in_window: 24
+
+verify:
+  name_match_strong: 88
+  name_match_weak: 72
+  require_year_evidence: true
+
+store:
+  root: dataset
+  keep_page_texts: false        # true doubles disk but makes re-segmentation free

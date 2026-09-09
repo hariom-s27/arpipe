@@ -1,0 +1,32 @@
+# core
+pymupdf>=1.24          # PDF object model, rendering, outline  (AGPL - see NOTE)
+pdfplumber>=0.11       # word/table geometry where PyMuPDF is awkward
+pypdf>=4.0             # pure-python fallback for damaged files
+httpx>=0.27            # HTTP/2 client for the exchange APIs
+rapidfuzz>=3.9         # company-name matching
+tenacity>=8.2          # retry policy
+pandas>=2.2            # manifests / audit
+pyarrow>=16            # parquet snapshots
+
+# test runner used by the README test command
+pytest>=8
+
+# ocr - local rungs
+pytesseract>=0.3.10    # needs system `tesseract-ocr` + language packs
+ocrmypdf>=16           # optional: writes a permanent text layer back
+Pillow>=10.3
+numpy>=1.26
+
+# ocr - optional cloud rung
+# boto3>=1.34          # AWS Textract  (English/Latin scripts only)
+# google-cloud-documentai>=2.29
+
+# optional: self-hosted document VLM served over an OpenAI-compatible API
+# vllm>=0.6            # or sglang; serves PaddleOCR-VL / MinerU2.5 / olmOCR-2
+
+# NOTE on licensing: PyMuPDF is AGPL-3.0 (commercial licence available from
+# Artifex). If that is a problem, pypdfium2 (BSD/Apache) covers rendering and
+# text extraction, and pdfplumber/pdfminer.six (MIT) covers geometry, at some
+# cost in speed. Camelot/Tabula are MIT/BSD. Tesseract is Apache-2.0.
+# MinerU, PaddleOCR-VL and olmOCR-2 are Apache-2.0; Chandra is OpenRAIL-M
+# (check the field-of-use terms before commercial deployment).
