@@ -1023,4 +1023,57 @@ def test_toc_offset_gating_cuts_score_on_low_confidence(monkeypatch):
     doc.close()
 
 
+def test_mandated_ratios_tolerant_regex():
+    from arpipe.patterns import MANDATED_RATIOS
+    from arpipe import verify
+
+    # KRBL phrasing: "Debtor turnover ratio" (no 's'), "Debt-equity ratio", etc.
+    krbl_phrases = [
+        "Debtor turnover ratio",
+        "Inventory turnover ratio",
+        "Interest Coverage ratio",
+        "Current ratio",
+        "Debt-equity ratio",
+        "Operating Profit margin",
+        "Net profit margin",
+        "Return on Net Worth",
+    ]
+    matched = sum(1 for rx in MANDATED_RATIOS if any(rx.search(p) for p in krbl_phrases))
+    assert matched == 8
+
+    # Also verify verify.section_qc cues reports 8 for a text containing all 8
+    sample_text = "\n".join(krbl_phrases) + "\nThis is a long financial section with sufficient words to pass."
+    qc = verify.section_qc(sample_text)
+    assert qc["ratio_cues"] == 8
+
+
+def test_p7_top_level_fields_and_candidate_span_words():
+    from arpipe.models import ExtractionResult, Confidence, MDASpan, to_json
+    import json
+
+    res = ExtractionResult(
+        company_id="INE001B01026",
+        fy_end=2025,
+        sha256="dummy",
+        ok=True,
+        confidence=Confidence.HIGH,
+        span=MDASpan(10, 15, method="heading", score=0.9),
+        supporters=2,
+        method_candidates=[("heading", 10, 15, 0.9), ("toc", 10, 15, 0.8)],
+        total_pages=120,
+        mda_page_count=6,
+        words_per_page=500.0,
+    )
+    raw = to_json(res)
+    obj = json.loads(raw)
+
+    # Top-level fields present in mda.json serialization
+    assert obj["supporters"] == 2
+    assert obj["method_candidates"] == [["heading", 10, 15, 0.9], ["toc", 10, 15, 0.8]]
+    assert obj["total_pages"] == 120
+    assert obj["mda_page_count"] == 6
+    assert obj["words_per_page"] == 500.0
+
+
+
 

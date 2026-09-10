@@ -151,7 +151,7 @@ def fy_candidates(text: str) -> Counter[int]:
 
 def era_signals(text: str) -> dict[str, bool]:
     low = text.lower()
-    ratios_present = sum(1 for r in MANDATED_RATIOS if r in low) >= 4
+    ratios_present = sum(1 for r in MANDATED_RATIOS if (r.search(text) if hasattr(r, "search") else r in low)) >= 4
     return {
         "mandated_ratios": ratios_present,                       # => FY>=2020
         "brsr": bool(re.search(r"business\s+responsibility\s+and\s+sustainability", low)),  # FY>=2023
@@ -357,7 +357,7 @@ def section_qc(mda_text: str) -> dict:
     n = len(words)
     low = mda_text.lower()
     leaks = [tag for pat, tag in LEAK_PATTERNS if re.search(pat, low)]
-    cues = sum(1 for c in MANDATED_RATIOS if c in low)
+    cues = sum(1 for c in MANDATED_RATIOS if (c.search(mda_text) if hasattr(c, "search") else c in low))
     alpha = sum(1 for ch in mda_text if ch.isalpha())
     digits = sum(1 for ch in mda_text if ch.isdigit())
     long_tok = sum(1 for w in words if len(w) > 28)

@@ -798,6 +798,7 @@ def locate(doc: pymupdf.Document, profile: DocProfile,
     # a span must actually contain prose
     words = sum(len(page_texts.get(n, "").split())
                 for n in range(top.start_page, top.end_page + 1))
+    diag["candidate_span_words"] = words
     diag["span_words"] = words
     if words < MIN_MDA_WORDS:
         top.score *= 0.5

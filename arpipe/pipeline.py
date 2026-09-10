@@ -120,6 +120,10 @@ def process_document(doc: StoredDoc, company: Company, out_root: str,
         if span is None:
             res.errors.append("mda_not_located")
             res.reasons = ["mda_not_located"]
+            res.method_candidates = diag.get("candidates", [])
+            res.total_pages = profile.n_pages
+            res.mda_page_count = 0
+            res.words_per_page = 0.0
             res.toc_offset = diag.get("toc_offset") or {
                 "solved": None,
                 "confidence": 0.0,
@@ -206,6 +210,10 @@ def process_document(doc: StoredDoc, company: Company, out_root: str,
 
         res.span = span
         res.supporters = span.supporters
+        res.method_candidates = diag.get("candidates", [])
+        res.total_pages = profile.n_pages
+        res.mda_page_count = (span.end_page - span.start_page + 1) if span else 0
+        res.words_per_page = round(qc["n_words"] / max(1, res.mda_page_count), 1) if span else 0.0
         res.terminator_match = span.terminator_match if span else None
         res.toc_offset = diag.get("toc_offset") or {
             "solved": None,

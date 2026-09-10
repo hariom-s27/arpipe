@@ -99,11 +99,20 @@ MDA_BODY_CUE_RES = [re.compile(p) for p in MDA_BODY_CUES]
 
 # The 8 ratios SEBI made mandatory from FY2019-20 (LODR amendment, May 2018).
 # Their presence is an era signal AND an MD&A signal.
-MANDATED_RATIOS = [
-    "debtors turnover", "inventory turnover", "interest coverage ratio",
-    "current ratio", "debt equity ratio", "operating profit margin",
-    "net profit margin", "return on net worth",
+# P7: Tolerant regex patterns for singular/plural, optional "ratio" suffix,
+# case, hyphen-vs-space, optional "(%)".
+MANDATED_RATIO_PATTERNS = [
+    r"\bdebtors?\s+turnover(?:\s+ratio)?\b",
+    r"\binventor(?:y|ies)\s+turnover(?:\s+ratio)?\b",
+    r"\binterest\s+coverage(?:\s+ratio)?\b",
+    r"\bcurrent\s+ratio\b",
+    r"\bdebt\s*(?:[-/]|to|\s+)\s*equity(?:\s+ratio)?\b",
+    r"\boperating\s+profit\s+margin(?:\s*\(?%\)?|\s+ratio)?\b",
+    r"\bnet\s+profit\s+margin(?:\s*\(?%\)?|\s+ratio)?\b",
+    r"\breturn\s+on\s+net\s*worth\b",
 ]
+MANDATED_RATIO_RES = [re.compile(p, re.I) for p in MANDATED_RATIO_PATTERNS]
+MANDATED_RATIOS = MANDATED_RATIO_RES
 
 # --------------------------------------------------------------------------
 # 3. Identity anchors
