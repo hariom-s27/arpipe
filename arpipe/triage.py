@@ -82,19 +82,20 @@ def detect_script(text: str) -> Script:
     return Script.MIXED
 
 
-def estimate_columns(spans_x: list[tuple[float, float]], page_width: float,
-                     bins: int = 120) -> int:
-    """Estimate column count from the x-extent histogram of text lines.
+def gutter_bands(spans_x: list[tuple[float, float]], page_width: float,
+                 bins: int = 120) -> list[tuple[float, float]]:
+    """x-ranges (points, left to right) of vertical whitespace bands in the
+    central 70% of the page: a band of x values crossed by very few text lines
+    (only full-width headings and rules). This is the column-gutter detector;
+    ``estimate_columns`` just counts what it returns, and ``textlayer.xy_cut``
+    uses the positions to place its column split.
 
-    A multi-column page has a persistent vertical gutter: a band of x values
-    crossed by very few lines (only full-width headings and rules). We look
-    for such bands inside the central 70% of the page. Indian annual reports
-    typically use a 18-30 pt gutter on A4, so the minimum band width is set
-    at 2.5% of the page width rather than the 5% that would be right for a
-    scientific two-column paper.
+    Indian annual reports typically use an 18-30 pt gutter on A4, so the
+    minimum band width is 2.5% of the page width rather than the 5% that would
+    be right for a scientific two-column paper.
     """
     if len(spans_x) < 10 or page_width <= 0:
-        return 1
+        return []
     cover = [0] * bins
     for x0, x1 in spans_x:
         b0 = max(0, min(bins - 1, int(x0 / page_width * bins)))
@@ -106,20 +107,27 @@ def estimate_columns(spans_x: list[tuple[float, float]], page_width: float,
     empty_at = max(1, int(peak * 0.15))     # full-width headings cross the gutter
     min_run = max(2, int(bins * 0.025))     # ~15 pt on A4
 
-    runs, run = [], 0
+    bands: list[tuple[float, float]] = []
+    start = None
     for b in range(lo, hi):
         if cover[b] <= empty_at:
-            run += 1
-        else:
-            if run >= min_run:
-                runs.append(run)
-            run = 0
-    if run >= min_run:
-        runs.append(run)
+            if start is None:
+                start = b
+        elif start is not None:
+            if b - start >= min_run:
+                bands.append((start / bins * page_width, b / bins * page_width))
+            start = None
+    if start is not None and hi - start >= min_run:
+        bands.append((start / bins * page_width, hi / bins * page_width))
+    return bands
 
-    if not runs:
+
+def estimate_columns(spans_x: list[tuple[float, float]], page_width: float,
+                     bins: int = 120) -> int:
+    """Estimate column count from the x-extent histogram of text lines."""
+    if len(spans_x) < 10 or page_width <= 0:
         return 1
-    return min(3, len(runs) + 1)
+    return min(3, len(gutter_bands(spans_x, page_width, bins)) + 1)
 
 
 def profile_page(page: pymupdf.Page) -> PageProfile:

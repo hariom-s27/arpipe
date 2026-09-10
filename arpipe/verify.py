@@ -41,6 +41,14 @@ from .patterns import (AS_AT_RE, CIN_RE, FY_RANGE_RE, FY_SINGLE_RE, ISIN_RE,
 NAME_MATCH_STRONG = 88
 NAME_MATCH_WEAK = 72
 
+# P17 reading-order gate. orphan_start_frac (see order_quality) is ~0 in
+# correctly ordered prose and jumps when column interleaving splices
+# sentences: > MAX caps the tier at medium, > 2*MAX forces low. PROVISIONAL -
+# picked from four documents (clean 0.000-0.004, iLovePDF-shredded 0.079-0.102,
+# empty gap between); must be re-fit against the labelled 300. Moves to config
+# in P15.
+ORPHAN_START_FRAC_MAX = 0.03
+
 _SUFFIXES = re.compile(
     r"\b(limited|ltd|private|pvt|public|company|co|corporation|corp|"
     r"industries|india|the|and|&|incorporated|inc|plc)\b\.?", re.I)
@@ -211,6 +219,7 @@ def section_qc(mda_text: str) -> dict:
     alpha = sum(1 for ch in mda_text if ch.isalpha())
     digits = sum(1 for ch in mda_text if ch.isdigit())
     long_tok = sum(1 for w in words if len(w) > 28)
+    order = order_quality(mda_text)
     return {
         "n_words": n,
         "n_chars": len(mda_text),
@@ -224,13 +233,160 @@ def section_qc(mda_text: str) -> dict:
         "too_long": n > 40000,
         # a page of a financial statement is >25% digits; MD&A prose is <12%
         "looks_like_tables": digits / max(1, alpha + digits) > 0.25,
+        # reading-order signal - character ratios above are blind to it (P17)
+        **{k: order[k] for k in ("orphan_start_frac", "dangling_end_frac",
+                                 "orphan_starts", "dangling_ends", "n_paragraphs")},
+    }
+
+
+# ------------------------------------------------------------- reading order
+# Everything in section_qc measures *what characters are present*. None of it
+# measures *whether they are in the right order*. Column interleaving splices
+# the bottom of one column onto the top of the next: the text reads fluently,
+# passes every band above, and silently corrupts every order-sensitive
+# downstream task. These two signals are near zero on correctly ordered prose
+# and rise when sentences have been cut apart.
+
+_SENT_END_RE = re.compile(r"""[.!?]["'”’)\]]*\s*$""")
+
+# Lowercase words that routinely lead a heading; kept out of the Title-Case
+# test so "Risk and Sustainability Outlook" still reads as a heading.
+_HEADING_LEAD_WORDS = frozenset(
+    "a an and or the of to in on for at by is as with from into over".split())
+
+# A fragment ending on a bare function word ("...Policy Report, the") is far
+# more likely a spurious wrap-break than a dropped column tail, which ends on
+# a content word ("...challenges to monetary policy").
+_FUNCTION_TAIL = frozenset(
+    "the a an of and or to in for with by from as on at that which this".split())
+
+_HEADING_MAX_CHARS = 60
+_HEADING_MAX_WORDS = 8
+
+
+def _reconstruct_paragraphs(text: str) -> list[str]:
+    """Rebuild logical paragraphs from wrapped / shredded lines.
+
+    Jain FY2025 came through iLovePDF, which shredded it into near-per-line
+    (sometimes per-word) blocks, so raw lines cannot be scored - every wrap
+    would read as an orphan. Accumulate consecutive non-blank lines into one
+    paragraph, breaking only on a blank line or once a line has closed a
+    sentence.
+    """
+    paras: list[str] = []
+    cur: list[str] = []
+    for raw in text.split("\n"):
+        ln = raw.strip()
+        if not ln:
+            if cur:
+                paras.append(" ".join(cur))
+                cur = []
+            continue
+        cur.append(ln)
+        if _SENT_END_RE.search(ln):
+            paras.append(" ".join(cur))
+            cur = []
+    if cur:
+        paras.append(" ".join(cur))
+    return paras
+
+
+def _looks_like_heading(p: str) -> bool:
+    """A section-heading-shaped paragraph: short, no terminal punctuation,
+    ALL CAPS or strict Title Case ("GLOBAL ECONOMY", "Global Economic
+    Overview").
+
+    The heading case is not optional: the worst splice in Jain FY2025 lands
+    directly under "GLOBAL ECONOMY", which carries no full stop, so a rule
+    that only checks for a preceding ". ! ?" misses the single most important
+    case this metric exists to catch. Strict on purpose - a prose line with a
+    few proper nouns ("At Jain Irrigation Systems Ltd., we recognize the")
+    must not read as a heading, or the line that continues it is miscounted.
+    """
+    s = p.strip()
+    if not s or len(s) > _HEADING_MAX_CHARS or s[-1] in ".!?:;,":
+        return False
+    words = s.split()
+    if not (1 <= len(words) <= _HEADING_MAX_WORDS):
+        return False
+    letters = [c for c in s if c.isalpha()]
+    if not letters:
+        return False
+    if sum(c.isupper() for c in letters) / len(letters) >= 0.7:
+        return True                                     # ALL CAPS / near-all
+    sig = [w for w in words
+           if any(c.isalpha() for c in w) and w.lower() not in _HEADING_LEAD_WORDS]
+    return bool(sig) and all(w[0].isupper() for w in sig)   # every content word
+
+
+def _orphan_start(p: str) -> bool:
+    """Begins with a lowercase letter, a comma, or a closing bracket."""
+    c = p[:1]
+    return c.islower() or c in ",)]}"
+
+
+def _dangling_tail(p: str) -> bool:
+    """Ends mid-phrase on a lowercase content word - the shape of a dropped
+    column tail ("...challenges to monetary policy"). Excludes a capitalised
+    last word (usually mid-name), a bare function-word tail, and a colon
+    lead-in ("Several key drivers underpin this outlook:")."""
+    s = p.rstrip()
+    if s.endswith((":", ";")):
+        return False
+    toks = s.split()
+    if len(toks) < 4:
+        return False
+    last = toks[-1].strip("""\"'”’)]}.,;:""")
+    return bool(last) and last[0].islower() and last.lower() not in _FUNCTION_TAIL
+
+
+def order_quality(mda_text: str) -> dict:
+    """Reading-order signal the character-ratio bands cannot see.
+
+      orphan_start_frac  paragraphs that begin mid-sentence, over total
+      dangling_end_frac  paragraphs that stop mid-phrase with no continuation
+
+    Both are ~0 in correctly ordered prose and rise when column interleaving
+    has cut sentences apart. orphan_start_frac is the graded one - it puts the
+    shredded documents (~0.08-0.10) and the clean ones (~0.00) on opposite
+    sides of an empty gap. dangling_end_frac is recorded but not graded: it is
+    noisier (sentence-case headings, tables flattened into the prose) until
+    P18 quarantines the tables.
+    """
+    paras = _reconstruct_paragraphs(mda_text)
+    total = len(paras)
+    if total < 5:
+        return {"orphan_start_frac": 0.0, "dangling_end_frac": 0.0,
+                "orphan_starts": 0, "dangling_ends": 0, "n_paragraphs": total}
+
+    orphans = danglers = 0
+    for i, p in enumerate(paras):
+        prev = paras[i - 1] if i else ""
+        nxt = paras[i + 1] if i + 1 < total else ""
+        if i and _orphan_start(p) and (
+                _SENT_END_RE.search(prev) or _looks_like_heading(prev)):
+            orphans += 1
+        if (nxt and not _SENT_END_RE.search(p) and not _looks_like_heading(p)
+                and _dangling_tail(p)
+                and not (nxt[:1].islower() or nxt[:1].isdigit())):
+            danglers += 1
+
+    return {
+        "orphan_start_frac": round(orphans / total, 4),
+        "dangling_end_frac": round(danglers / total, 4),
+        "orphan_starts": orphans,
+        "dangling_ends": danglers,
+        "n_paragraphs": total,
     }
 
 
 def grade(rep: VerificationReport, qc: dict, span_score: float) -> str:
-    if not rep.company_ok or qc["too_short"] or qc["long_token_frac"] > 0.03:
+    osf = qc.get("orphan_start_frac", 0.0)
+    if (not rep.company_ok or qc["too_short"] or qc["long_token_frac"] > 0.03
+            or osf > 2 * ORPHAN_START_FRAC_MAX):     # P17: badly scrambled order
         return "low"
-    if rep.year_ok and span_score >= 0.8 and not qc["leaks"] and not rep.notes:
+    if (rep.year_ok and span_score >= 0.8 and not qc["leaks"] and not rep.notes
+            and osf <= ORPHAN_START_FRAC_MAX):       # P17: mild scramble -> medium
         return "high"
     if rep.year_ok and span_score >= 0.6 and len(qc["leaks"]) <= 1:
         return "medium"

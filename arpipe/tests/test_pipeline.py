@@ -10,7 +10,8 @@ import pytest
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from arpipe import cli, fetch, segment, store, textlayer, triage, verify  # noqa: E402
-from arpipe.models import Company, MDASpan, PageKind, Script   # noqa: E402
+from arpipe.models import (Company, MDASpan, PageKind, Script,   # noqa: E402
+                           VerificationReport)
 
 FIX = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "fixtures")
 
@@ -185,6 +186,63 @@ def test_section_qc_detects_auditor_leak():
     qc = verify.section_qc("Industry Structure and Developments. " * 40 +
                            " We have audited the accompanying financial statements")
     assert "auditor_report_leak" in qc["leaks"]
+
+
+# --------------------------------------------------------------- order quality
+_ORDERED_PROSE = "\n\n".join([
+    "The global economy grew by an estimated 3.2 per cent in 2024.",
+    "Inflation eased through the year as supply chains recovered.",
+    "India stayed among the fastest-growing large economies in the world.",
+    "Domestic demand was firm and the financial system stayed sound.",
+    "Rural consumption revived and government investment picked up.",
+    "Exports softened, held back by weak demand in several key markets.",
+])
+
+
+def test_order_quality_zero_on_correctly_ordered_prose():
+    q = verify.order_quality(_ORDERED_PROSE)
+    assert q["orphan_start_frac"] == 0.0
+    assert q["dangling_end_frac"] == 0.0
+    assert q["n_paragraphs"] == 6
+
+
+def test_order_quality_rises_when_two_paragraphs_are_swapped():
+    # blocks 2 and 3 are the two halves of one sentence, correctly adjacent
+    blocks = [
+        "GLOBAL ECONOMY",
+        "The Reserve Bank of India has warned that frequent weather",
+        "shocks now pose a material risk to the growth outlook.",
+        "Inflation eased through the year as supply chains recovered.",
+        "Domestic demand stayed firm and the financial system was sound.",
+        "Rural consumption picked up and government capex stayed strong.",
+        "Exports were softer, weighed by weak demand in key markets.",
+    ]
+    good = verify.order_quality("\n\n".join(blocks))
+    blocks[2], blocks[3] = blocks[3], blocks[2]          # swap two paragraphs
+    bad = verify.order_quality("\n\n".join(blocks))
+    assert good["orphan_start_frac"] == 0.0
+    assert bad["orphan_start_frac"] >= 0.12
+    assert bad["orphan_start_frac"] > good["orphan_start_frac"]
+
+
+def test_order_quality_flags_lowercase_fragment_under_heading():
+    # the Jain p103 case: the preceding line is a heading with no full stop
+    blocks = ["GLOBAL ECONOMY",
+              "formulation, while posing direct threats to farm output."]
+    blocks += [f"Sentence number {i} is in the right order and reads fine."
+               for i in range(6)]
+    assert verify.order_quality("\n\n".join(blocks))["orphan_starts"] >= 1
+
+
+def test_grade_downgrades_scrambled_reading_order():
+    rep = VerificationReport(company_ok=True, year_ok=True)
+    base = {"too_short": False, "long_token_frac": 0.0, "leaks": [],
+            "orphan_start_frac": 0.0}
+    assert verify.grade(rep, base, 0.95) == "high"
+    mild = {**base, "orphan_start_frac": verify.ORPHAN_START_FRAC_MAX + 0.005}
+    assert verify.grade(rep, mild, 0.95) == "medium"
+    bad = {**base, "orphan_start_frac": 2 * verify.ORPHAN_START_FRAC_MAX + 0.005}
+    assert verify.grade(rep, bad, 0.95) == "low"
 
 
 # ----------------------------------------------------------------- reading order

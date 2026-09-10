@@ -16,7 +16,26 @@ from dataclasses import dataclass
 
 import pymupdf
 
+from . import triage
 from .patterns import LIGATURE_FIXES, PAGE_NUM_LINE_RE, REPEATED_HEADER_MIN_PAGES
+
+# --- column-split recovery (P16B) ---------------------------------------------
+# A single full-width block (running head, footer, rule, full-width heading)
+# collapses the widest block-x interval to ~0, so _gap_cut never fires and
+# xy_cut falls back to the naive (y, x) sort that interleaves the two columns.
+# _column_cut recovers the split from the blocks that are NOT full-width.
+#
+# Both constants are PROVISIONAL - picked from the four sample documents, to be
+# re-fit against the labelled 300 and moved to config in P15.
+COLUMN_FULLWIDTH_FRAC = 0.60   # a block wider than this * the text band spans
+                               # the page and is not evidence of a column
+COLUMN_CENTRE_GAP_FRAC = 0.14  # min gap between two clusters of block centres,
+                               # as a fraction of page width, to call them
+                               # separate columns. The iLovePDF-shredded Jain
+                               # reports have a real ~15 pt (2.5%) gutter that
+                               # the projection-profile min-run just misses;
+                               # the centre-to-centre gap is far wider and
+                               # clears cleanly.
 
 
 @dataclass(slots=True)
@@ -65,6 +84,59 @@ def _gap_cut(vals: list[tuple[float, float]], lo: float, hi: float,
     return best_at
 
 
+def _column_cut(blocks: list[Block], page: pymupdf.Rect,
+                depth: int) -> list[Block] | None:
+    """Split into columns when a full-width block has masked the gutter from
+    _gap_cut. The non-full-width blocks are split, each column is ordered
+    recursively, and the full-width blocks are re-inserted at their y position.
+
+    Two ways to find the split, tried in order:
+      1. the triage projection-profile gutter over the non-full-width block
+         x-spans (the well-tested path; fires on wide-gutter layouts)
+      2. the widest gap between block centres (catches the ~2.5% gutter on
+         line-shredded pages, which the projection-profile min-run just misses)
+
+    Returns the ordered block list, or None if no column split was found.
+    """
+    if len(blocks) < 4:
+        return None
+    text_w = max(b.x1 for b in blocks) - min(b.x0 for b in blocks)
+    if text_w <= 0:
+        return None
+    voting = [b for b in blocks if b.w <= COLUMN_FULLWIDTH_FRAC * text_w]
+    wide = [b for b in blocks if b.w > COLUMN_FULLWIDTH_FRAC * text_w]
+    if len(voting) < 4:
+        return None
+
+    split_x: float | None = None
+    bands = triage.gutter_bands([(b.x0, b.x1) for b in voting], page.width)
+    if bands:
+        split_x = min(((lo + hi) / 2 for lo, hi in bands),
+                      key=lambda x: abs(x - page.width / 2))
+    else:
+        centres = sorted((b.x0 + b.x1) / 2 for b in voting)
+        gap, at = 0.0, None
+        for lo, hi in zip(centres, centres[1:]):
+            if hi - lo > gap:
+                gap, at = hi - lo, (lo + hi) / 2
+        if at is not None and gap >= COLUMN_CENTRE_GAP_FRAC * page.width:
+            split_x = at
+    if split_x is None:
+        return None
+
+    left = [b for b in voting if (b.x0 + b.x1) / 2 < split_x]
+    right = [b for b in voting if (b.x0 + b.x1) / 2 >= split_x]
+    if min(len(left), len(right)) < 2:
+        return None
+
+    ordered = xy_cut(left, page, depth + 1) + xy_cut(right, page, depth + 1)
+    for wb in sorted(wide, key=lambda b: b.y0):
+        pos = next((i for i, b in enumerate(ordered) if b.y0 >= wb.y0),
+                   len(ordered))
+        ordered.insert(pos, wb)
+    return ordered
+
+
 def xy_cut(blocks: list[Block], page: pymupdf.Rect, depth: int = 0) -> list[Block]:
     """Recursively split on the widest vertical then horizontal whitespace."""
     if len(blocks) <= 1 or depth > 6:
@@ -78,6 +150,11 @@ def xy_cut(blocks: list[Block], page: pymupdf.Rect, depth: int = 0) -> list[Bloc
         right = [b for b in blocks if (b.x0 + b.x1) / 2 >= x_at]
         if left and right:
             return xy_cut(left, page, depth + 1) + xy_cut(right, page, depth + 1)
+
+    if depth <= 4:
+        col = _column_cut(blocks, page, depth)
+        if col is not None:
+            return col
 
     min_h_gap = max(8.0, page.height * 0.02)
     ys = [(b.y0, b.y1) for b in blocks]
