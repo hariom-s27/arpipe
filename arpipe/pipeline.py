@@ -72,23 +72,28 @@ def _ocr_pages(pdf: str, profile: DocProfile, pages: list[int],
 
 def process_document(doc: StoredDoc, company: Company, out_root: str,
                      escalator: ocr_mod.Escalator | None = None,
-                     call_llm=None, keep_pages: bool = False) -> ExtractionResult:
+                     call_llm=None, keep_pages: bool = False,
+                     store_root: str | None = None) -> ExtractionResult:
     res = ExtractionResult(company_id=doc.company_id, fy_end=doc.fy_end,
                            sha256=doc.sha256, ok=False,
                            confidence=Confidence.FAILED,
                            pipeline_version=PIPELINE_VERSION)
     escalator = escalator or ocr_mod.Escalator([ocr_mod.TesseractBackend()])
 
+    # doc.path is stored relative to the store root; resolve it to an absolute
+    # path here so every stage below works regardless of the current directory.
+    blob = store.blob_abspath(store_root, doc.path) if store_root else doc.path
+
     try:
-        profile = triage.profile_document(doc.path)
+        profile = triage.profile_document(blob)
     except Exception as exc:                              # noqa: BLE001
         res.errors.append(f"profile_failed:{type(exc).__name__}:{exc}")
         return res
 
-    pdf = pymupdf.open(doc.path)
+    pdf = pymupdf.open(blob)
     try:
         digital = [p.page_no for p in profile.pages if p.kind is PageKind.DIGITAL]
-        page_texts = textlayer.extract_pages(doc.path, digital)
+        page_texts = textlayer.extract_pages(blob, digital)
 
         # ---- pass 1: locate on what we can read for free -----------------
         span, diag = segment.locate(pdf, profile, page_texts, call_llm=None)
@@ -101,7 +106,7 @@ def process_document(doc: StoredDoc, company: Company, out_root: str,
             index = sorted({n for n in need
                             if n < FRONT_PAGES or n % INDEX_STRIDE == 0})[:60]
             if index:
-                got, k, engine = _ocr_pages(doc.path, profile, index, escalator)
+                got, k, engine = _ocr_pages(blob, profile, index, escalator)
                 page_texts.update(got)
                 ocr_used += k
                 span, diag = segment.locate(pdf, profile, page_texts, call_llm=None)
@@ -114,8 +119,10 @@ def process_document(doc: StoredDoc, company: Company, out_root: str,
 
         if span is None:
             res.errors.append("mda_not_located")
+            res.reasons = ["mda_not_located"]
             res.qc = {"diag": diag, "doc_kind": profile.doc_kind,
-                      "frac_needing_ocr": profile.frac_needing_ocr}
+                      "frac_needing_ocr": profile.frac_needing_ocr,
+                      "pdf_producer": doc.pdf_producer}
             return res
 
         # ---- refine the end boundary --------------------------------------
@@ -126,8 +133,8 @@ def process_document(doc: StoredDoc, company: Company, out_root: str,
             if n >= profile.n_pages:
                 return None
             if profile.pages[n].kind is PageKind.DIGITAL:
-                return textlayer.extract_pages(doc.path, [n]).get(n, "")
-            got, k, _ = _ocr_pages(doc.path, profile, [n], escalator)
+                return textlayer.extract_pages(blob, [n]).get(n, "")
+            got, k, _ = _ocr_pages(blob, profile, [n], escalator)
             nonlocal ocr_used
             ocr_used += k
             return got.get(n, "")
@@ -142,7 +149,7 @@ def process_document(doc: StoredDoc, company: Company, out_root: str,
                    if n < len(profile.pages)
                    and profile.pages[n].kind is not PageKind.BLANK]
         if missing:
-            got, k, eng = _ocr_pages(doc.path, profile, missing, escalator)
+            got, k, eng = _ocr_pages(blob, profile, missing, escalator)
             page_texts.update(got)
             ocr_used += k
             engine = eng or engine
@@ -157,8 +164,14 @@ def process_document(doc: StoredDoc, company: Company, out_root: str,
         digital_span = {n for n in span_pages
                         if n < len(profile.pages)
                         and profile.pages[n].kind is PageKind.DIGITAL}
-        ordered, mda_blocks = textlayer.extract_prose_and_tables(
-            doc.path, span_pages, page_texts, digital_span)
+        ordered, mda_blocks, order_diag = textlayer.extract_prose_and_tables(
+            blob, span_pages, page_texts, digital_span)
+        # P21: fraction of digital span pages on which the P16B column splitter
+        # fired. Near 1 => ordering is as good as we can make it (a residual
+        # orphan_start_frac is source_shredded, not order_scrambled).
+        _dig = order_diag["digital_pages"]
+        column_cut_fire_frac = (order_diag["column_cut_pages"] / _dig
+                                if _dig else None)
         ordered = textlayer.strip_running_furniture(ordered) if len(ordered) >= 4 else ordered
         mda_text = "\n\n".join(t for t in ordered if t.strip()).strip()
 
@@ -166,7 +179,7 @@ def process_document(doc: StoredDoc, company: Company, out_root: str,
         front_nos = [n for n in sorted(page_texts) if n < FRONT_PAGES]
         front = "\n".join(page_texts[n] for n in front_nos)
         if len(front.split()) < 80:
-            got, k, _ = _ocr_pages(doc.path, profile,
+            got, k, _ = _ocr_pages(blob, profile,
                                    [n for n in range(min(6, profile.n_pages))
                                     if n not in page_texts], escalator)
             page_texts.update(got)
@@ -176,9 +189,13 @@ def process_document(doc: StoredDoc, company: Company, out_root: str,
         vrep = verify.verify(front, mda_text, company, doc.fy_end)
         qc = verify.section_qc(mda_text)
         grade = verify.grade(vrep, qc, span.score)
+        reasons = verify.build_reasons(
+            vrep, qc, column_cut_fire_frac=column_cut_fire_frac,
+            mda_text=mda_text)
 
         res.span = span
         res.verification = vrep
+        res.reasons = reasons
         res.n_words = qc["n_words"]
         res.ocr_pages = ocr_used
         res.ocr_engine = engine
@@ -186,6 +203,13 @@ def process_document(doc: StoredDoc, company: Company, out_root: str,
                   "frac_needing_ocr": profile.frac_needing_ocr,
                   "bilingual": profile.bilingual,
                   "n_pages": profile.n_pages,
+                  # P21: pdf_producer sits next to a source_shredded reason -
+                  # the free web compressors (iLovePDF, Smallpdf, ...) shred the
+                  # text layer to near-per-line and that is the whole residual.
+                  "pdf_producer": doc.pdf_producer,
+                  "column_cut_fire_frac": (round(column_cut_fire_frac, 3)
+                                           if column_cut_fire_frac is not None
+                                           else None),
                   # P18: n_words / n_chars / digit_ratio above are prose only
                   "n_words_note": "prose only; tables/charts in mda_blocks.json",
                   "blocks_quarantined": len(mda_blocks),
@@ -195,10 +219,12 @@ def process_document(doc: StoredDoc, company: Company, out_root: str,
                           "low": Confidence.LOW}[grade]
         res.ok = grade in ("high", "medium")
 
-        d = store.write_year(out_root, company.canonical_name, doc, mda_text, res,
-                             page_texts if keep_pages else None,
-                             mda_blocks=mda_blocks)
-        res.mda_path = os.path.join(d, "mda.txt")
+        store.write_year(out_root, company.canonical_name, doc, mda_text, res,
+                         page_texts if keep_pages else None,
+                         mda_blocks=mda_blocks, blob_path=blob,
+                         store_root=store_root)
+        # store.write_year sets res.path (mda.txt relative to the dataset root).
+        assert not res.ok or res.path, "ok extraction wrote no mda.txt path"
         return res
     finally:
         pdf.close()

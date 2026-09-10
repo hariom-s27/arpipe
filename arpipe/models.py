@@ -73,7 +73,8 @@ class StoredDoc:
     company_id: str
     fy_end: int
     sha256: str
-    path: str
+    path: str                        # blob path RELATIVE to the store root,
+                                     # forward slashes; resolve with store.blob_abspath
     n_bytes: int
     n_pages: int
     source: str
@@ -81,6 +82,9 @@ class StoredDoc:
     pdf_producer: str | None = None
     is_encrypted: bool = False
     fetched_at: str = dc.field(default_factory=lambda: dt.datetime.now(dt.UTC).isoformat())
+    # How the human-facing tree got its copy of the blob, filled by store.write_year.
+    # "hardlink" (free) | "symlink" (needs privilege on Windows) | "copy" (costs disk).
+    link_mode: str | None = None
 
 
 @dc.dataclass(slots=True)
@@ -147,11 +151,17 @@ class ExtractionResult:
     confidence: Confidence
     span: MDASpan | None = None
     verification: VerificationReport | None = None
-    mda_path: str | None = None
+    path: str | None = None          # mda.txt RELATIVE to the dataset root,
+                                     # forward slashes; set by store.write_year
     n_words: int = 0
     ocr_pages: int = 0
     ocr_engine: str | None = None
     qc: dict[str, Any] = dc.field(default_factory=dict)
+    # Why this row is not `high`. Machine-readable codes (see verify.build_reasons):
+    # source_shredded, order_scrambled, span_truncated, identity_unproven,
+    # year_unproven, section_leak, too_short, too_long, ocr_budget_exhausted,
+    # mda_not_located. A `low`/`medium` row with an empty `reasons` is a half-row.
+    reasons: list[str] = dc.field(default_factory=list)
     errors: list[str] = dc.field(default_factory=list)
     pipeline_version: str = "0.1.0"
 

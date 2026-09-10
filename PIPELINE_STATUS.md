@@ -9,14 +9,16 @@ no automated test.
 
 ## 1. How to run it on this machine
 
-The package imports as `arpipe` only from the repo root (`arpipe-0.1.0/`), but the
-stored blob paths in `documents.jsonl` are written **relative to `arpipe/`**. So run
-from inside `arpipe/` with the parent on `PYTHONPATH`:
+Since **P19**, blob paths in `documents.jsonl` are stored relative to the store
+root and resolved against `--root` at read time, so `extract` / `triage` /
+`audit` run from **any** working directory and `--out` may be on **any** drive
+(a cross-drive `--out` falls back to copying the PDF into the tree and records
+`link_mode: copy` in `document.json`). Put the repo root on `PYTHONPATH` so the
+package imports:
 
 ```bash
-cd arpipe-0.1.0/arpipe
-export PYTHONPATH=..
-PY=.venv/Scripts/python.exe            # Windows venv
+export PYTHONPATH=arpipe-0.1.0                 # or the absolute repo-root path
+PY=arpipe-0.1.0/arpipe/.venv/Scripts/python.exe   # Windows venv
 
 $PY -m arpipe.cli universe --out companies.csv
 $PY -m arpipe.cli discover --companies companies.csv --out reports.jsonl \
@@ -27,12 +29,13 @@ $PY -m arpipe.cli extract  --root live_store --out live_dataset --companies comp
 $PY -m arpipe.cli audit    --out live_dataset
 ```
 
-Two machine-specific gotchas:
+One machine-specific gotcha:
 
-* **`--out` must be on the same drive as the blob store** (both on `D:`). `store.link_pdf`
-  tries `os.link` → `os.symlink`; the symlink fallback raises `ValueError` (not
-  `OSError`) across drives and is **not caught**, so the run crashes. See §4 bug #1.
-* `pytest` and `make_fixtures.py` also need `PYTHONPATH=..`.
+* `pytest` and `make_fixtures.py` need the repo root on `PYTHONPATH`
+  (`PYTHONPATH=arpipe-0.1.0`, or `..` when run from inside `arpipe/`).
+
+(The old "`--out` must be on the same drive as the store" gotcha is gone — P19
+fixed the cross-drive crash; see §4 bug #1.)
 
 ---
 
@@ -51,7 +54,7 @@ Two machine-specific gotchas:
 
 Real deliverable produced today: `arpipe/_demo_out/` — 4 MD&A extractions
 (~39k words total) with full `mda.json` / `document.json` provenance.
-24/24 unit tests pass (`pytest arpipe/tests -q`).
+39/39 unit tests pass (`PYTHONPATH=arpipe-0.1.0 pytest arpipe/tests -q`).
 
 ---
 
@@ -120,10 +123,9 @@ anyway — never route Hindi there.)
 
 ## 4. Bugs found today
 
-1. **`store.link_pdf` cross-drive crash.** `os.symlink` fallback raises `ValueError`
-   on Windows when source and dest are on different drives; the `except OSError`
-   doesn't catch it, so `extract` aborts instead of falling back to `shutil.copy2`.
-   → widen to `except (OSError, ValueError)`.
+1. **`store.link_pdf` cross-drive crash. — FIXED (P19).** Now `os.link` →
+   `os.symlink` → `shutil.copy2`, catching `(OSError, ValueError)`, warning on
+   copy, and returning the mode into `document.json` as `link_mode`.
 2. **`fetch._repair` malformed qpdf command.** The primary call is
    `["qpdf", "--replace-input" if False else out, "--qdf", …, path, out]` —
    the `if False` leftover makes it `["qpdf", out, "--qdf", …, path, out]`, which
@@ -133,11 +135,11 @@ anyway — never route Hindi there.)
 3. **`discover` `--use-bse` flag is a no-op.** argparse `action="store_true",
    default=True` → always on, can't be turned off. Harmless only because BSE
    returns nothing (§3B). → `default=False`.
-4. **Import ergonomics.** Running `python -m arpipe.cli` from the repo root fails
-   (`No module named 'arpipe'`) because the code + data live one level down and
-   blob paths are cwd-relative. → add a `pyproject.toml` with a console-script
-   entry point, or a top-level `__main__.py` / `run.py` shim, and make the store
-   root absolute in `documents.jsonl`.
+4. **Import ergonomics.** Running `python -m arpipe.cli` still needs the repo
+   root on `PYTHONPATH` (`No module named 'arpipe'` otherwise). The blob-path
+   half of this is **fixed (P19)** — paths are store-root-relative and resolved
+   against `--root`, so the cwd no longer matters. Still worth a `pyproject.toml`
+   console-script or a top-level shim for the import.
 
 ---
 
@@ -145,7 +147,7 @@ anyway — never route Hindi there.)
 
 1. Install `tesseract` (+ `hin`), `qpdf`, Ghostscript → unlock the OCR path.
 2. Add an end-to-end OCR test over the scanned / hybrid / bilingual fixtures.
-3. Fix bugs #1 and #3 (one-line each); #2 while you're in `fetch.py`.
+3. ~~Fix bug #1~~ (done, P19). Fix bug #3 (one-line); #2 while you're in `fetch.py`.
 4. Wire `configs/default.yaml` into a single `config.load()` used by every module.
 5. Label ~300 real reports (era × cap band × scan quality) and re-fit every threshold.
 6. Confirm the BSE adapter against a live payload; populate `bse_scrip` in `universe`.

@@ -22,11 +22,40 @@ import json
 import os
 import re
 import shutil
+import sys
 from dataclasses import asdict
 
 from .models import ExtractionResult, StoredDoc, to_json
 
 SAFE = re.compile(r"[^A-Za-z0-9._-]+")
+
+
+def rel_to_root(path: str, root: str) -> str:
+    """A path expressed relative to `root`, forward slashes, so it stays valid
+    when the tree is moved to another directory or drive."""
+    return os.path.relpath(path, root).replace(os.sep, "/")
+
+
+def blob_abspath(root: str, stored_path: str) -> str:
+    """Resolve a StoredDoc.path to an absolute filesystem path.
+
+    The current format is root-relative with forward slashes
+    (``blobs/47/74/<sha>.pdf``); this also tolerates the legacy formats still on
+    disk: an absolute path, and a path written relative to the store's parent
+    that carries the store dir's own name as a leading component
+    (``live_store/blobs/...``)."""
+    if os.path.isabs(stored_path):
+        return stored_path
+    p = stored_path.replace("\\", "/").lstrip("/")
+    candidates = [os.path.join(root, p)]
+    rootname = os.path.basename(os.path.normpath(root))
+    if rootname and p.startswith(rootname + "/"):
+        candidates.append(os.path.join(root, p[len(rootname) + 1:]))
+    candidates.append(p)                          # last resort: relative to cwd
+    for c in candidates:
+        if os.path.exists(c):
+            return os.path.abspath(c)
+    return os.path.abspath(candidates[0])
 
 
 def slug(name: str, maxlen: int = 80) -> str:
@@ -42,26 +71,65 @@ def year_dir(root: str, company_name: str, company_id: str, fy_end: int) -> str:
     return os.path.join(company_dir(root, company_name, company_id), str(fy_end))
 
 
-def link_pdf(blob_path: str, dest: str) -> None:
+def link_pdf(blob_path: str, dest: str) -> str:
+    """Materialise `dest` from `blob_path` as cheaply as the filesystem allows,
+    and report which mechanism was used.
+
+      hardlink  free, but same volume only
+      symlink   free across volumes, but needs privilege / Developer Mode on Windows
+      copy      always works, costs a full second copy of the bytes
+
+    A cross-drive `--out` makes os.path.relpath raise ValueError (not OSError),
+    so the symlink branch has to catch both. If `dest` already exists from a
+    prior run, the mode is re-derived from the inode / islink."""
     os.makedirs(os.path.dirname(dest), exist_ok=True)
-    if os.path.exists(dest):
-        return
-    try:
-        os.link(blob_path, dest)             # hardlink: no extra bytes
-    except OSError:
+    if os.path.lexists(dest):                             # a prior run made it
+        if os.path.islink(dest):
+            return "symlink"
         try:
-            os.symlink(os.path.relpath(blob_path, os.path.dirname(dest)), dest)
+            a, b = os.stat(dest), os.stat(blob_path)
+            same = a.st_ino != 0 and (a.st_ino, a.st_dev) == (b.st_ino, b.st_dev)
+            return "hardlink" if same else "copy"
         except OSError:
-            shutil.copy2(blob_path, dest)
+            return "copy"
+    try:
+        os.link(blob_path, dest)                          # hardlink: no extra bytes
+        return "hardlink"
+    except OSError:
+        pass
+    try:
+        rel = os.path.relpath(blob_path, os.path.dirname(dest))
+        os.symlink(rel, dest)
+        return "symlink"
+    except (OSError, ValueError):
+        pass
+    shutil.copy2(blob_path, dest)
+    print(f"WARN link_pdf: copied {os.path.basename(blob_path)} into the tree "
+          f"(no hardlink/symlink available) -> {dest}", file=sys.stderr)
+    return "copy"
 
 
 def write_year(root: str, company_name: str, doc: StoredDoc,
                mda_text: str, result: ExtractionResult,
                page_texts: dict[int, str] | None = None,
-               mda_blocks: list[dict] | None = None) -> str:
+               mda_blocks: list[dict] | None = None,
+               blob_path: str | None = None,
+               store_root: str | None = None) -> str:
     d = year_dir(root, company_name, doc.company_id, doc.fy_end)
     os.makedirs(d, exist_ok=True)
-    link_pdf(doc.path, os.path.join(d, "annual_report.pdf"))
+    blob_path = blob_path or doc.path
+    doc.link_mode = link_pdf(blob_path, os.path.join(d, "annual_report.pdf"))
+    # Normalise doc.path in document.json to the current store-root-relative
+    # form, so the record is portable even when documents.jsonl still holds a
+    # legacy path. Skipped if the blob is on another drive from the store root.
+    if store_root and os.path.isabs(blob_path):
+        try:
+            doc.path = rel_to_root(blob_path, store_root)
+        except ValueError:
+            pass
+    # mda.txt path, relative to the dataset root so the manifest and mda.json
+    # stay valid if the tree is moved. Set BEFORE mda.json is serialised.
+    result.path = rel_to_root(os.path.join(d, "mda.txt"), root)
     with open(os.path.join(d, "mda.txt"), "w", encoding="utf-8") as fh:
         fh.write(mda_text)
     # P18: tables and charts lifted out of the prose. Always written (even

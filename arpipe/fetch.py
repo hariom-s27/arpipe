@@ -168,9 +168,13 @@ def fetch_one(ref: ReportRef, root: str, client: httpx.Client,
             if not os.path.exists(dest):
                 shutil.move(path, dest)
 
+            # Store the blob path RELATIVE to the store root (forward slashes) so
+            # the manifest stays valid when the store is moved to another
+            # directory or drive; resolve it with store.blob_abspath at read time.
+            rel = os.path.relpath(dest, root).replace(os.sep, "/")
             return StoredDoc(
                 company_id=ref.company_id, fy_end=ref.fy_end, sha256=sha,
-                path=dest, n_bytes=len(data), n_pages=n_pages, source=ref.source,
+                path=rel, n_bytes=len(data), n_pages=n_pages, source=ref.source,
                 url=ref.url, pdf_producer=producer, is_encrypted=enc)
     if last_err:
         raise last_err

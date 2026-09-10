@@ -49,6 +49,16 @@ NAME_MATCH_WEAK = 72
 # in P15.
 ORPHAN_START_FRAC_MAX = 0.03
 
+# P21: what orphan_start_frac was measured on, and which gate logic graded it.
+# A stored score is uninterpretable without the basis - P18 changed the metric
+# from "prose_and_tables" to "prose_only" and there are live_dataset/ scores
+# from both. Recorded in qc so a number from six months ago can still be placed.
+ORPHAN_BASIS = "prose_only"          # or "prose_and_tables" (pre-P18)
+ORPHAN_GATE_VERSION = "p17.1"        # p17 gate + p16b column-cut fire signal
+
+# CLAUDE.md: total fiscal-year evidence weight below this is "thinly attested".
+FY_WEIGHT_FLOOR = 15
+
 _SUFFIXES = re.compile(
     r"\b(limited|ltd|private|pvt|public|company|co|corporation|corp|"
     r"industries|india|the|and|&|incorporated|inc|plc)\b\.?", re.I)
@@ -240,6 +250,10 @@ def section_qc(mda_text: str) -> dict:
         # reading-order signal - character ratios above are blind to it (P17)
         **{k: order[k] for k in ("orphan_start_frac", "dangling_end_frac",
                                  "orphan_starts", "dangling_ends", "n_paragraphs")},
+        # P21: label the score so it stays interpretable across metric changes
+        "orphan_basis": ORPHAN_BASIS,
+        "orphan_gate_version": ORPHAN_GATE_VERSION,
+        "orphan_gate_max": ORPHAN_START_FRAC_MAX,
     }
 
 
@@ -382,6 +396,82 @@ def order_quality(mda_text: str) -> dict:
         "dangling_ends": danglers,
         "n_paragraphs": total,
     }
+
+
+# ------------------------------------------------------------- reason codes
+# P21: a `low` row with no reason is only half a row. Every non-`high` grade
+# carries machine-readable codes so next month nobody has to re-diagnose why a
+# document was demoted (or go back into xy_cut looking for a bug that P16B
+# already fixed).
+
+# A real MD&A closes with a cautionary / forward-looking / disclaimer
+# paragraph (SEBI convention). Its absence in the last ~15 lines means the span
+# stopped early - the terminator matched a body word, or the section end was
+# never found. PROVISIONAL phrasing set - re-fit against the labelled 300.
+_CAUTIONARY_TAIL_RE = re.compile(
+    r"forward[\s-]?looking"
+    r"|cautionary\s+statement"
+    r"|\bdisclaimer\b"
+    r"|undue\s+reliance"
+    r"|\bcaution(?:s|ed|ary)?\b"
+    r"|actual\s+(?:results?|outcomes?)"
+    r"|statements?\s+(?:are\s+)?(?:based\s+on|subject\s+to|forward)"
+    r"|beyond\s+the\s+(?:control|management)"
+    r"|risks?,?\s+(?:and\s+)?concerns?", re.I)
+
+
+def tail_has_cautionary(mda_text: str, n_lines: int = 15) -> bool:
+    lines = [ln.strip() for ln in mda_text.splitlines() if ln.strip()]
+    if not lines:
+        return False
+    return bool(_CAUTIONARY_TAIL_RE.search(" ".join(lines[-n_lines:])))
+
+
+def _fy_weight(rep: VerificationReport) -> int | None:
+    for e in rep.year_evidence:
+        m = re.match(r"modal_fy:\d+:w(\d+)", e)
+        if m:
+            return int(m.group(1))
+    return None
+
+
+def build_reasons(rep: VerificationReport, qc: dict, *,
+                  column_cut_fire_frac: float | None = None,
+                  mda_text: str = "",
+                  ocr_budget_exhausted: bool = False) -> list[str]:
+    """Machine-readable codes for why a row is not `high`.
+
+    column_cut_fire_frac is the fraction of digital span pages on which the
+    P16B column splitter fired. It disambiguates the two orphan-start causes:
+    if the splitter fired on most pages the ordering is already as good as we
+    can make it and the residual is the source PDF (`source_shredded`, pair it
+    with pdf_producer in qc); if it did not, the columns are still interleaved
+    (`order_scrambled`).
+    """
+    reasons: list[str] = []
+    if not rep.company_ok:
+        reasons.append("identity_unproven")
+    w = _fy_weight(rep)
+    if not rep.year_ok or (w is not None and w < FY_WEIGHT_FLOOR):
+        reasons.append("year_unproven")
+    if qc.get("leaks"):
+        reasons.append("section_leak")
+    if qc.get("too_short"):
+        reasons.append("too_short")
+    if qc.get("too_long"):
+        reasons.append("too_long")
+
+    osf = qc.get("orphan_start_frac", 0.0)
+    if osf > qc.get("orphan_gate_max", ORPHAN_START_FRAC_MAX):
+        fired_most = (column_cut_fire_frac is not None
+                      and column_cut_fire_frac >= 0.5)
+        reasons.append("source_shredded" if fired_most else "order_scrambled")
+
+    if mda_text and not tail_has_cautionary(mda_text):
+        reasons.append("span_truncated")
+    if ocr_budget_exhausted:
+        reasons.append("ocr_budget_exhausted")
+    return reasons
 
 
 def grade(rep: VerificationReport, qc: dict, span_score: float) -> str:

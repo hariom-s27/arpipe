@@ -1,7 +1,9 @@
 """Unit tests over the synthetic fixtures. Run: python -m pytest tests -q"""
 from __future__ import annotations
 
+import json
 import os
+import shutil
 import sys
 
 import pymupdf
@@ -234,6 +236,75 @@ def test_order_quality_flags_lowercase_fragment_under_heading():
     assert verify.order_quality("\n\n".join(blocks))["orphan_starts"] >= 1
 
 
+def test_section_qc_labels_the_orphan_basis():
+    qc = verify.section_qc(_ORDERED_PROSE)
+    assert qc["orphan_basis"] == "prose_only"
+    assert qc["orphan_gate_version"] == "p17.1"
+    assert qc["orphan_gate_max"] == verify.ORPHAN_START_FRAC_MAX
+
+
+# --------------------------------------------------------------- P21 reason codes
+def _clean_rep():
+    r = VerificationReport(company_ok=True, year_ok=True)
+    r.year_evidence = ["modal_fy:2025:w39"]           # above the weight floor
+    return r
+
+
+_JAIN_QC = {"orphan_start_frac": 0.064, "orphan_gate_max": 0.03,
+            "leaks": [], "too_short": False, "too_long": False}
+
+# real tail of Jain Irrigation FY2024 MD&A - a forward-looking caution, no heading
+_JAIN_FY24_TAIL = (
+    "The Management issues a warning that some of the aforementioned "
+    "statements are directional and forwardlooking, management estimates and "
+    "may not represent the accuracy of the underlying predictions as they "
+    "depend on a number of variables, some of which may be beyond the "
+    "management's control.")
+
+# real tail of KRBL FY2025 - the section stops on a running footer, no caution
+_KRBL_FY25_TAIL = (
+    "In addition to cybersecurity measures, our Cyber insurance coverage "
+    "provides financial protection and assistance in the event of cyber "
+    "incidents, mitigating potential financial losses and liabilities.\n\n"
+    "Annual Report 2024-25")
+
+
+def test_reasons_source_shredded_when_column_splitter_fired():
+    # Jain: orphan_start_frac over the gate, but P16B's splitter fired on most
+    # span pages -> the residual is the iLovePDF source, not xy_cut.
+    reasons = verify.build_reasons(_clean_rep(), _JAIN_QC,
+                                   column_cut_fire_frac=0.86,
+                                   mda_text="body\n" * 20 + _JAIN_FY24_TAIL)
+    assert reasons == ["source_shredded"]
+
+
+def test_reasons_order_scrambled_when_column_splitter_did_not_fire():
+    reasons = verify.build_reasons(_clean_rep(), _JAIN_QC,
+                                   column_cut_fire_frac=0.1,
+                                   mda_text="body\n" * 20 + _JAIN_FY24_TAIL)
+    assert reasons == ["order_scrambled"]
+
+
+def test_reasons_span_truncated_on_missing_cautionary_ending():
+    assert verify.tail_has_cautionary(_JAIN_FY24_TAIL)
+    assert not verify.tail_has_cautionary(_KRBL_FY25_TAIL)
+    clean_qc = {**_JAIN_QC, "orphan_start_frac": 0.004}
+    reasons = verify.build_reasons(_clean_rep(), clean_qc,
+                                   column_cut_fire_frac=0.9,
+                                   mda_text="body\n" * 20 + _KRBL_FY25_TAIL)
+    assert reasons == ["span_truncated"]
+
+
+def test_reasons_empty_on_a_clean_high_row():
+    clean_qc = {**_JAIN_QC, "orphan_start_frac": 0.0}
+    reasons = verify.build_reasons(_clean_rep(), clean_qc,
+                                   column_cut_fire_frac=0.9,
+                                   mda_text="body\n" * 20 +
+                                   "Cautionary Statement Readers are advised that "
+                                   "these forward-looking statements are subject to risks.")
+    assert reasons == []
+
+
 def test_grade_downgrades_scrambled_reading_order():
     rep = VerificationReport(company_ok=True, year_ok=True)
     base = {"too_short": False, "long_token_frac": 0.0, "leaks": [],
@@ -343,3 +414,114 @@ def test_quarantine_conserves_every_word():
     after = (sum(len(b.text.split()) for b in kept)
              + sum(len(e["text"].split()) for e in entries))
     assert before == after                        # quarantine moves, never drops
+
+
+# ------------------------------------------------- P19: link and path portability
+def test_link_pdf_reports_hardlink_on_same_volume(tmp_path):
+    src = tmp_path / "blob.pdf"
+    src.write_bytes(b"%PDF-1.4\n%%EOF\n")
+    mode = store.link_pdf(str(src), str(tmp_path / "tree" / "annual_report.pdf"))
+    assert mode == "hardlink"
+    assert (tmp_path / "tree" / "annual_report.pdf").read_bytes() == src.read_bytes()
+
+
+def test_link_pdf_is_idempotent_and_still_reports_the_real_mode(tmp_path):
+    src = tmp_path / "blob.pdf"
+    src.write_bytes(b"%PDF-1.4\n%%EOF\n")
+    dest = tmp_path / "tree" / "annual_report.pdf"
+    assert store.link_pdf(str(src), str(dest)) == "hardlink"
+    assert store.link_pdf(str(src), str(dest)) == "hardlink"   # re-derived, not "exists"
+
+
+def test_link_pdf_falls_back_to_copy_and_reports_it(tmp_path, monkeypatch, capsys):
+    src = tmp_path / "blob.pdf"
+    src.write_bytes(b"%PDF-1.4\n%%EOF\n")
+
+    def no_link(*a, **k):
+        raise OSError("hardlink unavailable")
+
+    def cross_drive_symlink(*a, **k):
+        # what os.symlink(os.path.relpath(...)) raises across Windows drives
+        raise ValueError("path is on mount 'D:', start on mount 'C:'")
+
+    monkeypatch.setattr(store.os, "link", no_link)
+    monkeypatch.setattr(store.os, "symlink", cross_drive_symlink)
+
+    dest = tmp_path / "other" / "annual_report.pdf"
+    mode = store.link_pdf(str(src), str(dest))
+    assert mode == "copy"
+    assert dest.read_bytes() == src.read_bytes()
+    assert "WARN link_pdf: copied" in capsys.readouterr().err
+
+
+def test_rel_to_root_uses_forward_slashes(tmp_path):
+    p = os.path.join(str(tmp_path), "companies", "ACME__X", "2015", "mda.txt")
+    rel = store.rel_to_root(p, str(tmp_path))
+    assert rel == "companies/ACME__X/2015/mda.txt"
+
+
+def test_blob_abspath_resolves_root_relative_and_legacy(tmp_path):
+    root = tmp_path / "store"
+    blob = root / "blobs" / "ab" / "cd" / "abcd.pdf"
+    blob.parent.mkdir(parents=True)
+    blob.write_bytes(b"x")
+
+    # current format: relative to the store root, forward slashes
+    assert store.blob_abspath(str(root), "blobs/ab/cd/abcd.pdf") == str(blob)
+    # absolute legacy path is passed through
+    assert store.blob_abspath(str(root), str(blob)) == str(blob)
+    # unresolvable relative path still yields something absolute (no crash)
+    assert os.path.isabs(store.blob_abspath(str(root), "blobs/zz/zz/none.pdf"))
+
+
+def test_extract_is_cwd_independent_and_records_link_mode(tmp_path, monkeypatch):
+    from arpipe import universe
+    import argparse
+
+    src = _fix("A_digital_outline.pdf")
+    sha = fetch.sha256_file(src)
+
+    root = tmp_path / "store"
+    blob = root / "blobs" / sha[:2] / sha[2:4] / f"{sha}.pdf"
+    blob.parent.mkdir(parents=True)
+    shutil.copy2(src, blob)
+
+    doc = {"company_id": "INE123A01016", "fy_end": 2015, "sha256": sha,
+           "path": f"blobs/{sha[:2]}/{sha[2:4]}/{sha}.pdf",
+           "n_bytes": blob.stat().st_size, "n_pages": 40,
+           "source": "test", "url": "http://example.test/ar.pdf"}
+    (root / "documents.jsonl").write_text(json.dumps(doc) + "\n", encoding="utf-8")
+
+    companies = tmp_path / "companies.csv"
+    universe.to_csv([Company(company_id="INE123A01016",
+                             canonical_name="ACME INDUSTRIES LIMITED")],
+                    str(companies))
+
+    out = tmp_path / "dataset"
+    elsewhere = tmp_path / "elsewhere"
+    elsewhere.mkdir()
+    monkeypatch.chdir(elsewhere)                       # run from an unrelated cwd
+
+    args = argparse.Namespace(root=str(root), out=str(out), companies=str(companies),
+                              workers=1, resume=False, keep_pages=False,
+                              vlm_url=None, vlm_model="x", textract=False,
+                              aws_region="ap-south-1")
+    assert cli.cmd_extract(args) == 0
+
+    rows = store.load_manifest(str(out))
+    assert rows, "extract wrote no manifest row"
+    row = rows[0]
+    assert row["path"] and not os.path.isabs(row["path"])
+    assert row["path"].startswith("companies/") and "\\" not in row["path"]
+    assert "mda_path" not in row                       # the duplicate is gone
+
+    year_dir = out / os.path.dirname(row["path"])
+    docjson = json.loads((year_dir / "document.json").read_text(encoding="utf-8"))
+    assert docjson["link_mode"] in {"hardlink", "symlink", "copy"}
+    # blob path normalised to store-root-relative, forward slashes
+    assert docjson["path"] == f"blobs/{sha[:2]}/{sha[2:4]}/{sha}.pdf"
+
+    mdajson = json.loads((year_dir / "mda.json").read_text(encoding="utf-8"))
+    assert mdajson["path"] == row["path"]
+    if mdajson["ok"]:
+        assert mdajson["path"] is not None

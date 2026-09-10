@@ -123,7 +123,7 @@ def cmd_triage(a: argparse.Namespace) -> int:
     with open(os.path.join(a.root, "profiles.jsonl"), "w", encoding="utf-8") as fh:
         for d in docs:
             try:
-                p = triage.profile_document(d.path)
+                p = triage.profile_document(store.blob_abspath(a.root, d.path))
             except Exception as exc:                  # noqa: BLE001
                 print(f"ERR {d.sha256[:8]} {exc}", file=sys.stderr)
                 continue
@@ -161,15 +161,15 @@ def cmd_extract(a: argparse.Namespace) -> int:
         if co is None:
             return d, None
         return d, pipeline.process_document(d, co, a.out, escalator=esc,
-                                            keep_pages=a.keep_pages)
+                                            keep_pages=a.keep_pages,
+                                            store_root=a.root)
 
     n_ok = 0
     with ThreadPoolExecutor(a.workers) as ex:
         for d, res in ex.map(work, todo):
             if res is None:
                 continue
-            rec = json.loads(to_json(res))
-            rec["path"] = res.mda_path
+            rec = json.loads(to_json(res))   # already carries "path" (rel to --out)
             store.append_manifest(a.out, rec)
             n_ok += int(res.ok)
     print(f"extracted ok={n_ok}/{len(todo)}")

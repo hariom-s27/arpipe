@@ -87,7 +87,7 @@ def _gap_cut(vals: list[tuple[float, float]], lo: float, hi: float,
 
 
 def _column_cut(blocks: list[Block], page: pymupdf.Rect,
-                depth: int) -> list[Block] | None:
+                depth: int, stats: dict | None = None) -> list[Block] | None:
     """Split into columns when a full-width block has masked the gutter from
     _gap_cut. The non-full-width blocks are split, each column is ordered
     recursively, and the full-width blocks are re-inserted at their y position.
@@ -131,16 +131,25 @@ def _column_cut(blocks: list[Block], page: pymupdf.Rect,
     if min(len(left), len(right)) < 2:
         return None
 
-    ordered = xy_cut(left, page, depth + 1) + xy_cut(right, page, depth + 1)
+    ordered = (xy_cut(left, page, depth + 1, stats)
+               + xy_cut(right, page, depth + 1, stats))
     for wb in sorted(wide, key=lambda b: b.y0):
         pos = next((i for i, b in enumerate(ordered) if b.y0 >= wb.y0),
                    len(ordered))
         ordered.insert(pos, wb)
+    if stats is not None:                     # P21: the split fired on this page
+        stats["column_cut"] = True
     return ordered
 
 
-def xy_cut(blocks: list[Block], page: pymupdf.Rect, depth: int = 0) -> list[Block]:
-    """Recursively split on the widest vertical then horizontal whitespace."""
+def xy_cut(blocks: list[Block], page: pymupdf.Rect, depth: int = 0,
+           stats: dict | None = None) -> list[Block]:
+    """Recursively split on the widest vertical then horizontal whitespace.
+
+    `stats`, when passed, collects reading-order diagnostics for P21: it gets
+    `column_cut` set True if the P16B column splitter fired anywhere in the
+    recursion for this page.
+    """
     if len(blocks) <= 1 or depth > 6:
         return sorted(blocks, key=lambda b: (round(b.y0, 1), b.x0))
 
@@ -151,10 +160,11 @@ def xy_cut(blocks: list[Block], page: pymupdf.Rect, depth: int = 0) -> list[Bloc
         left = [b for b in blocks if (b.x0 + b.x1) / 2 < x_at]
         right = [b for b in blocks if (b.x0 + b.x1) / 2 >= x_at]
         if left and right:
-            return xy_cut(left, page, depth + 1) + xy_cut(right, page, depth + 1)
+            return (xy_cut(left, page, depth + 1, stats)
+                    + xy_cut(right, page, depth + 1, stats))
 
     if depth <= 4:
-        col = _column_cut(blocks, page, depth)
+        col = _column_cut(blocks, page, depth, stats)
         if col is not None:
             return col
 
@@ -165,7 +175,8 @@ def xy_cut(blocks: list[Block], page: pymupdf.Rect, depth: int = 0) -> list[Bloc
         top = [b for b in blocks if (b.y0 + b.y1) / 2 < y_at]
         bot = [b for b in blocks if (b.y0 + b.y1) / 2 >= y_at]
         if top and bot:
-            return xy_cut(top, page, depth + 1) + xy_cut(bot, page, depth + 1)
+            return (xy_cut(top, page, depth + 1, stats)
+                    + xy_cut(bot, page, depth + 1, stats))
 
     return sorted(blocks, key=lambda b: (round(b.y0, 1), b.x0))
 
@@ -336,20 +347,31 @@ def _quarantine_page(page_no: int, blocks: list[Block]) -> tuple[list[Block],
 
 def extract_prose_and_tables(
         path: str, span_pages: list[int], page_texts: dict[int, str],
-        digital_pages: set[int]) -> tuple[list[str], list[dict]]:
+        digital_pages: set[int]) -> tuple[list[str], list[dict], dict]:
     """Per span page, return (prose text with tables/charts removed,
-    quarantined block records). Digital pages are re-read for block geometry;
-    OCR / fetched pages fall back to splitting the extracted string on blank
-    lines, so their quarantined records carry no bbox.
+    quarantined block records, reading-order diag). Digital pages are re-read
+    for block geometry; OCR / fetched pages fall back to splitting the
+    extracted string on blank lines, so their quarantined records carry no
+    bbox.
+
+    The diag dict (P21) reports how often the P16B column splitter fired:
+    `{"digital_pages": N, "column_cut_pages": M}`. M/N near 1 on a still-bad
+    orphan_start_frac means the ordering is as good as we can make it and the
+    residual is the source PDF (source_shredded), not xy_cut (order_scrambled).
     """
     doc = pymupdf.open(path)
     try:
         prose: list[str] = []
         quarantined: list[dict] = []
+        diag = {"digital_pages": 0, "column_cut_pages": 0}
         for pno in span_pages:
             if pno in digital_pages:
                 page = doc.load_page(pno)
-                blocks = xy_cut(_blocks(page), page.rect)
+                pstats: dict = {}
+                blocks = xy_cut(_blocks(page), page.rect, stats=pstats)
+                diag["digital_pages"] += 1
+                if pstats.get("column_cut"):
+                    diag["column_cut_pages"] += 1
             else:
                 blocks = [Block(0.0, 0.0, 0.0, 0.0, seg)
                           for seg in re.split(r"\n\s*\n", page_texts.get(pno, ""))
@@ -357,7 +379,7 @@ def extract_prose_and_tables(
             kept, entries = _quarantine_page(pno, blocks)
             prose.append(normalise("\n\n".join(b.text for b in kept)))
             quarantined.extend(entries)
-        return prose, quarantined
+        return prose, quarantined, diag
     finally:
         doc.close()
 

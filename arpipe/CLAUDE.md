@@ -204,18 +204,23 @@ Terminators must match a heading *shape*, not a string anywhere on the page.
 KRBL FY2024: TOC said 53–66, truth 27–33. The folio-offset solver fails
 silently.
 
-**9. Cross-drive symlink crashes the run.**
-`ValueError: path is on mount 'D:', start on mount 'C:'` — `store.py` uses
-`os.symlink` with a relative path. Needs an `os.link` → `os.symlink` →
-`shutil.copy2` fallback, recording which one ran.
+**9. Cross-drive symlink crashes the run. — FIXED (P19).**
+`store.link_pdf` now tries `os.link` → `os.symlink` → `shutil.copy2`, catches
+`(OSError, ValueError)` on the symlink branch, warns on copy, and returns the
+mode (`hardlink` | `symlink` | `copy`, re-derived by inode/islink when the file
+is already there). `store.write_year` records it as `link_mode` in
+`document.json`. Verified: D:→D: run links, D:→C: run copies with a warning.
 
-**10. Blob paths are relative to the cwd, not the store root.** The pipeline
-only runs from `arpipe/` with `PYTHONPATH=..` set. Store paths relative to the
-store root, forward slashes.
+**10. Blob paths are relative to the cwd, not the store root. — FIXED (P19).**
+`fetch` writes `StoredDoc.path` relative to the store root, forward slashes
+(`blobs/47/74/<sha>.pdf`); `store.blob_abspath(root, path)` resolves it at read
+time (and still resolves the two legacy on-disk formats). `mda.json` /
+`manifest` `path` is relative to the dataset root. `extract` verified from an
+unrelated working directory and across drives.
 
-**11. `mda_path` is null** on a successful extraction in the latest run, while
-an earlier manifest had it populated. Drop the duplicate — keep `path` — and
-assert it is never null when `ok` is true.
+**11. `mda_path` is null — FIXED (P19).** `ExtractionResult.mda_path` is gone;
+`store.write_year` sets `result.path` (relative to the dataset root) *before*
+serialising `mda.json`, and `pipeline` asserts it is non-null whenever `ok`.
 
 **12. Ratio patterns are not tolerant.** KRBL's MD&A carries all 8 mandated
 ratios; `ratio_cues` reported 7. Likely `"Debtors Turnover"` vs KRBL's
