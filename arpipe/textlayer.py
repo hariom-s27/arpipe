@@ -345,33 +345,126 @@ def _quarantine_page(page_no: int, blocks: list[Block]) -> tuple[list[Block],
     return kept, entries
 
 
+# --- running furniture, from block geometry + repetition (P23) ----------------
+# strip_running_furniture (below) keys on the first / last two *emitted* lines of
+# each page string, so which lines it calls furniture depends on the
+# reading-order sort that ran first - reordering moved KRBL's word count by -7
+# and +28 in P16B. This pass keys on a block's own y-position (invariant to
+# reading order) plus repetition across pages, and drops furniture blocks BEFORE
+# xy_cut - which also lifts the full-width header/footer that defeats _gap_cut in
+# the first place, so it is defence in depth on the same failure.
+#
+# PROVISIONAL constants - picked from the four sample documents, to be re-fit
+# against the labelled 300 and moved to config in P15.
+FURNITURE_ZONE_FRAC = 0.08      # a block whose top is within this fraction of the
+                               # page height from the page top - or whose bottom
+                               # is within it of the page bottom - is in the
+                               # header / footer band
+FURNITURE_MIN_PAGE_FRAC = 0.35  # a normalised in-band string carried by at least
+                               # this fraction of the pages is running furniture
+                               # (the fraction strip_running_furniture already uses)
+
+
+def _furniture_norm(s: str) -> str:
+    """Fold a header/footer to a repetition key: drop digits (page numbers, the
+    year in 'Annual Report 2023-24'), collapse whitespace, lowercase."""
+    return re.sub(r"\s+", " ", re.sub(r"\d+", "", s)).strip().lower()
+
+
+def _in_furniture_zone(b: Block, rect: pymupdf.Rect) -> bool:
+    margin = FURNITURE_ZONE_FRAC * rect.height
+    return b.y0 <= rect.y0 + margin or b.y1 >= rect.y1 - margin
+
+
+def _furniture_strings(pages: list[tuple[list[Block], pymupdf.Rect]]) -> set[str]:
+    """Normalised strings that sit in the header/footer band on at least
+    FURNITURE_MIN_PAGE_FRAC of the pages (floor REPEATED_HEADER_MIN_PAGES). A
+    section heading is at the top of one page, not thirty, so the repetition
+    gate is what keeps this from eating real body text."""
+    from collections import Counter
+
+    counts: Counter[str] = Counter()
+    for blocks, rect in pages:
+        seen = {_furniture_norm(b.text)
+                for b in blocks if _in_furniture_zone(b, rect)}
+        counts.update(n for n in seen if len(n) >= 4)
+    thresh = max(REPEATED_HEADER_MIN_PAGES, int(FURNITURE_MIN_PAGE_FRAC * len(pages)))
+    return {n for n, c in counts.items() if c >= thresh}
+
+
+def _strip_furniture_blocks(blocks: list[Block], rect: pymupdf.Rect,
+                            furniture: set[str]) -> tuple[list[Block], list[str]]:
+    kept: list[Block] = []
+    removed: list[str] = []
+    for b in blocks:
+        if _in_furniture_zone(b, rect) and _furniture_norm(b.text) in furniture:
+            removed.append(b.text)
+        else:
+            kept.append(b)
+    return kept, removed
+
+
 def extract_prose_and_tables(
         path: str, span_pages: list[int], page_texts: dict[int, str],
-        digital_pages: set[int]) -> tuple[list[str], list[dict], dict]:
-    """Per span page, return (prose text with tables/charts removed,
-    quarantined block records, reading-order diag). Digital pages are re-read
-    for block geometry; OCR / fetched pages fall back to splitting the
-    extracted string on blank lines, so their quarantined records carry no
-    bbox.
+        digital_pages: set[int],
+        reading_order: bool = True) -> tuple[list[str], list[dict], dict]:
+    """Per span page, return (prose with running furniture and tables/charts
+    removed, quarantined block records, reading-order diag).
 
-    The diag dict (P21) reports how often the P16B column splitter fired:
-    `{"digital_pages": N, "column_cut_pages": M}`. M/N near 1 on a still-bad
-    orphan_start_frac means the ordering is as good as we can make it and the
-    residual is the source PDF (source_shredded), not xy_cut (order_scrambled).
+    Digital pages are re-read for block geometry. The order of operations:
+
+      1. strip running headers/footers  - from block y-position + repetition, on
+         the RAW blocks BEFORE any sort, so the result cannot depend on the sort.
+         This is the P23 fix: strip_running_furniture (below) keyed on the first
+         and last emitted lines, so which lines it called furniture moved with
+         the reading order (KRBL +/- 7 and 28 words in P16B).
+      2. reading-order sort  - xy_cut, or the naive (y0, x0) sort when
+         reading_order is False
+      3. quarantine tables / charts, then normalise (de-hyphenate)
+
+    `reading_order=False` exists so a test / tools/check_reading_order_invariance
+    can confirm step 1 is now sort-independent. The furniture removed (count and
+    strings, in diag) is identical either way; the word count then differs only
+    by the P18 quarantine, which legitimately tracks the sort (a table's cells
+    are contiguous only in reading order). The pipeline always runs it True.
+    OCR / fetched pages carry no geometry: they are split on blank lines and
+    lean on the strip_running_furniture string pass.
+
+    diag: {"digital_pages": N, "column_cut_pages": M,
+           "furniture_blocks_removed": K, "furniture_strings": [...]}.
+    M/N near 1 on a still-bad orphan_start_frac means the ordering is as good as
+    we can make it and the residual is the source PDF (source_shredded), not
+    xy_cut (order_scrambled).
     """
     doc = pymupdf.open(path)
     try:
-        prose: list[str] = []
-        quarantined: list[dict] = []
-        diag = {"digital_pages": 0, "column_cut_pages": 0}
+        # pass 1: block geometry for the digital pages
+        raw: list[tuple[int, list[Block] | None, pymupdf.Rect | None]] = []
         for pno in span_pages:
             if pno in digital_pages:
                 page = doc.load_page(pno)
-                pstats: dict = {}
-                blocks = xy_cut(_blocks(page), page.rect, stats=pstats)
+                raw.append((pno, _blocks(page), page.rect))
+            else:
+                raw.append((pno, None, None))
+        furniture = _furniture_strings([(b, r) for _, b, r in raw if b is not None])
+
+        # pass 2: strip furniture -> sort -> quarantine -> normalise
+        prose: list[str] = []
+        quarantined: list[dict] = []
+        removed: list[str] = []
+        diag = {"digital_pages": 0, "column_cut_pages": 0}
+        for pno, blocks, rect in raw:
+            if blocks is not None:
+                blocks, rm = _strip_furniture_blocks(blocks, rect, furniture)
+                removed.extend(rm)
+                if reading_order:
+                    pstats: dict = {}
+                    blocks = xy_cut(blocks, rect, stats=pstats)
+                    if pstats.get("column_cut"):
+                        diag["column_cut_pages"] += 1
+                else:
+                    blocks = sorted(blocks, key=lambda b: (round(b.y0, 1), b.x0))
                 diag["digital_pages"] += 1
-                if pstats.get("column_cut"):
-                    diag["column_cut_pages"] += 1
             else:
                 blocks = [Block(0.0, 0.0, 0.0, 0.0, seg)
                           for seg in re.split(r"\n\s*\n", page_texts.get(pno, ""))
@@ -379,6 +472,14 @@ def extract_prose_and_tables(
             kept, entries = _quarantine_page(pno, blocks)
             prose.append(normalise("\n\n".join(b.text for b in kept)))
             quarantined.extend(entries)
+
+        # string-level second pass: OCR/fetched pages (no geometry above) and
+        # anything the band missed. Its input is order-independent by this point.
+        if len(prose) >= 4:
+            prose = strip_running_furniture(prose)
+
+        diag["furniture_blocks_removed"] = len(removed)
+        diag["furniture_strings"] = sorted({_furniture_norm(t) for t in removed})
         return prose, quarantined, diag
     finally:
         doc.close()

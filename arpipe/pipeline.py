@@ -172,7 +172,8 @@ def process_document(doc: StoredDoc, company: Company, out_root: str,
         _dig = order_diag["digital_pages"]
         column_cut_fire_frac = (order_diag["column_cut_pages"] / _dig
                                 if _dig else None)
-        ordered = textlayer.strip_running_furniture(ordered) if len(ordered) >= 4 else ordered
+        # P23: running furniture is stripped inside extract_prose_and_tables now
+        # (block geometry + repetition, before the reading-order sort), not here.
         mda_text = "\n\n".join(t for t in ordered if t.strip()).strip()
 
         # ---- verification -------------------------------------------------
@@ -210,6 +211,10 @@ def process_document(doc: StoredDoc, company: Company, out_root: str,
                   "column_cut_fire_frac": (round(column_cut_fire_frac, 3)
                                            if column_cut_fire_frac is not None
                                            else None),
+                  # P23: running-furniture removal is geometry + repetition,
+                  # done before xy_cut, so n_words no longer depends on the sort.
+                  "furniture_blocks_removed": order_diag["furniture_blocks_removed"],
+                  "furniture_strings": order_diag["furniture_strings"],
                   # P18: n_words / n_chars / digit_ratio above are prose only
                   "n_words_note": "prose only; tables/charts in mda_blocks.json",
                   "blocks_quarantined": len(mda_blocks),

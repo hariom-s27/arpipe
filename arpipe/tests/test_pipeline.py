@@ -338,6 +338,73 @@ def test_running_furniture_is_stripped():
     assert all("body" in p for p in out)
 
 
+# ----------------------------------------------- P23: order-independent furniture
+_A4 = pymupdf.Rect(0, 0, 595, 842)      # zone = y <= 67.4 (top) or y >= 774.6 (bottom)
+
+
+def _syn_page(head, body, pageno, extra=None):
+    bl = [textlayer.Block(40, 20, 555, 34, head),           # running head, top band
+          textlayer.Block(40, 120, 555, 400, body),         # body, out of the band
+          textlayer.Block(280, 812, 315, 826, str(pageno))]  # page number, bottom band
+    if extra:
+        bl.append(textlayer.Block(40, 50, 300, 64, extra))  # extra block in the top band
+    return bl
+
+
+def test_furniture_detected_from_geometry_and_repetition():
+    head = "ACME INDUSTRIES LIMITED  |  Annual Report 2019-20"
+    pages = [(_syn_page(head, f"Body paragraph {i} reads fine and in order.",
+                        i + 3, "Opportunities and Threats" if i == 4 else None), _A4)
+             for i in range(12)]
+    furniture = textlayer._furniture_strings(pages)
+    assert textlayer._furniture_norm(head) in furniture                       # all 12
+    assert textlayer._furniture_norm("Opportunities and Threats") not in furniture  # 1
+
+    kept, removed = textlayer._strip_furniture_blocks(pages[4][0], _A4, furniture)
+    kept_text = " ".join(b.text for b in kept)
+    assert "Opportunities and Threats" in kept_text     # one-off top-band heading stays
+    assert "ACME INDUSTRIES LIMITED" not in kept_text   # repeating running head goes
+    assert head in removed
+
+
+def test_furniture_year_variants_fold_to_one_key():
+    # "Annual Report 2023-24" and "...2024-25" must count as the same furniture
+    assert (textlayer._furniture_norm("Annual Report 2023-24")
+            == textlayer._furniture_norm("Annual Report 2024-25"))
+
+
+def test_furniture_detection_does_not_depend_on_block_order():
+    # the P23 point: furniture is found from geometry + repetition, before any
+    # reading-order sort, so shuffling the blocks must not change the outcome
+    import random
+
+    head = "ACME INDUSTRIES LIMITED  |  Annual Report 2019-20"
+    pages = [_syn_page(head, f"Distinct body {i} carrying its own words.", i + 3,
+                       "Segment Performance" if i == 2 else None)
+             for i in range(10)]
+    base = textlayer._furniture_strings([(p, _A4) for p in pages])
+
+    rng = random.Random(0)
+    shuffled = [rng.sample(p, len(p)) for p in pages]
+    assert textlayer._furniture_strings([(p, _A4) for p in shuffled]) == base
+
+    for p_ord, p_shuf in zip(pages, shuffled):
+        k1, r1 = textlayer._strip_furniture_blocks(p_ord, _A4, base)
+        k2, r2 = textlayer._strip_furniture_blocks(p_shuf, _A4, base)
+        assert sorted(r1) == sorted(r2)                        # same blocks removed
+        assert {b.text for b in k1} == {b.text for b in k2}    # same blocks kept
+
+
+def test_extract_prose_and_tables_strips_the_running_header():
+    # end to end on a fixture: ACME running head is in the top band on every page
+    path = _fix("B_twocol_toc.pdf")
+    span = list(range(10, 17))
+    prose, _, diag = textlayer.extract_prose_and_tables(path, span, {}, set(span))
+    assert diag["furniture_blocks_removed"] >= len(span)       # one per page
+    assert "acme industries limited | annual report -" in diag["furniture_strings"]
+    assert all("ACME INDUSTRIES LIMITED" not in p for p in prose)
+
+
 # --------------------------------------------------------- table/chart quarantine
 def _blk(text, x0=100.0, y0=0.0):
     return textlayer.Block(x0, y0, x0 + 60.0, y0 + 10.0, text)
