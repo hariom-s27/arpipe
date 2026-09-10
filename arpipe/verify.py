@@ -41,12 +41,16 @@ from .patterns import (AS_AT_RE, CIN_RE, FY_RANGE_RE, FY_SINGLE_RE, ISIN_RE,
 NAME_MATCH_STRONG = 88
 NAME_MATCH_WEAK = 72
 
-# P17 reading-order gate. orphan_start_frac (see order_quality) is ~0 in
-# correctly ordered prose and jumps when column interleaving splices
-# sentences: > MAX caps the tier at medium, > 2*MAX forces low. PROVISIONAL -
-# picked from four documents (clean 0.000-0.004, iLovePDF-shredded 0.079-0.102,
-# empty gap between); must be re-fit against the labelled 300. Moves to config
-# in P15.
+# P17 reading-order gate. orphan_start_frac (see order_quality) is paragraphs
+# that begin mid-sentence: > MAX caps the tier at medium, > 2*MAX forces low.
+#
+# PROVISIONAL and currently load-bearing on almost nothing. The 0.03 was picked
+# from a gap between the clean docs (0.000-0.004) and the iLovePDF-shredded Jain
+# reports (0.079-0.102). P22 then excluded list markers (a) b) c)) from
+# _orphan_start - they were 80%+ of the Jain "orphans" - and both Jain years
+# dropped to ~0.012-0.017. So post-P22 NO real document sits above this gate;
+# only the P17 synthetic paragraph-shuffle does. Re-fit against the first P11
+# batch (it will demote nothing until then). Moves to config in P15.
 ORPHAN_START_FRAC_MAX = 0.03
 
 # P21: what orphan_start_frac was measured on, and which gate logic graded it.
@@ -58,6 +62,22 @@ ORPHAN_GATE_VERSION = "p17.1"        # p17 gate + p16b column-cut fire signal
 
 # CLAUDE.md: total fiscal-year evidence weight below this is "thinly attested".
 FY_WEIGHT_FLOOR = 15
+
+# P22: free web PDF compressors / converters that re-lay the text layer into
+# near-per-line fragments (the iLovePDF-shredded Jain reports are the known
+# case). A document from one of these is labelled `source_shredded` and capped
+# at `medium` regardless of how well xy_cut reassembled it, until P11 has >= 5
+# such documents showing the reassembly holds. PROVISIONAL - extend from the
+# P11 pdf_producer tally (audit `by_producer`).
+REPROCESSOR_PRODUCERS = (
+    "ilovepdf", "smallpdf", "pdf24", "sejda", "soda pdf", "online2pdf",
+    "pdfescape", "pdf compressor", "compress pdf", "nitro",
+)
+
+
+def is_reprocessor(producer: str | None) -> bool:
+    p = (producer or "").lower()
+    return any(k in p for k in REPROCESSOR_PRODUCERS)
 
 _SUFFIXES = re.compile(
     r"\b(limited|ltd|private|pvt|public|company|co|corporation|corp|"
@@ -337,8 +357,20 @@ def _looks_like_heading(p: str) -> bool:
     return bool(sig) and all(w[0].isupper() for w in sig)   # every content word
 
 
+# A paragraph that opens with an ordered-list marker - "a)", "(b)", "iv.",
+# "3." - is a list item, not a splice. _reconstruct_paragraphs breaks a run-in
+# list ("a) ... . b) ... . c) ...") into one paragraph per item, and every item
+# after the first then "begins with a lowercase letter" - which was 80%+ of the
+# flagged orphans on Jain FY2024/25 (P22). A real column-tail splice opens on a
+# word ("formulation, while posing..."), never on "x)".
+_LIST_MARKER_RE = re.compile(r"^\s*\(?(?:[a-z]|[ivx]{2,3}|\d{1,2})[.)]\s")
+
+
 def _orphan_start(p: str) -> bool:
-    """Begins with a lowercase letter, a comma, or a closing bracket."""
+    """Begins mid-sentence - a lowercase letter, a comma, or a closing bracket -
+    but not an ordered-list marker."""
+    if _LIST_MARKER_RE.match(p):
+        return False
     c = p[:1]
     return c.islower() or c in ",)]}"
 
@@ -437,16 +469,21 @@ def _fy_weight(rep: VerificationReport) -> int | None:
 
 def build_reasons(rep: VerificationReport, qc: dict, *,
                   column_cut_fire_frac: float | None = None,
+                  pdf_producer: str | None = None,
                   mda_text: str = "",
                   ocr_budget_exhausted: bool = False) -> list[str]:
-    """Machine-readable codes for why a row is not `high`.
+    """Machine-readable codes for why a row is not `high` (or why a `high` row
+    still needs an eye).
 
-    column_cut_fire_frac is the fraction of digital span pages on which the
-    P16B column splitter fired. It disambiguates the two orphan-start causes:
-    if the splitter fired on most pages the ordering is already as good as we
-    can make it and the residual is the source PDF (`source_shredded`, pair it
-    with pdf_producer in qc); if it did not, the columns are still interleaved
-    (`order_scrambled`).
+    `source_shredded` (the text layer was re-laid by a web compressor /
+    converter - pair it with pdf_producer in qc) fires when EITHER:
+      - the producer is a known reprocessor (P22) - the shredding is a fact
+        about the source, independent of how well xy_cut reassembled it, OR
+      - orphan_start_frac is over the gate AND the P16B column splitter fired
+        on most digital span pages (column_cut_fire_frac >= 0.5), i.e. the
+        ordering is already as good as we can make it.
+    A high orphan_start_frac with the splitter idle is `order_scrambled`
+    instead - the columns are still interleaved and xy_cut can do better.
     """
     reasons: list[str] = []
     if not rep.company_ok:
@@ -462,10 +499,13 @@ def build_reasons(rep: VerificationReport, qc: dict, *,
         reasons.append("too_long")
 
     osf = qc.get("orphan_start_frac", 0.0)
-    if osf > qc.get("orphan_gate_max", ORPHAN_START_FRAC_MAX):
-        fired_most = (column_cut_fire_frac is not None
-                      and column_cut_fire_frac >= 0.5)
-        reasons.append("source_shredded" if fired_most else "order_scrambled")
+    over_gate = osf > qc.get("orphan_gate_max", ORPHAN_START_FRAC_MAX)
+    fired_most = (column_cut_fire_frac is not None
+                  and column_cut_fire_frac >= 0.5)
+    if is_reprocessor(pdf_producer) or (over_gate and fired_most):
+        reasons.append("source_shredded")
+    elif over_gate:
+        reasons.append("order_scrambled")
 
     if mda_text and not tail_has_cautionary(mda_text):
         reasons.append("span_truncated")
@@ -474,14 +514,32 @@ def build_reasons(rep: VerificationReport, qc: dict, *,
     return reasons
 
 
-def grade(rep: VerificationReport, qc: dict, span_score: float) -> str:
+def grade(rep: VerificationReport, qc: dict, span_score: float,
+          *, pdf_producer: str | None = None) -> str:
     osf = qc.get("orphan_start_frac", 0.0)
     if (not rep.company_ok or qc["too_short"] or qc["long_token_frac"] > 0.03
             or osf > 2 * ORPHAN_START_FRAC_MAX):     # P17: badly scrambled order
         return "low"
     if (rep.year_ok and span_score >= 0.8 and not qc["leaks"] and not rep.notes
             and osf <= ORPHAN_START_FRAC_MAX):       # P17: mild scramble -> medium
-        return "high"
+        # P22: a reprocessor-sourced PDF has been re-laid line by line; the span
+        # can look clean and still hide a splice xy_cut could not catch. Cap it
+        # at `medium` (+ source_shredded) until P11 has >= 5 such docs proving
+        # the reassembly holds.
+        return "medium" if is_reprocessor(pdf_producer) else "high"
     if rep.year_ok and span_score >= 0.6 and len(qc["leaks"]) <= 1:
         return "medium"
     return "low"
+
+
+def producer_summary(rows: list[dict]) -> dict:
+    """Tally pdf_producer across manifest rows, flagging the web
+    compressors / converters that shred the text layer (P22). The absolute
+    reprocessor count is the number that says how much of a corpus went
+    through one."""
+    out: dict[str, dict] = {}
+    for r in rows:
+        p = (r.get("qc") or {}).get("pdf_producer") or "unknown"
+        d = out.setdefault(p, {"n": 0, "reprocessor": is_reprocessor(p)})
+        d["n"] += 1
+    return dict(sorted(out.items(), key=lambda kv: (-kv[1]["n"], kv[0])))

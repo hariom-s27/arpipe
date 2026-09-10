@@ -189,10 +189,10 @@ def process_document(doc: StoredDoc, company: Company, out_root: str,
 
         vrep = verify.verify(front, mda_text, company, doc.fy_end)
         qc = verify.section_qc(mda_text)
-        grade = verify.grade(vrep, qc, span.score)
+        grade = verify.grade(vrep, qc, span.score, pdf_producer=doc.pdf_producer)
         reasons = verify.build_reasons(
             vrep, qc, column_cut_fire_frac=column_cut_fire_frac,
-            mda_text=mda_text)
+            pdf_producer=doc.pdf_producer, mda_text=mda_text)
 
         res.span = span
         res.verification = vrep

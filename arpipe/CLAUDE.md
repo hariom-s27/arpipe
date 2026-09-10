@@ -443,6 +443,13 @@ any leak, identity unproven, word count out of band,
 or orphan_start_frac above threshold                -> low
 ```
 
+**P22 caps:** a PDF from a known reprocessor (`verify.REPROCESSOR_PRODUCERS` -
+iLovePDF, Smallpdf, ...) is capped at `medium` and always carries the
+`source_shredded` reason, however clean its metrics, until P11 has >= 5 such
+documents proving xy_cut's reassembly holds. `orphan_start_frac` now excludes
+ordered-list markers (`a)` `b)` `iv.`) - post-P22 no real document is above the
+gate, only the P17 synthetic shuffle.
+
 Targets: high tier ≥ 75%, low tier ≤ 6%.
 
 ---

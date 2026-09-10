@@ -270,19 +270,72 @@ _KRBL_FY25_TAIL = (
 
 
 def test_reasons_source_shredded_when_column_splitter_fired():
-    # Jain: orphan_start_frac over the gate, but P16B's splitter fired on most
-    # span pages -> the residual is the iLovePDF source, not xy_cut.
+    # orphan_start_frac over the gate, but P16B's splitter fired on most span
+    # pages -> the residual is the source, not xy_cut. (No reprocessor producer
+    # here; the signal is the fire fraction alone.)
     reasons = verify.build_reasons(_clean_rep(), _JAIN_QC,
                                    column_cut_fire_frac=0.86,
+                                   pdf_producer="Adobe PDF Library 11.0",
                                    mda_text="body\n" * 20 + _JAIN_FY24_TAIL)
     assert reasons == ["source_shredded"]
 
 
 def test_reasons_order_scrambled_when_column_splitter_did_not_fire():
+    # over the gate, splitter idle, native PDF -> xy_cut can still do better
     reasons = verify.build_reasons(_clean_rep(), _JAIN_QC,
                                    column_cut_fire_frac=0.1,
+                                   pdf_producer="Adobe PDF Library 11.0",
                                    mda_text="body\n" * 20 + _JAIN_FY24_TAIL)
     assert reasons == ["order_scrambled"]
+
+
+def test_reasons_source_shredded_from_reprocessor_even_with_clean_metrics():
+    # P22: an iLovePDF doc is labelled source_shredded regardless of a clean
+    # orphan_start_frac and an idle column splitter - the shredding is a fact
+    # about the source, and it must not read as order_scrambled
+    clean_qc = {**_JAIN_QC, "orphan_start_frac": 0.012}
+    reasons = verify.build_reasons(_clean_rep(), clean_qc,
+                                   column_cut_fire_frac=0.2,
+                                   pdf_producer="iLovePDF",
+                                   mda_text="body\n" * 20 + _JAIN_FY24_TAIL)
+    assert reasons == ["source_shredded"]
+
+
+def test_reprocessor_doc_is_capped_at_medium():
+    # P22: a would-be `high` row from a reprocessor PDF is capped at `medium`
+    rep = _clean_rep()
+    qc = {"too_short": False, "long_token_frac": 0.0, "leaks": [],
+          "orphan_start_frac": 0.012}
+    assert verify.grade(rep, qc, 0.95) == "high"                       # native
+    assert verify.grade(rep, qc, 0.95,
+                        pdf_producer="Adobe PDF Library 11.0") == "high"
+    assert verify.grade(rep, qc, 0.95, pdf_producer="iLovePDF") == "medium"
+
+
+def test_list_markers_are_not_orphan_starts():
+    run_in_list = ("Several drivers underpin this outlook. a) input costs eased "
+                   "through the year. b) capacity utilisation improved. "
+                   "c) working capital discipline held.")
+    body = [f"Sentence {i} here is in the right order and reads fine."
+            for i in range(6)]
+    assert verify.order_quality("\n\n".join([run_in_list, *body]))["orphan_starts"] == 0
+    # a genuine lowercase splice under a heading is still caught
+    spliced = ["GLOBAL ECONOMY",
+               "formulation, while posing direct threats to farm output.", *body]
+    assert verify.order_quality("\n\n".join(spliced))["orphan_starts"] >= 1
+
+
+def test_producer_summary_flags_reprocessors():
+    rows = [{"qc": {"pdf_producer": "iLovePDF"}},
+            {"qc": {"pdf_producer": "iLovePDF"}},
+            {"qc": {"pdf_producer": "Adobe PDF Library 11.0"}},
+            {"qc": {}}]
+    summ = verify.producer_summary(rows)
+    assert summ["iLovePDF"] == {"n": 2, "reprocessor": True}
+    assert summ["Adobe PDF Library 11.0"]["reprocessor"] is False
+    assert summ["unknown"]["n"] == 1
+    assert sum(1 for r in rows
+               if verify.is_reprocessor((r.get("qc") or {}).get("pdf_producer"))) == 2
 
 
 def test_reasons_span_truncated_on_missing_cautionary_ending():

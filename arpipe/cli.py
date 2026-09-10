@@ -18,7 +18,7 @@ import os
 import sys
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-from . import discover, fetch, ocr, pipeline, store, triage, universe
+from . import discover, fetch, ocr, pipeline, store, triage, universe, verify
 from .models import Company, ReportRef, StoredDoc, to_json
 
 
@@ -198,6 +198,11 @@ def cmd_audit(a: argparse.Namespace) -> int:
         "ok_by_year": dict(sorted(years.items())),
         "mean_words": round(sum(r.get("n_words", 0) for r in rows) / len(rows), 1),
         "ocr_pages_total": sum(r.get("ocr_pages", 0) for r in rows),
+        # P22: how much of the corpus came through a text-layer shredder
+        "by_producer": verify.producer_summary(rows),
+        "reprocessor_sourced": sum(
+            1 for r in rows
+            if verify.is_reprocessor((r.get("qc") or {}).get("pdf_producer"))),
     }, indent=2))
     return 0
 
