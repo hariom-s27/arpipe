@@ -306,10 +306,10 @@ def test_reprocessor_doc_is_capped_at_medium():
     rep = _clean_rep()
     qc = {"too_short": False, "long_token_frac": 0.0, "leaks": [],
           "orphan_start_frac": 0.012}
-    assert verify.grade(rep, qc, 0.95) == "high"                       # native
-    assert verify.grade(rep, qc, 0.95,
+    assert verify.grade(rep, qc, 0.95, supporters=2) == "high"                       # native
+    assert verify.grade(rep, qc, 0.95, supporters=2,
                         pdf_producer="Adobe PDF Library 11.0") == "high"
-    assert verify.grade(rep, qc, 0.95, pdf_producer="iLovePDF") == "medium"
+    assert verify.grade(rep, qc, 0.95, supporters=2, pdf_producer="iLovePDF") == "medium"
 
 
 def test_list_markers_are_not_orphan_starts():
@@ -362,11 +362,26 @@ def test_grade_downgrades_scrambled_reading_order():
     rep = VerificationReport(company_ok=True, year_ok=True)
     base = {"too_short": False, "long_token_frac": 0.0, "leaks": [],
             "orphan_start_frac": 0.0}
-    assert verify.grade(rep, base, 0.95) == "high"
+    assert verify.grade(rep, base, 0.95, supporters=2) == "high"
     mild = {**base, "orphan_start_frac": verify.ORPHAN_START_FRAC_MAX + 0.005}
-    assert verify.grade(rep, mild, 0.95) == "medium"
+    assert verify.grade(rep, mild, 0.95, supporters=2) == "medium"
     bad = {**base, "orphan_start_frac": 2 * verify.ORPHAN_START_FRAC_MAX + 0.005}
-    assert verify.grade(rep, bad, 0.95) == "low"
+    assert verify.grade(rep, bad, 0.95, supporters=2) == "low"
+
+
+def test_grade_supporters_gate():
+    rep = VerificationReport(company_ok=True, year_ok=True)
+    qc = {"too_short": False, "long_token_frac": 0.0, "leaks": [],
+          "orphan_start_frac": 0.0}
+    # KRBL FY2025 bug: zero methods agreed -> cannot be `high`, however clean
+    assert verify.grade(rep, qc, 0.95, supporters=0) == "medium"
+    # no support and a weak span -> `low`
+    assert verify.grade(rep, qc, 0.65, supporters=0) == "low"
+    # two independent methods agreed, clean span -> `high`
+    assert verify.grade(rep, qc, 0.85, supporters=2) == "high"
+    # one supporter, mediocre score, a single leak -> `medium`
+    leak_qc = {**qc, "leaks": ["auditor_report_leak"]}
+    assert verify.grade(rep, leak_qc, 0.65, supporters=1) == "medium"
 
 
 # ----------------------------------------------------------------- reading order

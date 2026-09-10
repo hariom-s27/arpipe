@@ -515,19 +515,38 @@ def build_reasons(rep: VerificationReport, qc: dict, *,
 
 
 def grade(rep: VerificationReport, qc: dict, span_score: float,
-          *, pdf_producer: str | None = None) -> str:
+          *, supporters: int = 0, pdf_producer: str | None = None) -> str:
+    """high / medium / low.
+
+    Method agreement IS the confidence measure (CLAUDE.md rule 4), so the
+    supporter count -- how many other location methods landed on the same
+    span -- is a hard gate, not a tie-breaker:
+
+        supporters >= 2  AND span_score >= 0.80  AND no leaks   -> high
+        supporters == 1  AND span_score >= 0.60  AND <=1 leak   -> medium
+        supporters == 0  AND span_score >= 0.70  AND no leaks   -> medium
+        supporters == 0  AND span_score <  0.70                 -> low
+
+    Identity unproven, span too short, long-token soup, or badly scrambled
+    reading order still force `low` regardless of supporters.
+    """
     osf = qc.get("orphan_start_frac", 0.0)
     if (not rep.company_ok or qc["too_short"] or qc["long_token_frac"] > 0.03
             or osf > 2 * ORPHAN_START_FRAC_MAX):     # P17: badly scrambled order
         return "low"
-    if (rep.year_ok and span_score >= 0.8 and not qc["leaks"] and not rep.notes
+    if (supporters >= 2 and rep.year_ok and span_score >= 0.8
+            and not qc["leaks"] and not rep.notes
             and osf <= ORPHAN_START_FRAC_MAX):       # P17: mild scramble -> medium
         # P22: a reprocessor-sourced PDF has been re-laid line by line; the span
         # can look clean and still hide a splice xy_cut could not catch. Cap it
         # at `medium` (+ source_shredded) until P11 has >= 5 such docs proving
         # the reassembly holds.
         return "medium" if is_reprocessor(pdf_producer) else "high"
-    if rep.year_ok and span_score >= 0.6 and len(qc["leaks"]) <= 1:
+    if (supporters >= 1 and rep.year_ok and span_score >= 0.6
+            and len(qc["leaks"]) <= 1):
+        return "medium"
+    if (supporters == 0 and rep.year_ok and span_score >= 0.7
+            and not qc["leaks"] and osf <= ORPHAN_START_FRAC_MAX):
         return "medium"
     return "low"
 

@@ -189,12 +189,14 @@ def process_document(doc: StoredDoc, company: Company, out_root: str,
 
         vrep = verify.verify(front, mda_text, company, doc.fy_end)
         qc = verify.section_qc(mda_text)
-        grade = verify.grade(vrep, qc, span.score, pdf_producer=doc.pdf_producer)
+        grade = verify.grade(vrep, qc, span.score, supporters=span.supporters,
+                             pdf_producer=doc.pdf_producer)
         reasons = verify.build_reasons(
             vrep, qc, column_cut_fire_frac=column_cut_fire_frac,
             pdf_producer=doc.pdf_producer, mda_text=mda_text)
 
         res.span = span
+        res.supporters = span.supporters
         res.verification = vrep
         res.reasons = reasons
         res.n_words = qc["n_words"]

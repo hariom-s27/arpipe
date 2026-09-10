@@ -127,6 +127,10 @@ class MDASpan:
     heading_text: str | None = None
     terminator_text: str | None = None
     score: float = 0.0
+    # How many *other* location methods (of S1–S5) landed on the same span.
+    # Set by segment.locate(). Method agreement is the confidence measure
+    # (CLAUDE.md rule 4), so verify.grade() gates on this.
+    supporters: int = 0
 
 
 @dc.dataclass(slots=True)
@@ -156,6 +160,7 @@ class ExtractionResult:
     n_words: int = 0
     ocr_pages: int = 0
     ocr_engine: str | None = None
+    supporters: int = 0          # top-level mirror of span.supporters
     qc: dict[str, Any] = dc.field(default_factory=dict)
     # Why this row is not `high`. Machine-readable codes (see verify.build_reasons):
     # source_shredded, order_scrambled, span_truncated, identity_unproven,

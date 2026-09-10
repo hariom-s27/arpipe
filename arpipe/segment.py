@@ -27,7 +27,7 @@ from __future__ import annotations
 import re
 import statistics
 from collections import defaultdict
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 
 import pymupdf
 
@@ -423,9 +423,7 @@ def refine_end(span: MDASpan, page_texts: dict[int, str], fetch_text,
         if page_body_score(txt) < 0.15 and len(txt.split()) < 60:
             break
         n = nxt
-    return MDASpan(span.start_page, n, span.start_char, span.end_char,
-                   span.method + "+refined", span.heading_text,
-                   span.terminator_text, span.score)
+    return replace(span, end_page=n, method=span.method + "+refined")
 
 
 def trim_span(span: MDASpan, page_texts: dict[int, str]) -> MDASpan:
@@ -466,9 +464,8 @@ def trim_span(span: MDASpan, page_texts: dict[int, str]) -> MDASpan:
             end = n - 1
             break
     end = max(start, end)
-    return MDASpan(start, end, span.start_char, span.end_char,
-                   span.method + "+trimmed", span.heading_text,
-                   span.terminator_text, span.score)
+    return replace(span, start_page=start, end_page=end,
+                   method=span.method + "+trimmed")
 
 
 # ---------------------------------------------------------------------- arbiter
@@ -505,6 +502,7 @@ def locate(doc: pymupdf.Document, profile: DocProfile,
     top = cands[0]
     supporters = sum(1 for c in cands[1:] if _agree(top, c))
     top.score = min(0.99, top.score + 0.06 * supporters)
+    top.supporters = supporters
     diag["supporters"] = supporters
 
     ambiguous = top.score < 0.7 or (len(cands) > 1 and supporters == 0)
