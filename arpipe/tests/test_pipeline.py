@@ -48,7 +48,7 @@ def test_parquet_snapshot_handles_nested_mixed_qc(tmp_path):
     import pandas as pd
 
     record = {
-        "company_id": "INE123A01016",
+        "company_id": "INE123A01012",
         "fy_end": 2015,
         "ok": True,
         "qc": {"diag": {"candidates": [["outline", 10, 15, 0.95]]}},
@@ -168,6 +168,110 @@ def test_cin_regex():
     from arpipe.patterns import CIN_RE
     m = CIN_RE.search("CIN: L27100MH1994PLC078367")
     assert m and "".join(m.groups()) == "L27100MH1994PLC078367"
+
+
+def test_isin_regex_and_checksum():
+    from arpipe.patterns import ISIN_RE, is_valid_isin
+
+    # Valid Indian ISINs (all pass regex and check-digit)
+    valid_sample = [
+        "INE175A01038",  # Jain ordinary equity
+        "IN9175A01010",  # Jain DVR equity
+        "INE001B01026",  # KRBL ordinary equity
+        "INE123A01012",  # Fixture
+        "US0378331005",  # Apple (international Luhn test)
+    ]
+    for isin in valid_sample:
+        assert is_valid_isin(isin), f"{isin} should pass check-digit"
+        if isin.startswith("IN"):
+            assert ISIN_RE.match(isin), f"{isin} should match ISIN_RE"
+
+    # Bad check-digit
+    assert not is_valid_isin("INE123A01016")
+
+    # English words matching initial prefix must fail check-digit and terminal-digit regex
+    english_words = [
+        "INCORPORATED", "INDEPENDENCE", "INDEBTEDNESS", "INEFFICIENCY",
+        "INDIVIDUALLY", "INFRINGEMENT", "INDEMNIFYING", "INCONSISTENT",
+        "INTELLECTUAL", "INSTRUCTIONS",
+    ]
+    for w in english_words:
+        assert not is_valid_isin(w), f"{w} should fail check digit"
+        assert not ISIN_RE.match(w), f"{w} should not match ISIN_RE"
+
+
+def test_extract_isin_provenance_and_priority():
+    # Synthetic multi-page document:
+    # Page 0: Cover (no ISIN)
+    # Page 10: MD&A
+    # Page 16: Corporate Governance with both ordinary and DVR
+    pages = {
+        0: "Annual Report 2024-25\nAcme Corp\nCIN: L27100MH1994PLC078367",
+        10: "Management Discussion and Analysis\nIndustry Structure...",
+        16: ("Report on Corporate Governance\nGeneral Shareholder Information\n"
+             "Ordinary Equity Shares: INE175A01038\n"
+             "DVR Equity Shares: IN9175A01010\nDepositories: NSDL, CDSL"),
+    }
+
+    # Undeclared company: prefers INE over IN9
+    co_no_isin = Company(company_id="X", canonical_name="Acme Corp")
+    best, pno, seen = verify.extract_isin(pages, company=co_no_isin)
+    assert best == "INE175A01038"
+    assert pno == 16
+    assert seen == ["INE175A01038", "IN9175A01010"]
+
+    # Declared DVR company (Bug 6 / P4 scenario): matches declared DVR ISIN
+    co_dvr = Company(company_id="X", canonical_name="Acme Corp", isin="IN9175A01010")
+    best_dvr, pno_dvr, seen_dvr = verify.extract_isin(pages, company=co_dvr)
+    assert best_dvr == "IN9175A01010"
+    assert pno_dvr == 16
+    assert seen_dvr == ["INE175A01038", "IN9175A01010"]
+
+    # In verify(): company_ok is True if declared ISIN in seen
+    vrep = verify.verify(pages[0], pages[10], co_dvr, 2025, page_texts=pages)
+    assert vrep.isin_found == "IN9175A01010"
+    assert vrep.isin_found_on_page == 16
+    assert vrep.company_ok is True
+    assert "isin:exact_match" in vrep.company_evidence
+
+
+def _blobs_present() -> bool:
+    root = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "live_store")
+    doc_jsonl = os.path.join(root, "documents.jsonl")
+    if not os.path.exists(doc_jsonl):
+        return False
+    try:
+        import json
+        with open(doc_jsonl, encoding="utf-8") as fh:
+            for line in fh:
+                if line.strip():
+                    row = json.loads(line)
+                    blob = store.blob_abspath(root, row.get("path", ""))
+                    if not os.path.exists(blob):
+                        return False
+        return True
+    except Exception:
+        return False
+
+
+@pytest.mark.skipif(not _blobs_present(), reason="live_store blobs not present")
+def test_isin_extracted_on_live_store_blobs():
+    root = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "live_store")
+    doc_jsonl = os.path.join(root, "documents.jsonl")
+    found_count = 0
+    with open(doc_jsonl, encoding="utf-8") as fh:
+        for line in fh:
+            if not line.strip():
+                continue
+            row = json.loads(line)
+            blob = store.blob_abspath(root, row["path"])
+            texts = textlayer.extract_pages(blob)
+            co = Company(company_id=row["company_id"], canonical_name="Test", isin=row.get("company_id"))
+            best, pno, seen = verify.extract_isin(texts, company=co)
+            if best:
+                found_count += 1
+    # Prompt acceptance: non-null for at least 3 of the 4 sample documents
+    assert found_count >= 3
 
 
 def test_name_matching_survives_suffix_noise():
@@ -621,15 +725,16 @@ def test_extract_is_cwd_independent_and_records_link_mode(tmp_path, monkeypatch)
     blob.parent.mkdir(parents=True)
     shutil.copy2(src, blob)
 
-    doc = {"company_id": "INE123A01016", "fy_end": 2015, "sha256": sha,
+    doc = {"company_id": "INE123A01012", "fy_end": 2015, "sha256": sha,
            "path": f"blobs/{sha[:2]}/{sha[2:4]}/{sha}.pdf",
            "n_bytes": blob.stat().st_size, "n_pages": 40,
            "source": "test", "url": "http://example.test/ar.pdf"}
     (root / "documents.jsonl").write_text(json.dumps(doc) + "\n", encoding="utf-8")
 
     companies = tmp_path / "companies.csv"
-    universe.to_csv([Company(company_id="INE123A01016",
-                             canonical_name="ACME INDUSTRIES LIMITED")],
+    universe.to_csv([Company(company_id="INE123A01012",
+                             canonical_name="ACME INDUSTRIES LIMITED",
+                             isin="INE123A01012")],
                     str(companies))
 
     out = tmp_path / "dataset"
@@ -660,3 +765,8 @@ def test_extract_is_cwd_independent_and_records_link_mode(tmp_path, monkeypatch)
     assert mdajson["path"] == row["path"]
     if mdajson["ok"]:
         assert mdajson["path"] is not None
+    # P3: ISIN found on Corporate Governance page (page 16), outside front matter & MD&A
+    vrep = mdajson["verification"]
+    assert vrep["isin_found"] == "INE123A01012"
+    assert vrep["isin_found_on_page"] == 16
+    assert "INE123A01012" in vrep["isins_seen"]

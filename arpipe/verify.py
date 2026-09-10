@@ -36,7 +36,7 @@ from rapidfuzz import fuzz
 
 from .models import Company, VerificationReport
 from .patterns import (AS_AT_RE, CIN_RE, FY_RANGE_RE, FY_SINGLE_RE, ISIN_RE,
-                       MANDATED_RATIOS, YEAR_ENDED_RE)
+                       MANDATED_RATIOS, YEAR_ENDED_RE, is_valid_isin)
 
 NAME_MATCH_STRONG = 88
 NAME_MATCH_WEAK = 72
@@ -175,13 +175,114 @@ def check_era(fy_end: int, sig: dict[str, bool]) -> list[str]:
     return notes
 
 
+# ---------------------------------------------------------------------- ISIN (P3)
+_ISIN_SECTION_KEYWORDS = (
+    "general shareholder information",
+    "shareholder information",
+    "shareholders information",
+    "corporate governance",
+    "depository system",
+    "corporate information",
+    "company information",
+    "statutory report",
+)
+
+
+def _isin_priority(isin: str) -> int:
+    """P4 preference: INE (equity) > IN9 (DVR) > INF (mutual fund) > others."""
+    prefix = isin[:3].upper()
+    if prefix.startswith("INE"):
+        return 1
+    if prefix.startswith("IN9"):
+        return 2
+    if prefix.startswith("INF"):
+        return 3
+    if prefix.startswith(("INC", "IND")):
+        return 4
+    return 5
+
+
+def extract_isin(page_texts: dict[int, str] | None = None,
+                 whole: str = "",
+                 company: Company | None = None) -> tuple[str | None, int | None, list[str]]:
+    """Find and validate ISINs across annual report pages.
+
+    Scans section-anchored pages (General Shareholder Information, Corporate
+    Governance, Depository System, etc.) and front matter (pages 0-19), with
+    whole-document fallback if unlocated. Every candidate is verified against
+    the ISO 6166 Luhn mod-10 check digit.
+
+    Returns:
+        (best_isin, page_no, isins_seen)
+    """
+    pairs: list[tuple[int | None, str]] = []
+
+    if page_texts:
+        # Pass 1: candidate pages (front matter + section-anchored pages)
+        candidate_pages: set[int] = set()
+        for pno, txt in page_texts.items():
+            if pno < 20:
+                candidate_pages.add(pno)
+                continue
+            head = txt[:600].lower()
+            if any(kw in head for kw in _ISIN_SECTION_KEYWORDS) or "isin" in head:
+                candidate_pages.add(pno)
+
+        for pno in sorted(candidate_pages):
+            for m in ISIN_RE.finditer(page_texts[pno]):
+                cand = m.group()
+                if is_valid_isin(cand):
+                    pairs.append((pno, cand))
+
+        # Pass 2: fallback to all remaining pages if none found yet
+        if not pairs:
+            for pno in sorted(page_texts):
+                if pno in candidate_pages:
+                    continue
+                for m in ISIN_RE.finditer(page_texts[pno]):
+                    cand = m.group()
+                    if is_valid_isin(cand):
+                        pairs.append((pno, cand))
+
+    # Pass 3: fallback on whole string if page_texts was not provided
+    if not pairs and whole:
+        for m in ISIN_RE.finditer(whole):
+            cand = m.group()
+            if is_valid_isin(cand):
+                pairs.append((None, cand))
+
+    if not pairs:
+        return None, None, []
+
+    # All distinct valid ISINs in the order first seen
+    seen: list[str] = []
+    for _, isin in pairs:
+        if isin not in seen:
+            seen.append(isin)
+
+    # Pick best: declared company.isin wins immediately; else P4 priority
+    best_isin: str | None = None
+    best_pno: int | None = None
+
+    if company and company.isin and company.isin in seen:
+        best_isin = company.isin
+        best_pno = next((p for p, i in pairs if i == company.isin), None)
+    else:
+        sorted_isins = sorted(seen, key=_isin_priority)
+        best_isin = sorted_isins[0]
+        best_pno = next((p for p, i in pairs if i == best_isin), None)
+
+    return best_isin, best_pno, seen
+
+
 # ---------------------------------------------------------------------- verdict
 def verify(front_text: str, mda_text: str, company: Company,
-           expected_fy_end: int) -> VerificationReport:
+           expected_fy_end: int,
+           page_texts: dict[int, str] | None = None) -> VerificationReport:
     rep = VerificationReport(company_ok=False, year_ok=False)
     whole = f"{front_text}\n{mda_text}"
 
-    # --- identity -------------------------------------------------------
+    # --- identity: CIN --------------------------------------------------
     cins = CIN_RE.findall(whole)
     if cins:
         cin = "".join(cins[0])
@@ -193,13 +294,20 @@ def verify(front_text: str, mda_text: str, company: Company,
         elif company.cin:
             rep.notes.append(f"CIN mismatch: doc={cin} expected={company.cin}")
 
-    isins = ISIN_RE.findall(whole)
-    if isins:
-        rep.isin_found = isins[0]
-        rep.company_evidence.append(f"isin:{isins[0]}")
-        if company.isin and isins[0] == company.isin:
+    # --- identity: ISIN (P3) -------------------------------------------
+    best_isin, isin_page, isins_seen = extract_isin(
+        page_texts, whole=whole, company=company
+    )
+    rep.isins_seen = isins_seen
+    if best_isin:
+        rep.isin_found = best_isin
+        rep.isin_found_on_page = isin_page
+        rep.company_evidence.append(f"isin:{best_isin}")
+        if company.isin and company.isin in isins_seen:
             rep.company_ok = True
             rep.company_evidence.append("isin:exact_match")
+        elif company.isin:
+            rep.notes.append(f"ISIN mismatch: doc={best_isin} expected={company.isin}")
 
     sim, matched = find_company_name_mentions(front_text, company)
     rep.name_similarity = sim

@@ -117,7 +117,30 @@ CIN_RE = re.compile(
     r"(PLC|PTC|FTC|GAP|GAT|GOI|NPL|OPC|SGC|ULL|ULT|FLC|PLN)"
     r"(\d{6})\b"
 )
-ISIN_RE = re.compile(r"\bINE[0-9A-Z]{9}\b")
+# ISIN (ISO 6166): IN prefix + security type (E=equity, 9=DVR, F=mutual fund,
+# C/D=debt) + 8 alphanumeric + 1 numeric check digit.
+ISIN_RE = re.compile(r"\bIN[EF9CD][0-9A-Z]{8}[0-9]\b")
+
+
+def is_valid_isin(isin: str) -> bool:
+    """Validate ISO 6166 Luhn mod-10 check digit."""
+    if len(isin) != 12 or not isin[:2].isalpha() or not isin[2:].isalnum():
+        return False
+    converted = []
+    for ch in isin:
+        converted.append(str(ord(ch.upper()) - 55) if ch.isalpha() else ch)
+    digits = "".join(converted)
+    total = 0
+    for i, ch in enumerate(digits[::-1]):
+        d = int(ch)
+        if i % 2 == 1:
+            d *= 2
+            if d > 9:
+                d -= 9
+        total += d
+    return total % 10 == 0
+
+
 PAN_RE = re.compile(r"\b[A-Z]{5}\d{4}[A-Z]\b")
 
 # --------------------------------------------------------------------------

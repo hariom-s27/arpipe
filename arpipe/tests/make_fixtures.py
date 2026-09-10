@@ -61,7 +61,7 @@ def _para(n: int = 3) -> str:
 
 
 def build(path: str, *, company="ACME INDUSTRIES LIMITED",
-          cin="L27100MH1994PLC078367", isin="INE123A01016",
+          cin="L27100MH1994PLC078367", isin="INE123A01012",
           fy_from=2014, fy_to=2015, columns=1, outline=True,
           toc=True, ratios=True, hindi=False, mda_title=None) -> str:
     mda_title = mda_title or "Management Discussion and Analysis"
@@ -103,7 +103,7 @@ def build(path: str, *, company="ACME INDUSTRIES LIMITED",
                      fontsize=24, fontname="hebo",
                      align=pymupdf.TEXT_ALIGN_CENTER)
     p.insert_textbox(pymupdf.Rect(60, 640, W - 60, 760),
-                     f"CIN: {cin}\nISIN: {isin}\n"
+                     f"CIN: {cin}\n"
                      f"for the financial year ended 31st March, {fy_to}",
                      fontsize=10, fontname="helv",
                      align=pymupdf.TEXT_ALIGN_CENTER)
@@ -131,6 +131,8 @@ def build(path: str, *, company="ACME INDUSTRIES LIMITED",
                 txt = _para(2)
                 if title.startswith("Management"):
                     txt = MDA_BODY[0] + "\n\n" + _para(2)
+                elif title.startswith("Report on Corporate Governance"):
+                    txt = f"General Shareholder Information\nISIN: {isin}\n\n" + _para(2)
                 body(p, txt)
             elif title.startswith("Management"):
                 k = min(len(MDA_BODY) - 1, i)

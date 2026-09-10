@@ -187,7 +187,8 @@ def process_document(doc: StoredDoc, company: Company, out_root: str,
             ocr_used += k
             front = "\n".join(page_texts.get(n, "") for n in range(FRONT_PAGES))
 
-        vrep = verify.verify(front, mda_text, company, doc.fy_end)
+        vrep = verify.verify(front, mda_text, company, doc.fy_end,
+                             page_texts=page_texts)
         qc = verify.section_qc(mda_text)
         grade = verify.grade(vrep, qc, span.score, supporters=span.supporters,
                              pdf_producer=doc.pdf_producer)

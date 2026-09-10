@@ -142,6 +142,8 @@ class VerificationReport:
     name_similarity: float = 0.0
     cin_found: str | None = None
     isin_found: str | None = None
+    isin_found_on_page: int | None = None
+    isins_seen: list[str] = dc.field(default_factory=list)
     fy_found: int | None = None
     notes: list[str] = dc.field(default_factory=list)
 
