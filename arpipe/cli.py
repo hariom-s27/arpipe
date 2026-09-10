@@ -276,6 +276,52 @@ def cmd_audit(a: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_sample_for_labelling(a: argparse.Namespace) -> int:
+    from . import labeller
+    stores = []
+    if a.store:
+        stores = a.store if isinstance(a.store, list) else [a.store]
+    else:
+        for s in ["p11_store", "live_store", "store"]:
+            if os.path.exists(s):
+                stores.append(s)
+    labeller.sample_for_labelling(
+        store_roots=stores,
+        companies_path=a.companies,
+        n_samples=a.n,
+        out_csv=a.out,
+    )
+    return 0
+
+
+def cmd_label(a: argparse.Namespace) -> int:
+    from . import labeller
+    if a.pdf:
+        labeller.label_single_pdf(
+            pdf_path=a.pdf,
+            out_csv=a.out,
+            company_id=a.company_id,
+            cin=a.cin,
+            fy_end=a.fy_end,
+            cap_band=a.cap_band,
+            exchange=a.exchange,
+            labeller=a.labeller,
+        )
+        return 0
+
+    batch_file = a.batch or "to_label.csv"
+    if os.path.exists(batch_file):
+        labeller.label_batch_from_csv(
+            batch_csv=batch_file,
+            out_csv=a.out,
+            labeller=a.labeller,
+        )
+        return 0
+
+    print("Error: Specify --pdf <path> or provide a batch file (--batch / to_label.csv)", file=sys.stderr)
+    return 1
+
+
 def main(argv: list[str] | None = None) -> int:
     p = argparse.ArgumentParser("arpipe")
     sub = p.add_subparsers(dest="cmd", required=True)
@@ -323,6 +369,27 @@ def main(argv: list[str] | None = None) -> int:
 
     a = sub.add_parser("audit"); a.add_argument("--out", default="dataset")
     a.set_defaults(fn=cmd_audit)
+
+    sfl = sub.add_parser("sample-for-labelling")
+    sfl.add_argument("--n", type=int, default=300, help="Number of documents to sample (stratified across 36 cells)")
+    sfl.add_argument("--out", default="to_label.csv", help="Output to_label.csv path")
+    sfl.add_argument("--store", action="append", default=None,
+                     help="Store directory to sample from (can be passed multiple times)")
+    sfl.add_argument("--companies", default="companies.csv")
+    sfl.set_defaults(fn=cmd_sample_for_labelling)
+
+    lbl = sub.add_parser("label")
+    lbl.add_argument("--pdf", default=None, help="Path to a single PDF to label")
+    lbl.add_argument("--out", default="labels.csv", help="Output labels CSV path")
+    lbl.add_argument("--batch", "--to-label", dest="batch", default=None,
+                     help="Path to to_label.csv for batch labelling")
+    lbl.add_argument("--labeller", default=None, help="Name of human labeller")
+    lbl.add_argument("--company-id", default=None)
+    lbl.add_argument("--cin", default=None)
+    lbl.add_argument("--fy-end", type=int, default=None)
+    lbl.add_argument("--cap-band", default=None)
+    lbl.add_argument("--exchange", default=None)
+    lbl.set_defaults(fn=cmd_label)
 
     ns = p.parse_args(argv)
     return ns.fn(ns)
