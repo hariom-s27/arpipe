@@ -137,12 +137,16 @@ def fetch_one(ref: ReportRef, root: str, client: httpx.Client,
 
         with tempfile.TemporaryDirectory() as td:
             path = os.path.join(td, "doc.pdf")
-            extra: list[str] = []
+            was_zip = False
+            was_repaired = False
+            was_encrypted = False
             if data[:2] == b"PK":
+                was_zip = True
                 got, extra = _extract_pdf_from_zip(data, td)
                 if not got:
                     return None
                 path = got
+                print(f"[FETCH] Extracted PDF from ZIP for {ref.company_id} FY{ref.fy_end} (extras: {len(extra)})")
             else:
                 with open(path, "wb") as fh:
                     fh.write(data)
@@ -151,15 +155,27 @@ def fetch_one(ref: ReportRef, root: str, client: httpx.Client,
                 doc = pymupdf.open(path)
                 n_pages, producer = doc.page_count, doc.metadata.get("producer")
                 enc = doc.is_encrypted
-                if enc and doc.authenticate(""):
-                    enc = False
+                if enc:
+                    was_encrypted = True
+                    if doc.authenticate(""):
+                        enc = False
+                        print(f"[FETCH] Decrypted empty-password PDF for {ref.company_id} FY{ref.fy_end}")
+                    else:
+                        print(f"[FETCH] Password-protected PDF authentication failed for {ref.company_id} FY{ref.fy_end}")
                 doc.close()
             except Exception:
+                was_repaired = True
                 if not _repair(path):
+                    print(f"[FETCH] qpdf repair failed for {ref.company_id} FY{ref.fy_end}")
                     return None
+                print(f"[FETCH] Repaired PDF with qpdf for {ref.company_id} FY{ref.fy_end}")
                 doc = pymupdf.open(path)
                 n_pages, producer = doc.page_count, doc.metadata.get("producer")
                 enc = doc.is_encrypted
+                if enc:
+                    was_encrypted = True
+                    if doc.authenticate(""):
+                        enc = False
                 doc.close()
 
             sha = sha256_file(path)

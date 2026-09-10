@@ -186,9 +186,21 @@ def cmd_extract(a: argparse.Namespace) -> int:
         co = companies.get(d.company_id)
         if co is None:
             return d, None
-        return d, pipeline.process_document(d, co, a.out, escalator=esc,
-                                            keep_pages=a.keep_pages,
-                                            store_root=a.root)
+        try:
+            return d, pipeline.process_document(d, co, a.out, escalator=esc,
+                                                keep_pages=a.keep_pages,
+                                                store_root=a.root)
+        except Exception as exc:
+            import traceback
+            tb = traceback.format_exc()
+            print(f"CRASH {d.company_id} {d.fy_end}: {type(exc).__name__}: {exc}\n{tb}", file=sys.stderr)
+            res = pipeline.ExtractionResult(
+                company_id=d.company_id, fy_end=d.fy_end, sha256=d.sha256,
+                ok=False, confidence=pipeline.Confidence.FAILED,
+                pipeline_version=pipeline.PIPELINE_VERSION)
+            res.errors.append(f"crash:{type(exc).__name__}:{exc}")
+            res.reasons = ["crash"]
+            return d, res
 
     n_ok = 0
     with ThreadPoolExecutor(a.workers) as ex:

@@ -19,6 +19,7 @@ $py   = Join-Path $pkg  ".venv\Scripts\python.exe"
 if (-not (Test-Path $py))  { throw "venv python not found: $py" }
 if (-not (Test-Path $pkg)) { throw "package dir not found: $pkg" }
 
+$env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User") + ";" + $env:Path
 $env:PYTHONPATH = $root
 Push-Location $pkg
 try {

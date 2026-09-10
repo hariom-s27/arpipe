@@ -44,17 +44,21 @@ def _lang_for(profile: DocProfile, page_no: int) -> str:
 
 def _ocr_pages(pdf: str, profile: DocProfile, pages: list[int],
                escalator: ocr_mod.Escalator,
-               workers: int = OCR_WORKERS) -> tuple[dict[int, str], int, str]:
+               workers: int = OCR_WORKERS,
+               stats: list[dict] | None = None) -> tuple[dict[int, str], int, str]:
     """OCR a page list. Page-level parallelism, because OCR is the only
     stage where wall-clock actually hurts: everything else is milliseconds."""
+    import time
     if not pages:
         return {}, 0, ""
 
     def one(n: int):
         pp = profile.pages[n] if n < len(profile.pages) else None
         dpi = ocr_mod.choose_dpi(pp.dpi_estimate if pp else None)
-        res, _trail = escalator.run_page(pdf, n, lang=_lang_for(profile, n), dpi=dpi)
-        return n, res
+        t0 = time.monotonic()
+        res, trail = escalator.run_page(pdf, n, lang=_lang_for(profile, n), dpi=dpi)
+        sec = round(time.monotonic() - t0, 3)
+        return n, res, sec, trail
 
     got: dict[int, str] = {}
     engines: set[str] = set()
@@ -63,7 +67,17 @@ def _ocr_pages(pdf: str, profile: DocProfile, pages: list[int],
     else:
         with ThreadPoolExecutor(max_workers=min(workers, len(pages))) as ex:
             results = list(ex.map(one, pages))
-    for n, res in results:
+    for n, res, sec, trail in results:
+        if stats is not None:
+            stats.append({
+                "page_no": n,
+                "engine": res.engine,
+                "seconds": sec,
+                "words": res.words,
+                "conf": res.mean_conf,
+                "degenerate": bool(res.meta.get("degenerate")),
+                "trail": trail,
+            })
         if res.text.strip():
             got[n] = textlayer.normalise(res.text)
             engines.add(res.engine)
@@ -101,12 +115,13 @@ def process_document(doc: StoredDoc, company: Company, out_root: str,
         # ---- pass 2: if that failed, OCR a cheap index sample ------------
         ocr_used = 0
         engine = None
+        ocr_stats: list[dict] = []
         if (span is None or span.score < 0.55) and profile.frac_needing_ocr > 0.05:
             need = triage.ocr_page_numbers(profile)
             index = sorted({n for n in need
                             if n < FRONT_PAGES or n % INDEX_STRIDE == 0})[:60]
             if index:
-                got, k, engine = _ocr_pages(blob, profile, index, escalator)
+                got, k, engine = _ocr_pages(blob, profile, index, escalator, stats=ocr_stats)
                 page_texts.update(got)
                 ocr_used += k
                 span, diag = segment.locate(pdf, profile, page_texts, call_llm=None)
@@ -124,6 +139,8 @@ def process_document(doc: StoredDoc, company: Company, out_root: str,
             res.total_pages = profile.n_pages
             res.mda_page_count = 0
             res.words_per_page = 0.0
+            res.ocr_pages = ocr_used
+            res.ocr_engine = engine
             res.toc_offset = diag.get("toc_offset") or {
                 "solved": None,
                 "confidence": 0.0,
@@ -134,7 +151,10 @@ def process_document(doc: StoredDoc, company: Company, out_root: str,
             res.qc = {"diag": diag, "doc_kind": profile.doc_kind,
                       "toc_offset": res.toc_offset,
                       "frac_needing_ocr": profile.frac_needing_ocr,
-                      "pdf_producer": doc.pdf_producer}
+                      "pdf_producer": doc.pdf_producer,
+                      "ocr_stats": ocr_stats,
+                      "ocr_sec_total": round(sum(s["seconds"] for s in ocr_stats), 2) if ocr_stats else 0.0,
+                      "ocr_sec_mean": round(sum(s["seconds"] for s in ocr_stats) / len(ocr_stats), 3) if ocr_stats else 0.0}
             return res
 
         # ---- refine the end boundary --------------------------------------
@@ -146,7 +166,7 @@ def process_document(doc: StoredDoc, company: Company, out_root: str,
                 return None
             if profile.pages[n].kind is PageKind.DIGITAL:
                 return textlayer.extract_pages(blob, [n]).get(n, "")
-            got, k, _ = _ocr_pages(blob, profile, [n], escalator)
+            got, k, _ = _ocr_pages(blob, profile, [n], escalator, stats=ocr_stats)
             nonlocal ocr_used
             ocr_used += k
             return got.get(n, "")
@@ -161,7 +181,7 @@ def process_document(doc: StoredDoc, company: Company, out_root: str,
                    if n < len(profile.pages)
                    and profile.pages[n].kind is not PageKind.BLANK]
         if missing:
-            got, k, eng = _ocr_pages(blob, profile, missing, escalator)
+            got, k, eng = _ocr_pages(blob, profile, missing, escalator, stats=ocr_stats)
             page_texts.update(got)
             ocr_used += k
             engine = eng or engine
@@ -194,7 +214,7 @@ def process_document(doc: StoredDoc, company: Company, out_root: str,
         if len(front.split()) < 80:
             got, k, _ = _ocr_pages(blob, profile,
                                    [n for n in range(min(6, profile.n_pages))
-                                    if n not in page_texts], escalator)
+                                    if n not in page_texts], escalator, stats=ocr_stats)
             page_texts.update(got)
             ocr_used += k
             front = "\n".join(page_texts.get(n, "") for n in range(FRONT_PAGES))
@@ -233,6 +253,9 @@ def process_document(doc: StoredDoc, company: Company, out_root: str,
                   "frac_needing_ocr": profile.frac_needing_ocr,
                   "bilingual": profile.bilingual,
                   "n_pages": profile.n_pages,
+                  "ocr_stats": ocr_stats,
+                  "ocr_sec_total": round(sum(s["seconds"] for s in ocr_stats), 2) if ocr_stats else 0.0,
+                  "ocr_sec_mean": round(sum(s["seconds"] for s in ocr_stats) / len(ocr_stats), 3) if ocr_stats else 0.0,
                   # P21: pdf_producer sits next to a source_shredded reason -
                   # the free web compressors (iLovePDF, Smallpdf, ...) shred the
                   # text layer to near-per-line and that is the whole residual.
