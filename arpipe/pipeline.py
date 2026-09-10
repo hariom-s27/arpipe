@@ -120,7 +120,15 @@ def process_document(doc: StoredDoc, company: Company, out_root: str,
         if span is None:
             res.errors.append("mda_not_located")
             res.reasons = ["mda_not_located"]
+            res.toc_offset = diag.get("toc_offset") or {
+                "solved": None,
+                "confidence": 0.0,
+                "samples_used": 0,
+                "modal_agreement": 0.0,
+                "method": "not_run",
+            }
             res.qc = {"diag": diag, "doc_kind": profile.doc_kind,
+                      "toc_offset": res.toc_offset,
                       "frac_needing_ocr": profile.frac_needing_ocr,
                       "pdf_producer": doc.pdf_producer}
             return res
@@ -199,6 +207,13 @@ def process_document(doc: StoredDoc, company: Company, out_root: str,
         res.span = span
         res.supporters = span.supporters
         res.terminator_match = span.terminator_match if span else None
+        res.toc_offset = diag.get("toc_offset") or {
+            "solved": None,
+            "confidence": 0.0,
+            "samples_used": 0,
+            "modal_agreement": 0.0,
+            "method": "not_run",
+        }
         res.verification = vrep
         res.reasons = reasons
         res.n_words = qc["n_words"]
@@ -206,6 +221,7 @@ def process_document(doc: StoredDoc, company: Company, out_root: str,
         res.ocr_engine = engine
         res.qc = {**qc, "diag": diag, "doc_kind": profile.doc_kind,
                   "terminator_match": span.terminator_match if span else None,
+                  "toc_offset": res.toc_offset,
                   "frac_needing_ocr": profile.frac_needing_ocr,
                   "bilingual": profile.bilingual,
                   "n_pages": profile.n_pages,

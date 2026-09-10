@@ -307,34 +307,114 @@ def find_toc_pages(page_texts: dict[int, str], search_first: int = 20) -> list[i
     return hits
 
 
+TOC_OFFSET_CONFIDENCE_THRESHOLD = 0.50
+# Provisional threshold: bad KRBL cases have confidence <= 0.25 (and 7-26 page error),
+# clean TOC documents have confidence >= 0.70 (0 page error).
+# Must be re-fit on the labelled 300 (P6 requirement).
+
+
 def _solve_label_offset(doc: pymupdf.Document, page_texts: dict[int, str],
-                        sample: int = 40) -> int | None:
+                        toc_pages: list[int] | None = None,
+                        sample: int = 40) -> tuple[int | None, dict[str, Any]]:
     """Find k such that physical_page = printed_folio + k.
 
     Reads the folio printed in the top/bottom margin of sampled pages and
     takes the modal difference. Robust to the many pages that print no folio.
+    Returns (offset, toc_offset_diag).
     """
+    if not toc_pages:
+        return None, {
+            "solved": None,
+            "confidence": 0.0,
+            "samples_used": 0,
+            "modal_agreement": 0.0,
+            "method": "not_run",
+        }
+
     diffs: defaultdict[int, int] = defaultdict(int)
+    page_diffs: dict[int, list[int]] = {}
     nos = sorted(page_texts)
     step = max(1, len(nos) // sample)
     for n in nos[::step]:
         lines = [l.strip() for l in page_texts[n].split("\n") if l.strip()]
+        matched = []
         for cand in lines[:2] + lines[-3:]:
             m = re.fullmatch(r"\|?\s*(\d{1,4})\s*\|?", cand)
             if m:
                 folio = int(m.group(1))
                 if 0 < folio <= doc.page_count + 40:
-                    diffs[n - folio] += 1
-    if not diffs:
-        return None
+                    matched.append(n - folio)
+        if matched:
+            page_diffs[n] = matched
+            for d in set(matched):
+                diffs[d] += 1
+
+    samples_used = len(page_diffs)
+    fallback_offset = toc_pages[0]
+
+    if not diffs or samples_used < 3:
+        info = {
+            "solved": fallback_offset,
+            "confidence": 0.0,
+            "samples_used": samples_used,
+            "modal_agreement": 0.0,
+            "method": "toc_page_fallback",
+        }
+        return fallback_offset, info
+
     k, c = max(diffs.items(), key=lambda kv: kv[1])
-    return k if c >= 3 else None
+    modal_agreement = round(c / samples_used, 3)
+
+    if c < 3:
+        info = {
+            "solved": fallback_offset,
+            "confidence": modal_agreement,
+            "samples_used": samples_used,
+            "modal_agreement": modal_agreement,
+            "method": "toc_page_fallback",
+        }
+        return fallback_offset, info
+
+    # Check local agreement in the front of the book (where TOC lives and points)
+    toc_first = toc_pages[0]
+    front_bound = min(doc.page_count, max(50, toc_first + 40))
+    front_pages = [n for n in page_diffs if n <= front_bound]
+    if front_pages:
+        front_c = sum(1 for n in front_pages if k in page_diffs[n])
+        front_agreement = front_c / len(front_pages)
+    else:
+        front_agreement = modal_agreement
+
+    # In book pagination, physical page >= printed folio, so k >= -2.
+    # Large negative offset indicates severe pagination drift or skipped sections.
+    plausibility = 1.0 if k >= -2 else 0.5
+
+    confidence = modal_agreement * (0.3 + 0.7 * front_agreement) * plausibility
+    confidence = round(min(1.0, max(0.0, confidence)), 3)
+
+    info = {
+        "solved": k,
+        "confidence": confidence,
+        "samples_used": samples_used,
+        "modal_agreement": modal_agreement,
+        "method": "margin_folio_mode",
+    }
+    return k, info
 
 
-def from_toc(doc: pymupdf.Document, page_texts: dict[int, str]) -> MDASpan | None:
+def from_toc(doc: pymupdf.Document, page_texts: dict[int, str],
+             return_info: bool = False) -> MDASpan | tuple[MDASpan | None, dict[str, Any]] | None:
     toc_pages = find_toc_pages(page_texts)
     if not toc_pages:
-        return None
+        info = {
+            "solved": None,
+            "confidence": 0.0,
+            "samples_used": 0,
+            "modal_agreement": 0.0,
+            "method": "not_run",
+        }
+        return (None, info) if return_info else None
+
     entries: list[tuple[str, int]] = []
     for n in toc_pages:
         for ln in page_texts[n].split("\n"):
@@ -343,13 +423,24 @@ def from_toc(doc: pymupdf.Document, page_texts: dict[int, str]) -> MDASpan | Non
                 title = m.group("title").strip()
                 if len(title) <= 80 and _is_title_or_caps(title):
                     entries.append((title, int(m.group("page"))))
-    if not entries:
-        return None
-    offset = _solve_label_offset(doc, page_texts)
+
+    offset, offset_info = _solve_label_offset(doc, page_texts, toc_pages=toc_pages)
     if offset is None:
-        # fall back: assume the TOC page itself is roughly folio 1-3
         offset = toc_pages[0]
+
+    if not entries:
+        return (None, offset_info) if return_info else None
+
+    confidence = offset_info.get("confidence", 0.0)
+    if confidence >= TOC_OFFSET_CONFIDENCE_THRESHOLD:
+        score = 0.80
+    else:
+        # P6: Cut score hard if offset confidence is below threshold so TOC cannot win
+        # outright over actual heading/body signals, but can still act as a supporter.
+        score = round(max(0.15, min(0.40, 0.80 * confidence)), 3)
+
     entries.sort(key=lambda e: e[1])
+    res_span = None
     for i, (title, folio) in enumerate(entries):
         if _is_mda_title(title):
             start = folio + offset
@@ -373,9 +464,14 @@ def from_toc(doc: pymupdf.Document, page_texts: dict[int, str]) -> MDASpan | Non
             end = max(start, min(end, doc.page_count - 1))
             if end - start + 1 > MAX_MDA_PAGES:
                 end = start + MAX_MDA_PAGES - 1
-            return MDASpan(start, end, method="toc", heading_text=title,
-                           terminator_text=term, terminator_match=term_match, score=0.8)
-    return None
+            res_span = MDASpan(start, end, method="toc", heading_text=title,
+                               terminator_text=term, terminator_match=term_match,
+                               score=score, toc_offset=offset_info)
+            break
+
+    if return_info:
+        return res_span, offset_info
+    return res_span
 
 
 # ------------------------------------------------------------------- S3 heading
@@ -661,9 +757,10 @@ def _agree(a: MDASpan, b: MDASpan, tol: int = 2) -> bool:
 
 def locate(doc: pymupdf.Document, profile: DocProfile,
            page_texts: dict[int, str], call_llm=None) -> tuple[MDASpan | None, dict]:
+    toc_span, toc_offset_info = from_toc(doc, page_texts, return_info=True)
     cands: list[MDASpan] = []
     for fn in (lambda: from_outline(profile),
-               lambda: from_toc(doc, page_texts),
+               lambda: toc_span,
                lambda: from_headings(doc, page_texts),
                lambda: from_text_headings(page_texts),
                lambda: from_body_scores(page_texts)):
@@ -675,7 +772,8 @@ def locate(doc: pymupdf.Document, profile: DocProfile,
             cands.append(c)
 
     diag = {"candidates": [(c.method, c.start_page, c.end_page, round(c.score, 3))
-                           for c in cands]}
+                           for c in cands],
+            "toc_offset": toc_offset_info}
     if not cands:
         if call_llm:
             whole = MDASpan(0, min(len(page_texts) - 1, 80), method="scan")

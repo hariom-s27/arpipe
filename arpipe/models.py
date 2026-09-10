@@ -134,6 +134,7 @@ class MDASpan:
     # (CLAUDE.md rule 4), so verify.grade() gates on this.
     supporters: int = 0
     terminator_match: dict[str, Any] | None = None  # P5: diagnostic info on terminator match
+    toc_offset: dict[str, Any] | None = None        # P6: folio-to-physical offset diagnostics
 
 
 @dc.dataclass(slots=True)
@@ -167,6 +168,7 @@ class ExtractionResult:
     ocr_engine: str | None = None
     supporters: int = 0          # top-level mirror of span.supporters
     terminator_match: dict[str, Any] | None = None  # P5: top-level mirror of span.terminator_match
+    toc_offset: dict[str, Any] = dc.field(default_factory=lambda: {"solved": None, "confidence": 0.0, "samples_used": 0, "modal_agreement": 0.0, "method": "not_run"})  # P6: folio offset diagnostics
     qc: dict[str, Any] = dc.field(default_factory=dict)
     # Why this row is not `high`. Machine-readable codes (see verify.build_reasons):
     # source_shredded, order_scrambled, span_truncated, identity_unproven,

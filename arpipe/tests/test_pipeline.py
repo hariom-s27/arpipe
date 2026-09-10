@@ -945,3 +945,82 @@ def test_check_terminator_line_shape_rules():
     assert m5["font_signal"] == "bold"
 
 
+def test_toc_offset_not_run_when_no_toc():
+    from arpipe import segment
+    doc = pymupdf.open()
+    doc.new_page()
+    texts = {0: "Page with no TOC at all"}
+    span, info = segment.from_toc(doc, texts, return_info=True)
+    assert span is None
+    assert info == {
+        "solved": None,
+        "confidence": 0.0,
+        "samples_used": 0,
+        "modal_agreement": 0.0,
+        "method": "not_run",
+    }
+    doc.close()
+
+
+def test_toc_offset_high_confidence_on_fixture():
+    from arpipe import segment, textlayer
+    path = _fix("B_twocol_toc.pdf")
+    pdf = pymupdf.open(path)
+    texts = textlayer.extract_pages(path, list(range(len(pdf))))
+    span, info = segment.from_toc(pdf, texts, return_info=True)
+    assert span is not None
+    assert info["confidence"] >= segment.TOC_OFFSET_CONFIDENCE_THRESHOLD
+    assert span.score == 0.80
+    assert span.start_page == 10
+    assert info["method"] == "margin_folio_mode"
+    assert info["solved"] == -1
+    pdf.close()
+
+
+def test_toc_offset_gating_cuts_score_on_low_confidence(monkeypatch):
+    from arpipe import segment
+    from arpipe.models import DocProfile, PageProfile, PageKind
+    doc = pymupdf.open()
+    for _ in range(50):
+        doc.new_page()
+    texts = {
+        0: "Cover",
+        1: "Contents\nManagement Discussion & Analysis ........... 10\nDirectors' Report ........... 20",
+    }
+    # Mock _solve_label_offset to return low confidence
+    monkeypatch.setattr(segment, "_solve_label_offset", lambda *args, **kw: (3, {
+        "solved": 3,
+        "confidence": 0.15,
+        "samples_used": 20,
+        "modal_agreement": 0.15,
+        "method": "toc_page_fallback",
+    }))
+
+    span, info = segment.from_toc(doc, texts, return_info=True)
+    assert span is not None
+    assert info["confidence"] == 0.15
+    # Score must be cut hard below 0.50
+    assert span.score <= 0.40
+
+    # In arbitration, a body_score candidate with 0.65 must beat this gated TOC
+    from arpipe.models import Script
+    profile = DocProfile(
+        sha256="dummy", n_pages=len(doc),
+        pages=[PageProfile(i, PageKind.DIGITAL, 0, 100, 1.0, 0.0, 0, 1, Script.LATIN, 0.0)
+               for i in range(len(doc))],
+        doc_kind="digital", frac_needing_ocr=0.0, has_outline=False
+    )
+    monkeypatch.setattr(segment, "from_body_scores", lambda *args: MDASpan(
+        13, 22, method="body_score", score=0.65
+    ))
+    monkeypatch.setattr(segment, "from_outline", lambda *args: None)
+    monkeypatch.setattr(segment, "from_headings", lambda *args: None)
+    monkeypatch.setattr(segment, "from_text_headings", lambda *args: None)
+
+    winner, diag = segment.locate(doc, profile, texts)
+    assert winner.method == "body_score"
+    assert diag["toc_offset"]["confidence"] == 0.15
+    doc.close()
+
+
+
