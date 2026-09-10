@@ -40,11 +40,24 @@ def cmd_universe(a: argparse.Namespace) -> int:
         nse = universe.parse_nse_equity_master(cl.get(universe.NSE_EQUITY_L).text)
         chains = universe.parse_symbol_changes(cl.get(universe.NSE_SYMBOL_CHANGE).text)
     bse = {}
-    if a.bse_json and os.path.exists(a.bse_json):
+    if getattr(a, "no_bse", False):
+        pass
+    elif a.bse_json and os.path.exists(a.bse_json):
         bse = universe.parse_bse_master(json.load(open(a.bse_json)))
+    else:
+        try:
+            bse_rows = universe.fetch_bse_master()
+            bse = universe.parse_bse_master(bse_rows)
+            print(f"Fetched {len(bse_rows)} scrips ({len(bse)} distinct ISINs) from BSE master")
+        except Exception as exc:
+            print(f"Warning: Failed to fetch live BSE master: {exc}")
+
     companies = universe.build_master(nse, bse, chains)
     universe.to_csv(companies, a.out)
-    print(f"{len(companies)} companies -> {a.out}")
+    bse_only = sum(1 for c in companies if c.exchange == "bse")
+    nse_only = sum(1 for c in companies if c.exchange == "nse")
+    both = sum(1 for c in companies if c.exchange == "both")
+    print(f"{len(companies)} companies -> {a.out} ({bse_only} BSE-only, {nse_only} NSE-only, {both} both)")
     return 0
 
 
@@ -258,7 +271,9 @@ def main(argv: list[str] | None = None) -> int:
     u = sub.add_parser("universe"); u.add_argument("--out", default="companies.csv")
     u.add_argument("--in-csv", default=None,
                    help="Rebuild/collapse an existing companies.csv without network fetch")
-    u.add_argument("--bse-json", default=None); u.set_defaults(fn=cmd_universe)
+    u.add_argument("--bse-json", default=None)
+    u.add_argument("--no-bse", action="store_true", help="Do not fetch or include BSE master")
+    u.set_defaults(fn=cmd_universe)
 
     d = sub.add_parser("discover")
     d.add_argument("--companies", default="companies.csv")

@@ -1123,5 +1123,102 @@ def test_p20_era_rules_full_document():
     assert verify.grade(rep_err, qc_clean, 0.95, supporters=2) == "medium"
 
 
+def test_p10_wire_bse_master(tmp_path):
+    from arpipe import universe, discover
+    from arpipe.models import Company
+
+    # 1. parse_bse_master
+    raw_bse = [
+        {
+            "SCRIP_CD": "500002",
+            "Scrip_Name": "ABB India Ltd",
+            "Status": "Active",
+            "GROUP": "A",
+            "ISIN_NUMBER": "INE117A01022",
+            "INDUSTRY": "Electrical Equipment",
+            "scrip_id": "ABB",
+            "Issuer_Name": "ABB India Limited",
+        },
+        {
+            "SCRIP_CD": "500012",
+            "Scrip_Name": "Andhra Petrochemicals Ltd",
+            "Status": "Active",
+            "GROUP": "X",
+            "ISIN_NUMBER": "INE714B01016",
+            "INDUSTRY": "Commodity Chemicals",
+            "scrip_id": "ANDHRAPET",
+            "Issuer_Name": "Andhra Petrochemicals Ltd.",
+        },
+    ]
+    parsed_bse = universe.parse_bse_master(raw_bse)
+    assert "INE117A01022" in parsed_bse
+    assert parsed_bse["INE117A01022"]["bse_scrip"] == "500002"
+    assert parsed_bse["INE117A01022"]["name"] == "ABB India Limited"
+    assert "ABB" in parsed_bse["INE117A01022"]["aliases"]
+
+    # 2. build_master with exchange assignment
+    raw_nse = {
+        "INE117A01022": {"name": "ABB India Limited", "nse_symbol": "ABB", "series": "EQ"},
+        "INE001B01026": {"name": "KRBL Limited", "nse_symbol": "KRBL", "series": "EQ"},
+    }
+    cos = universe.build_master(raw_nse, parsed_bse, symbol_chains={})
+    by_isin = {c.isin: c for c in cos}
+
+    # Dual-listed
+    assert by_isin["INE117A01022"].exchange == "both"
+    assert by_isin["INE117A01022"].nse_symbol == "ABB"
+    assert by_isin["INE117A01022"].bse_scrip == "500002"
+
+    # NSE only
+    assert by_isin["INE001B01026"].exchange == "nse"
+    assert by_isin["INE001B01026"].bse_scrip is None
+
+    # BSE only
+    assert by_isin["INE714B01016"].exchange == "bse"
+    assert by_isin["INE714B01016"].nse_symbol is None
+    assert by_isin["INE714B01016"].bse_scrip == "500012"
+
+    # 3. to_csv and from_csv persistence
+    csv_file = str(tmp_path / "companies_test.csv")
+    universe.to_csv(cos, csv_file)
+    loaded = universe.from_csv(csv_file)
+    loaded_by_isin = {c.isin: c for c in loaded}
+    assert loaded_by_isin["INE117A01022"].exchange == "both"
+    assert loaded_by_isin["INE001B01026"].exchange == "nse"
+    assert loaded_by_isin["INE714B01016"].exchange == "bse"
+
+    # 4. discover_bse parsing against BSE AnnualReport_New schema
+    class MockResponse:
+        status_code = 200
+        def json(self):
+            return {
+                "Table": [
+                    {
+                        "Scripcode": "500012",
+                        "scrip_name": "Andhra Petrochemicals Ltd.,",
+                        "Year": "2025",
+                        "PDFDownload": "https://www.bseindia.com/xml-data/corpfiling/AttachHis/19187e37-4da3-4fd7-bf3c-49e84d4d5930.pdf",
+                    },
+                    {
+                        "Scripcode": "500012",
+                        "scrip_name": "Andhra Petrochemicals Ltd.,",
+                        "Year": "2024",
+                        "PDFDownload": "https://www.bseindia.com/xml-data/corpfiling/AttachHis/95904d25-777b-41b5-997f-74c277b73d9b.pdf",
+                    },
+                ]
+            }
+
+    class MockClient:
+        def get(self, url, **kwargs):
+            return MockResponse()
+
+    bse_co = by_isin["INE714B01016"]
+    refs = discover.discover_bse(bse_co, MockClient())
+    assert len(refs) == 2
+    assert refs[0].fy_end == 2025
+    assert refs[0].source == "bse"
+    assert "19187e37" in refs[0].url
+
+
 
 

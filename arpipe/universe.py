@@ -85,6 +85,25 @@ def parse_symbol_changes(csv_text: str) -> dict[str, list[str]]:
     return dict(chains)
 
 
+def fetch_bse_master(client=None) -> list[dict]:
+    """Fetch active equity listings from BSE ListofScripData endpoint."""
+    import httpx
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36",
+        "Accept": "application/json, text/plain, */*",
+        "Referer": "https://www.bseindia.com/",
+        "Origin": "https://www.bseindia.com",
+    }
+    if client:
+        r = client.get(BSE_SCRIP_MASTER, headers=headers)
+        r.raise_for_status()
+        return r.json()
+    with httpx.Client(headers=headers, timeout=45.0, follow_redirects=True) as cl:
+        r = cl.get(BSE_SCRIP_MASTER)
+        r.raise_for_status()
+        return r.json()
+
+
 def parse_bse_master(rows: list[dict]) -> dict[str, dict]:
     """BSE ListofScripData JSON rows -> {isin: {...}}."""
     out: dict[str, dict] = {}
@@ -92,12 +111,22 @@ def parse_bse_master(rows: list[dict]) -> dict[str, dict]:
         isin = (r.get("ISIN_NUMBER") or r.get("ISIN") or "").strip()
         if not isin:
             continue
+        issuer = (r.get("Issuer_Name") or "").strip()
+        scrip_name = (r.get("Scrip_Name") or r.get("SCRIP_NAME") or "").strip()
+        name = issuer or scrip_name
+        scrip_id = (r.get("scrip_id") or "").strip()
+        aliases = []
+        if issuer and scrip_name and issuer != scrip_name:
+            aliases.append(scrip_name)
+        if scrip_id:
+            aliases.append(scrip_id)
         out[isin] = {
             "bse_scrip": str(r.get("SCRIP_CD") or r.get("Scrip_Code") or "").strip(),
-            "name": (r.get("Scrip_Name") or r.get("SCRIP_NAME") or "").strip(),
+            "name": name,
             "group": (r.get("GROUP") or "").strip(),
             "status": (r.get("Status") or "Active").strip(),
-            "industry": (r.get("Industry") or "").strip(),
+            "industry": (r.get("Industry") or r.get("INDUSTRY") or "").strip() or None,
+            "aliases": aliases,
         }
     return out
 
@@ -323,6 +352,16 @@ def collapse_universe(companies: list[Company]) -> tuple[list[Company], int]:
         sector = primary.sector or next((m.sector for m in group if m.sector), None)
         cap_band = primary.cap_band or next((m.cap_band for m in group if m.cap_band), None)
 
+        # Determine exchange on merged company:
+        if (nse_symbol and bse_scrip) or any(m.exchange == "both" for m in group) or (
+            any(m.exchange == "nse" for m in group) and any(m.exchange == "bse" for m in group)
+        ):
+            exchange = "both"
+        elif nse_symbol or any(m.exchange == "nse" for m in group):
+            exchange = "nse"
+        else:
+            exchange = "bse"
+
         merged = Company(
             company_id=primary.company_id,
             canonical_name=primary.canonical_name,
@@ -336,6 +375,7 @@ def collapse_universe(companies: list[Company]) -> tuple[list[Company], int]:
             status=primary.status,
             alternate_isins=alt_isins,
             series_type=primary.series_type,
+            exchange=exchange,
         )
         collapsed.append(merged)
 
@@ -357,9 +397,12 @@ def build_master(nse: dict[str, dict], bse: dict[str, dict],
         aliases: list[str] = []
         if b.get("name") and b["name"] != name:
             aliases.append(b["name"])
+        if b.get("aliases"):
+            aliases.extend(b["aliases"])
         if sym and sym in symbol_chains:
             aliases.extend(symbol_chains[sym])
         st = detect_series_type(isin, sym, series, canonical_name=name)
+        ex = "both" if (isin in nse and isin in bse) else ("nse" if isin in nse else "bse")
         companies.append(Company(
             company_id=isin,
             canonical_name=name,
@@ -371,6 +414,7 @@ def build_master(nse: dict[str, dict], bse: dict[str, dict],
             cap_band=cap_bands.get(isin),
             status=b.get("status", "Active").lower(),
             series_type=st,
+            exchange=ex,
         ))
     collapsed, _ = collapse_universe(companies)
     return collapsed
@@ -401,6 +445,10 @@ def from_csv(path: str) -> list[Company]:
                     row.get("nse_symbol"),
                     canonical_name=row.get("canonical_name"),
                 )
+            if not row.get("exchange"):
+                has_nse = bool(row.get("nse_symbol"))
+                has_bse = bool(row.get("bse_scrip"))
+                row["exchange"] = "both" if (has_nse and has_bse) else ("nse" if has_nse else "bse")
             for k in ("cin", "isin", "bse_scrip", "nse_symbol", "sector", "cap_band"):
                 if row.get(k) == "":
                     row[k] = None
