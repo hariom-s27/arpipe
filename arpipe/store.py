@@ -57,12 +57,17 @@ def link_pdf(blob_path: str, dest: str) -> None:
 
 def write_year(root: str, company_name: str, doc: StoredDoc,
                mda_text: str, result: ExtractionResult,
-               page_texts: dict[int, str] | None = None) -> str:
+               page_texts: dict[int, str] | None = None,
+               mda_blocks: list[dict] | None = None) -> str:
     d = year_dir(root, company_name, doc.company_id, doc.fy_end)
     os.makedirs(d, exist_ok=True)
     link_pdf(doc.path, os.path.join(d, "annual_report.pdf"))
     with open(os.path.join(d, "mda.txt"), "w", encoding="utf-8") as fh:
         fh.write(mda_text)
+    # P18: tables and charts lifted out of the prose. Always written (even
+    # empty) so a downstream reader can tell "no tables" from "not processed".
+    with open(os.path.join(d, "mda_blocks.json"), "w", encoding="utf-8") as fh:
+        json.dump(mda_blocks or [], fh, ensure_ascii=False, indent=2)
     with open(os.path.join(d, "mda.json"), "w", encoding="utf-8") as fh:
         fh.write(to_json(result, indent=2))
     with open(os.path.join(d, "document.json"), "w", encoding="utf-8") as fh:

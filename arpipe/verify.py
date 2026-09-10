@@ -211,6 +211,10 @@ LEAK_PATTERNS = [
 
 
 def section_qc(mda_text: str) -> dict:
+    # mda_text is prose only from P18 on - chart/table number-soup has been
+    # quarantined to mda_blocks.json before this runs, so n_words, n_chars and
+    # digit_ratio here are not inflated by loose figures. pipeline.py records
+    # blocks_quarantined / words_quarantined / n_words_note alongside.
     words = mda_text.split()
     n = len(words)
     low = mda_text.lower()

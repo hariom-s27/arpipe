@@ -265,3 +265,81 @@ def test_running_furniture_is_stripped():
     out = textlayer.strip_running_furniture(pages)
     assert all("ACME LTD | Annual Report" not in p for p in out)
     assert all("body" in p for p in out)
+
+
+# --------------------------------------------------------- table/chart quarantine
+def _blk(text, x0=100.0, y0=0.0):
+    return textlayer.Block(x0, y0, x0 + 60.0, y0 + 10.0, text)
+
+
+# the GVA chart from Jain Irrigation FY2024/25 p105, one block per axis value
+_GVA_CHART = ["Gross Value Added by Agriculture and Allied sectors",
+              "(US $ billion) (at constant 2011-12 prices)",
+              "350.00", "300.00", "250.00", "283.68", "200.00", "267.90",
+              "276.37", "279.00", "259.71", "150.00", "0.00",
+              "FY 18", "FY 19", "FY 20", "FY 21", "FY 22", "FY 24", "FY 23",
+              "Agriculture 4.0 is the fourth agricultural revolution, aiming to "
+              "enhance yield quality while minimising environmental damage."]
+
+
+def test_quarantine_lifts_a_chart_axis_dump():
+    blocks = [_blk(t, y0=i * 12) for i, t in enumerate(_GVA_CHART)]
+    kept, entries = textlayer._quarantine_page(105, blocks)
+    kept_text = "\n".join(b.text for b in kept)
+    assert len(entries) == 1
+    e = entries[0]
+    assert e["page"] == 105 and e["kind"] == "chart"
+    assert e["n_lines"] >= 10 and e["digit_ratio"] > 0.4
+    assert e["bbox"] is not None and len(e["bbox"]) == 4
+    assert "283.68" in e["text"] and "FY 24" in e["text"]
+    # prose on both sides of the chart survives
+    assert "Gross Value Added by Agriculture" in kept_text
+    assert "fourth agricultural revolution" in kept_text
+    assert "283.68" not in kept_text and "FY 24" not in kept_text
+
+
+def test_quarantine_marks_a_labelled_table():
+    # the "Employee benefit expenses" row from the P18 brief
+    blocks = [_blk(t, y0=i * 12) for i, t in enumerate(
+        ["Employees", "benefit", "expenses",
+         "3,525.13 3,218.21", "306.92", "9.54%"])]
+    _, entries = textlayer._quarantine_page(122, blocks)
+    assert len(entries) == 1
+    assert entries[0]["kind"] == "table"          # multi-value line "3,525.13 3,218.21"
+    assert "9.54%" in entries[0]["text"]
+
+
+def test_quarantine_keeps_prose_with_a_few_numbers():
+    prose = ("According to Bain & Co., the Indian agricultural sector is "
+             "predicted to increase to US$ 30-35 billion by 2025, up from "
+             "roughly 24 billion in 2020.")
+    blocks = [_blk("India stayed among the fastest-growing large economies."),
+              _blk(prose, y0=20),
+              _blk("Domestic demand was firm and the financial system sound.",
+                   y0=40)]
+    kept, entries = textlayer._quarantine_page(1, blocks)
+    assert entries == []
+    assert prose in "\n".join(b.text for b in kept)
+
+
+def test_quarantine_keeps_a_block_that_mixes_cells_and_a_sentence():
+    # one PyMuPDF block: table tail + a real sentence spliced on by shredding
+    mixed = ("48,337.25\n1,373.52\n20,032.24\nIncrease in equity share capital "
+             "and share premium by Rs.24.08 million due to issue of shares to "
+             "domestic and foreign lenders.")
+    blocks = [_blk("Balance as on 1st April 2024", y0=0),
+              _blk("1,247.80\n18,344.19\n3,948.64", y0=12),
+              _blk(mixed, y0=24)]
+    kept, entries = textlayer._quarantine_page(225, blocks)
+    kept_text = "\n".join(b.text for b in kept)
+    assert "Increase in equity share capital" in kept_text     # sentence survives
+    assert "domestic and foreign lenders" in kept_text
+
+
+def test_quarantine_conserves_every_word():
+    blocks = [_blk(t, y0=i * 12) for i, t in enumerate(_GVA_CHART)]
+    kept, entries = textlayer._quarantine_page(105, blocks)
+    before = sum(len(t.split()) for t in _GVA_CHART)
+    after = (sum(len(b.text.split()) for b in kept)
+             + sum(len(e["text"].split()) for e in entries))
+    assert before == after                        # quarantine moves, never drops

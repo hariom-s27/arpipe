@@ -178,3 +178,24 @@ INDIC_BLOCKS_RE = re.compile(
 # text layer but it decodes to garbage. Very common in 2010-2014 filings
 # produced by old DTP software.
 MOJIBAKE_RE = re.compile(r"[�\x00-\x08\x0b\x0c\x0e-\x1f]")
+
+# --------------------------------------------------------------------------
+# 6. Table / chart cell detection (P18)
+# --------------------------------------------------------------------------
+# Chart axis dumps and table cells arrive in the text layer as loose numbers
+# ("283.68", "21,442.95 22,003.14", "9.54%"). NUMERIC_LINE_RE matches a line
+# whose content is only figures, currency marks, separators and arithmetic
+# punctuation - it must contain at least one digit and no run of letters.
+NUMERIC_LINE_RE = re.compile(
+    r"^[\s\d.,;:%()\[\]/\\+\-*x×~^'\"₹$€£¥]*\d[\s\d.,;:%()\[\]/\\+\-*x×~^'\"₹$€£¥]*$")
+
+# Short axis / period / column labels that sit inside a chart or table block
+# without themselves being numeric ("FY 18", "31st Mar", "Q3", "%", "Change").
+# Used only to BRIDGE a run of numeric lines that is already anchored by a
+# numeric line at both ends - never to start or extend one. Callers also cap
+# the length and word count, so this stays deliberately loose.
+TABLE_LABEL_RE = re.compile(
+    r"^(?:FY\s?\d{2,4}(?:\s*-\s*\d{2,4})?"
+    r"|\d{1,2}(?:st|nd|rd|th)?\s+[A-Z][a-z]{2,8}\.?"
+    r"|Q[1-4]|H[12]|CY\s?\d{2,4}|YoY|QoQ|%"
+    r"|[A-Za-z][A-Za-z&/().'’\-]*(?:[ ,][A-Za-z&/().'’\-]+){0,2}[.,]?)$")

@@ -151,7 +151,14 @@ def process_document(doc: StoredDoc, company: Company, out_root: str,
         span = segment.trim_span(span, page_texts)
         span_pages = list(range(span.start_page, span.end_page + 1))
 
-        ordered = [page_texts.get(n, "") for n in span_pages]
+        # P18: pull chart axis dumps and table cells out of the prose into a
+        # sidecar (mda_blocks.json). n_words / digit_ratio are then measured on
+        # prose only, not on number-soup.
+        digital_span = {n for n in span_pages
+                        if n < len(profile.pages)
+                        and profile.pages[n].kind is PageKind.DIGITAL}
+        ordered, mda_blocks = textlayer.extract_prose_and_tables(
+            doc.path, span_pages, page_texts, digital_span)
         ordered = textlayer.strip_running_furniture(ordered) if len(ordered) >= 4 else ordered
         mda_text = "\n\n".join(t for t in ordered if t.strip()).strip()
 
@@ -178,13 +185,19 @@ def process_document(doc: StoredDoc, company: Company, out_root: str,
         res.qc = {**qc, "diag": diag, "doc_kind": profile.doc_kind,
                   "frac_needing_ocr": profile.frac_needing_ocr,
                   "bilingual": profile.bilingual,
-                  "n_pages": profile.n_pages}
+                  "n_pages": profile.n_pages,
+                  # P18: n_words / n_chars / digit_ratio above are prose only
+                  "n_words_note": "prose only; tables/charts in mda_blocks.json",
+                  "blocks_quarantined": len(mda_blocks),
+                  "words_quarantined": sum(len(b["text"].split())
+                                           for b in mda_blocks)}
         res.confidence = {"high": Confidence.HIGH, "medium": Confidence.MEDIUM,
                           "low": Confidence.LOW}[grade]
         res.ok = grade in ("high", "medium")
 
         d = store.write_year(out_root, company.canonical_name, doc, mda_text, res,
-                             page_texts if keep_pages else None)
+                             page_texts if keep_pages else None,
+                             mda_blocks=mda_blocks)
         res.mda_path = os.path.join(d, "mda.txt")
         return res
     finally:

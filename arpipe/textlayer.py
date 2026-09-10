@@ -12,12 +12,14 @@ For pages that are neither cleanly one- nor two-column (magazine-style
 """
 from __future__ import annotations
 
+import re
 from dataclasses import dataclass
 
 import pymupdf
 
 from . import triage
-from .patterns import LIGATURE_FIXES, PAGE_NUM_LINE_RE, REPEATED_HEADER_MIN_PAGES
+from .patterns import (LIGATURE_FIXES, NUMERIC_LINE_RE, PAGE_NUM_LINE_RE,
+                       REPEATED_HEADER_MIN_PAGES, TABLE_LABEL_RE)
 
 # --- column-split recovery (P16B) ---------------------------------------------
 # A single full-width block (running head, footer, rule, full-width heading)
@@ -177,6 +179,187 @@ def page_text(page: pymupdf.Page, reading_order: bool = True) -> str:
     else:
         blocks.sort(key=lambda b: (round(b.y0, 1), b.x0))
     return "\n\n".join(b.text for b in blocks)
+
+
+# --- table / chart quarantine (P18) -----------------------------------------
+# Chart axis dumps and table cells arrive in the text layer as loose numbers
+# ("283.68", "21,442.95 22,003.14", "9.54%"). A document-level digit ratio
+# cannot see them - a few hundred characters of table diluted in a
+# 15,000-word section. Detect them per block, lift consecutive numeric runs
+# into a sidecar (mda_blocks.json), and keep the figures out of the prose word
+# and digit counts.
+#
+# The pass is deliberately conservative on prose, not on tables. A quarantined
+# run must be anchored by a numeric block at each end and hold >= TABLE_MIN_RUN
+# numeric lines. Row / column / axis labels ("FY 18", "Change",
+# "Material Cost/Total Income (%)") only BRIDGE a run that numeric lines
+# already anchor at both ends - a label never starts a run or extends one past
+# its last figure. A block is prose (digits and all) if any line runs over
+# TABLE_PROSE_LINE_WORDS words, if a short line carries two-plus stop-words, or
+# if it is a lone long word (a shredded heading). Column interleaving on the
+# iLovePDF-sourced Jain filings still drops the odd table header
+# ("Particulars 31st Mar", "m) Shareholder's Fund") between two numeric cells;
+# a header on its own line stays in the prose, one wedged inside a run rides
+# to the sidecar with that table (recoverable there, never deleted). Cleaning
+# that fully means repairing the shredded fetch source upstream.
+#
+# PROVISIONAL constants - picked from the four sample documents, to be re-fit
+# against the labelled 300 and moved to config in P15.
+TABLE_DIGIT_RATIO = 0.40       # digits / (letters + digits) within a block
+TABLE_MAX_WORDS_PER_LINE = 6   # a data row is short; wrapped prose runs long
+TABLE_MIN_RUN = 3              # numeric lines in a run to call it a region
+TABLE_LABEL_MAX_CHARS = 44     # a row / column label is short
+TABLE_LABEL_MAX_WORDS = 6
+TABLE_PROSE_LINE_WORDS = 12    # a line this long is a sentence, not a cell
+
+_LABEL_STOPWORDS = frozenset(
+    "a an the is are was were be been of to and or in on for with as at from "
+    "that this it we our their has have had will would than by".split())
+
+
+def _digit_letter_ratio(s: str) -> float:
+    d = sum(c.isdigit() for c in s)
+    a = sum(c.isalpha() for c in s)
+    return d / (d + a) if (d + a) else 0.0
+
+
+def _nonblank_lines(text: str) -> list[str]:
+    return [ln.strip() for ln in text.split("\n") if ln.strip()]
+
+
+def _numeric_line_count(text: str) -> int:
+    return sum(1 for ln in _nonblank_lines(text) if NUMERIC_LINE_RE.match(ln))
+
+
+def _is_data_block(b: Block) -> bool:
+    """A table/chart data block: three-plus numeric-only lines stacked in one
+    block, or mostly digits with short lines (SEBI Schedule V ratio rows,
+    chart axis dumps, cell fragments). A block that also carries a full
+    sentence is prose, never data - a shredded cell line is short."""
+    lines = _nonblank_lines(b.text)
+    if not lines or any(len(ln.split()) > TABLE_PROSE_LINE_WORDS for ln in lines):
+        return False
+    if _numeric_line_count(b.text) >= TABLE_MIN_RUN:
+        return True
+    words = b.text.split()
+    wpl = len(words) / len(lines)
+    return (_digit_letter_ratio(b.text) >= TABLE_DIGIT_RATIO
+            and wpl < TABLE_MAX_WORDS_PER_LINE)
+
+
+def _is_label_block(b: Block) -> bool:
+    """A row / column / axis label ('FY 18', '31st Mar', 'Change',
+    'Material Cost/Total Income (%)'). Short and not sentence-shaped. Bridges a
+    numeric run only; never anchors, extends or carries one."""
+    s = " ".join(_nonblank_lines(b.text)).strip()
+    words = s.split()
+    if (not s or len(s) > TABLE_LABEL_MAX_CHARS or not words
+            or len(words) > TABLE_LABEL_MAX_WORDS or s[-1] in ".:;!?"):
+        return False
+    if _is_data_block(b):
+        return False                                    # figures -> data
+    if TABLE_LABEL_RE.match(s):
+        return True
+    letters = [c for c in s if c.isalpha()]
+    if not letters:
+        return False                                    # bare punctuation
+    if sum(1 for w in words if w.lower().strip(".,()%/") in _LABEL_STOPWORDS) >= 2:
+        return False                                    # sentence-shaped
+    if len(words) >= 2 and all(c.isupper() for c in letters):
+        return False                                    # ALL-CAPS heading
+    if len(words) == 1 and len(s.strip(".,)")) > 10:
+        return False                                    # a lone long word is a
+                                                        # shredded heading, not
+                                                        # a column label
+    return True
+
+
+_PERIOD_LABEL_RE = re.compile(
+    r"^(?:FY\s?\d{2,4}(?:\s*-\s*\d{2,4})?|Q[1-4]|H[12]|CY\s?\d{2,4}"
+    r"|\d{1,2}(?:st|nd|rd|th)?\s+[A-Z][a-z]{2,8}\.?|%|YoY|QoQ)$")
+
+
+def _quarantine_entry(page_no: int, run: list[Block]) -> dict:
+    joined = "\n".join(b.text.strip() for b in run)
+    lines = _nonblank_lines(joined)
+    # a chart is a bare axis/series dump: single-value numeric lines and, at
+    # most, period labels (FY 18, Q3). A row/column word label ("Net Block",
+    # "Total Income") or a multi-value line ("21,442.95 22,003.14") means it
+    # is a table.
+    word_label = any(not NUMERIC_LINE_RE.match(ln)
+                     and not _PERIOD_LABEL_RE.match(ln)
+                     and sum(c.isalpha() for c in ln) >= 3
+                     for ln in lines)
+    multi = any(len(ln.split()) > 1 for ln in lines if NUMERIC_LINE_RE.match(ln))
+    geom = [b for b in run if (b.x1 - b.x0) or (b.y1 - b.y0)]
+    bbox = ([round(min(b.x0 for b in geom), 1), round(min(b.y0 for b in geom), 1),
+             round(max(b.x1 for b in geom), 1), round(max(b.y1 for b in geom), 1)]
+            if geom else None)
+    return {
+        "page": page_no,
+        "bbox": bbox,
+        "kind": "table" if (word_label or multi) else "chart",
+        "text": joined,
+        "digit_ratio": round(_digit_letter_ratio(joined), 3),
+        "n_lines": len(lines),
+    }
+
+
+def _quarantine_page(page_no: int, blocks: list[Block]) -> tuple[list[Block],
+                                                                list[dict]]:
+    """Split one page's ordered blocks into (prose blocks, quarantined runs)."""
+    tag = ["d" if _is_data_block(b) else "l" if _is_label_block(b) else "p"
+           for b in blocks]
+    kept: list[Block] = []
+    entries: list[dict] = []
+    i, n = 0, len(blocks)
+    while i < n:
+        if tag[i] != "d":
+            kept.append(blocks[i])
+            i += 1
+            continue
+        j, last_data = i, i
+        while j < n and tag[j] in ("d", "l"):
+            if tag[j] == "d":
+                last_data = j
+            j += 1
+        run = blocks[i:last_data + 1]                 # trim trailing labels
+        numeric_lines = sum(_numeric_line_count(b.text) for b in run)
+        if numeric_lines >= TABLE_MIN_RUN:
+            entries.append(_quarantine_entry(page_no, run))
+            kept.extend(blocks[last_data + 1:j])      # bridging labels -> prose
+        else:
+            kept.extend(blocks[i:j])                  # not enough figures -> prose
+        i = j
+    return kept, entries
+
+
+def extract_prose_and_tables(
+        path: str, span_pages: list[int], page_texts: dict[int, str],
+        digital_pages: set[int]) -> tuple[list[str], list[dict]]:
+    """Per span page, return (prose text with tables/charts removed,
+    quarantined block records). Digital pages are re-read for block geometry;
+    OCR / fetched pages fall back to splitting the extracted string on blank
+    lines, so their quarantined records carry no bbox.
+    """
+    doc = pymupdf.open(path)
+    try:
+        prose: list[str] = []
+        quarantined: list[dict] = []
+        for pno in span_pages:
+            if pno in digital_pages:
+                page = doc.load_page(pno)
+                blocks = xy_cut(_blocks(page), page.rect)
+            else:
+                blocks = [Block(0.0, 0.0, 0.0, 0.0, seg)
+                          for seg in re.split(r"\n\s*\n", page_texts.get(pno, ""))
+                          if seg.strip()]
+            kept, entries = _quarantine_page(pno, blocks)
+            prose.append(normalise("\n\n".join(b.text for b in kept)))
+            quarantined.extend(entries)
+        return prose, quarantined
+    finally:
+        doc.close()
 
 
 def normalise(text: str) -> str:
