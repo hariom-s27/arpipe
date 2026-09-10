@@ -166,6 +166,8 @@ def check_era(fy_end: int, sig: dict[str, bool]) -> list[str]:
     notes = []
     if sig["mandated_ratios"] and fy_end < 2020:
         notes.append(f"ratio-table present but fy_end={fy_end} (<2020)")
+    if not sig["mandated_ratios"] and fy_end >= 2020:
+        notes.append(f"mandated ratios table absent from document (disclosure finding for fy_end={fy_end} >= 2020)")
     if sig["brsr"] and fy_end < 2023:
         notes.append(f"BRSR present but fy_end={fy_end} (<2023)")
     if sig["companies_act_2013"] and fy_end < 2015:
@@ -278,7 +280,8 @@ def extract_isin(page_texts: dict[int, str] | None = None,
 # ---------------------------------------------------------------------- verdict
 def verify(front_text: str, mda_text: str, company: Company,
            expected_fy_end: int,
-           page_texts: dict[int, str] | None = None) -> VerificationReport:
+           page_texts: dict[int, str] | None = None,
+           full_text: str | None = None) -> VerificationReport:
     rep = VerificationReport(company_ok=False, year_ok=False)
     whole = f"{front_text}\n{mda_text}"
 
@@ -334,7 +337,16 @@ def verify(front_text: str, mda_text: str, company: Company,
     else:
         rep.notes.append("no fiscal-year evidence found")
 
-    rep.notes.extend(check_era(expected_fy_end, era_signals(whole)))
+    # --- era rules (P20: run on full document) -------------------------
+    if full_text is not None:
+        doc_text = full_text
+    elif page_texts:
+        doc_text = "\n".join(page_texts[n] for n in sorted(page_texts))
+    else:
+        doc_text = whole
+
+    rep.era_signals_in_document = era_signals(doc_text)
+    rep.notes.extend(check_era(expected_fy_end, rep.era_signals_in_document))
     return rep
 
 
@@ -370,6 +382,7 @@ def section_qc(mda_text: str) -> dict:
         "avg_word_len": round(sum(len(w) for w in words) / max(1, n), 2),
         "long_token_frac": round(long_tok / max(1, n), 4),
         "ratio_cues": cues,
+        "ratio_cues_in_span": cues,
         "leaks": leaks,
         "too_short": n < 250,
         "too_long": n > 40000,
@@ -642,8 +655,9 @@ def grade(rep: VerificationReport, qc: dict, span_score: float,
     if (not rep.company_ok or qc["too_short"] or qc["long_token_frac"] > 0.03
             or osf > 2 * ORPHAN_START_FRAC_MAX):     # P17: badly scrambled order
         return "low"
+    verif_errors = [n for n in rep.notes if not n.startswith("mandated ratios table absent") and "disclosure finding" not in n]
     if (supporters >= 2 and rep.year_ok and span_score >= 0.8
-            and not qc["leaks"] and not rep.notes
+            and not qc["leaks"] and not verif_errors
             and osf <= ORPHAN_START_FRAC_MAX):       # P17: mild scramble -> medium
         # P22: a reprocessor-sourced PDF has been re-laid line by line; the span
         # can look clean and still hide a splice xy_cut could not catch. Cap it

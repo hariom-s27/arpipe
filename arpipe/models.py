@@ -150,6 +150,7 @@ class VerificationReport:
     isins_seen: list[str] = dc.field(default_factory=list)
     fy_found: int | None = None
     notes: list[str] = dc.field(default_factory=list)
+    era_signals_in_document: dict[str, bool] = dc.field(default_factory=dict)
 
 
 @dc.dataclass(slots=True)

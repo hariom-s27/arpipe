@@ -1075,5 +1075,53 @@ def test_p7_top_level_fields_and_candidate_span_words():
     assert obj["words_per_page"] == 500.0
 
 
+def test_p20_era_rules_full_document():
+    from arpipe.models import Company, VerificationReport
+    from arpipe import verify
+
+    # 1. section_qc records both ratio_cues and ratio_cues_in_span
+    qc = verify.section_qc("Debtor turnover ratio Current ratio and other prose words.")
+    assert "ratio_cues" in qc
+    assert "ratio_cues_in_span" in qc
+    assert qc["ratio_cues"] == qc["ratio_cues_in_span"] == 2
+
+    # 2. check_era: disclosure finding note when fy_end >= 2020 and mandated_ratios is False
+    sig_no_ratios = {"mandated_ratios": False, "brsr": True, "companies_act_2013": True, "ind_as": True}
+    notes = verify.check_era(2025, sig_no_ratios)
+    assert any("mandated ratios table absent" in n and "disclosure finding" in n for n in notes)
+
+    # When fy_end < 2020 and ratios are absent, no disclosure note should be emitted
+    assert not any("mandated ratios table absent" in n for n in verify.check_era(2018, sig_no_ratios))
+
+    # 3. verify evaluates era signals across full page_texts even if absent from front & mda
+    co = Company(company_id="INE001B01026", canonical_name="TEST CO",
+                 isin="INE001B01026", cin="L01111DL1993PLC052845")
+    # Put mandated ratios on page 50 (outside front matter 0-13 and outside mda span)
+    pages = {
+        0: "TEST CO Annual Report FY 2024-25 L01111DL1993PLC052845",
+        20: "Management Discussion and Analysis. The economy grew steadily.",
+        50: ("Details of Significant Changes in Key Financial Ratios:\n"
+             "Debtors Turnover 5.4\nInventory Turnover 6.1\nInterest Coverage 8.2\n"
+             "Current Ratio 1.6\nDebt Equity Ratio 0.31\nOperating Profit Margin 14.2%\n"
+             "Net Profit Margin 9.1%\nReturn on Net Worth 16.3%"),
+    }
+    vrep = verify.verify(front_text=pages[0], mda_text=pages[20], company=co,
+                         expected_fy_end=2025, page_texts=pages)
+    assert vrep.era_signals_in_document["mandated_ratios"] is True
+    assert vrep.era_signals_in_document["ind_as"] is False
+
+    # 4. grade() ignores disclosure finding notes but respects verification errors
+    rep_clean = VerificationReport(company_ok=True, year_ok=True, notes=[
+        "mandated ratios table absent from document (disclosure finding for fy_end=2025 >= 2020)"
+    ])
+    qc_clean = {"too_short": False, "long_token_frac": 0.0, "leaks": [], "orphan_start_frac": 0.0}
+    assert verify.grade(rep_clean, qc_clean, 0.95, supporters=2) == "high"
+
+    rep_err = VerificationReport(company_ok=True, year_ok=True, notes=[
+        "ISIN mismatch: doc=INE999A01010 expected=INE001B01026"
+    ])
+    assert verify.grade(rep_err, qc_clean, 0.95, supporters=2) == "medium"
+
+
 
 
