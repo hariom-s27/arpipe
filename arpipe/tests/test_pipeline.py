@@ -770,3 +770,101 @@ def test_extract_is_cwd_independent_and_records_link_mode(tmp_path, monkeypatch)
     assert vrep["isin_found"] == "INE123A01012"
     assert vrep["isin_found_on_page"] == 16
     assert "INE123A01012" in vrep["isins_seen"]
+
+
+def test_collapse_universe_jain_case():
+    from arpipe import universe
+    from arpipe.models import Company
+
+    c1 = Company(company_id="INE175A01038",
+                 canonical_name="Jain Irrigation Systems Limited",
+                 isin="INE175A01038",
+                 nse_symbol="JISLJALEQS")
+    c2 = Company(company_id="IN9175A01010",
+                 canonical_name="Jain Irrigation Systems Limited",
+                 isin="IN9175A01010",
+                 nse_symbol="JISLDVREQS")
+
+    collapsed, removed = universe.collapse_universe([c1, c2])
+    assert removed == 1
+    assert len(collapsed) == 1
+
+    row = collapsed[0]
+    assert row.company_id == "INE175A01038"
+    assert "IN9175A01010" in row.alternate_isins
+    assert row.series_type == "ordinary"
+
+    # Order invariance: DVR line passed first still collapses to ordinary primary
+    collapsed_rev, removed_rev = universe.collapse_universe([c2, c1])
+    assert removed_rev == 1
+    assert len(collapsed_rev) == 1
+    assert collapsed_rev[0].company_id == "INE175A01038"
+    assert "IN9175A01010" in collapsed_rev[0].alternate_isins
+    assert collapsed_rev[0].series_type == "ordinary"
+
+
+def test_detect_series_type():
+    from arpipe import universe
+
+    # ordinary
+    assert universe.detect_series_type("INE175A01038", "JISLJALEQS") == "ordinary"
+    assert universe.detect_series_type("INE001B01026", "KRBL") == "ordinary"
+
+    # dvr
+    assert universe.detect_series_type("IN9175A01010", "JISLDVREQS") == "dvr"
+    assert universe.detect_series_type("INE224E01036", "GATECHDVR") == "dvr"
+    assert universe.detect_series_type("IN9623B01058", "FELDVR") == "dvr"
+
+    # partly_paid
+    assert universe.detect_series_type("INE123A01012", "RELIANCE-RE") == "partly_paid"
+    assert universe.detect_series_type("INE123A01012", "ABCDEFPP") == "partly_paid"
+
+    # other
+    assert universe.detect_series_type("INF123A01012", "NIFTYBEES") == "other"
+
+
+def test_cmd_audit_asserts_sha256_and_cin_fy_uniqueness(tmp_path, capsys):
+    import argparse
+    from arpipe import cli
+
+    manifest = tmp_path / "manifest.jsonl"
+    r1 = {
+        "company_id": "INE001B01026", "fy_end": 2024, "sha256": "sha111",
+        "ok": True, "confidence": "high", "n_words": 5000,
+        "verification": {"cin_found": "L01111DL1993PLC052845"}
+    }
+    r2 = {
+        "company_id": "INE001B01026", "fy_end": 2025, "sha256": "sha222",
+        "ok": True, "confidence": "high", "n_words": 6000,
+        "verification": {"cin_found": "L01111DL1993PLC052845"}
+    }
+    manifest.write_text(json.dumps(r1) + "\n" + json.dumps(r2) + "\n", encoding="utf-8")
+    args = argparse.Namespace(out=str(tmp_path))
+    assert cli.cmd_audit(args) == 0
+
+    # Duplicate sha256 fails and prints offending rows
+    r_dup_sha = {
+        "company_id": "IN9175A01010", "fy_end": 2024, "sha256": "sha111",
+        "ok": True, "confidence": "high", "n_words": 5000,
+        "verification": {"cin_found": "L29120MH1986PLC042028"}
+    }
+    manifest.write_text(json.dumps(r1) + "\n" + json.dumps(r_dup_sha) + "\n", encoding="utf-8")
+    with pytest.raises(AssertionError, match="duplicate sha256"):
+        cli.cmd_audit(args)
+    err = capsys.readouterr().err
+    assert "AUDIT ERROR" in err
+    assert "sha111" in err
+
+    # Duplicate (cin, fy_end) fails and prints offending rows
+    r_dup_cin = {
+        "company_id": "IN9175A01010", "fy_end": 2024, "sha256": "sha333",
+        "ok": True, "confidence": "high", "n_words": 5000,
+        "verification": {"cin_found": "L01111DL1993PLC052845"}
+    }
+    manifest.write_text(json.dumps(r1) + "\n" + json.dumps(r_dup_cin) + "\n", encoding="utf-8")
+    with pytest.raises(AssertionError, match=r"duplicate \(cin, fy_end\)"):
+        cli.cmd_audit(args)
+    err = capsys.readouterr().err
+    assert "AUDIT ERROR" in err
+    assert "L01111DL1993PLC052845" in err
+

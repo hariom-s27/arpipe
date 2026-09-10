@@ -16,6 +16,7 @@ import argparse
 import json
 import os
 import sys
+from collections import defaultdict
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 from . import discover, fetch, ocr, pipeline, store, triage, universe, verify
@@ -27,6 +28,11 @@ def _load_companies(path: str) -> list[Company]:
 
 
 def cmd_universe(a: argparse.Namespace) -> int:
+    if getattr(a, "in_csv", None):
+        collapsed, removed = universe.collapse_companies_file(a.in_csv, a.out)
+        print(f"Rebuilt {a.out}: {len(collapsed)} companies ({removed} rows removed by DVR/duplicate collapse)")
+        return 0
+
     import httpx
     with httpx.Client(headers=discover.NSE_HEADERS, timeout=60,
                       follow_redirects=True) as cl:
@@ -148,7 +154,14 @@ def _make_escalator(a: argparse.Namespace) -> ocr.Escalator:
 
 
 def cmd_extract(a: argparse.Namespace) -> int:
-    companies = {c.company_id: c for c in _load_companies(a.companies)}
+    loaded = _load_companies(a.companies)
+    companies: dict[str, Company] = {}
+    for c in loaded:
+        companies[c.company_id] = c
+        if c.isin:
+            companies[c.isin] = c
+        for alt in c.alternate_isins:
+            companies[alt] = c
     docs = [StoredDoc(**json.loads(l))
             for l in open(os.path.join(a.root, "documents.jsonl")) if l.strip()]
     already = store.done_keys(a.out) if a.resume else set()
@@ -181,6 +194,37 @@ def cmd_audit(a: argparse.Namespace) -> int:
     rows = store.load_manifest(a.out)
     if not rows:
         print("empty manifest"); return 1
+
+    # Assert 1 row per sha256 in final manifest
+    by_sha: dict[str, list[dict]] = defaultdict(list)
+    for r in rows:
+        sha = r.get("sha256")
+        if sha:
+            by_sha[sha].append(r)
+    dup_shas = {sha: rlist for sha, rlist in by_sha.items() if len(rlist) > 1}
+    if dup_shas:
+        print(f"AUDIT ERROR: {len(dup_shas)} duplicate sha256 in manifest:", file=sys.stderr)
+        for sha, rlist in dup_shas.items():
+            for r in rlist:
+                print(f"  sha256={sha} company_id={r.get('company_id')} fy_end={r.get('fy_end')} path={r.get('path')}", file=sys.stderr)
+
+    # Assert 1 row per (cin, fy_end)
+    by_cin_fy: dict[tuple[str, int], list[dict]] = defaultdict(list)
+    for r in rows:
+        cin = r.get("cin") or (r.get("verification") or {}).get("cin_found")
+        fy = r.get("fy_end")
+        if cin and fy:
+            by_cin_fy[(cin, fy)].append(r)
+    dup_cin_fy = {k: rlist for k, rlist in by_cin_fy.items() if len(rlist) > 1}
+    if dup_cin_fy:
+        print(f"AUDIT ERROR: {len(dup_cin_fy)} duplicate (cin, fy_end) in manifest:", file=sys.stderr)
+        for (cin, fy), rlist in dup_cin_fy.items():
+            for r in rlist:
+                print(f"  cin={cin} fy_end={fy} company_id={r.get('company_id')} sha256={r.get('sha256')} path={r.get('path')}", file=sys.stderr)
+
+    assert not dup_shas, f"Found {len(dup_shas)} duplicate sha256 in manifest: {list(dup_shas.keys())}"
+    assert not dup_cin_fy, f"Found {len(dup_cin_fy)} duplicate (cin, fy_end) in manifest: {list(dup_cin_fy.keys())}"
+
     by_conf: dict[str, int] = {}
     by_method: dict[str, int] = {}
     years: dict[int, int] = {}
@@ -212,6 +256,8 @@ def main(argv: list[str] | None = None) -> int:
     sub = p.add_subparsers(dest="cmd", required=True)
 
     u = sub.add_parser("universe"); u.add_argument("--out", default="companies.csv")
+    u.add_argument("--in-csv", default=None,
+                   help="Rebuild/collapse an existing companies.csv without network fetch")
     u.add_argument("--bse-json", default=None); u.set_defaults(fn=cmd_universe)
 
     d = sub.add_parser("discover")

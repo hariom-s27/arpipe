@@ -50,6 +50,8 @@ class Company:
     sector: str | None = None
     cap_band: str | None = None      # large / mid / small / micro (AMFI classification)
     status: str = "active"
+    alternate_isins: list[str] = dc.field(default_factory=list)  # P4: other ISINs collapsed into this row
+    series_type: str = "ordinary"                                # P4: ordinary | dvr | partly_paid | other
 
 
 @dc.dataclass(slots=True)
