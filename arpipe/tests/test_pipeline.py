@@ -869,3 +869,79 @@ def test_cmd_audit_asserts_sha256_and_cin_fy_uniqueness(tmp_path, capsys):
     assert "AUDIT ERROR" in err
     assert "L01111DL1993PLC052845" in err
 
+
+def test_terminator_shape_rejects_body_word_and_accepts_heading():
+    from arpipe import segment
+    from arpipe.models import MDASpan
+
+    texts = {
+        10: "Management Discussion and Analysis\nOverview of the market and business operations.",
+        11: "Operating Performance\nRevenue and operating margins improved across business units.",
+        12: "Intellectual Property\nThe company holds various trademarks and copyrights.\n"
+            "Our registered trademarks are protected under Indian law.\n"
+            "Further details on trademarks and patents appear in the notes.",
+        13: "Strategic Outlook\nFuture opportunities and risk factors for the coming year.",
+        14: "Report on Corporate Governance\n"
+            "1. Company philosophy on Code of Governance\n"
+            "The company is committed to ethical standards.",
+        15: "Financial Statements\nBalance Sheet as at 31 March 2025",
+    }
+    # Mid-paragraph "trademarks" on page 12 must NOT terminate the span
+    span = MDASpan(10, 15, method="heading")
+    trimmed = segment.trim_span(span, texts)
+
+    # Must NOT stop at page 11 (which would happen if page 12 terminated)
+    # MUST terminate at page 14 ("Report on Corporate Governance" at top of page)
+    assert trimmed.end_page == 13
+    assert trimmed.terminator_text == "Report on Corporate Governance"
+    assert trimmed.terminator_match is not None
+    assert trimmed.terminator_match["text"] == "Report on Corporate Governance"
+    assert trimmed.terminator_match["page"] == 14
+    assert trimmed.terminator_match["shape_ok"] is True
+    assert trimmed.terminator_match["line_index"] == 0
+    assert trimmed.terminator_match["font_signal"] in ("title_case", "all_caps")
+
+
+def test_check_terminator_line_shape_rules():
+    from arpipe import segment
+    from arpipe.segment import HeadingHit
+
+    page = [
+        "Report on Corporate Governance",
+        "",
+        "During the year under review, the Company complied with statutory norms.",
+        "Our trademarks and patents are protected.",
+        "Report on Corporate Governance was approved by the board.",
+    ]
+
+    # Valid heading at top of page
+    m1 = segment.check_terminator_line("Report on Corporate Governance", page_no=10, line_idx=0, raw_lines=page)
+    assert m1 is not None
+    assert m1["shape_ok"] is True
+    assert m1["text"] == "Report on Corporate Governance"
+    assert m1["line_index"] == 0
+
+    # "trademarks" as a body word -> rejected
+    m2 = segment.check_terminator_line("trademarks", page_no=10, line_idx=3, raw_lines=page)
+    assert m2 is None
+
+    # Sentence containing a terminator phrase -> rejected (fails whole line check)
+    m3 = segment.check_terminator_line("Report on Corporate Governance was approved by the board.",
+                                       page_no=10, line_idx=4, raw_lines=page)
+    assert m3 is None
+
+    # Line > 80 chars -> rejected (fails length check)
+    long_line = "Report on Corporate Governance " + "x" * 60
+    assert len(long_line) > 80
+    m4 = segment.check_terminator_line(long_line, page_no=10, line_idx=0, raw_lines=page)
+    assert m4 is None
+
+    # Bold heading hit -> font_signal == "bold"
+    h = HeadingHit(page_no=10, text="Report on Corporate Governance", size=16.0, rel_size=1.4,
+                   y_frac=0.15, is_standalone=True, bold=True)
+    m5 = segment.check_terminator_line("Report on Corporate Governance", page_no=10, line_idx=0,
+                                       raw_lines=page, heading_hit=h)
+    assert m5 is not None
+    assert m5["font_signal"] == "bold"
+
+

@@ -28,6 +28,7 @@ import re
 import statistics
 from collections import defaultdict
 from dataclasses import dataclass, replace
+from typing import Any
 
 import pymupdf
 
@@ -91,6 +92,159 @@ def _is_mda_title(t: str) -> bool:
     return bool(len(s) <= 24 and MDA_ACRONYM_RE.search(s))
 
 
+_TITLE_STOPWORDS = {
+    "and", "or", "the", "of", "in", "on", "at", "to", "for", "with",
+    "a", "an", "by", "as", "&", "from", "into", "through", "over",
+    "st", "nd", "rd", "th",
+}
+
+
+def _is_title_or_caps(s: str) -> bool:
+    """True if s is ALL CAPS or Title Case (allowing lowercase stopwords)."""
+    s = s.strip()
+    if not s:
+        return False
+    if s.isupper():
+        return True
+    words = re.findall(r"[A-Za-z]+", s)
+    if not words:
+        return False
+    if not any(w[0].isupper() for w in words):
+        return False
+    for i, w in enumerate(words):
+        if i == 0 or w.lower() not in _TITLE_STOPWORDS:
+            if not w[0].isupper():
+                return False
+    return True
+
+
+def check_terminator_line(
+    line: str,
+    page_no: int,
+    line_idx: int,
+    raw_lines: list[str],
+    heading_hit: HeadingHit | None = None,
+) -> dict[str, Any] | None:
+    """Validate that a candidate line satisfies all heading shape criteria.
+
+    Criteria (all must be satisfied):
+      1. Short: len(line) <= 80 characters.
+      2. Whole line: the match represents the entire heading line, not an
+         embedded substring inside a longer sentence.
+      3. Position: sits in the top third of the page, OR has blank space above it.
+      4. Typography: Title Case or ALL CAPS, OR bold / larger font
+         (on OCR'd pages, falls back to the Title Case / ALL CAPS shape test).
+    """
+    line_str = line.strip()
+    if not line_str:
+        return None
+
+    # Criterion 1: Short line (<= 80 characters)
+    if len(line_str) > 80:
+        return None
+
+    # Must match terminator regex or annexure regex
+    m = MDA_TERMINATOR_RE.search(line_str)
+    if not m and not ANNEXURE_HEADING_RE.search(line_str):
+        return None
+
+    # Criterion 2: Whole line (not a substring inside a longer sentence)
+    if line_str.endswith(",") or line_str.endswith(";"):
+        return None
+    if line_str.endswith(".") and not re.search(r"\b(?:Co|Ltd|Inc|Corp|No)\.$", line_str, re.I):
+        return None
+
+    if m:
+        prefix = line_str[:m.start()].strip()
+        suffix = line_str[m.end():].strip()
+        if prefix:
+            prefix_words = re.findall(r"[A-Za-z]+", prefix)
+            if any(not w[0].isupper() for w in prefix_words if w.lower() not in _TITLE_STOPWORDS):
+                return None
+            if len(prefix_words) > 3:
+                return None
+        if suffix:
+            suffix_words = re.findall(r"[A-Za-z]+", suffix)
+            if any(not w[0].isupper() for w in suffix_words if w.lower() not in _TITLE_STOPWORDS):
+                return None
+            if len(suffix_words) > 3:
+                return None
+
+    # Criterion 3: Top third of page OR blank space above it
+    if heading_hit is not None:
+        in_top_third = heading_hit.y_frac < 0.35
+        has_blank_above = (line_idx == 0 or (line_idx > 0 and line_idx - 1 < len(raw_lines) and raw_lines[line_idx - 1].strip() == ""))
+    else:
+        total_lines = len(raw_lines) if raw_lines else 1
+        in_top_third = line_idx < max(4, total_lines // 3)
+        has_blank_above = (line_idx > 0 and raw_lines[line_idx - 1].strip() == "")
+
+    if not (in_top_third or has_blank_above):
+        return None
+
+    # Criterion 4: Title Case or ALL CAPS, OR bold / larger font
+    font_signal = "none"
+    if heading_hit is not None:
+        if heading_hit.bold:
+            font_signal = "bold"
+        elif heading_hit.rel_size >= 1.12:
+            font_signal = "larger"
+
+    title_or_caps = _is_title_or_caps(line_str)
+    if not (title_or_caps or font_signal in ("bold", "larger")):
+        return None
+
+    if font_signal == "none":
+        font_signal = "all_caps" if line_str.isupper() else "title_case"
+
+    return {
+        "text": line_str,
+        "page": page_no,
+        "line_index": line_idx,
+        "shape_ok": True,
+        "font_signal": font_signal,
+    }
+
+
+def find_terminator_match_on_page(
+    page_no: int,
+    text: str,
+    headings: list[HeadingHit] | None = None,
+) -> dict[str, Any] | None:
+    """Find the first line on page satisfying all terminator shape requirements."""
+    if not text:
+        return None
+
+    raw_lines = text.split("\n")
+
+    # 1. Check typographic headings if available
+    if headings:
+        for h in headings:
+            if h.page_no != page_no:
+                continue
+            l_idx = 0
+            for i, l in enumerate(raw_lines):
+                if h.text in l:
+                    l_idx = i
+                    break
+            match = check_terminator_line(h.text, page_no, l_idx, raw_lines, heading_hit=h)
+            if match:
+                return match
+
+    # 2. Text-based scan over page lines (first half of page unless blank space above)
+    for i, line in enumerate(raw_lines):
+        if i > max(8, len(raw_lines) // 2) and (i == 0 or raw_lines[i - 1].strip() != ""):
+            continue
+        line_s = line.strip()
+        if not line_s:
+            continue
+        match = check_terminator_line(line_s, page_no, i, raw_lines, heading_hit=None)
+        if match:
+            return match
+
+    return None
+
+
 # ------------------------------------------------------------------- S1 outline
 def from_outline(profile: DocProfile) -> MDASpan | None:
     if not profile.outline_titles:
@@ -106,16 +260,24 @@ def from_outline(profile: DocProfile) -> MDASpan | None:
     s_lvl, s_title, s_page = entries[start_i]
     end_page = profile.n_pages - 1
     term = None
+    term_match = None
     for _lvl, title, pno in entries[start_i + 1:]:
         if pno > s_page:
             end_page = pno - 1
             term = title
+            term_match = {
+                "text": title,
+                "page": pno,
+                "line_index": 0,
+                "shape_ok": True,
+                "font_signal": "outline",
+            }
             break
     if end_page - s_page + 1 > MAX_MDA_PAGES:
         end_page = s_page + MAX_MDA_PAGES - 1
     return MDASpan(start_page=s_page, end_page=max(s_page, end_page),
                    method="outline", heading_text=s_title,
-                   terminator_text=term, score=0.95)
+                   terminator_text=term, terminator_match=term_match, score=0.95)
 
 
 # ----------------------------------------------------------------------- S2 toc
@@ -133,7 +295,13 @@ def find_toc_pages(page_texts: dict[int, str], search_first: int = 20) -> list[i
     hits = []
     for n in sorted(page_texts)[:search_first]:
         t = page_texts[n]
-        dotted = sum(1 for ln in t.split("\n") if TOC_LINE_RE.match(ln.strip()))
+        dotted = 0
+        for ln in t.split("\n"):
+            m = TOC_LINE_RE.match(ln.strip())
+            if m:
+                title = m.group("title").strip()
+                if len(title) <= 80 and _is_title_or_caps(title):
+                    dotted += 1
         if dotted >= 4 or (re.search(r"\bcontents\b", t, re.I) and dotted >= 2):
             hits.append(n)
     return hits
@@ -172,7 +340,9 @@ def from_toc(doc: pymupdf.Document, page_texts: dict[int, str]) -> MDASpan | Non
         for ln in page_texts[n].split("\n"):
             m = TOC_LINE_RE.match(ln.strip())
             if m:
-                entries.append((m.group("title").strip(), int(m.group("page"))))
+                title = m.group("title").strip()
+                if len(title) <= 80 and _is_title_or_caps(title):
+                    entries.append((title, int(m.group("page"))))
     if not entries:
         return None
     offset = _solve_label_offset(doc, page_texts)
@@ -185,17 +355,26 @@ def from_toc(doc: pymupdf.Document, page_texts: dict[int, str]) -> MDASpan | Non
             start = folio + offset
             end = doc.page_count - 1
             term = None
+            term_match = None
             for t2, f2 in entries[i + 1:]:
                 if f2 > folio:
-                    end = f2 + offset - 1
-                    term = t2
-                    break
+                    if len(t2) <= 80 and _is_title_or_caps(t2):
+                        end = f2 + offset - 1
+                        term = t2
+                        term_match = {
+                            "text": t2,
+                            "page": max(0, min(f2 + offset, doc.page_count - 1)),
+                            "line_index": 0,
+                            "shape_ok": True,
+                            "font_signal": "title_case" if not t2.isupper() else "all_caps",
+                        }
+                        break
             start = max(0, min(start, doc.page_count - 1))
             end = max(start, min(end, doc.page_count - 1))
             if end - start + 1 > MAX_MDA_PAGES:
                 end = start + MAX_MDA_PAGES - 1
             return MDASpan(start, end, method="toc", heading_text=title,
-                           terminator_text=term, score=0.8)
+                           terminator_text=term, terminator_match=term_match, score=0.8)
     return None
 
 
@@ -229,31 +408,28 @@ def from_headings(doc: pymupdf.Document, page_texts: dict[int, str],
     if not best:
         return None
     sc, h = best
-    end = _find_terminator(doc, page_texts, h.page_no)
+    end, term_match = _find_terminator(doc, page_texts, h.page_no)
+    term_text = term_match["text"] if term_match else None
     return MDASpan(h.page_no, end, method="heading", heading_text=h.text,
+                   terminator_text=term_text, terminator_match=term_match,
                    score=min(0.92, sc))
 
 
 def _find_terminator(doc: pymupdf.Document, page_texts: dict[int, str],
-                     start: int) -> int:
+                     start: int) -> tuple[int, dict | None]:
     limit = min(start + MAX_MDA_PAGES, max(page_texts) if page_texts else start)
     for n in range(start + 1, limit + 1):
         txt = page_texts.get(n, "")
         if not txt:
             continue
-        if ANNEXURE_HEADING_RE.search(txt):
-            return max(start, n - 1)
         try:
             hits = page_headings(doc.load_page(n))
         except Exception:
             hits = []
-        for h in hits:
-            if MDA_TERMINATOR_RE.search(h.text) and h.y_frac < 0.6:
-                return max(start, n - 1)
-        head = "\n".join(txt.split("\n")[:6])
-        if MDA_TERMINATOR_RE.search(head):
-            return max(start, n - 1)
-    return min(limit, start + MAX_MDA_PAGES - 1)
+        match = find_terminator_match_on_page(n, txt, hits)
+        if match:
+            return max(start, n - 1), match
+    return min(limit, start + MAX_MDA_PAGES - 1), None
 
 
 # ---------------------------------------------------------------------- S4 body
@@ -379,22 +555,24 @@ def from_text_headings(page_texts: dict[int, str], skip_first: int = 2,
     if not best:
         return None
     sc, n, ln = best
-    end = _find_terminator_text(page_texts, n)
+    end, term_match = _find_terminator_text(page_texts, n)
+    term_text = term_match["text"] if term_match else None
     return MDASpan(n, end, method="heading_text", heading_text=ln,
+                   terminator_text=term_text, terminator_match=term_match,
                    score=min(0.78, sc))
 
 
 def _find_terminator_text(page_texts: dict[int, str], start: int,
-                          top_lines: int = 5) -> int:
+                          top_lines: int = 5) -> tuple[int, dict | None]:
     nos = [n for n in sorted(page_texts) if n > start]
     for n in nos[:MAX_MDA_PAGES]:
-        lines = [l.strip() for l in page_texts[n].split("\n") if l.strip()]
-        if ANNEXURE_HEADING_RE.search(page_texts[n]):
-            return max(start, n - 1)
-        for ln in lines[:top_lines]:
-            if len(ln) <= 110 and MDA_TERMINATOR_RE.search(ln):
-                return max(start, n - 1)
-    return max(start, nos[-1] if nos else start)
+        txt = page_texts.get(n, "")
+        if not txt:
+            continue
+        match = find_terminator_match_on_page(n, txt)
+        if match:
+            return max(start, n - 1), match
+    return max(start, nos[-1] if nos else start), None
 
 
 def refine_end(span: MDASpan, page_texts: dict[int, str], fetch_text,
@@ -406,6 +584,8 @@ def refine_end(span: MDASpan, page_texts: dict[int, str], fetch_text,
     because they had not been read yet.
     """
     n = span.end_page
+    term_match = span.terminator_match
+    term_text = span.terminator_text
     for _ in range(max_extra):
         nxt = n + 1
         txt = page_texts.get(nxt)
@@ -414,16 +594,18 @@ def refine_end(span: MDASpan, page_texts: dict[int, str], fetch_text,
             if txt is None:
                 break
             page_texts[nxt] = txt
-        lines = [l.strip() for l in txt.split("\n") if l.strip()]
-        head = lines[:5]
-        if (ANNEXURE_HEADING_RE.search(txt)
-                or any(len(l) <= 110 and MDA_TERMINATOR_RE.search(l)
-                       for l in head)):
+        match = find_terminator_match_on_page(nxt, txt)
+        if match:
+            term_match = match
+            term_text = match["text"]
             break
         if page_body_score(txt) < 0.15 and len(txt.split()) < 60:
             break
         n = nxt
-    return replace(span, end_page=n, method=span.method + "+refined")
+    return replace(span, end_page=n,
+                   terminator_text=term_text,
+                   terminator_match=term_match,
+                   method=span.method + "+refined")
 
 
 def trim_span(span: MDASpan, page_texts: dict[int, str]) -> MDASpan:
@@ -453,18 +635,22 @@ def trim_span(span: MDASpan, page_texts: dict[int, str]) -> MDASpan:
             break
 
     end = span.end_page
+    term_match = span.terminator_match
+    term_text = span.terminator_text
     for n in range(start + 1, span.end_page + 1):
         t = page_texts.get(n)
         if not t:
             continue
-        lines = [l.strip() for l in t.split("\n") if l.strip()][:5]
-        if (ANNEXURE_HEADING_RE.search(t)
-                or any(len(l) <= 110 and MDA_TERMINATOR_RE.search(l)
-                       for l in lines)):
+        match = find_terminator_match_on_page(n, t)
+        if match:
             end = n - 1
+            term_match = match
+            term_text = match["text"]
             break
     end = max(start, end)
     return replace(span, start_page=start, end_page=end,
+                   terminator_text=term_text,
+                   terminator_match=term_match,
                    method=span.method + "+trimmed")
 
 

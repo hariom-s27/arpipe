@@ -41,16 +41,15 @@ MDA_COMBINED_RE = re.compile(
 MDA_TERMINATOR_PATTERNS = [
     r"Report\s+on\s+Corporate\s+Governance",
     r"Corporate\s+Governance\s+Report",
-    r"\bCorporate\s+Governance\b",
     r"Business\s+Responsibility\s*(?:and\s+Sustainability)?\s*Report",
-    r"\bBRSR\b",
+    r"\bBRSR\s+Report\b",
     r"Independent\s+Auditor(?:'s|s’|’s)?\s+Report",
     r"Auditor(?:'s|s’|’s)?\s+Report",
     r"(?:Standalone|Consolidated)\s+Financial\s+Statements?",
     r"Balance\s+Sheet\s+as\s+at",
     r"Statement\s+of\s+Profit\s+(?:and|&)\s+Loss",
     r"Notice\s+of\s+(?:the\s+)?(?:\d+\w*\s+)?Annual\s+General\s+Meeting",
-    r"\bNotice\b\s*$",
+    r"Notice\s+of\s+(?:the\s+)?AGM\b",
     r"Directors(?:'|’)?\s+Report",
     r"Board(?:'s|’s)?\s+Report",
     # MD&A is often itself an annexure to the Board's Report. A following
@@ -61,7 +60,6 @@ MDA_TERMINATOR_PATTERNS = [
     r"Shareholder(?:s)?\s+Information",
     r"General\s+Shareholder\s+Information",
     r"Consolidated\s+Accounts",
-    r"Financial\s+Highlights",
     r"Ten\s+Year\s+Financial\s+Highlights",
 ]
 MDA_TERMINATOR_RE = re.compile("|".join(f"(?:{p})" for p in MDA_TERMINATOR_PATTERNS),

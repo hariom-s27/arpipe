@@ -198,12 +198,14 @@ def process_document(doc: StoredDoc, company: Company, out_root: str,
 
         res.span = span
         res.supporters = span.supporters
+        res.terminator_match = span.terminator_match if span else None
         res.verification = vrep
         res.reasons = reasons
         res.n_words = qc["n_words"]
         res.ocr_pages = ocr_used
         res.ocr_engine = engine
         res.qc = {**qc, "diag": diag, "doc_kind": profile.doc_kind,
+                  "terminator_match": span.terminator_match if span else None,
                   "frac_needing_ocr": profile.frac_needing_ocr,
                   "bilingual": profile.bilingual,
                   "n_pages": profile.n_pages,
