@@ -809,6 +809,7 @@ def test_detect_series_type():
     # ordinary
     assert universe.detect_series_type("INE175A01038", "JISLJALEQS") == "ordinary"
     assert universe.detect_series_type("INE001B01026", "KRBL") == "ordinary"
+    assert universe.detect_series_type("INE217G01035", "EQUIPPP") == "ordinary"
 
     # dvr
     assert universe.detect_series_type("IN9175A01010", "JISLDVREQS") == "dvr"
@@ -817,7 +818,7 @@ def test_detect_series_type():
 
     # partly_paid
     assert universe.detect_series_type("INE123A01012", "RELIANCE-RE") == "partly_paid"
-    assert universe.detect_series_type("INE123A01012", "ABCDEFPP") == "partly_paid"
+    assert universe.detect_series_type("INE123A01012", "ABCDEF-PP") == "partly_paid"
 
     # other
     assert universe.detect_series_type("INF123A01012", "NIFTYBEES") == "other"

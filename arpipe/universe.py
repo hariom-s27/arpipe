@@ -171,7 +171,7 @@ def detect_series_type(
         return "dvr"
 
     # Partly paid / Rights Entitlement signals
-    if "-RE" in sym_u or sym_u.endswith("PP") or re.search(r"\b(PARTLY\s+PAID|PART\s+PAID|RIGHTS\s+ENTITLEMENT)\b", name_u):
+    if "-RE" in sym_u or sym_u.endswith("-PP") or re.search(r"\b(PARTLY\s+PAID|PART\s+PAID|RIGHTS\s+ENTITLEMENT)\b", name_u):
         return "partly_paid"
 
     # Ordinary equity
