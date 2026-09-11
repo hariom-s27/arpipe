@@ -3,6 +3,7 @@
 Stages are separate commands on purpose. At 40k+ documents you will re-run
 `extract` a dozen times while `fetch` runs once; coupling them wastes days.
 
+  arpipe preflight  check tools, disk, network, and deps before a long run
   arpipe universe   build/refresh the company master
   arpipe discover   company master -> report manifest (URLs, no downloads)
   arpipe fetch      manifest -> content-addressed PDF store
@@ -334,6 +335,24 @@ def cmd_evaluate(a: argparse.Namespace) -> int:
     )
 
 
+def cmd_preflight(a: argparse.Namespace) -> int:
+    from . import preflight
+    return preflight.run_preflight(
+        root=a.root,
+        out=a.out,
+        companies=a.companies,
+        min_disk_tb=a.min_disk_tb,
+        req_file=getattr(a, "req_file", None),
+        vlm_url=a.vlm_url,
+        vlm_model=a.vlm_model,
+        gpu=a.gpu,
+        textract=a.textract,
+        aws_region=a.aws_region,
+        fix_hints=a.fix_hints,
+        no_network=a.no_network,
+    )
+
+
 def main(argv: list[str] | None = None) -> int:
     p = argparse.ArgumentParser("arpipe")
     sub = p.add_subparsers(dest="cmd", required=True)
@@ -409,6 +428,27 @@ def main(argv: list[str] | None = None) -> int:
     evl.add_argument("--dataset", action="append", default=None,
                      help="Path to dataset folder containing manifest.jsonl (can be passed multiple times)")
     evl.set_defaults(fn=cmd_evaluate)
+
+    pf = sub.add_parser("preflight",
+                        help="Check tools, disk, network, and deps before a long run")
+    pf.add_argument("--root", default="store", help="Store directory")
+    pf.add_argument("--out", default="dataset", help="Dataset output directory")
+    pf.add_argument("--companies", default="companies.csv")
+    pf.add_argument("--min-disk-tb", type=float, default=1.0,
+                    help="Minimum free disk space in TB (default: 1.0)")
+    pf.add_argument("--req-file", default=None,
+                    help="Path to requirements.txt (auto-detected if omitted)")
+    pf.add_argument("--vlm-url", default=os.environ.get("ARPIPE_VLM_URL"))
+    pf.add_argument("--vlm-model", default=os.environ.get("ARPIPE_VLM_MODEL",
+                                                           "PaddlePaddle/PaddleOCR-VL"))
+    pf.add_argument("--gpu", action="store_true", help="Require GPU with >= 4 GB VRAM")
+    pf.add_argument("--textract", action="store_true", help="Check AWS Textract credentials")
+    pf.add_argument("--aws-region", default="ap-south-1")
+    pf.add_argument("--fix-hints", action="store_true",
+                    help="Print OS-specific install commands for anything missing")
+    pf.add_argument("--no-network", action="store_true",
+                    help="Skip network reachability checks")
+    pf.set_defaults(fn=cmd_preflight)
 
     ns = p.parse_args(argv)
     return ns.fn(ns)
