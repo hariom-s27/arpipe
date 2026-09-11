@@ -17,6 +17,7 @@ import argparse
 import json
 import os
 import sys
+import time
 from collections import defaultdict
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
@@ -72,31 +73,83 @@ def cmd_universe(a: argparse.Namespace) -> int:
 
 def cmd_discover(a: argparse.Namespace) -> int:
     import httpx
+    cfg = config.get_config()
+    rate = getattr(a, "rate", None)
+    if rate is None:
+        try:
+            rate = cfg.discover.get("min_interval_seconds", 1.5) if hasattr(cfg.discover, "get") else getattr(cfg.discover, "min_interval_seconds", 1.5)
+        except Exception:
+            rate = 1.5
+
+    sources_val = getattr(a, "sources", None)
+    if sources_val:
+        sources = [s.strip().lower() for s in sources_val.split(",") if s.strip()]
+    else:
+        try:
+            cfg_sources = cfg.discover.get("sources") if hasattr(cfg.discover, "get") else getattr(cfg.discover, "sources", None)
+            sources = [s.strip().lower() for s in cfg_sources] if cfg_sources else ["nse", "bse", "screener"]
+        except Exception:
+            sources = ["nse", "bse", "screener"]
+
+    use_nse = "nse" in sources
+    use_bse = ("bse" in sources) and getattr(a, "use_bse", True)
+    use_screener = ("screener" in sources) or getattr(a, "use_screener", False)
+
     companies = _load_companies(a.companies)
     if a.limit:
         companies = companies[: a.limit]
     years = range(a.from_year, a.to_year + 1)
-    out = open(a.out, "w", encoding="utf-8")
-    nse_cl = discover.nse_session()
+
+    done_companies: set[str] = set()
+    open_mode = "w"
+    if getattr(a, "resume", False) and os.path.exists(a.out):
+        open_mode = "a"
+        with open(a.out, "r", encoding="utf-8") as rf:
+            for line in rf:
+                line = line.strip()
+                if line:
+                    try:
+                        row = json.loads(line)
+                        cid = row.get("company_id")
+                        if cid:
+                            done_companies.add(cid)
+                    except Exception:
+                        pass
+        print(f"Resuming discovery: {len(done_companies)} companies already recorded in {a.out}")
+
+    out = open(a.out, open_mode, encoding="utf-8")
+    nse_cl = discover.nse_session() if use_nse else None
     gen_cl = httpx.Client(timeout=30, follow_redirects=True)
     try:
+        total = len(companies)
         for i, c in enumerate(companies, 1):
+            if getattr(a, "resume", False) and c.company_id in done_companies:
+                continue
             refs: list[ReportRef] = []
-            refs += discover.discover_nse(c, nse_cl)
-            if a.use_bse:
+            if use_nse and nse_cl:
+                refs += discover.discover_nse(c, nse_cl, rate=rate)
+            if use_bse:
                 refs += discover.discover_bse(c, gen_cl)
-            if a.use_screener:
+                if rate > 0:
+                    time.sleep(rate)
+            if use_screener:
                 refs += discover.discover_screener(c, gen_cl)
+                if rate > 0:
+                    time.sleep(rate)
             by_year = discover.reconcile(refs, years)
             cov = discover.coverage_report(by_year, years)
             for y in sorted(by_year):
                 for r in by_year[y]:
                     out.write(to_json(r) + "\n")
-            if i % 25 == 0:
-                print(f"[{i}/{len(companies)}] {c.canonical_name[:40]:40s} "
-                      f"coverage={cov['coverage']:.2f}", file=sys.stderr)
+            out.flush()
+            if i % 25 == 0 or total <= 25:
+                print(f"[{i}/{total}] {c.canonical_name[:40]:40s} "
+                      f"coverage={cov['coverage']:.2f} ({len(refs)} refs)", file=sys.stderr)
     finally:
-        out.close(); nse_cl.close(); gen_cl.close()
+        out.close()
+        if nse_cl:
+            nse_cl.close()
+        gen_cl.close()
     print(f"manifest -> {a.out}")
     return 0
 
@@ -407,9 +460,16 @@ def main(argv: list[str] | None = None) -> int:
     d.add_argument("--from-year", type=int, default=2010)
     d.add_argument("--to-year", type=int, default=2025)
     d.add_argument("--limit", type=int, default=0)
+    d.add_argument("--sources", default=None,
+                   help="Comma-separated sources to query: nse,bse,screener (default: from config)")
+    d.add_argument("--rate", type=float, default=None,
+                   help="Request interval in seconds (default: from config, 1.5)")
+    d.add_argument("--resume", action="store_true", default=False,
+                   help="Resume discovery, skipping companies already present in --out")
     d.add_argument("--use-bse", action=argparse.BooleanOptionalAction, default=True,
                    help="Query BSE for annual reports (default: True, use --no-use-bse to disable)")
-    d.add_argument("--use-screener", action="store_true")
+    d.add_argument("--use-screener", action="store_true",
+                   help="Query Screener for annual reports")
     d.set_defaults(fn=cmd_discover)
 
     f = sub.add_parser("fetch", parents=[cfg_parent])

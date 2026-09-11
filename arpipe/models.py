@@ -68,6 +68,8 @@ class ReportRef:
     content_type: str | None = None
     bytes_expected: int | None = None
     priority: int = 100              # lower wins when several sources have the year
+    filename_symbol: str | None = None  # parsed from URL, e.g. "KRBL"
+    filename_years: str | None = None   # parsed from URL, e.g. "2024_2025"
 
 
 @dc.dataclass(slots=True)

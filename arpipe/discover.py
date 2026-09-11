@@ -31,6 +31,7 @@ from __future__ import annotations
 
 import json
 import re
+import sys
 import time
 from dataclasses import replace
 
@@ -81,12 +82,35 @@ def _fy_end_from_pair(from_yr: str | int, to_yr: str | int) -> int | None:
     return None
 
 
-def discover_nse(company: Company, client: httpx.Client) -> list[ReportRef]:
+def parse_nse_url_filename(url: str) -> tuple[str | None, str | None]:
+    """Parse symbol and fiscal year span from an NSE annual report URL.
+
+    Handles varied URL formats across FY2009-2025:
+      .../AR_27875_KRBL_2024_2025_A_34429015_29082025160935.pdf -> ("KRBL", "2024_2025")
+      .../AR_BHEL_2011_2012_18092012091256.zip                   -> ("BHEL", "2011_2012")
+      .../AR_1345_ONGC_2012_2013_02092013172104.zip             -> ("ONGC", "2012_2013")
+      .../AR_COALINDIA_2011_2012_18092012081806.zip             -> ("COALINDIA", "2011_2012")
+      .../AR_19_RELIANCE_2012_2013_08052013171218.zip           -> ("RELIANCE", "2012_2013")
+      .../AR_JISLJALEQS_2010_2011_13092011044949.zip           -> ("JISLJALEQS", "2010_2011")
+    """
+    fname = url.rsplit("/", 1)[-1]
+    m = re.search(r"AR_(?:(?:\d+)_)?([A-Za-z0-9&_-]+?)_(\d{4}(?:_\d{4})?)(?:[_\.]|$)", fname, re.IGNORECASE)
+    if m:
+        return m.group(1), m.group(2)
+    return None, None
+
+
+def _normalize_symbol(s: str) -> str:
+    return re.sub(r"[^A-Za-z0-9]", "", s).upper()
+
+
+def discover_nse(company: Company, client: httpx.Client, rate: float = 0.4) -> list[ReportRef]:
     if not company.nse_symbol:
         return []
     refs: list[ReportRef] = []
     symbols = [company.nse_symbol, *[a for a in company.aliases if a.isupper()
                                      and " " not in a]]
+    valid_norm_syms = {_normalize_symbol(s) for s in [company.nse_symbol, *company.aliases] if s}
     seen_fy: set[int] = set()
     for sym in symbols:
         try:
@@ -101,14 +125,41 @@ def discover_nse(company: Company, client: httpx.Client) -> list[ReportRef]:
             url = row.get("fileName") or row.get("filename")
             if not fy or not url or fy in seen_fy:
                 continue
+
+            clean_url = url.strip()
+            fn_sym, fn_years = parse_nse_url_filename(clean_url)
+
+            # Check for misfiled attachment: symbol mismatch
+            if fn_sym:
+                if _normalize_symbol(fn_sym) not in valid_norm_syms:
+                    print(f"WARN [discover_nse] Mis-filed attachment for {company.company_id}: "
+                          f"URL symbol '{fn_sym}' != '{company.nse_symbol}' (skipping)", file=sys.stderr)
+                    continue
+
+            # Check for misfiled attachment: fiscal year mismatch
+            if fn_years:
+                parsed_fy: int | None = None
+                if "_" in fn_years:
+                    p1, p2 = fn_years.split("_", 1)
+                    parsed_fy = _fy_end_from_pair(p1, p2)
+                elif fn_years.isdigit():
+                    parsed_fy = int(fn_years)
+                if parsed_fy and parsed_fy != fy:
+                    print(f"WARN [discover_nse] Mis-filed attachment for {company.company_id}: "
+                          f"URL year '{fn_years}' != declared FY {fy} (skipping)", file=sys.stderr)
+                    continue
+
             seen_fy.add(fy)
             refs.append(ReportRef(
                 company_id=company.company_id, fy_end=fy, source="nse",
-                url=url.strip(),
+                url=clean_url,
                 declared_name=row.get("companyName"),
                 declared_fy=f"{row.get('fromYr')}-{row.get('toYr')}",
-                priority=10))
-        time.sleep(0.4)
+                priority=10,
+                filename_symbol=fn_sym,
+                filename_years=fn_years))
+        if rate > 0:
+            time.sleep(rate)
     return refs
 
 
@@ -165,9 +216,12 @@ def discover_screener(company: Company, client: httpx.Client) -> list[ReportRef]
         if not yr:
             continue
         fy = int(yr.group(yr.lastindex or 1))
+        fn_sym, fn_years = parse_nse_url_filename(url)
         refs.append(ReportRef(company_id=company.company_id, fy_end=fy,
                               source="screener", url=url, declared_fy=label.strip(),
-                              priority=30))
+                              priority=30,
+                              filename_symbol=fn_sym,
+                              filename_years=fn_years))
     return refs
 
 
