@@ -1440,6 +1440,113 @@ def test_p26_sampler_sweeps_offset_for_longer_doc():
     assert 24 in index  # 24 % 6 == 0
 
 
+def test_p27_is_cross_reference_pointer():
+    from arpipe.segment import is_cross_reference_pointer
+
+    # Pointer followed by terminator (like SAIL FY2011 page 26)
+    p26_text = (
+        "MANAGEMENT DISCUSSION & ANALYSIS REPORT\n"
+        "The Management Discussion & Analysis Report covering the performance "
+        "and outlook of the Company is enclosed.\n"
+        "AUDITORS' REPORT\n"
+        "The Statutory Auditors' Report on the Accounts of the Company..."
+    )
+    assert is_cross_reference_pointer(p26_text, "MANAGEMENT DISCUSSION & ANALYSIS REPORT")
+
+    # Pointer with 'forms part of'
+    part_of_text = (
+        "MANAGEMENT DISCUSSION AND ANALYSIS\n"
+        "The Management Discussion and Analysis Report forms part of the Annual Report.\n"
+        "REPORT ON CORPORATE GOVERNANCE\n"
+    )
+    assert is_cross_reference_pointer(part_of_text, "MANAGEMENT DISCUSSION AND ANALYSIS")
+
+    # Pointer with 'is annexed to'
+    annexed_text = (
+        "MANAGEMENT DISCUSSION AND ANALYSIS\n"
+        "Management Discussion and Analysis is annexed to this Report as Annexure B.\n"
+        "DIRECTORS' REPORT\n"
+    )
+    assert is_cross_reference_pointer(annexed_text, "MANAGEMENT DISCUSSION AND ANALYSIS")
+
+    # Genuine MD&A section start (must NOT be treated as pointer)
+    real_text = (
+        "Management Discussion and Analysis Report\n"
+        "The Management presents its Analysis Report covering performance.\n"
+        "A. INDUSTRY STRUCTURE & DEVELOPMENTS\n"
+        "General Economic Environment\n"
+        "World economy registered a smart recovery in 2010 with output growth of 5%..."
+    )
+    assert not is_cross_reference_pointer(real_text, "Management Discussion and Analysis Report")
+
+
+def test_p27_multiline_heading_and_cross_ref_rejection():
+    from arpipe.models import DocProfile, PageProfile, PageKind, Script
+    from arpipe import segment
+    import pymupdf
+
+    # Synthetic document:
+    # Page 5 has a cross-reference pointer inside Directors' report
+    # Page 10 has a two-line heading ("Management Discussion" \n "and Analysis Report") with real prose
+    # Page 15 has terminator "Ten Years at a glance"
+    profile = DocProfile(
+        sha256="test_p27_sail_pattern",
+        n_pages=20,
+        pages=[PageProfile(i, PageKind.DIGITAL, 500, 100, 1.0, 0.0, 0, 1, Script.LATIN, 0.0) for i in range(20)],
+        doc_kind="digital",
+        frac_needing_ocr=0.0,
+        has_outline=False,
+        outline_titles=[],
+    )
+
+    page_texts = {
+        5: (
+            "Vigilance manual was updated.\n"
+            "MANAGEMENT DISCUSSION & ANALYSIS REPORT\n"
+            "The Management Discussion & Analysis Report covering performance is enclosed.\n"
+            "AUDITORS' REPORT\n"
+            "Statutory auditor report is attached."
+        ),
+        10: (
+            "Management Discussion\n"
+            "and Analysis Report\n"
+            "INDUSTRY STRUCTURE & DEVELOPMENTS\n"
+            "The industry showed strong expansion during the financial year..."
+        ),
+        15: "Ten Years at a glance\nKey Financial Highlights over the last decade...",
+    }
+
+    doc = pymupdf.open()
+    for p in range(20):
+        page = doc.new_page()
+        if p == 5:
+            # Body size ~10pt, heading 10pt bold
+            page.insert_text((50, 50), "Vigilance manual was updated.\n", fontsize=10)
+            page.insert_text((50, 100), "MANAGEMENT DISCUSSION & ANALYSIS REPORT\n", fontsize=10)
+            page.insert_text((50, 120), "The Management Discussion & Analysis Report covering performance is enclosed.\n", fontsize=10)
+            page.insert_text((50, 150), "AUDITORS' REPORT\n", fontsize=10)
+        elif p == 10:
+            # Large heading 24pt
+            page.insert_text((50, 50), "Management Discussion\n", fontsize=24)
+            page.insert_text((50, 85), "and Analysis Report\n", fontsize=24)
+            page.insert_text((50, 130), "INDUSTRY STRUCTURE & DEVELOPMENTS\n", fontsize=10)
+            page.insert_text((50, 150), "The industry showed strong expansion during the financial year...\n" * 5, fontsize=10)
+        elif p == 15:
+            page.insert_text((50, 50), "Ten Years at a glance\n", fontsize=24)
+            page.insert_text((50, 100), "Financial highlights table body text\n", fontsize=10)
+        else:
+            page.insert_text((50, 50), f"Page {p} normal text.\n", fontsize=10)
+
+    span, diag = segment.locate(doc, profile, page_texts)
+    doc.close()
+
+    assert span is not None
+    assert span.start_page == 10
+    assert span.end_page == 14
+    assert span.terminator_text == "Ten Years at a glance"
+
+
+
 
 
 

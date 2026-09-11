@@ -60,10 +60,23 @@ MDA_TERMINATOR_PATTERNS = [
     r"Shareholder(?:s)?\s+Information",
     r"General\s+Shareholder\s+Information",
     r"Consolidated\s+Accounts",
+    r"Ten\s+Years?(?:'s|\x27s)?\s+(?:at\s+a\s+glance|Financial\s+Highlights|Summary)",
     r"Ten\s+Year\s+Financial\s+Highlights",
 ]
 MDA_TERMINATOR_RE = re.compile("|".join(f"(?:{p})" for p in MDA_TERMINATOR_PATTERNS),
                                re.IGNORECASE)
+
+# Pointers in Directors' Reports that mention MD&A but only refer to the
+# separate section enclosed or annexed elsewhere in the report (P27).
+MDA_POINTER_PATTERNS = [
+    r"\b(?:is|are)\s+(?:enclosed|attached|annexed|given|presented|provided)\b",
+    r"\bforms?\s+part\s+of\s+(?:this|the)\s+(?:Annual\s+)?Report\b",
+    r"\b(?:enclosed|attached|annexed)\s+(?:herewith|hereto|as\s+Annexure|at\s+Annexure)\b",
+    r"\bseparately\s+(?:enclosed|attached|annexed|presented|given)\b",
+    r"\bpresented\s+in\s+a\s+separate\s+section\b",
+]
+MDA_POINTER_RE = re.compile("|".join(f"(?:{p})" for p in MDA_POINTER_PATTERNS),
+                            re.IGNORECASE)
 
 # Kept separate because multi-column reading-order recovery can place this
 # heading late in the page text. Requiring a complete standalone line avoids

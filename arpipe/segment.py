@@ -34,7 +34,8 @@ import pymupdf
 
 from .models import DocProfile, MDASpan
 from .patterns import (ANNEXURE_HEADING_RE, MDA_ACRONYM_RE, MDA_BODY_CUE_RES,
-                       MDA_COMBINED_RE, MDA_HEADING_RE, MDA_TERMINATOR_RE)
+                       MDA_COMBINED_RE, MDA_HEADING_RE, MDA_POINTER_RE,
+                       MDA_TERMINATOR_RE)
 
 # --- tunable thresholds ---------------------------------------------------
 # All thresholds provisional until re-fit against the labelled 300.
@@ -174,6 +175,44 @@ def _is_title_or_caps(s: str) -> bool:
             if not w[0].isupper():
                 return False
     return True
+
+
+def is_cross_reference_pointer(page_text: str, heading_text: str) -> bool:
+    """True if a heading mention is merely a cross-reference pointer in the Directors' Report.
+
+    Indian annual reports commonly contain cross-reference statements like:
+      'The Management Discussion & Analysis Report covering the performance
+       and outlook of the Company is enclosed.'
+      'The Management Discussion and Analysis Report forms part of the Annual Report.'
+      'Management Discussion and Analysis is given in Annexure A.'
+    followed immediately by the next statutory heading (e.g. AUDITORS' REPORT).
+    Such pointers are not the actual start of the MD&A section.
+    """
+    if not page_text or not heading_text:
+        return False
+    lower_page = page_text.lower()
+    lower_hdg = heading_text.lower()
+    idx = lower_page.find(lower_hdg)
+    if idx < 0:
+        clean_hdg = " ".join(lower_hdg.split())
+        clean_page = " ".join(lower_page.split())
+        idx = clean_page.find(clean_hdg)
+        if idx >= 0:
+            after = clean_page[idx + len(clean_hdg):]
+        else:
+            return False
+    else:
+        after = page_text[idx + len(heading_text):]
+
+    words = after.split()
+    snippet = " ".join(words[:80])
+    if MDA_POINTER_RE.search(snippet):
+        if MDA_TERMINATOR_RE.search(snippet):
+            return True
+        if len(words) < 60:
+            return True
+
+    return False
 
 
 def check_terminator_line(
@@ -613,8 +652,23 @@ def from_headings(doc: pymupdf.Document, page_texts: dict[int, str],
             hits = page_headings(doc.load_page(n))
         except Exception:
             continue
-        for h in hits:
-            if not _is_mda_title(h.text):
+        cand_hits: list[HeadingHit] = []
+        for i, h in enumerate(hits):
+            if _is_mda_title(h.text):
+                cand_hits.append(h)
+            elif i + 1 < len(hits):
+                h2 = hits[i + 1]
+                if (h.bold or h.rel_size >= 1.2) and 0.0 <= (h2.y_frac - h.y_frac) <= 0.10:
+                    comb = f"{h.text} {h2.text}"
+                    if _is_mda_title(comb):
+                        cand_hits.append(HeadingHit(
+                            page_no=n, text=comb, size=max(h.size, h2.size),
+                            rel_size=max(h.rel_size, h2.rel_size), y_frac=h.y_frac,
+                            is_standalone=True, bold=h.bold or h2.bold,
+                        ))
+
+        for h in cand_hits:
+            if is_cross_reference_pointer(page_texts.get(n, ""), h.text):
                 continue
             sc = HEADING_BASE_SCORE
             sc += 0.25 * min(1.0, (h.rel_size - 1.0) / 0.6)
@@ -764,18 +818,27 @@ def from_text_headings(page_texts: dict[int, str], skip_first: int = 2,
         if not lines:
             continue
         for i, ln in enumerate(lines[:top_lines]):
-            if len(ln) > 110 or not _is_mda_title(ln):
+            cand_ln = None
+            if len(ln) <= 110 and _is_mda_title(ln):
+                cand_ln = ln
+            elif i + 1 < len(lines[:top_lines]):
+                two = f"{ln} {lines[i + 1]}"
+                if len(two) <= 110 and _is_mda_title(two):
+                    cand_ln = two
+            if not cand_ln:
+                continue
+            if is_cross_reference_pointer(page_texts[n], cand_ln):
                 continue
             sc = 0.40 + 0.10 * (top_lines - i) / top_lines
-            if len(ln) <= 60:
+            if len(cand_ln) <= 60:
                 sc += 0.10
-            if ln.isupper():
+            if cand_ln.isupper():
                 sc += 0.05
             # a contents page mentions every section; do not start there
             if sum(1 for l in lines if MDA_TERMINATOR_RE.search(l)) >= 3:
                 sc -= 0.30
             if best is None or sc > best[0]:
-                best = (sc, n, ln)
+                best = (sc, n, cand_ln)
     if not best:
         return None
     sc, n, ln = best
@@ -807,6 +870,9 @@ def refine_end(span: MDASpan, page_texts: dict[int, str], fetch_text,
     index-sample pass, where pages beyond the sample scored zero simply
     because they had not been read yet.
     """
+    if span.terminator_match is not None:
+        return span
+
     n = span.end_page
     term_match = span.terminator_match
     term_text = span.terminator_text
@@ -855,8 +921,9 @@ def trim_span(span: MDASpan, page_texts: dict[int, str]) -> MDASpan:
         heading_window = " ".join(lines)[:500]
         if (any(len(l) <= 110 and _is_mda_title(l) for l in lines)
                 or MDA_HEADING_RE.search(heading_window)):
-            start = n
-            break
+            if not is_cross_reference_pointer(t, heading_window):
+                start = n
+                break
 
     end = span.end_page
     term_match = span.terminator_match
