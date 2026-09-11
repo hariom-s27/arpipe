@@ -29,8 +29,16 @@ def _load_companies(path: str) -> list[Company]:
 
 
 def cmd_universe(a: argparse.Namespace) -> int:
+    cap_bands = {}
+    if not getattr(a, "no_cap_bands", False):
+        try:
+            cap_bands = universe.fetch_cap_bands()
+            print(f"Fetched {len(cap_bands)} index-classified companies for cap bands (Nifty 100/150/250)")
+        except Exception as exc:
+            print(f"Warning: Failed to fetch market cap bands: {exc}")
+
     if getattr(a, "in_csv", None):
-        collapsed, removed = universe.collapse_companies_file(a.in_csv, a.out)
+        collapsed, removed = universe.collapse_companies_file(a.in_csv, a.out, cap_bands=cap_bands)
         print(f"Rebuilt {a.out}: {len(collapsed)} companies ({removed} rows removed by DVR/duplicate collapse)")
         return 0
 
@@ -53,7 +61,7 @@ def cmd_universe(a: argparse.Namespace) -> int:
         except Exception as exc:
             print(f"Warning: Failed to fetch live BSE master: {exc}")
 
-    companies = universe.build_master(nse, bse, chains)
+    companies = universe.build_master(nse, bse, chains, cap_bands=cap_bands)
     universe.to_csv(companies, a.out)
     bse_only = sum(1 for c in companies if c.exchange == "bse")
     nse_only = sum(1 for c in companies if c.exchange == "nse")

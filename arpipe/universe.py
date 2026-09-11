@@ -383,6 +383,45 @@ def collapse_universe(companies: list[Company]) -> tuple[list[Company], int]:
     return collapsed, len(companies) - len(collapsed)
 
 
+NSE_INDEX_URLS: dict[str, str] = {
+    "large": "https://archives.nseindia.com/content/indices/ind_nifty100list.csv",
+    "mid": "https://archives.nseindia.com/content/indices/ind_niftymidcap150list.csv",
+    "small": "https://archives.nseindia.com/content/indices/ind_niftysmallcap250list.csv",
+}
+
+
+def fetch_cap_bands(client: Any = None) -> dict[str, str]:
+    """Fetch official SEBI/AMFI market-cap categorisation from index constituents.
+
+    Top 100: Large cap (Nifty 100)
+    101-250: Mid cap (Nifty Midcap 150)
+    251-500: Small cap (Nifty Smallcap 250)
+    501+: Micro cap (default for remaining companies)
+    """
+    import io
+    import httpx
+
+    cl = client or httpx.Client(headers={"User-Agent": "Mozilla/5.0"}, timeout=15)
+    cap_map: dict[str, str] = {}
+    should_close = client is None
+    try:
+        for band, url in NSE_INDEX_URLS.items():
+            try:
+                r = cl.get(url)
+                if r.status_code == 200:
+                    reader = csv.DictReader(io.StringIO(r.text))
+                    for row in reader:
+                        isin = (row.get("ISIN Code") or row.get("ISIN") or "").strip().upper()
+                        if isin:
+                            cap_map[isin] = band
+            except Exception as exc:
+                print(f"Warning: Failed to fetch {band} cap band list from {url}: {exc}", file=sys.stderr)
+    finally:
+        if should_close:
+            cl.close()
+    return cap_map
+
+
 def build_master(nse: dict[str, dict], bse: dict[str, dict],
                  symbol_chains: dict[str, list[str]],
                  cap_bands: dict[str, str] | None = None) -> list[Company]:
@@ -411,7 +450,7 @@ def build_master(nse: dict[str, dict], bse: dict[str, dict],
             bse_scrip=b.get("bse_scrip"),
             aliases=sorted(set(a for a in aliases if a)),
             sector=b.get("industry") or None,
-            cap_band=cap_bands.get(isin),
+            cap_band=cap_bands.get(isin, "micro") if cap_bands else None,
             status=b.get("status", "Active").lower(),
             series_type=st,
             exchange=ex,
@@ -457,9 +496,14 @@ def from_csv(path: str) -> list[Company]:
     return out
 
 
-def collapse_companies_file(in_path: str, out_path: str | None = None) -> tuple[list[Company], int]:
+def collapse_companies_file(in_path: str, out_path: str | None = None,
+                            cap_bands: dict[str, str] | None = None) -> tuple[list[Company], int]:
     out_path = out_path or in_path
     companies = from_csv(in_path)
+    if cap_bands:
+        for c in companies:
+            if not c.cap_band:
+                c.cap_band = cap_bands.get(c.isin or "", "micro")
     collapsed, removed = collapse_universe(companies)
     to_csv(collapsed, out_path)
     return collapsed, removed
