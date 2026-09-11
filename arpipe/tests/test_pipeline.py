@@ -1546,6 +1546,118 @@ def test_p27_multiline_heading_and_cross_ref_rejection():
     assert span.terminator_text == "Ten Years at a glance"
 
 
+# ------------------------------------------------------------- P28 Modern Steels tests
+def test_mda_heading_plural_discussions():
+    from arpipe.patterns import MDA_COMBINED_RE, MDA_HEADING_RE
+    assert MDA_HEADING_RE.search("MANAGEMENT DISCUSSIONS AND ANALYSIS")
+    assert MDA_HEADING_RE.search("Management Discussions & Analysis")
+    assert MDA_HEADING_RE.search("MANAGERIAL DISCUSSIONS AND ANALYSIS REPORT")
+    assert MDA_COMBINED_RE.search("Directors' Report and Management Discussions")
+
+
+def test_cross_reference_pointer_in_heading():
+    from arpipe.segment import is_cross_reference_pointer
+    # Embedded in heading text itself
+    h1 = "Management Discussion and Analysis forms part of the Annual Report, which is posted to the"
+    assert is_cross_reference_pointer("Some page text", h1)
+
+    h2 = "A separate report on Corporate Governance and Management Discussions & Analysis is attached herewith and forms part of this report"
+    assert is_cross_reference_pointer(h2, h2)
+
+
+def test_terminator_end_page_midpage_vs_top():
+    from arpipe.segment import _terminator_end_page
+
+    # Mid-page terminator with strong body score
+    mid_match = {
+        "text": "Annexure 'A' to Directors Report",
+        "page": 10,
+        "line_index": 45,
+        "y_frac": 0.65,
+    }
+    body_text = "Key Threats include stiff competition. 3. Risks and Concerns. 4. Internal Control Systems and their Adequacy. 7. Cautionary Statement"
+    assert _terminator_end_page(9, 10, mid_match, body_text) == 10
+
+    # Top-of-page terminator (next section starts at top)
+    top_match = {
+        "text": "REPORT ON CORPORATE GOVERNANCE",
+        "page": 11,
+        "line_index": 0,
+        "y_frac": 0.05,
+    }
+    assert _terminator_end_page(9, 11, top_match, "Corporate governance report content...") == 10
+
+
+def test_modern_steels_synthetic_locate():
+    from arpipe.models import DocProfile, PageKind, PageProfile, Script
+
+    profile = DocProfile(
+        sha256="test_modern",
+        n_pages=20,
+        pages=[PageProfile(i, PageKind.DIGITAL, 500, 100, 0.5, 0.0, 0, 1, Script.LATIN, 0.0) for i in range(20)],
+        doc_kind="digital",
+        frac_needing_ocr=0.0,
+        has_outline=False,
+    )
+
+    page_texts = {
+        5: (
+            "CORPORATE GOVERNANCE AND MANAGEMENT DISCUSSIONS & ANALYSIS\n"
+            "A separate report on Corporate Governance and Management Discussions & Analysis is attached herewith and forms part of this report\n"
+            "HUMAN RESOURCES\nThe company has motivated workforce."
+        ),
+        9: (
+            "Chairman & Whole Time Director\n"
+            "MANAGEMENT DISCUSSIONS AND ANALYSIS\n"
+            "1. Industry's Structure and Developments\n"
+            "The steel sector witnessed challenging times during the financial year..."
+        ),
+        10: (
+            "Key Threats include volatility of raw material prices.\n"
+            "3. Risks and concerns the management perceives\n"
+            "4. Internal control system and their adequacy\n"
+            "7. Cautionary statement\n"
+            "Place: Chandigarh\n"
+            "AMARJIT GOYAL\n"
+            "Chairman & Whole Time Director\n"
+            "Annexure 'A' to Directors Report\n"
+            "statement pursuant to Section 217(2A)..."
+        ),
+        11: (
+            "Annexure 'B' to Directors' Report\n"
+            "INFORMATION AS PER SECTION 217(1)(e)...\n"
+        ),
+    }
+
+    doc = pymupdf.open()
+    for p in range(20):
+        page = doc.new_page()
+        if p == 5:
+            page.insert_text((50, 50), "CORPORATE GOVERNANCE AND MANAGEMENT DISCUSSIONS & ANALYSIS\n", fontsize=10)
+            page.insert_text((50, 80), "A separate report on Corporate Governance and Management Discussions & Analysis is attached herewith and forms part of this report\n", fontsize=10)
+        elif p == 9:
+            page.insert_text((50, 50), "Chairman & Whole Time Director\n", fontsize=10)
+            page.insert_text((50, 80), "MANAGEMENT DISCUSSIONS AND ANALYSIS\n", fontsize=16)
+            page.insert_text((50, 120), "1. Industry's Structure and Developments\n" * 5, fontsize=10)
+        elif p == 10:
+            page.insert_text((50, 50), "Key Threats include volatility of raw material prices.\n" * 5, fontsize=10)
+            page.insert_text((50, 300), "Annexure 'A' to Directors Report\n", fontsize=14)
+            page.insert_text((50, 330), "statement pursuant to Section 217(2A)...\n", fontsize=10)
+        elif p == 11:
+            page.insert_text((50, 50), "Annexure 'B' to Directors' Report\n", fontsize=16)
+            page.insert_text((50, 80), "INFORMATION AS PER SECTION 217(1)(e)...\n", fontsize=10)
+        else:
+            page.insert_text((50, 50), f"Page {p} normal text.\n", fontsize=10)
+
+    span, diag = segment.locate(doc, profile, page_texts)
+    doc.close()
+
+    assert span is not None
+    assert span.start_page == 9
+    assert span.end_page == 10
+    assert span.heading_text == "MANAGEMENT DISCUSSIONS AND ANALYSIS"
+
+
 
 
 

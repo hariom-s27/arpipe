@@ -22,7 +22,7 @@ import re
 _MD = r"Manage(?:ment|rial)(?:['’]?s)?"
 _AND = r"(?:and|&|and/or|cum)"
 MDA_HEADING_RE = re.compile(
-    rf"{_MD}\s*[-–—:]?\s*Discussion\s*{_AND}?\s*Analysis"
+    rf"{_MD}\s*[-–—:]?\s*Discussions?\s*{_AND}?\s*Analysis"
     rf"(?:\s*(?:Report|Statement|Section))?",
     re.IGNORECASE,
 )
@@ -32,7 +32,7 @@ MDA_ACRONYM_RE = re.compile(r"\bMD\s*&\s*A\b|\bMDA\b(?!\w)", re.IGNORECASE)
 
 # Combined-section headings: MD&A folded into the Directors'/Board's Report.
 MDA_COMBINED_RE = re.compile(
-    rf"(?:Directors|Board)['’]?s?\s+Report\s+{_AND}\s+{_MD}\s*Discussion",
+    rf"(?:Directors|Board)['’]?s?\s+Report\s+{_AND}\s+{_MD}\s*Discussions?",
     re.IGNORECASE,
 )
 
@@ -108,7 +108,7 @@ MDA_BODY_CUES = [
     r"[Ii]nterest\s+[Cc]overage\s+[Rr]atio",
     r"[Oo]perating\s+[Pp]rofit\s+[Mm]argin",
 ]
-MDA_BODY_CUE_RES = [re.compile(p) for p in MDA_BODY_CUES]
+MDA_BODY_CUE_RES = [re.compile(p, re.IGNORECASE) for p in MDA_BODY_CUES]
 
 # The 8 ratios SEBI made mandatory from FY2019-20 (LODR amendment, May 2018).
 # Their presence is an era signal AND an MD&A signal.

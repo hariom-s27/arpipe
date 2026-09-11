@@ -190,6 +190,10 @@ def is_cross_reference_pointer(page_text: str, heading_text: str) -> bool:
     """
     if not page_text or not heading_text:
         return False
+
+    if MDA_POINTER_RE.search(heading_text):
+        return True
+
     lower_page = page_text.lower()
     lower_hdg = heading_text.lower()
     idx = lower_page.find(lower_hdg)
@@ -206,8 +210,9 @@ def is_cross_reference_pointer(page_text: str, heading_text: str) -> bool:
 
     words = after.split()
     snippet = " ".join(words[:80])
-    if MDA_POINTER_RE.search(snippet):
-        if MDA_TERMINATOR_RE.search(snippet):
+    full_snippet = " ".join(page_text[idx:].split()[:80])
+    if MDA_POINTER_RE.search(snippet) or MDA_POINTER_RE.search(full_snippet):
+        if MDA_TERMINATOR_RE.search(snippet) or MDA_TERMINATOR_RE.search(full_snippet):
             return True
         if len(words) < 60:
             return True
@@ -294,10 +299,12 @@ def check_terminator_line(
     if font_signal == "none":
         font_signal = "all_caps" if line_str.isupper() else "title_case"
 
+    y_frac = heading_hit.y_frac if heading_hit is not None else (line_idx / max(1, len(raw_lines)))
     return {
         "text": line_str,
         "page": page_no,
         "line_index": line_idx,
+        "y_frac": round(y_frac, 3),
         "shape_ok": True,
         "font_signal": font_signal,
     }
@@ -656,7 +663,7 @@ def from_headings(doc: pymupdf.Document, page_texts: dict[int, str],
         for i, h in enumerate(hits):
             if _is_mda_title(h.text):
                 cand_hits.append(h)
-            elif i + 1 < len(hits):
+            elif i + 1 < len(hits) and not _is_mda_title(hits[i + 1].text):
                 h2 = hits[i + 1]
                 if (h.bold or h.rel_size >= 1.2) and 0.0 <= (h2.y_frac - h.y_frac) <= 0.10:
                     comb = f"{h.text} {h2.text}"
@@ -693,6 +700,37 @@ def from_headings(doc: pymupdf.Document, page_texts: dict[int, str],
                    score=min(0.92, sc))
 
 
+# ---------------------------------------------------------------------- S4 body
+def page_body_score(text: str) -> float:
+    if not text.strip():
+        return 0.0
+    hits = sum(1 for r in MDA_BODY_CUE_RES if r.search(text))
+    sc = min(1.0, hits / 4.0)
+    if MDA_HEADING_RE.search(text):
+        sc += 0.35
+    if re.search(r"cautionary\s+statement", text, re.I):
+        sc += 0.15
+    return min(1.6, sc)
+
+
+def _terminator_end_page(start: int, page_no: int, match: dict[str, Any] | None,
+                         page_text: str = "") -> int:
+    """Determine the MD&A end page when a terminator match is found on page_no.
+
+    If the terminator is at the top of the page (line_index < 5, y_frac < 0.35),
+    page_no belongs to the next section and MD&A ended on page_no - 1.
+    If the terminator is mid-page or lower and page_no contains MD&A prose
+    (body score >= 0.25), page_no contains the conclusion of MD&A and is included.
+    """
+    if not match:
+        return max(start, page_no - 1)
+    line_idx = match.get("line_index", 0)
+    y_frac = match.get("y_frac", 0.0)
+    if (line_idx >= 5 or y_frac >= 0.35) and page_body_score(page_text) >= 0.25:
+        return max(start, page_no)
+    return max(start, page_no - 1)
+
+
 def _find_terminator(doc: pymupdf.Document, page_texts: dict[int, str],
                      start: int) -> tuple[int, dict | None]:
     limit = min(start + MAX_MDA_PAGES, max(page_texts) if page_texts else start)
@@ -706,21 +744,8 @@ def _find_terminator(doc: pymupdf.Document, page_texts: dict[int, str],
             hits = []
         match = find_terminator_match_on_page(n, txt, hits)
         if match:
-            return max(start, n - 1), match
+            return _terminator_end_page(start, n, match, txt), match
     return min(limit, start + MAX_MDA_PAGES - 1), None
-
-
-# ---------------------------------------------------------------------- S4 body
-def page_body_score(text: str) -> float:
-    if not text.strip():
-        return 0.0
-    hits = sum(1 for r in MDA_BODY_CUE_RES if r.search(text))
-    sc = min(1.0, hits / 4.0)
-    if MDA_HEADING_RE.search(text):
-        sc += 0.35
-    if re.search(r"cautionary\s+statement", text, re.I):
-        sc += 0.15
-    return min(1.6, sc)
 
 
 def from_body_scores(page_texts: dict[int, str]) -> MDASpan | None:
@@ -821,7 +846,7 @@ def from_text_headings(page_texts: dict[int, str], skip_first: int = 2,
             cand_ln = None
             if len(ln) <= 110 and _is_mda_title(ln):
                 cand_ln = ln
-            elif i + 1 < len(lines[:top_lines]):
+            elif i + 1 < len(lines[:top_lines]) and not _is_mda_title(lines[i + 1]):
                 two = f"{ln} {lines[i + 1]}"
                 if len(two) <= 110 and _is_mda_title(two):
                     cand_ln = two
@@ -858,7 +883,7 @@ def _find_terminator_text(page_texts: dict[int, str], start: int,
             continue
         match = find_terminator_match_on_page(n, txt)
         if match:
-            return max(start, n - 1), match
+            return _terminator_end_page(start, n, match, txt), match
     return max(start, nos[-1] if nos else start), None
 
 
@@ -934,7 +959,7 @@ def trim_span(span: MDASpan, page_texts: dict[int, str]) -> MDASpan:
             continue
         match = find_terminator_match_on_page(n, t)
         if match:
-            end = n - 1
+            end = _terminator_end_page(start, n, match, t)
             term_match = match
             term_text = match["text"]
             break
