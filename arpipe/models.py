@@ -53,6 +53,7 @@ class Company:
     alternate_isins: list[str] = dc.field(default_factory=list)  # P4: other ISINs collapsed into this row
     series_type: str = "ordinary"                                # P4: ordinary | dvr | partly_paid | other
     exchange: str = "both"                                       # P10: "nse" | "bse" | "both"
+    cap_band_current: str | None = None                          # P30: current AMFI market-cap band
 
 
 @dc.dataclass(slots=True)

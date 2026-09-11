@@ -368,12 +368,22 @@ def cmd_sample_for_labelling(a: argparse.Namespace) -> int:
     if a.store:
         stores = a.store if isinstance(a.store, list) else [a.store]
     else:
-        for s in ["p11_store", "live_store", "store"]:
-            if os.path.exists(s):
+        candidates = [
+            "p11_store", "pilot_store", "live_store", "store",
+            os.path.join("arpipe", "p11_store"),
+            os.path.join("arpipe", "pilot_store"),
+            os.path.join("arpipe", "live_store"),
+            os.path.join("arpipe", "store"),
+        ]
+        for s in candidates:
+            if os.path.exists(s) and os.path.abspath(s) not in [os.path.abspath(x) for x in stores]:
                 stores.append(s)
+    comp_path = a.companies
+    if not os.path.exists(comp_path) and os.path.exists(os.path.join("arpipe", comp_path)):
+        comp_path = os.path.join("arpipe", comp_path)
     labeller.sample_for_labelling(
         store_roots=stores,
-        companies_path=a.companies,
+        companies_path=comp_path,
         n_samples=a.n,
         out_csv=a.out,
     )

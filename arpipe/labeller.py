@@ -96,10 +96,12 @@ def era_for_year(fy_end: int | None) -> str:
 
 
 def cap_band_for_company(co: Company | None) -> str:
-    if co and co.cap_band and co.cap_band.strip():
-        b = co.cap_band.strip().lower()
-        if b in CAP_BANDS:
-            return b
+    if co:
+        band = getattr(co, "cap_band_current", None) or co.cap_band
+        if band and band.strip():
+            b = band.strip().lower()
+            if b in CAP_BANDS:
+                return b
     if co is None:
         return "small"
     if co.exchange == "bse":

@@ -351,6 +351,9 @@ def collapse_universe(companies: list[Company]) -> tuple[list[Company], int]:
         bse_scrip = primary.bse_scrip or next((m.bse_scrip for m in group if m.bse_scrip), None)
         sector = primary.sector or next((m.sector for m in group if m.sector), None)
         cap_band = primary.cap_band or next((m.cap_band for m in group if m.cap_band), None)
+        cap_band_current = (primary.cap_band_current
+                            or next((m.cap_band_current for m in group if m.cap_band_current), None)
+                            or cap_band)
 
         # Determine exchange on merged company:
         if (nse_symbol and bse_scrip) or any(m.exchange == "both" for m in group) or (
@@ -376,6 +379,7 @@ def collapse_universe(companies: list[Company]) -> tuple[list[Company], int]:
             alternate_isins=alt_isins,
             series_type=primary.series_type,
             exchange=exchange,
+            cap_band_current=cap_band_current,
         )
         collapsed.append(merged)
 
@@ -442,6 +446,7 @@ def build_master(nse: dict[str, dict], bse: dict[str, dict],
             aliases.extend(symbol_chains[sym])
         st = detect_series_type(isin, sym, series, canonical_name=name)
         ex = "both" if (isin in nse and isin in bse) else ("nse" if isin in nse else "bse")
+        band = cap_bands.get(isin, "micro") if cap_bands else None
         companies.append(Company(
             company_id=isin,
             canonical_name=name,
@@ -450,10 +455,11 @@ def build_master(nse: dict[str, dict], bse: dict[str, dict],
             bse_scrip=b.get("bse_scrip"),
             aliases=sorted(set(a for a in aliases if a)),
             sector=b.get("industry") or None,
-            cap_band=cap_bands.get(isin, "micro") if cap_bands else None,
+            cap_band=band,
             status=b.get("status", "Active").lower(),
             series_type=st,
             exchange=ex,
+            cap_band_current=band,
         ))
     collapsed, _ = collapse_universe(companies)
     return collapsed
@@ -488,7 +494,11 @@ def from_csv(path: str) -> list[Company]:
                 has_nse = bool(row.get("nse_symbol"))
                 has_bse = bool(row.get("bse_scrip"))
                 row["exchange"] = "both" if (has_nse and has_bse) else ("nse" if has_nse else "bse")
-            for k in ("cin", "isin", "bse_scrip", "nse_symbol", "sector", "cap_band"):
+            if not row.get("cap_band_current") and row.get("cap_band"):
+                row["cap_band_current"] = row.get("cap_band")
+            if not row.get("cap_band") and row.get("cap_band_current"):
+                row["cap_band"] = row.get("cap_band_current")
+            for k in ("cin", "isin", "bse_scrip", "nse_symbol", "sector", "cap_band", "cap_band_current"):
                 if row.get(k) == "":
                     row[k] = None
             clean_row = {k: v for k, v in row.items() if k in company_fields}
@@ -504,6 +514,8 @@ def collapse_companies_file(in_path: str, out_path: str | None = None,
         for c in companies:
             if not c.cap_band:
                 c.cap_band = cap_bands.get(c.isin or "", "micro")
+            if not c.cap_band_current:
+                c.cap_band_current = c.cap_band
     collapsed, removed = collapse_universe(companies)
     to_csv(collapsed, out_path)
     return collapsed, removed

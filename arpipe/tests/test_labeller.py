@@ -20,6 +20,10 @@ def test_cap_band_classification():
     c1 = Company(company_id="C1", canonical_name="Co 1", cap_band="Large")
     assert labeller.cap_band_for_company(c1) == "large"
 
+    # Explicit company cap_band_current (P30)
+    c1b = Company(company_id="C1B", canonical_name="Co 1B", cap_band_current="mid")
+    assert labeller.cap_band_for_company(c1b) == "mid"
+
     # BSE-only fallback -> micro
     c2 = Company(company_id="C2", canonical_name="Co 2", exchange="bse")
     assert labeller.cap_band_for_company(c2) == "micro"
