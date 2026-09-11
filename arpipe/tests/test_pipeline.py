@@ -1220,5 +1220,168 @@ def test_p10_wire_bse_master(tmp_path):
     assert "19187e37" in refs[0].url
 
 
+def test_p25_outline_page0_invalidated_heading_wins():
+    from arpipe.models import DocProfile, MDASpan, PageProfile, PageKind, Script
+    from arpipe import segment
+    import pymupdf
+
+    # Mock profile with outline pointing to page 0
+    # Next bookmark is page 1 (so bookmark ends at page 0)
+    profile = DocProfile(
+        sha256="test_sha",
+        n_pages=30,
+        pages=[PageProfile(i, PageKind.DIGITAL, 500, 100, 1.0, 0.0, 0, 1, Script.LATIN, 0.0) for i in range(30)],
+        doc_kind="digital",
+        frac_needing_ocr=0.0,
+        has_outline=True,
+        outline_titles=[(1, "Management Discussion and Analysis", 0), (1, "Directors Report", 1)],
+    )
+
+    # Page 0 has only 7 words (cover)
+    # Page 1 has 10 words
+    # Pages 8 to 21 have real prose with Schedule V cues
+    prose_block = (
+        "Industry Structure and Developments in the sector have shown steady progress.\n"
+        "The company has performed well across all operational and commercial metrics. "
+        * 10
+    )
+    page_texts = {
+        0: "Annual Report 2013-14 KRBL Become Believe",
+        1: "Contents Corporate Overview Financials",
+        8: "Management Discussion and Analysis\n" + prose_block,
+    }
+    for p in range(9, 22):
+        page_texts[p] = f"Page {p} " + prose_block
+    page_texts[22] = "Directors' Report\nBoard of Directors..."
+
+    doc = pymupdf.open()
+    for p in range(30):
+        page = doc.new_page()
+        if p == 8:
+            page.insert_text((50, 30), "Management Discussion and Analysis", fontsize=18)
+            page.insert_text((50, 60), prose_block, fontsize=10)
+        elif p == 22:
+            page.insert_text((50, 30), "Directors' Report", fontsize=18)
+            page.insert_text((50, 60), "Board of Directors...", fontsize=10)
+        else:
+            page.insert_text((50, 50), page_texts.get(p, f"Page {p} blank content"), fontsize=10)
+
+    span, diag = segment.locate(doc, profile, page_texts)
+    doc.close()
+
+    assert span is not None
+    # Heading must win, outline must be invalidated
+    assert span.method.startswith("heading")
+    assert span.start_page == 8
+    assert span.end_page == 21
+    # Supporters must NOT count outline
+    val = diag.get("outline_validation")
+    assert val is not None
+    assert val["outcome"] == "invalidated"
+    assert val["accepted_start"] is None
+    assert val["walked"] == 8
+    assert val["reason"] == "no_prose_within_cap"
+    # Outline must not compete or support
+    assert all(c[0] != "outline" for c in diag["candidates"])
+
+
+def test_p25_outline_divider_walk_forward():
+    from arpipe.models import DocProfile, MDASpan, PageProfile, PageKind, Script
+    from arpipe import segment
+    import pymupdf
+
+    # Bookmark points to page 10 (divider), next bookmark is at page 25
+    profile = DocProfile(
+        sha256="test_sha2",
+        n_pages=30,
+        pages=[PageProfile(i, PageKind.DIGITAL, 500, 100, 1.0, 0.0, 0, 1, Script.LATIN, 0.0) for i in range(30)],
+        doc_kind="digital",
+        frac_needing_ocr=0.0,
+        has_outline=True,
+        outline_titles=[(1, "Management Discussion and Analysis", 10), (1, "Financial Statements", 25)],
+    )
+
+    page_texts = {
+        10: "Management Discussion & Analysis Divider",  # 5 words: fails word count
+        11: (
+            "Outlook for the domestic and global economy remains positive.\n"
+            "The company expects continued revenue expansion and operational efficiency. "
+            * 12
+        ),
+    }
+    for p in range(12, 25):
+        page_texts[p] = "Discussion on financial performance continues with detailed tables and text. " * 10
+    page_texts[25] = "Financial Statements Balance Sheet as at 31 March"
+
+    doc = pymupdf.open()
+    for p in range(30):
+        page = doc.new_page()
+        page.insert_text((50, 50), page_texts.get(p, f"Page {p} content"))
+
+    span, diag = segment.locate(doc, profile, page_texts)
+    doc.close()
+
+    assert span is not None
+    assert span.start_page == 11
+    assert span.method == "outline"
+    assert span.score >= segment.OUTLINE_BASE_SCORE - 0.05
+    outline_cand = next(c for c in diag["candidates"] if c[0] == "outline")
+    assert outline_cand[3] == round(segment.OUTLINE_BASE_SCORE - 0.05, 3)
+    val = diag.get("outline_validation")
+    assert val is not None
+    assert val["outcome"] == "accepted_with_walk"
+    assert val["accepted_start"] == 11
+    assert val["walked"] == 1
+    assert val["reason"] == "prose_found_at_walk"
+
+
+def test_p25_outline_direct_prose_accepted():
+    from arpipe.models import DocProfile, MDASpan, PageProfile, PageKind, Script
+    from arpipe import segment
+    import pymupdf
+
+    # Bookmark points to page 10 which directly contains valid prose
+    profile = DocProfile(
+        sha256="test_sha3",
+        n_pages=30,
+        pages=[PageProfile(i, PageKind.DIGITAL, 500, 100, 1.0, 0.0, 0, 1, Script.LATIN, 0.0) for i in range(30)],
+        doc_kind="digital",
+        frac_needing_ocr=0.0,
+        has_outline=True,
+        outline_titles=[(1, "Management Discussion and Analysis", 10), (1, "Auditor's Report", 25)],
+    )
+
+    page_texts = {
+        10: (
+            "Industry Structure and Developments in our core markets.\n"
+            "The financial year witnessed major developments in technology and operations. "
+            * 12
+        )
+    }
+    for p in range(11, 25):
+        page_texts[p] = "Risks and Concerns were addressed prudently by management. " * 10
+    page_texts[25] = "Independent Auditor's Report to the Members"
+
+    doc = pymupdf.open()
+    for p in range(30):
+        page = doc.new_page()
+        page.insert_text((50, 50), page_texts.get(p, f"Page {p} content"))
+
+    span, diag = segment.locate(doc, profile, page_texts)
+    doc.close()
+
+    assert span is not None
+    assert span.start_page == 10
+    assert span.method == "outline"
+    assert span.score == segment.OUTLINE_BASE_SCORE
+    val = diag.get("outline_validation")
+    assert val is not None
+    assert val["outcome"] == "accepted"
+    assert val["accepted_start"] == 10
+    assert val["walked"] == 0
+    assert val["reason"] == "valid_prose_at_target"
+
+
+
 
 

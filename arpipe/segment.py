@@ -137,7 +137,7 @@ def page_headings(page: pymupdf.Page, min_rel: float | None = None) -> list[Head
     out: list[HeadingHit] = []
     for txt, size, y, bold in lines:
         rel = size / body
-        if rel >= min_rel or (bold and len(txt) <= 90) or txt.isupper():
+        if rel >= rel_cut or (bold and len(txt) <= 90) or txt.isupper():
             out.append(HeadingHit(page.number, txt, size, rel, y / h,
                                   is_standalone=len(txt) <= 110, bold=bold))
     return out
@@ -304,9 +304,32 @@ def find_terminator_match_on_page(
 
 
 # ------------------------------------------------------------------- S1 outline
-def from_outline(profile: DocProfile) -> MDASpan | None:
+def _is_outline_prose(p: int, page_texts: dict[int, str]) -> bool:
+    """Validate that page p contains genuine MD&A prose."""
+    txt = page_texts.get(p, "")
+    if not txt:
+        return False
+    words = len(txt.split())
+    if words < 120:
+        return False
+    alpha = sum(1 for ch in txt if ch.isalpha())
+    alpha_ratio = alpha / max(1, len(txt))
+    if not (0.60 <= alpha_ratio <= 0.92):
+        return False
+    nxt_txt = page_texts.get(p + 1, "")
+    has_cue = any(r.search(txt) for r in MDA_BODY_CUE_RES) or (
+        bool(nxt_txt) and any(r.search(nxt_txt) for r in MDA_BODY_CUE_RES)
+    )
+    return has_cue
+
+
+def from_outline(
+    profile: DocProfile,
+    page_texts: dict[int, str] | None = None,
+    return_info: bool = False,
+) -> MDASpan | tuple[MDASpan | None, dict] | None:
     if not profile.outline_titles:
-        return None
+        return (None, {}) if return_info else None
     entries = sorted(profile.outline_titles, key=lambda e: e[2])
     start_i = None
     for i, (_lvl, title, pno) in enumerate(entries):
@@ -314,7 +337,7 @@ def from_outline(profile: DocProfile) -> MDASpan | None:
             start_i = i
             break
     if start_i is None:
-        return None
+        return (None, {}) if return_info else None
     s_lvl, s_title, s_page = entries[start_i]
     end_page = profile.n_pages - 1
     term = None
@@ -333,9 +356,61 @@ def from_outline(profile: DocProfile) -> MDASpan | None:
             break
     if end_page - s_page + 1 > MAX_MDA_PAGES:
         end_page = s_page + MAX_MDA_PAGES - 1
-    return MDASpan(start_page=s_page, end_page=max(s_page, end_page),
-                   method="outline", heading_text=s_title,
-                   terminator_text=term, terminator_match=term_match, score=OUTLINE_BASE_SCORE)
+
+    score = OUTLINE_BASE_SCORE
+    val_info: dict[str, Any] = {
+        "proposed_start": s_page,
+        "accepted_start": s_page,
+        "walked": 0,
+        "outcome": "accepted",
+        "reason": "valid_prose_at_target",
+    }
+
+    if page_texts is not None:
+        if _is_outline_prose(s_page, page_texts):
+            val_info["accepted_start"] = s_page
+            val_info["walked"] = 0
+            val_info["outcome"] = "accepted"
+            val_info["reason"] = "valid_prose_at_target"
+        else:
+            accepted_p = None
+            walked_count = 0
+            for step in range(1, 9):
+                cand_p = s_page + step
+                if cand_p > end_page or cand_p >= profile.n_pages:
+                    break
+                walked_count = step
+                if _is_outline_prose(cand_p, page_texts):
+                    accepted_p = cand_p
+                    break
+            if accepted_p is not None:
+                val_info["accepted_start"] = accepted_p
+                val_info["walked"] = walked_count
+                val_info["outcome"] = "accepted_with_walk"
+                val_info["reason"] = "prose_found_at_walk"
+                s_page = accepted_p
+                score = OUTLINE_BASE_SCORE - 0.05
+            else:
+                val_info["accepted_start"] = None
+                val_info["walked"] = 8
+                val_info["outcome"] = "invalidated"
+                val_info["reason"] = "no_prose_within_cap"
+                if return_info:
+                    return None, val_info
+                return None
+
+    span = MDASpan(
+        start_page=s_page,
+        end_page=max(s_page, end_page),
+        method="outline",
+        heading_text=s_title,
+        terminator_text=term,
+        terminator_match=term_match,
+        score=score,
+    )
+    if return_info:
+        return span, val_info
+    return span
 
 
 # ----------------------------------------------------------------------- S2 toc
@@ -810,9 +885,14 @@ def _agree(a: MDASpan, b: MDASpan, tol: int = 2) -> bool:
 
 def locate(doc: pymupdf.Document, profile: DocProfile,
            page_texts: dict[int, str], call_llm=None) -> tuple[MDASpan | None, dict]:
+    outline_res = from_outline(profile, page_texts, True)
+    if isinstance(outline_res, tuple):
+        outline_span, outline_val_info = outline_res
+    else:
+        outline_span, outline_val_info = outline_res, {}
     toc_span, toc_offset_info = from_toc(doc, page_texts, return_info=True)
     cands: list[MDASpan] = []
-    for fn in (lambda: from_outline(profile),
+    for fn in (lambda: outline_span,
                lambda: toc_span,
                lambda: from_headings(doc, page_texts),
                lambda: from_text_headings(page_texts),
@@ -826,7 +906,8 @@ def locate(doc: pymupdf.Document, profile: DocProfile,
 
     diag = {"candidates": [(c.method, c.start_page, c.end_page, round(c.score, 3))
                            for c in cands],
-            "toc_offset": toc_offset_info}
+            "toc_offset": toc_offset_info,
+            "outline_validation": outline_val_info}
     if not cands:
         if call_llm:
             whole = MDASpan(0, min(len(page_texts) - 1, 80), method="scan")
