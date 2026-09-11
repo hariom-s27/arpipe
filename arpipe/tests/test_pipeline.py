@@ -1720,6 +1720,90 @@ def test_p29_tesseract_fallback_to_flat(monkeypatch, tmp_path):
     assert p.text == "fallback string text"
 
 
+def test_umbrella_running_header_suppression():
+    from arpipe.segment import (
+        _extract_start_headers,
+        find_terminator_match_on_page,
+        _find_terminator_text,
+    )
+
+    start_text = (
+        "16\n"
+        "HDFC Bank Limited Annual Report 2011-12\n"
+        "Directors' Report\n"
+        "ISSUANCE OF EQUITY SHARES\n"
+        "During the year under review..."
+    )
+    headers = _extract_start_headers(start_text)
+    assert "directors' report" in headers
+
+    p18_text = (
+        "17\n"
+        "HDFC Bank Limited Annual Report 2011-12\n"
+        "Directors' Report\n"
+        "While growth slowed down over the past year..."
+    )
+    # Without start_headers, p18 matches Directors' Report
+    m_no_sup = find_terminator_match_on_page(18, p18_text)
+    assert m_no_sup is not None
+    assert m_no_sup["text"] == "Directors' Report"
+
+    # With start_headers, p18 running header is suppressed
+    m_sup = find_terminator_match_on_page(18, p18_text, start_headers=headers)
+    assert m_sup is None
+
+    p20_text = (
+        "19\n"
+        "HDFC Bank Limited Annual Report 2011-12\n"
+        "Auditors' Report\n"
+        "To the Members of HDFC Bank Limited..."
+    )
+    # Different section header is not suppressed
+    m_term = find_terminator_match_on_page(20, p20_text, start_headers=headers)
+    assert m_term is not None
+    assert m_term["text"] == "Auditors' Report"
+
+    # End to end via _find_terminator_text
+    page_texts = {
+        17: start_text,
+        18: p18_text,
+        19: p18_text,
+        20: p20_text,
+    }
+    end, term_match = _find_terminator_text(page_texts, 17)
+    assert end == 19  # Terminated on page 20, so end page is 19
+    assert term_match is not None
+    assert term_match["text"] == "Auditors' Report"
+
+
+def test_integrated_annual_report_pointer():
+    from arpipe.segment import is_cross_reference_pointer
+
+    ceat_text = (
+        "communicate its integrated thinking and how its business creates sustained value for stakeholders.\n"
+        "Management Discussion and Analysis and Corporate Governance Report\n"
+        "In compliance with Regulation 34 of the SEBI Listing Regulations, a separate section on "
+        "Management Discussion and Analysis (MDA), as approved by the Board, forms part of this "
+        "Integrated Annual Report and outlines the Company's strategy and operational roadmap across "
+        "its various segments and business divisions during the financial year."
+    )
+    assert is_cross_reference_pointer(ceat_text, "Management Discussion and Analysis and Corporate Governance Report")
+
+
+def test_to_the_members_of_terminator():
+    from arpipe.patterns import MDA_TERMINATOR_RE
+    from arpipe.segment import check_terminator_line
+
+    line = "To the Members of HDFC Bank Limited"
+    assert MDA_TERMINATOR_RE.search(line)
+
+    raw_lines = ["29", "HDFC Bank Limited Annual Report 2011-12", line, "We have audited..."]
+    match = check_terminator_line(line, 30, 2, raw_lines)
+    assert match is not None
+    assert match["shape_ok"] is True
+
+
+
 
 
 

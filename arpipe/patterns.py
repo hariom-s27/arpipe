@@ -59,6 +59,7 @@ MDA_TERMINATOR_PATTERNS = [
     r"Secretarial\s+Audit\s+Report",
     r"Shareholder(?:s)?\s+Information",
     r"General\s+Shareholder\s+Information",
+    r"Report\s+on\s+the\s+(?:Standalone\s+|Consolidated\s+)?Financial\s+Statements?",
     r"Consolidated\s+Accounts",
     r"Ten\s+Years?(?:'s|\x27s)?\s+(?:at\s+a\s+glance|Financial\s+Highlights|Summary)",
     r"Ten\s+Year\s+Financial\s+Highlights",
@@ -70,10 +71,12 @@ MDA_TERMINATOR_RE = re.compile("|".join(f"(?:{p})" for p in MDA_TERMINATOR_PATTE
 # separate section enclosed or annexed elsewhere in the report (P27).
 MDA_POINTER_PATTERNS = [
     r"\b(?:is|are)\s+(?:enclosed|attached|annexed|given|presented|provided)\b",
-    r"\bforms?\s+part\s+of\s+(?:this|the)\s+(?:Annual\s+)?Report\b",
+    r"\bforms?\s+part\s+of\s+(?:this|the)\s+(?:Integrated\s+)?(?:Annual\s+)?Report\b",
+    r"\bforms?\s+part\s+of\s+(?:this|the)\s+Report\b",
     r"\b(?:enclosed|attached|annexed)\s+(?:herewith|hereto|as\s+Annexure|at\s+Annexure)\b",
     r"\bseparately\s+(?:enclosed|attached|annexed|presented|given)\b",
-    r"\bpresented\s+in\s+a\s+separate\s+section\b",
+    r"\b(?:presented|included|given)\s+in\s+a\s+separate\s+section\b",
+    r"\ba\s+separate\s+section\s+on\b",
 ]
 MDA_POINTER_RE = re.compile("|".join(f"(?:{p})" for p in MDA_POINTER_PATTERNS),
                             re.IGNORECASE)

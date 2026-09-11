@@ -212,10 +212,7 @@ def is_cross_reference_pointer(page_text: str, heading_text: str) -> bool:
     snippet = " ".join(words[:80])
     full_snippet = " ".join(page_text[idx:].split()[:80])
     if MDA_POINTER_RE.search(snippet) or MDA_POINTER_RE.search(full_snippet):
-        if MDA_TERMINATOR_RE.search(snippet) or MDA_TERMINATOR_RE.search(full_snippet):
-            return True
-        if len(words) < 60:
-            return True
+        return True
 
     return False
 
@@ -310,10 +307,28 @@ def check_terminator_line(
     }
 
 
+def _extract_start_headers(page_text: str) -> set[str]:
+    """Extract normalized header lines from the top band of the start page.
+
+    Used to prevent continuing umbrella chapter headers (e.g. Directors' Report)
+    from terminating the section on subsequent pages.
+    """
+    if not page_text:
+        return set()
+    raw_lines = [l.strip() for l in page_text.splitlines() if l.strip()]
+    headers = set()
+    for l in raw_lines[:4]:
+        norm = re.sub(r"\s+", " ", re.sub(r"\d+", "", l)).strip().lower()
+        if norm:
+            headers.add(norm)
+    return headers
+
+
 def find_terminator_match_on_page(
     page_no: int,
     text: str,
     headings: list[HeadingHit] | None = None,
+    start_headers: set[str] | None = None,
 ) -> dict[str, Any] | None:
     """Find the first line on page satisfying all terminator shape requirements."""
     if not text:
@@ -333,6 +348,10 @@ def find_terminator_match_on_page(
                     break
             match = check_terminator_line(h.text, page_no, l_idx, raw_lines, heading_hit=h)
             if match:
+                if start_headers and (match.get("line_index", 0) <= 3 or match.get("y_frac", 0.0) < 0.08):
+                    norm_m = re.sub(r"\s+", " ", re.sub(r"\d+", "", match["text"])).strip().lower()
+                    if norm_m in start_headers:
+                        continue
                 return match
 
     # 2. Text-based scan over page lines (first half of page unless blank space above)
@@ -344,6 +363,10 @@ def find_terminator_match_on_page(
             continue
         match = check_terminator_line(line_s, page_no, i, raw_lines, heading_hit=None)
         if match:
+            if start_headers and (match.get("line_index", 0) <= 3 or match.get("y_frac", 0.0) < 0.08):
+                norm_m = re.sub(r"\s+", " ", re.sub(r"\d+", "", match["text"])).strip().lower()
+                if norm_m in start_headers:
+                    continue
             return match
 
     return None
@@ -733,6 +756,7 @@ def _terminator_end_page(start: int, page_no: int, match: dict[str, Any] | None,
 
 def _find_terminator(doc: pymupdf.Document, page_texts: dict[int, str],
                      start: int) -> tuple[int, dict | None]:
+    start_headers = _extract_start_headers(page_texts.get(start, ""))
     limit = min(start + MAX_MDA_PAGES, max(page_texts) if page_texts else start)
     for n in range(start + 1, limit + 1):
         txt = page_texts.get(n, "")
@@ -742,7 +766,7 @@ def _find_terminator(doc: pymupdf.Document, page_texts: dict[int, str],
             hits = page_headings(doc.load_page(n))
         except Exception:
             hits = []
-        match = find_terminator_match_on_page(n, txt, hits)
+        match = find_terminator_match_on_page(n, txt, hits, start_headers=start_headers)
         if match:
             return _terminator_end_page(start, n, match, txt), match
     return min(limit, start + MAX_MDA_PAGES - 1), None
@@ -876,12 +900,13 @@ def from_text_headings(page_texts: dict[int, str], skip_first: int = 2,
 
 def _find_terminator_text(page_texts: dict[int, str], start: int,
                           top_lines: int = 5) -> tuple[int, dict | None]:
+    start_headers = _extract_start_headers(page_texts.get(start, ""))
     nos = [n for n in sorted(page_texts) if n > start]
     for n in nos[:MAX_MDA_PAGES]:
         txt = page_texts.get(n, "")
         if not txt:
             continue
-        match = find_terminator_match_on_page(n, txt)
+        match = find_terminator_match_on_page(n, txt, start_headers=start_headers)
         if match:
             return _terminator_end_page(start, n, match, txt), match
     return max(start, nos[-1] if nos else start), None
@@ -898,6 +923,7 @@ def refine_end(span: MDASpan, page_texts: dict[int, str], fetch_text,
     if span.terminator_match is not None:
         return span
 
+    start_headers = _extract_start_headers(page_texts.get(span.start_page, ""))
     n = span.end_page
     term_match = span.terminator_match
     term_text = span.terminator_text
@@ -909,7 +935,7 @@ def refine_end(span: MDASpan, page_texts: dict[int, str], fetch_text,
             if txt is None:
                 break
             page_texts[nxt] = txt
-        match = find_terminator_match_on_page(nxt, txt)
+        match = find_terminator_match_on_page(nxt, txt, start_headers=start_headers)
         if match:
             term_match = match
             term_text = match["text"]
@@ -950,6 +976,7 @@ def trim_span(span: MDASpan, page_texts: dict[int, str]) -> MDASpan:
                 start = n
                 break
 
+    start_headers = _extract_start_headers(page_texts.get(start, ""))
     end = span.end_page
     term_match = span.terminator_match
     term_text = span.terminator_text
@@ -957,7 +984,7 @@ def trim_span(span: MDASpan, page_texts: dict[int, str]) -> MDASpan:
         t = page_texts.get(n)
         if not t:
             continue
-        match = find_terminator_match_on_page(n, t)
+        match = find_terminator_match_on_page(n, t, start_headers=start_headers)
         if match:
             end = _terminator_end_page(start, n, match, t)
             term_match = match
