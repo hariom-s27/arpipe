@@ -7,6 +7,8 @@ rapidfuzz>=3.9         # company-name matching
 tenacity>=8.2          # retry policy
 pandas>=2.2            # manifests / audit
 pyarrow>=16            # parquet snapshots
+pyyaml>=6              # configuration loader
+
 
 # test runner used by the README test command
 pytest>=8

@@ -28,9 +28,52 @@ from dataclasses import dataclass, field
 
 import pymupdf
 
+# --- tunable thresholds ---------------------------------------------------
+# All thresholds provisional until re-fit against the labelled 300.
+# provisional until re-fit against the labelled 300
 DEFAULT_DPI = 300
+# provisional until re-fit against the labelled 300
 MAX_DPI = 400
+# provisional until re-fit against the labelled 300
 MIN_DPI = 200
+# provisional until re-fit against the labelled 300
+QUALITY_GATE_MIN_WORDS = 40
+# provisional until re-fit against the labelled 300
+QUALITY_GATE_MIN_CONF = 0.72
+# provisional until re-fit against the labelled 300
+QUALITY_GATE_MAX_NONWORD_FRAC = 0.35
+# provisional until re-fit against the labelled 300
+INDEX_STRIDE = 6
+# provisional until re-fit against the labelled 300
+FRONT_PAGES = 14
+# provisional until re-fit against the labelled 300
+VLM_MAX_TOKENS = 8192
+# provisional until re-fit against the labelled 300
+VLM_TIMEOUT = 180
+# provisional until re-fit against the labelled 300
+VLM_REPETITION_RATIO = 6.0
+
+
+def configure(cfg: dict | None = None) -> None:
+    """Update thresholds from resolved configuration."""
+    global DEFAULT_DPI, MIN_DPI, MAX_DPI
+    global QUALITY_GATE_MIN_WORDS, QUALITY_GATE_MIN_CONF, QUALITY_GATE_MAX_NONWORD_FRAC
+    global INDEX_STRIDE, FRONT_PAGES, VLM_MAX_TOKENS, VLM_TIMEOUT, VLM_REPETITION_RATIO
+    if not cfg:
+        return
+    DEFAULT_DPI = cfg.get("default_dpi", DEFAULT_DPI)
+    MIN_DPI = cfg.get("min_dpi", MIN_DPI)
+    MAX_DPI = cfg.get("max_dpi", MAX_DPI)
+    qg = cfg.get("quality_gate", {})
+    if isinstance(qg, dict):
+        QUALITY_GATE_MIN_WORDS = qg.get("min_words", QUALITY_GATE_MIN_WORDS)
+        QUALITY_GATE_MIN_CONF = qg.get("min_conf", QUALITY_GATE_MIN_CONF)
+        QUALITY_GATE_MAX_NONWORD_FRAC = qg.get("max_nonword_frac", QUALITY_GATE_MAX_NONWORD_FRAC)
+    INDEX_STRIDE = cfg.get("index_stride", INDEX_STRIDE)
+    FRONT_PAGES = cfg.get("front_pages", FRONT_PAGES)
+    VLM_MAX_TOKENS = cfg.get("vlm_max_tokens", VLM_MAX_TOKENS)
+    VLM_TIMEOUT = cfg.get("vlm_timeout", VLM_TIMEOUT)
+    VLM_REPETITION_RATIO = cfg.get("vlm_repetition_ratio", VLM_REPETITION_RATIO)
 
 
 @dataclass(slots=True)
@@ -300,21 +343,24 @@ def _subset(src: str, page_nos: list[int], dst: str) -> None:
         doc.close()
 
 
-def quality_gate(p: OcrPage, min_words: int = 40, min_conf: float = 0.72,
-                 max_nonword_frac: float = 0.35) -> tuple[bool, str]:
+def quality_gate(p: OcrPage, min_words: int | None = None, min_conf: float | None = None,
+                 max_nonword_frac: float | None = None) -> tuple[bool, str]:
     """Decide whether an OCR result is good enough to accept.
 
     Cheap, engine-agnostic signals. The point is not to grade the OCR but to
     decide whether to spend the next rung's money on this page.
     """
+    mw = min_words if min_words is not None else QUALITY_GATE_MIN_WORDS
+    mc = min_conf if min_conf is not None else QUALITY_GATE_MIN_CONF
+    mnf = max_nonword_frac if max_nonword_frac is not None else QUALITY_GATE_MAX_NONWORD_FRAC
     txt = p.text or ""
     words = txt.split()
-    if len(words) < min_words:
+    if len(words) < mw:
         return False, "too_few_words"
-    if p.mean_conf is not None and p.mean_conf < min_conf:
+    if p.mean_conf is not None and p.mean_conf < mc:
         return False, f"low_conf:{p.mean_conf:.2f}"
     alnum = sum(1 for c in txt if c.isalnum() or c.isspace())
-    if alnum / max(1, len(txt)) < (1 - max_nonword_frac):
+    if alnum / max(1, len(txt)) < (1 - mnf):
         return False, "high_symbol_noise"
     long_tokens = sum(1 for w in words if len(w) > 30)
     if long_tokens > max(3, 0.02 * len(words)):

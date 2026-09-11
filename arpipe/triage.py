@@ -27,15 +27,60 @@ from .models import DocProfile, PageKind, PageProfile, Script
 from .patterns import DEVANAGARI_RE, INDIC_BLOCKS_RE, MOJIBAKE_RE
 
 # --- tunable thresholds ---------------------------------------------------
-# Calibrated against a stratified sample of Indian annual reports; keep them
-# in one place so they can be re-fit from a labelled set (see tools/calibrate).
+# All thresholds provisional until re-fit against the labelled 300.
+# provisional until re-fit against the labelled 300
 MIN_CHARS_PER_PAGE = 120          # below this a page is "text-empty"
+# provisional until re-fit against the labelled 300
 MIN_CHARS_DENSE = 600             # above this a page is comfortably digital
+# provisional until re-fit against the labelled 300
 MAX_MOJIBAKE_RATIO = 0.02         # >2% undecodable glyphs => treat layer as junk
+# provisional until re-fit against the labelled 300
 BIG_IMAGE_AREA_FRAC = 0.55        # an image covering >55% of the page is a scan
+# provisional until re-fit against the labelled 300
 HYBRID_IMAGE_AREA_FRAC = 0.25     # image block big enough to hide real content
+# provisional until re-fit against the labelled 300
 BLANK_CHARS = 15
+# provisional until re-fit against the labelled 300
 VECTOR_PATH_TEXT_THRESHOLD = 400  # many tiny fill-paths + no text => vector text
+# provisional until re-fit against the labelled 300
+COLUMN_HIST_BINS = 120            # histogram bin count behind the reading-order bug
+# provisional until re-fit against the labelled 300
+GUTTER_MIN_RUN_FRAC = 0.025       # gutter fraction behind the reading-order bug (2.5%)
+# provisional until re-fit against the labelled 300
+GUTTER_PEAK_THRESHOLD = 0.15
+# provisional until re-fit against the labelled 300
+GUTTER_SEARCH_LO = 0.15
+# provisional until re-fit against the labelled 300
+GUTTER_SEARCH_HI = 0.85
+# provisional until re-fit against the labelled 300
+DOC_SCANNED_FRAC = 0.85
+# provisional until re-fit against the labelled 300
+DOC_DIGITAL_FRAC = 0.05
+
+
+def configure(cfg: dict | None = None) -> None:
+    """Update thresholds from resolved configuration."""
+    global MIN_CHARS_PER_PAGE, MIN_CHARS_DENSE, MAX_MOJIBAKE_RATIO
+    global BIG_IMAGE_AREA_FRAC, HYBRID_IMAGE_AREA_FRAC, BLANK_CHARS
+    global VECTOR_PATH_TEXT_THRESHOLD, COLUMN_HIST_BINS, GUTTER_MIN_RUN_FRAC
+    global GUTTER_PEAK_THRESHOLD, GUTTER_SEARCH_LO, GUTTER_SEARCH_HI
+    global DOC_SCANNED_FRAC, DOC_DIGITAL_FRAC
+    if not cfg:
+        return
+    MIN_CHARS_PER_PAGE = cfg.get("min_chars_per_page", MIN_CHARS_PER_PAGE)
+    MIN_CHARS_DENSE = cfg.get("min_chars_dense", MIN_CHARS_DENSE)
+    MAX_MOJIBAKE_RATIO = cfg.get("max_mojibake_ratio", MAX_MOJIBAKE_RATIO)
+    BIG_IMAGE_AREA_FRAC = cfg.get("big_image_area_frac", BIG_IMAGE_AREA_FRAC)
+    HYBRID_IMAGE_AREA_FRAC = cfg.get("hybrid_image_area_frac", HYBRID_IMAGE_AREA_FRAC)
+    BLANK_CHARS = cfg.get("blank_chars", BLANK_CHARS)
+    VECTOR_PATH_TEXT_THRESHOLD = cfg.get("vector_path_text_threshold", VECTOR_PATH_TEXT_THRESHOLD)
+    COLUMN_HIST_BINS = cfg.get("column_hist_bins", COLUMN_HIST_BINS)
+    GUTTER_MIN_RUN_FRAC = cfg.get("gutter_min_run_frac", GUTTER_MIN_RUN_FRAC)
+    GUTTER_PEAK_THRESHOLD = cfg.get("gutter_peak_threshold", GUTTER_PEAK_THRESHOLD)
+    GUTTER_SEARCH_LO = cfg.get("gutter_search_lo", GUTTER_SEARCH_LO)
+    GUTTER_SEARCH_HI = cfg.get("gutter_search_hi", GUTTER_SEARCH_HI)
+    DOC_SCANNED_FRAC = cfg.get("doc_scanned_frac", DOC_SCANNED_FRAC)
+    DOC_DIGITAL_FRAC = cfg.get("doc_digital_frac", DOC_DIGITAL_FRAC)
 
 
 def _rect_area(r: pymupdf.Rect) -> float:
@@ -83,7 +128,7 @@ def detect_script(text: str) -> Script:
 
 
 def gutter_bands(spans_x: list[tuple[float, float]], page_width: float,
-                 bins: int = 120) -> list[tuple[float, float]]:
+                 bins: int | None = None) -> list[tuple[float, float]]:
     """x-ranges (points, left to right) of vertical whitespace bands in the
     central 70% of the page: a band of x values crossed by very few text lines
     (only full-width headings and rules). This is the column-gutter detector;
@@ -94,18 +139,19 @@ def gutter_bands(spans_x: list[tuple[float, float]], page_width: float,
     minimum band width is 2.5% of the page width rather than the 5% that would
     be right for a scientific two-column paper.
     """
+    b_count = bins if bins is not None else COLUMN_HIST_BINS
     if len(spans_x) < 10 or page_width <= 0:
         return []
-    cover = [0] * bins
+    cover = [0] * b_count
     for x0, x1 in spans_x:
-        b0 = max(0, min(bins - 1, int(x0 / page_width * bins)))
-        b1 = max(0, min(bins - 1, int(x1 / page_width * bins)))
+        b0 = max(0, min(b_count - 1, int(x0 / page_width * b_count)))
+        b1 = max(0, min(b_count - 1, int(x1 / page_width * b_count)))
         for b in range(b0, b1 + 1):
             cover[b] += 1
     peak = max(cover) or 1
-    lo, hi = int(bins * 0.15), int(bins * 0.85)
-    empty_at = max(1, int(peak * 0.15))     # full-width headings cross the gutter
-    min_run = max(2, int(bins * 0.025))     # ~15 pt on A4
+    lo, hi = int(b_count * GUTTER_SEARCH_LO), int(b_count * GUTTER_SEARCH_HI)
+    empty_at = max(1, int(peak * GUTTER_PEAK_THRESHOLD))     # full-width headings cross the gutter
+    min_run = max(2, int(b_count * GUTTER_MIN_RUN_FRAC))     # ~15 pt on A4
 
     bands: list[tuple[float, float]] = []
     start = None
@@ -115,19 +161,20 @@ def gutter_bands(spans_x: list[tuple[float, float]], page_width: float,
                 start = b
         elif start is not None:
             if b - start >= min_run:
-                bands.append((start / bins * page_width, b / bins * page_width))
+                bands.append((start / b_count * page_width, b / b_count * page_width))
             start = None
     if start is not None and hi - start >= min_run:
-        bands.append((start / bins * page_width, hi / bins * page_width))
+        bands.append((start / b_count * page_width, hi / b_count * page_width))
     return bands
 
 
 def estimate_columns(spans_x: list[tuple[float, float]], page_width: float,
-                     bins: int = 120) -> int:
+                     bins: int | None = None) -> int:
     """Estimate column count from the x-extent histogram of text lines."""
     if len(spans_x) < 10 or page_width <= 0:
         return 1
-    return min(3, len(gutter_bands(spans_x, page_width, bins)) + 1)
+    b_count = bins if bins is not None else COLUMN_HIST_BINS
+    return min(3, len(gutter_bands(spans_x, page_width, b_count)) + 1)
 
 
 def profile_page(page: pymupdf.Page) -> PageProfile:
@@ -256,9 +303,9 @@ def profile_document(path: str, max_pages: int | None = None) -> DocProfile:
         content = [p for p in pages if p.kind is not PageKind.BLANK]
         ocr_pages = [p for p in content if p.kind in NEEDS_OCR]
         frac = len(ocr_pages) / max(1, len(content))
-        if frac >= 0.85:
+        if frac >= DOC_SCANNED_FRAC:
             doc_kind = "scanned"
-        elif frac <= 0.05:
+        elif frac <= DOC_DIGITAL_FRAC:
             doc_kind = "digital"
         else:
             doc_kind = "mixed"

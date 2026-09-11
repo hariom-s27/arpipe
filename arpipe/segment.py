@@ -36,8 +36,65 @@ from .models import DocProfile, MDASpan
 from .patterns import (ANNEXURE_HEADING_RE, MDA_ACRONYM_RE, MDA_BODY_CUE_RES,
                        MDA_COMBINED_RE, MDA_HEADING_RE, MDA_TERMINATOR_RE)
 
+# --- tunable thresholds ---------------------------------------------------
+# All thresholds provisional until re-fit against the labelled 300.
+# provisional until re-fit against the labelled 300
 MAX_MDA_PAGES = 60          # sanity cap; real MD&A runs 3-25 pages
+# provisional until re-fit against the labelled 300
 MIN_MDA_WORDS = 250
+# provisional until re-fit against the labelled 300
+HEADING_MIN_REL_SIZE = 1.12
+# provisional until re-fit against the labelled 300
+HEADING_BASE_SCORE = 0.45
+# provisional until re-fit against the labelled 300
+OUTLINE_BASE_SCORE = 0.95
+# provisional until re-fit against the labelled 300
+TOC_OFFSET_CONFIDENCE_THRESHOLD = 0.50
+# provisional until re-fit against the labelled 300
+TOC_HIGH_SCORE = 0.80
+# provisional until re-fit against the labelled 300
+BODY_SCORE_PAGE_PENALTY = 0.12
+# provisional until re-fit against the labelled 300
+BODY_SCORE_MIN_PEAK = 0.35
+# provisional until re-fit against the labelled 300
+BODY_SCORE_MAX = 0.72
+# provisional until re-fit against the labelled 300
+TEXT_HEADING_MAX_SCORE = 0.78
+# provisional until re-fit against the labelled 300
+SUPPORTER_WEIGHT = 0.06
+# provisional until re-fit against the labelled 300
+LLM_ENABLED = False
+# provisional until re-fit against the labelled 300
+LLM_MODEL = "claude-sonnet"
+# provisional until re-fit against the labelled 300
+LLM_MAX_PAGES_IN_WINDOW = 24
+
+
+def configure(cfg: dict | None = None) -> None:
+    """Update thresholds from resolved configuration."""
+    global MAX_MDA_PAGES, MIN_MDA_WORDS, HEADING_MIN_REL_SIZE, HEADING_BASE_SCORE
+    global OUTLINE_BASE_SCORE, TOC_OFFSET_CONFIDENCE_THRESHOLD, TOC_HIGH_SCORE
+    global BODY_SCORE_PAGE_PENALTY, BODY_SCORE_MIN_PEAK, BODY_SCORE_MAX
+    global TEXT_HEADING_MAX_SCORE, SUPPORTER_WEIGHT, LLM_ENABLED, LLM_MODEL, LLM_MAX_PAGES_IN_WINDOW
+    if not cfg:
+        return
+    MAX_MDA_PAGES = cfg.get("max_mda_pages", MAX_MDA_PAGES)
+    MIN_MDA_WORDS = cfg.get("min_mda_words", MIN_MDA_WORDS)
+    HEADING_MIN_REL_SIZE = cfg.get("heading_min_rel_size", HEADING_MIN_REL_SIZE)
+    HEADING_BASE_SCORE = cfg.get("heading_base_score", HEADING_BASE_SCORE)
+    OUTLINE_BASE_SCORE = cfg.get("outline_base_score", OUTLINE_BASE_SCORE)
+    TOC_OFFSET_CONFIDENCE_THRESHOLD = cfg.get("toc_offset_confidence_threshold", TOC_OFFSET_CONFIDENCE_THRESHOLD)
+    TOC_HIGH_SCORE = cfg.get("toc_high_score", TOC_HIGH_SCORE)
+    BODY_SCORE_PAGE_PENALTY = cfg.get("body_score_page_penalty", BODY_SCORE_PAGE_PENALTY)
+    BODY_SCORE_MIN_PEAK = cfg.get("body_score_min_peak", BODY_SCORE_MIN_PEAK)
+    BODY_SCORE_MAX = cfg.get("body_score_max", BODY_SCORE_MAX)
+    TEXT_HEADING_MAX_SCORE = cfg.get("text_heading_max_score", TEXT_HEADING_MAX_SCORE)
+    SUPPORTER_WEIGHT = cfg.get("supporter_weight", SUPPORTER_WEIGHT)
+    llm_cfg = cfg.get("llm", {})
+    if isinstance(llm_cfg, dict):
+        LLM_ENABLED = llm_cfg.get("enabled", LLM_ENABLED)
+        LLM_MODEL = llm_cfg.get("model", LLM_MODEL)
+        LLM_MAX_PAGES_IN_WINDOW = llm_cfg.get("max_pages_in_window", LLM_MAX_PAGES_IN_WINDOW)
 
 
 # ---------------------------------------------------------------- heading find
@@ -52,8 +109,9 @@ class HeadingHit:
     bold: bool
 
 
-def page_headings(page: pymupdf.Page, min_rel: float = 1.12) -> list[HeadingHit]:
+def page_headings(page: pymupdf.Page, min_rel: float | None = None) -> list[HeadingHit]:
     """Return lines that look typographically like headings."""
+    rel_cut = min_rel if min_rel is not None else HEADING_MIN_REL_SIZE
     d = page.get_text("dict")
     sizes: list[float] = []
     lines: list[tuple[str, float, float, bool]] = []   # text, size, y, bold
@@ -277,7 +335,7 @@ def from_outline(profile: DocProfile) -> MDASpan | None:
         end_page = s_page + MAX_MDA_PAGES - 1
     return MDASpan(start_page=s_page, end_page=max(s_page, end_page),
                    method="outline", heading_text=s_title,
-                   terminator_text=term, terminator_match=term_match, score=0.95)
+                   terminator_text=term, terminator_match=term_match, score=OUTLINE_BASE_SCORE)
 
 
 # ----------------------------------------------------------------------- S2 toc
@@ -306,11 +364,6 @@ def find_toc_pages(page_texts: dict[int, str], search_first: int = 20) -> list[i
             hits.append(n)
     return hits
 
-
-TOC_OFFSET_CONFIDENCE_THRESHOLD = 0.50
-# Provisional threshold: bad KRBL cases have confidence <= 0.25 (and 7-26 page error),
-# clean TOC documents have confidence >= 0.70 (0 page error).
-# Must be re-fit on the labelled 300 (P6 requirement).
 
 
 def _solve_label_offset(doc: pymupdf.Document, page_texts: dict[int, str],
@@ -433,11 +486,11 @@ def from_toc(doc: pymupdf.Document, page_texts: dict[int, str],
 
     confidence = offset_info.get("confidence", 0.0)
     if confidence >= TOC_OFFSET_CONFIDENCE_THRESHOLD:
-        score = 0.80
+        score = TOC_HIGH_SCORE
     else:
         # P6: Cut score hard if offset confidence is below threshold so TOC cannot win
         # outright over actual heading/body signals, but can still act as a supporter.
-        score = round(max(0.15, min(0.40, 0.80 * confidence)), 3)
+        score = round(max(0.15, min(0.40, TOC_HIGH_SCORE * confidence)), 3)
 
     entries.sort(key=lambda e: e[1])
     res_span = None
@@ -488,7 +541,7 @@ def from_headings(doc: pymupdf.Document, page_texts: dict[int, str],
         for h in hits:
             if not _is_mda_title(h.text):
                 continue
-            sc = 0.45
+            sc = HEADING_BASE_SCORE
             sc += 0.25 * min(1.0, (h.rel_size - 1.0) / 0.6)
             if h.y_frac < 0.35:
                 sc += 0.18
@@ -546,7 +599,7 @@ def from_body_scores(page_texts: dict[int, str]) -> MDASpan | None:
     if not nos:
         return None
     scores = {n: page_body_score(page_texts[n]) for n in nos}
-    if max(scores.values(), default=0.0) < 0.35:
+    if max(scores.values(), default=0.0) < BODY_SCORE_MIN_PEAK:
         return None
     # best contiguous run under a decay: allows one weak page inside a section
     best = (0.0, nos[0], nos[0])
@@ -554,7 +607,7 @@ def from_body_scores(page_texts: dict[int, str]) -> MDASpan | None:
         acc, last_good = 0.0, s
         for j in range(i, min(i + MAX_MDA_PAGES, len(nos))):
             n = nos[j]
-            acc += scores[n] - 0.12          # penalty keeps runs from sprawling
+            acc += scores[n] - BODY_SCORE_PAGE_PENALTY  # penalty keeps runs from sprawling
             if scores[n] > 0.2:
                 last_good = n
             if acc > best[0]:
@@ -564,7 +617,7 @@ def from_body_scores(page_texts: dict[int, str]) -> MDASpan | None:
     if best[0] <= 0.0:
         return None
     return MDASpan(best[1], best[2], method="body_score",
-                   score=min(0.72, 0.3 + best[0] / 6.0))
+                   score=min(BODY_SCORE_MAX, 0.3 + best[0] / 6.0))
 
 
 # ----------------------------------------------------------------------- S5 llm
@@ -655,7 +708,7 @@ def from_text_headings(page_texts: dict[int, str], skip_first: int = 2,
     term_text = term_match["text"] if term_match else None
     return MDASpan(n, end, method="heading_text", heading_text=ln,
                    terminator_text=term_text, terminator_match=term_match,
-                   score=min(0.78, sc))
+                   score=min(TEXT_HEADING_MAX_SCORE, sc))
 
 
 def _find_terminator_text(page_texts: dict[int, str], start: int,
@@ -785,7 +838,7 @@ def locate(doc: pymupdf.Document, profile: DocProfile,
     cands.sort(key=lambda c: -c.score)
     top = cands[0]
     supporters = sum(1 for c in cands[1:] if _agree(top, c))
-    top.score = min(0.99, top.score + 0.06 * supporters)
+    top.score = min(0.99, top.score + SUPPORTER_WEIGHT * supporters)
     top.supporters = supporters
     diag["supporters"] = supporters
 

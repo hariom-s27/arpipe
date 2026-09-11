@@ -38,30 +38,60 @@ from .models import Company, VerificationReport
 from .patterns import (AS_AT_RE, CIN_RE, FY_RANGE_RE, FY_SINGLE_RE, ISIN_RE,
                        MANDATED_RATIOS, YEAR_ENDED_RE, is_valid_isin)
 
+# --- tunable thresholds ---------------------------------------------------
+# All thresholds provisional until re-fit against the labelled 300.
+# provisional until re-fit against the labelled 300
 NAME_MATCH_STRONG = 88
+# provisional until re-fit against the labelled 300
 NAME_MATCH_WEAK = 72
-
-# P17 reading-order gate. orphan_start_frac (see order_quality) is paragraphs
-# that begin mid-sentence: > MAX caps the tier at medium, > 2*MAX forces low.
-#
-# PROVISIONAL and currently load-bearing on almost nothing. The 0.03 was picked
-# from a gap between the clean docs (0.000-0.004) and the iLovePDF-shredded Jain
-# reports (0.079-0.102). P22 then excluded list markers (a) b) c)) from
-# _orphan_start - they were 80%+ of the Jain "orphans" - and both Jain years
-# dropped to ~0.012-0.017. So post-P22 NO real document sits above this gate;
-# only the P17 synthetic paragraph-shuffle does. Re-fit against the first P11
-# batch (it will demote nothing until then). Moves to config in P15.
+# provisional until re-fit against the labelled 300
+REQUIRE_YEAR_EVIDENCE = True
+# provisional until re-fit against the labelled 300
 ORPHAN_START_FRAC_MAX = 0.03
+# provisional until re-fit against the labelled 300
+FY_WEIGHT_FLOOR = 15
+# provisional until re-fit against the labelled 300
+TOO_SHORT_WORDS = 250
+# provisional until re-fit against the labelled 300
+TOO_LONG_WORDS = 40000
+# provisional until re-fit against the labelled 300
+LOOKS_LIKE_TABLES_DIGIT_RATIO = 0.25
+# provisional until re-fit against the labelled 300
+GRADE_HIGH_MIN_SUPPORTERS = 2
+# provisional until re-fit against the labelled 300
+GRADE_HIGH_MIN_SCORE = 0.80
+# provisional until re-fit against the labelled 300
+GRADE_MEDIUM_MIN_SCORE = 0.60
+# provisional until re-fit against the labelled 300
+GRADE_SOLO_MIN_SCORE = 0.70
+# provisional until re-fit against the labelled 300
+REPROCESSOR_CAP_GRADE = "medium"
 
-# P21: what orphan_start_frac was measured on, and which gate logic graded it.
-# A stored score is uninterpretable without the basis - P18 changed the metric
-# from "prose_and_tables" to "prose_only" and there are live_dataset/ scores
-# from both. Recorded in qc so a number from six months ago can still be placed.
 ORPHAN_BASIS = "prose_only"          # or "prose_and_tables" (pre-P18)
 ORPHAN_GATE_VERSION = "p17.1"        # p17 gate + p16b column-cut fire signal
 
-# CLAUDE.md: total fiscal-year evidence weight below this is "thinly attested".
-FY_WEIGHT_FLOOR = 15
+
+def configure(cfg: dict | None = None) -> None:
+    """Update thresholds from resolved configuration."""
+    global NAME_MATCH_STRONG, NAME_MATCH_WEAK, REQUIRE_YEAR_EVIDENCE
+    global ORPHAN_START_FRAC_MAX, FY_WEIGHT_FLOOR, TOO_SHORT_WORDS, TOO_LONG_WORDS
+    global LOOKS_LIKE_TABLES_DIGIT_RATIO, GRADE_HIGH_MIN_SUPPORTERS, GRADE_HIGH_MIN_SCORE
+    global GRADE_MEDIUM_MIN_SCORE, GRADE_SOLO_MIN_SCORE, REPROCESSOR_CAP_GRADE
+    if not cfg:
+        return
+    NAME_MATCH_STRONG = cfg.get("name_match_strong", NAME_MATCH_STRONG)
+    NAME_MATCH_WEAK = cfg.get("name_match_weak", NAME_MATCH_WEAK)
+    REQUIRE_YEAR_EVIDENCE = cfg.get("require_year_evidence", REQUIRE_YEAR_EVIDENCE)
+    ORPHAN_START_FRAC_MAX = cfg.get("orphan_start_frac_max", ORPHAN_START_FRAC_MAX)
+    FY_WEIGHT_FLOOR = cfg.get("fy_weight_floor", FY_WEIGHT_FLOOR)
+    TOO_SHORT_WORDS = cfg.get("too_short_words", TOO_SHORT_WORDS)
+    TOO_LONG_WORDS = cfg.get("too_long_words", TOO_LONG_WORDS)
+    LOOKS_LIKE_TABLES_DIGIT_RATIO = cfg.get("looks_like_tables_digit_ratio", LOOKS_LIKE_TABLES_DIGIT_RATIO)
+    GRADE_HIGH_MIN_SUPPORTERS = cfg.get("grade_high_min_supporters", GRADE_HIGH_MIN_SUPPORTERS)
+    GRADE_HIGH_MIN_SCORE = cfg.get("grade_high_min_score", GRADE_HIGH_MIN_SCORE)
+    GRADE_MEDIUM_MIN_SCORE = cfg.get("grade_medium_min_score", GRADE_MEDIUM_MIN_SCORE)
+    GRADE_SOLO_MIN_SCORE = cfg.get("grade_solo_min_score", GRADE_SOLO_MIN_SCORE)
+    REPROCESSOR_CAP_GRADE = cfg.get("reprocessor_cap_grade", REPROCESSOR_CAP_GRADE)
 
 # P22: free web PDF compressors / converters that re-lay the text layer into
 # near-per-line fragments (the iLovePDF-shredded Jain reports are the known
@@ -384,10 +414,10 @@ def section_qc(mda_text: str) -> dict:
         "ratio_cues": cues,
         "ratio_cues_in_span": cues,
         "leaks": leaks,
-        "too_short": n < 250,
-        "too_long": n > 40000,
+        "too_short": n < TOO_SHORT_WORDS,
+        "too_long": n > TOO_LONG_WORDS,
         # a page of a financial statement is >25% digits; MD&A prose is <12%
-        "looks_like_tables": digits / max(1, alpha + digits) > 0.25,
+        "looks_like_tables": digits / max(1, alpha + digits) > LOOKS_LIKE_TABLES_DIGIT_RATIO,
         # reading-order signal - character ratios above are blind to it (P17)
         **{k: order[k] for k in ("orphan_start_frac", "dangling_end_frac",
                                  "orphan_starts", "dangling_ends", "n_paragraphs")},
@@ -656,18 +686,18 @@ def grade(rep: VerificationReport, qc: dict, span_score: float,
             or osf > 2 * ORPHAN_START_FRAC_MAX):     # P17: badly scrambled order
         return "low"
     verif_errors = [n for n in rep.notes if not n.startswith("mandated ratios table absent") and "disclosure finding" not in n]
-    if (supporters >= 2 and rep.year_ok and span_score >= 0.8
+    if (supporters >= GRADE_HIGH_MIN_SUPPORTERS and rep.year_ok and span_score >= GRADE_HIGH_MIN_SCORE
             and not qc["leaks"] and not verif_errors
             and osf <= ORPHAN_START_FRAC_MAX):       # P17: mild scramble -> medium
         # P22: a reprocessor-sourced PDF has been re-laid line by line; the span
         # can look clean and still hide a splice xy_cut could not catch. Cap it
         # at `medium` (+ source_shredded) until P11 has >= 5 such docs proving
         # the reassembly holds.
-        return "medium" if is_reprocessor(pdf_producer) else "high"
-    if (supporters >= 1 and rep.year_ok and span_score >= 0.6
+        return REPROCESSOR_CAP_GRADE if is_reprocessor(pdf_producer) else "high"
+    if (supporters >= 1 and rep.year_ok and span_score >= GRADE_MEDIUM_MIN_SCORE
             and len(qc["leaks"]) <= 1):
         return "medium"
-    if (supporters == 0 and rep.year_ok and span_score >= 0.7
+    if (supporters == 0 and rep.year_ok and span_score >= GRADE_SOLO_MIN_SCORE
             and not qc["leaks"] and osf <= ORPHAN_START_FRAC_MAX):
         return "medium"
     return "low"

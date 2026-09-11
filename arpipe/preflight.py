@@ -203,6 +203,7 @@ def _parse_requirements(path: str) -> list[tuple[str, str]]:
 _IMPORT_MAP: dict[str, str] = {
     "pymupdf": "fitz",
     "pillow": "PIL",
+    "pyyaml": "yaml",
     "rapidfuzz": "rapidfuzz",
     "pytesseract": "pytesseract",
     "google-cloud-documentai": "google.cloud.documentai",
@@ -776,3 +777,4 @@ def run_preflight(
 
     has_fail = any(r.status == Status.FAIL for r in results)
     return 1 if has_fail else 0
+

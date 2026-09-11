@@ -312,3 +312,4 @@ class TestCLIIntegration:
         # This is a minimal check that the code path doesn't crash on import
         from arpipe import preflight
         assert hasattr(preflight, "run_preflight")
+

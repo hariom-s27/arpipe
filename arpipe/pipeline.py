@@ -29,9 +29,28 @@ from .models import (Company, Confidence, DocProfile, ExtractionResult, MDASpan,
                      PageKind, StoredDoc)
 
 PIPELINE_VERSION = "0.1.0"
+# --- tunable thresholds ---------------------------------------------------
+# All thresholds provisional until re-fit against the labelled 300.
+# provisional until re-fit against the labelled 300
 INDEX_STRIDE = 6
+# provisional until re-fit against the labelled 300
 OCR_WORKERS = int(os.environ.get("ARPIPE_OCR_WORKERS", "4"))
+# provisional until re-fit against the labelled 300
 FRONT_PAGES = 14
+
+
+def configure(cfg: dict | None = None) -> None:
+    """Update pipeline thresholds from resolved configuration."""
+    global INDEX_STRIDE, OCR_WORKERS, FRONT_PAGES
+    if not cfg:
+        return
+    ocr_cfg = cfg.get("ocr", {})
+    if isinstance(ocr_cfg, dict):
+        INDEX_STRIDE = ocr_cfg.get("index_stride", INDEX_STRIDE)
+        FRONT_PAGES = ocr_cfg.get("front_pages", FRONT_PAGES)
+    disc_cfg = cfg.get("discover", {})
+    if isinstance(disc_cfg, dict):
+        OCR_WORKERS = disc_cfg.get("workers", OCR_WORKERS)
 
 
 def _lang_for(profile: DocProfile, page_no: int) -> str:

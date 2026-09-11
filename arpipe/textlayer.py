@@ -22,22 +22,68 @@ from .patterns import (LIGATURE_FIXES, NUMERIC_LINE_RE, PAGE_NUM_LINE_RE,
                        REPEATED_HEADER_MIN_PAGES, TABLE_LABEL_RE)
 
 # --- column-split recovery (P16B) ---------------------------------------------
-# A single full-width block (running head, footer, rule, full-width heading)
-# collapses the widest block-x interval to ~0, so _gap_cut never fires and
-# xy_cut falls back to the naive (y, x) sort that interleaves the two columns.
-# _column_cut recovers the split from the blocks that are NOT full-width.
-#
-# Both constants are PROVISIONAL - picked from the four sample documents, to be
-# re-fit against the labelled 300 and moved to config in P15.
+# All thresholds provisional until re-fit against the labelled 300.
+# provisional until re-fit against the labelled 300
 COLUMN_FULLWIDTH_FRAC = 0.60   # a block wider than this * the text band spans
                                # the page and is not evidence of a column
+# provisional until re-fit against the labelled 300
 COLUMN_CENTRE_GAP_FRAC = 0.14  # min gap between two clusters of block centres,
                                # as a fraction of page width, to call them
-                               # separate columns. The iLovePDF-shredded Jain
-                               # reports have a real ~15 pt (2.5%) gutter that
-                               # the projection-profile min-run just misses;
-                               # the centre-to-centre gap is far wider and
-                               # clears cleanly.
+                               # separate columns.
+# provisional until re-fit against the labelled 300
+XY_CUT_MAX_DEPTH = 6
+# provisional until re-fit against the labelled 300
+XY_CUT_MIN_V_GAP_FRAC = 0.025  # vertical gutter split threshold (2.5% of page width)
+# provisional until re-fit against the labelled 300
+XY_CUT_MIN_H_GAP_FRAC = 0.020  # horizontal split threshold (2.0% of page height)
+# provisional until re-fit against the labelled 300
+XY_CUT_EDGE_MARGIN = 0.12      # ignore cuts within 12% of page edge
+
+# provisional until re-fit against the labelled 300
+TABLE_DIGIT_RATIO = 0.40       # digits / (letters + digits) within a block
+# provisional until re-fit against the labelled 300
+TABLE_MAX_WORDS_PER_LINE = 6   # a data row is short; wrapped prose runs long
+# provisional until re-fit against the labelled 300
+TABLE_MIN_RUN = 3              # numeric lines in a run to call it a region
+# provisional until re-fit against the labelled 300
+TABLE_LABEL_MAX_CHARS = 44     # a row / column label is short
+# provisional until re-fit against the labelled 300
+TABLE_LABEL_MAX_WORDS = 6
+# provisional until re-fit against the labelled 300
+TABLE_PROSE_LINE_WORDS = 12    # a line this long is a sentence, not a cell
+
+# provisional until re-fit against the labelled 300
+FURNITURE_ZONE_FRAC = 0.08      # header / footer margin band fraction
+# provisional until re-fit against the labelled 300
+FURNITURE_MIN_PAGE_FRAC = 0.35  # fraction of pages string must appear on to be furniture
+# provisional until re-fit against the labelled 300
+REPEATED_HEADER_MIN_PAGES = 4
+
+
+def configure(cfg: dict | None = None) -> None:
+    """Update thresholds from resolved configuration."""
+    global COLUMN_FULLWIDTH_FRAC, COLUMN_CENTRE_GAP_FRAC
+    global XY_CUT_MAX_DEPTH, XY_CUT_MIN_V_GAP_FRAC, XY_CUT_MIN_H_GAP_FRAC, XY_CUT_EDGE_MARGIN
+    global TABLE_DIGIT_RATIO, TABLE_MAX_WORDS_PER_LINE, TABLE_MIN_RUN
+    global TABLE_LABEL_MAX_CHARS, TABLE_LABEL_MAX_WORDS, TABLE_PROSE_LINE_WORDS
+    global FURNITURE_ZONE_FRAC, FURNITURE_MIN_PAGE_FRAC, REPEATED_HEADER_MIN_PAGES
+    if not cfg:
+        return
+    COLUMN_FULLWIDTH_FRAC = cfg.get("column_fullwidth_frac", COLUMN_FULLWIDTH_FRAC)
+    COLUMN_CENTRE_GAP_FRAC = cfg.get("column_centre_gap_frac", COLUMN_CENTRE_GAP_FRAC)
+    XY_CUT_MAX_DEPTH = cfg.get("xy_cut_max_depth", XY_CUT_MAX_DEPTH)
+    XY_CUT_MIN_V_GAP_FRAC = cfg.get("xy_cut_min_v_gap_frac", XY_CUT_MIN_V_GAP_FRAC)
+    XY_CUT_MIN_H_GAP_FRAC = cfg.get("xy_cut_min_h_gap_frac", XY_CUT_MIN_H_GAP_FRAC)
+    XY_CUT_EDGE_MARGIN = cfg.get("xy_cut_edge_margin", XY_CUT_EDGE_MARGIN)
+    TABLE_DIGIT_RATIO = cfg.get("table_digit_ratio", TABLE_DIGIT_RATIO)
+    TABLE_MAX_WORDS_PER_LINE = cfg.get("table_max_words_per_line", TABLE_MAX_WORDS_PER_LINE)
+    TABLE_MIN_RUN = cfg.get("table_min_run", TABLE_MIN_RUN)
+    TABLE_LABEL_MAX_CHARS = cfg.get("table_label_max_chars", TABLE_LABEL_MAX_CHARS)
+    TABLE_LABEL_MAX_WORDS = cfg.get("table_label_max_words", TABLE_LABEL_MAX_WORDS)
+    TABLE_PROSE_LINE_WORDS = cfg.get("table_prose_line_words", TABLE_PROSE_LINE_WORDS)
+    FURNITURE_ZONE_FRAC = cfg.get("furniture_zone_frac", FURNITURE_ZONE_FRAC)
+    FURNITURE_MIN_PAGE_FRAC = cfg.get("furniture_min_page_frac", FURNITURE_MIN_PAGE_FRAC)
+    REPEATED_HEADER_MIN_PAGES = cfg.get("repeated_header_min_pages", REPEATED_HEADER_MIN_PAGES)
 
 
 @dataclass(slots=True)
@@ -81,7 +127,7 @@ def _gap_cut(vals: list[tuple[float, float]], lo: float, hi: float,
     if best_at is None or best_gap < min_gap:
         return None
     # ignore cuts too close to the page edge (margins, side tabs)
-    if not (lo + 0.12 * (hi - lo) < best_at < hi - 0.12 * (hi - lo)):
+    if not (lo + XY_CUT_EDGE_MARGIN * (hi - lo) < best_at < hi - XY_CUT_EDGE_MARGIN * (hi - lo)):
         return None
     return best_at
 
@@ -150,10 +196,10 @@ def xy_cut(blocks: list[Block], page: pymupdf.Rect, depth: int = 0,
     `column_cut` set True if the P16B column splitter fired anywhere in the
     recursion for this page.
     """
-    if len(blocks) <= 1 or depth > 6:
+    if len(blocks) <= 1 or depth > XY_CUT_MAX_DEPTH:
         return sorted(blocks, key=lambda b: (round(b.y0, 1), b.x0))
 
-    min_v_gap = max(10.0, page.width * 0.025)   # a real gutter, not word spacing
+    min_v_gap = max(10.0, page.width * XY_CUT_MIN_V_GAP_FRAC)   # a real gutter, not word spacing
     xs = [(b.x0, b.x1) for b in blocks]
     x_at = _gap_cut(xs, min(b.x0 for b in blocks), max(b.x1 for b in blocks), min_v_gap)
     if x_at is not None:
@@ -168,7 +214,7 @@ def xy_cut(blocks: list[Block], page: pymupdf.Rect, depth: int = 0,
         if col is not None:
             return col
 
-    min_h_gap = max(8.0, page.height * 0.02)
+    min_h_gap = max(8.0, page.height * XY_CUT_MIN_H_GAP_FRAC)
     ys = [(b.y0, b.y1) for b in blocks]
     y_at = _gap_cut(ys, min(b.y0 for b in blocks), max(b.y1 for b in blocks), min_h_gap)
     if y_at is not None:
@@ -214,14 +260,6 @@ def page_text(page: pymupdf.Page, reading_order: bool = True) -> str:
 # to the sidecar with that table (recoverable there, never deleted). Cleaning
 # that fully means repairing the shredded fetch source upstream.
 #
-# PROVISIONAL constants - picked from the four sample documents, to be re-fit
-# against the labelled 300 and moved to config in P15.
-TABLE_DIGIT_RATIO = 0.40       # digits / (letters + digits) within a block
-TABLE_MAX_WORDS_PER_LINE = 6   # a data row is short; wrapped prose runs long
-TABLE_MIN_RUN = 3              # numeric lines in a run to call it a region
-TABLE_LABEL_MAX_CHARS = 44     # a row / column label is short
-TABLE_LABEL_MAX_WORDS = 6
-TABLE_PROSE_LINE_WORDS = 12    # a line this long is a sentence, not a cell
 
 _LABEL_STOPWORDS = frozenset(
     "a an the is are was were be been of to and or in on for with as at from "
@@ -354,15 +392,6 @@ def _quarantine_page(page_no: int, blocks: list[Block]) -> tuple[list[Block],
 # xy_cut - which also lifts the full-width header/footer that defeats _gap_cut in
 # the first place, so it is defence in depth on the same failure.
 #
-# PROVISIONAL constants - picked from the four sample documents, to be re-fit
-# against the labelled 300 and moved to config in P15.
-FURNITURE_ZONE_FRAC = 0.08      # a block whose top is within this fraction of the
-                               # page height from the page top - or whose bottom
-                               # is within it of the page bottom - is in the
-                               # header / footer band
-FURNITURE_MIN_PAGE_FRAC = 0.35  # a normalised in-band string carried by at least
-                               # this fraction of the pages is running furniture
-                               # (the fraction strip_running_furniture already uses)
 
 
 def _furniture_norm(s: str) -> str:

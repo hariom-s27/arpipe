@@ -20,7 +20,7 @@ import sys
 from collections import defaultdict
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-from . import discover, fetch, ocr, pipeline, store, triage, universe, verify
+from . import config, discover, fetch, ocr, pipeline, store, triage, universe, verify
 from .models import Company, ReportRef, StoredDoc, to_json
 
 
@@ -209,6 +209,7 @@ def cmd_extract(a: argparse.Namespace) -> int:
             if res is None:
                 continue
             rec = json.loads(to_json(res))   # already carries "path" (rel to --out)
+            rec["run_config"] = config.config_for_manifest()
             store.append_manifest(a.out, rec)
             n_ok += int(res.ok)
     print(f"extracted ok={n_ok}/{len(todo)}")
@@ -354,17 +355,45 @@ def cmd_preflight(a: argparse.Namespace) -> int:
 
 
 def main(argv: list[str] | None = None) -> int:
-    p = argparse.ArgumentParser("arpipe")
+    args_list = sys.argv[1:] if argv is None else argv
+    subcmds = {"universe", "discover", "fetch", "triage", "extract", "audit",
+               "sample-for-labelling", "label", "evaluate", "preflight"}
+
+    # Top-level --print-config without requiring a subcommand
+    if "--print-config" in args_list and not any(a in subcmds for a in args_list):
+        c_path = None
+        sets = []
+        for i, a in enumerate(args_list):
+            if a == "--config" and i + 1 < len(args_list):
+                c_path = args_list[i + 1]
+            elif a.startswith("--config="):
+                c_path = a.split("=", 1)[1]
+            elif a == "--set" and i + 1 < len(args_list):
+                sets.append(args_list[i + 1])
+            elif a.startswith("--set="):
+                sets.append(a.split("=", 1)[1])
+        cfg = config.load_config(config_path=c_path, cli_overrides={"set": sets})
+        print(config.format_config_dump(cfg))
+        return 0
+
+    cfg_parent = argparse.ArgumentParser(add_help=False)
+    cfg_parent.add_argument("--config", default=None, help="Path to YAML configuration file")
+    cfg_parent.add_argument("--print-config", action="store_true",
+                            help="Dump fully resolved config with sources and exit")
+    cfg_parent.add_argument("--set", action="append", default=[],
+                            help="Override config value: section.key=val")
+
+    p = argparse.ArgumentParser("arpipe", parents=[cfg_parent])
     sub = p.add_subparsers(dest="cmd", required=True)
 
-    u = sub.add_parser("universe"); u.add_argument("--out", default="companies.csv")
+    u = sub.add_parser("universe", parents=[cfg_parent]); u.add_argument("--out", default="companies.csv")
     u.add_argument("--in-csv", default=None,
                    help="Rebuild/collapse an existing companies.csv without network fetch")
     u.add_argument("--bse-json", default=None)
     u.add_argument("--no-bse", action="store_true", help="Do not fetch or include BSE master")
     u.set_defaults(fn=cmd_universe)
 
-    d = sub.add_parser("discover")
+    d = sub.add_parser("discover", parents=[cfg_parent])
     d.add_argument("--companies", default="companies.csv")
     d.add_argument("--out", default="reports.jsonl")
     d.add_argument("--from-year", type=int, default=2010)
@@ -374,17 +403,17 @@ def main(argv: list[str] | None = None) -> int:
     d.add_argument("--use-screener", action="store_true")
     d.set_defaults(fn=cmd_discover)
 
-    f = sub.add_parser("fetch")
+    f = sub.add_parser("fetch", parents=[cfg_parent])
     f.add_argument("--manifest", default="reports.jsonl")
     f.add_argument("--root", default="store")
     f.add_argument("--workers", type=int, default=4)
     f.add_argument("--min-interval", type=float, default=1.5)
     f.set_defaults(fn=cmd_fetch)
 
-    t = sub.add_parser("triage"); t.add_argument("--root", default="store")
+    t = sub.add_parser("triage", parents=[cfg_parent]); t.add_argument("--root", default="store")
     t.set_defaults(fn=cmd_triage)
 
-    e = sub.add_parser("extract")
+    e = sub.add_parser("extract", parents=[cfg_parent])
     e.add_argument("--root", default="store")
     e.add_argument("--out", default="dataset")
     e.add_argument("--companies", default="companies.csv")
@@ -398,10 +427,10 @@ def main(argv: list[str] | None = None) -> int:
     e.add_argument("--aws-region", default="ap-south-1")
     e.set_defaults(fn=cmd_extract)
 
-    a = sub.add_parser("audit"); a.add_argument("--out", default="dataset")
+    a = sub.add_parser("audit", parents=[cfg_parent]); a.add_argument("--out", default="dataset")
     a.set_defaults(fn=cmd_audit)
 
-    sfl = sub.add_parser("sample-for-labelling")
+    sfl = sub.add_parser("sample-for-labelling", parents=[cfg_parent])
     sfl.add_argument("--n", type=int, default=300, help="Number of documents to sample (stratified across 36 cells)")
     sfl.add_argument("--out", default="to_label.csv", help="Output to_label.csv path")
     sfl.add_argument("--store", action="append", default=None,
@@ -409,7 +438,7 @@ def main(argv: list[str] | None = None) -> int:
     sfl.add_argument("--companies", default="companies.csv")
     sfl.set_defaults(fn=cmd_sample_for_labelling)
 
-    lbl = sub.add_parser("label")
+    lbl = sub.add_parser("label", parents=[cfg_parent])
     lbl.add_argument("--pdf", default=None, help="Path to a single PDF to label")
     lbl.add_argument("--out", default="labels.csv", help="Output labels CSV path")
     lbl.add_argument("--batch", "--to-label", dest="batch", default=None,
@@ -422,14 +451,14 @@ def main(argv: list[str] | None = None) -> int:
     lbl.add_argument("--exchange", default=None)
     lbl.set_defaults(fn=cmd_label)
 
-    evl = sub.add_parser("evaluate")
+    evl = sub.add_parser("evaluate", parents=[cfg_parent])
     evl.add_argument("--labels", default="labels.csv", help="Path to labels.csv ground truth")
     evl.add_argument("--out", default="eval_report.md", help="Path to output markdown report")
     evl.add_argument("--dataset", action="append", default=None,
                      help="Path to dataset folder containing manifest.jsonl (can be passed multiple times)")
     evl.set_defaults(fn=cmd_evaluate)
 
-    pf = sub.add_parser("preflight",
+    pf = sub.add_parser("preflight", parents=[cfg_parent],
                         help="Check tools, disk, network, and deps before a long run")
     pf.add_argument("--root", default="store", help="Store directory")
     pf.add_argument("--out", default="dataset", help="Dataset output directory")
@@ -451,6 +480,15 @@ def main(argv: list[str] | None = None) -> int:
     pf.set_defaults(fn=cmd_preflight)
 
     ns = p.parse_args(argv)
+
+    # Load resolved config with 4-level precedence and apply to all modules
+    cfg = config.load_config(config_path=getattr(ns, "config", None), cli_overrides=ns)
+    config.set_active_config(cfg)
+
+    if getattr(ns, "print_config", False):
+        print(config.format_config_dump(cfg))
+        return 0
+
     return ns.fn(ns)
 
 

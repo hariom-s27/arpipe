@@ -484,3 +484,4 @@ def evaluate_file(labels_csv: str, out_report_md: str, dataset_roots: list[str] 
             print(f"  {i}. {stratum}: within_1={sm['within_1']*100:.1f}%, IoU={sm['iou']:.3f}")
 
     return 0
+

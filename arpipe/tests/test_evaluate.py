@@ -82,3 +82,4 @@ def test_end_to_end_evaluate():
         assert "Start Within 1 Page" in content
         assert "Per-Method Precision" in content
         assert "Supporter Calibration" in content
+
