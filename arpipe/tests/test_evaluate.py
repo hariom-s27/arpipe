@@ -64,14 +64,15 @@ def test_end_to_end_evaluate():
             writer.writerow([
                 "sha256", "company_id", "cin", "fy_end", "doc_kind", "cap_band",
                 "exchange", "total_pages", "proposed_start", "proposed_end",
-                "true_start", "true_end", "reason_code", "labeller", "labelled_at"
+                "true_start", "true_end", "reason_code", "labeller", "labelled_at",
+                "verified_by"
             ])
             # Row 1: Exact OK
-            writer.writerow(["sha1", "C1", "", "2012", "digital", "large", "both", "100", "10", "20", "10", "20", "OK", "user", ""])
+            writer.writerow(["sha1", "C1", "", "2012", "digital", "large", "both", "100", "10", "20", "10", "20", "OK", "user", "", "read_pdf"])
             # Row 2: Off by 1 (WRONG_START)
-            writer.writerow(["sha2", "C2", "", "2013", "scanned", "micro", "bse", "50", "11", "20", "10", "20", "WRONG_START", "user", ""])
+            writer.writerow(["sha2", "C2", "", "2013", "scanned", "micro", "bse", "50", "11", "20", "10", "20", "WRONG_START", "user", "", "read_pdf"])
             # Row 3: Missing in doc
-            writer.writerow(["sha3", "C3", "", "2020", "digital", "mid", "both", "80", "", "", "", "", "NO_MDA_IN_DOC", "user", ""])
+            writer.writerow(["sha3", "C3", "", "2020", "digital", "mid", "both", "80", "", "", "", "", "NO_MDA_IN_DOC", "user", "", "read_pdf"])
 
         ret = evaluate.evaluate_file(labels_csv, report_md)
         assert ret == 0
@@ -82,4 +83,43 @@ def test_end_to_end_evaluate():
         assert "Start Within 1 Page" in content
         assert "Per-Method Precision" in content
         assert "Supporter Calibration" in content
+
+
+def test_evaluate_excludes_unverified_rows():
+    with tempfile.TemporaryDirectory() as td:
+        labels_csv = os.path.join(td, "labels.csv")
+
+        with open(labels_csv, "w", newline="", encoding="utf-8") as f:
+            writer = csv.writer(f)
+            writer.writerow([
+                "sha256", "company_id", "cin", "fy_end", "doc_kind", "cap_band",
+                "exchange", "total_pages", "proposed_start", "proposed_end",
+                "true_start", "true_end", "reason_code", "labeller", "labelled_at",
+                "verified_by"
+            ])
+            # Row 1: read_pdf -> included
+            writer.writerow(["sha1", "C1", "", "2012", "digital", "large", "both", "100", "10", "20", "10", "20", "OK", "user", "", "read_pdf"])
+            # Row 2: unknown -> excluded
+            writer.writerow(["sha2", "C2", "", "2013", "scanned", "micro", "bse", "50", "11", "20", "10", "20", "WRONG_START", "user", "", "unknown"])
+            # Row 3: copied_from_run -> excluded
+            writer.writerow(["sha3", "C3", "", "2014", "digital", "mid", "both", "80", "5", "10", "5", "10", "OK", "user", "", "copied_from_run"])
+            # Row 4: empty verified_by -> excluded
+            writer.writerow(["sha4", "C4", "", "2015", "digital", "mid", "both", "80", "5", "10", "5", "10", "OK", "user", "", ""])
+
+        res = evaluate.evaluate_labels(labels_csv, dataset_roots=[])
+        assert res["n"] == 1
+        assert res["overall"]["exact_start"] == 1.0
+
+
+def test_log_holdout_access():
+    with tempfile.TemporaryDirectory() as td:
+        log_path = os.path.join(td, "eval_holdout_log.csv")
+        warn = evaluate.log_holdout_access(split="holdout", log_path=log_path)
+        assert "WARNING: Scoring holdout set" in warn
+        assert os.path.exists(log_path)
+        with open(log_path, encoding="utf-8") as f:
+            lines = f.readlines()
+            assert len(lines) == 2  # header + 1 row
+            assert "holdout" in lines[1]
+
 

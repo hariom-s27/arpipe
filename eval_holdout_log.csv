@@ -1,0 +1,5 @@
+timestamp,git_commit,split,warning
+2026-09-11T19:11:08.170256+00:00,bc5f174,holdout,WARNING: Scoring holdout set on 2026-09-11T19:11:08.170256+00:00 (git commit: bc5f174). Logged to eval_holdout_log.csv.
+2026-09-11T19:11:15.185835+00:00,bc5f174,both,WARNING: Scoring holdout set on 2026-09-11T19:11:15.185835+00:00 (git commit: bc5f174). Logged to eval_holdout_log.csv.
+2026-09-11T19:29:37.177578+00:00,bc5f174,holdout,WARNING: Scoring holdout set on 2026-09-11T19:29:37.177578+00:00 (git commit: bc5f174). Logged to eval_holdout_log.csv.
+2026-09-11T19:29:37.643249+00:00,bc5f174,both,WARNING: Scoring holdout set on 2026-09-11T19:29:37.643249+00:00 (git commit: bc5f174). Logged to eval_holdout_log.csv.

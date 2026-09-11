@@ -59,6 +59,7 @@ LABELS_COLUMNS = [
     "reason_code",
     "labeller",
     "labelled_at",
+    "verified_by",
 ]
 
 TO_LABEL_COLUMNS = [
@@ -499,6 +500,7 @@ def label_single_pdf(
         "reason_code": reason,
         "labeller": labeller,
         "labelled_at": dt.datetime.now(dt.UTC).isoformat(),
+        "verified_by": "read_pdf",
     }
 
     append_label_row(out_csv, record)

@@ -169,6 +169,10 @@ def evaluate_labels(labels_csv: str, dataset_roots: list[str] | None = None) -> 
     evaluated_docs: list[dict] = []
 
     for r in rows:
+        verified_by = (r.get("verified_by") or "").strip()
+        if verified_by != "read_pdf":
+            continue
+
         sha = r.get("sha256", "").strip()
         m = manifests.get(sha, {})
 
@@ -248,6 +252,7 @@ def evaluate_labels(labels_csv: str, dataset_roots: list[str] | None = None) -> 
             "orphan_start_frac": orphan_frac,
             "reason_code": reason_code,
             "is_scrambled": is_scrambled,
+            "verified_by": verified_by,
         })
 
     return aggregate_metrics(evaluated_docs)
@@ -257,7 +262,23 @@ def aggregate_metrics(docs: list[dict]) -> dict[str, object]:
     """Aggregate metrics overall, per-stratum, per-method, and calibration."""
     n = len(docs)
     if n == 0:
-        return {"n": 0, "overall": {}, "strata": {}, "per_method": {}, "calibration": {}, "tiers": {}}
+        return {
+            "n": 0,
+            "overall": {
+                "exact_start": 0.0, "within_1": 0.0, "within_2": 0.0,
+                "iou": 0.0, "pk": 0.0, "windowdiff": 0.0,
+                "mean_orphan_frac": 0.0, "scrambled_frac": 0.0,
+            },
+            "targets": {
+                "born_digital_within_1": 0.0, "scanned_within_1": 0.0,
+                "low_tier_frac": 0.0, "order_clean_frac": 0.0,
+            },
+            "strata": {},
+            "per_method": {},
+            "calibration": {},
+            "tiers": {},
+            "worst_strata": [],
+        }
 
     def summarize_group(dlist: list[dict]) -> dict:
         k = len(dlist)
@@ -484,4 +505,29 @@ def evaluate_file(labels_csv: str, out_report_md: str, dataset_roots: list[str] 
             print(f"  {i}. {stratum}: within_1={sm['within_1']*100:.1f}%, IoU={sm['iou']:.3f}")
 
     return 0
+
+
+def log_holdout_access(split: str = "holdout", log_path: str = "eval_holdout_log.csv") -> str:
+    """Log holdout evaluation attempt with date and git commit."""
+    import datetime as dt
+    import subprocess
+
+    timestamp = dt.datetime.now(dt.timezone.utc).isoformat()
+    try:
+        res = subprocess.run(["git", "rev-parse", "--short", "HEAD"],
+                             capture_output=True, text=True, check=True, timeout=5)
+        commit = res.stdout.strip()
+    except Exception:
+        commit = "unknown"
+
+    warning = f"WARNING: Scoring holdout set on {timestamp} (git commit: {commit}). Logged to {log_path}."
+    print(warning)
+
+    exists = os.path.exists(log_path) and os.path.getsize(log_path) > 0
+    with open(log_path, "a", newline="", encoding="utf-8") as f:
+        writer = csv.writer(f)
+        if not exists:
+            writer.writerow(["timestamp", "git_commit", "split", "warning"])
+        writer.writerow([timestamp, commit, split, warning])
+    return warning
 

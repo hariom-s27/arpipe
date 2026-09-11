@@ -423,11 +423,57 @@ def cmd_evaluate(a: argparse.Namespace) -> int:
     dataset_roots = []
     if a.dataset:
         dataset_roots = a.dataset if isinstance(a.dataset, list) else [a.dataset]
+
+    split = getattr(a, "split", "fit")
+
+    if split in ("holdout", "both"):
+        evaluate.log_holdout_access(split=split)
+
+    if split == "both":
+        fit_labels = a.labels or ("labels_fit.csv" if os.path.exists("labels_fit.csv") else "labels.csv")
+        fit_out = a.out or "eval_report_fit.md"
+        print(f"\n=== Evaluating Fit Split: {fit_labels} ===")
+        ret1 = evaluate.evaluate_file(
+            labels_csv=fit_labels,
+            out_report_md=fit_out,
+            dataset_roots=dataset_roots if dataset_roots else None,
+        )
+
+        holdout_labels = "labels_holdout.csv"
+        holdout_out = "eval_report_holdout.md"
+        print(f"\n=== Evaluating Holdout Split: {holdout_labels} ===")
+        if not os.path.exists(holdout_labels):
+            print(f"Holdout file not found: {holdout_labels} (0 holdout documents labelled).")
+            ret2 = 0
+        else:
+            ret2 = evaluate.evaluate_file(
+                labels_csv=holdout_labels,
+                out_report_md=holdout_out,
+                dataset_roots=dataset_roots if dataset_roots else None,
+            )
+        return 0 if (ret1 == 0 and ret2 == 0) else 1
+
+    labels_csv = a.labels
+    if not labels_csv:
+        if split == "holdout":
+            labels_csv = "labels_holdout.csv"
+        else:
+            labels_csv = "labels_fit.csv" if os.path.exists("labels_fit.csv") else "labels.csv"
+
+    out_md = a.out
+    if not out_md:
+        out_md = "eval_report_holdout.md" if split == "holdout" else "eval_report.md"
+
+    if not os.path.exists(labels_csv) and split == "holdout":
+        print(f"Holdout file not found: {labels_csv} (no holdout documents labelled yet).")
+        return 0
+
     return evaluate.evaluate_file(
-        labels_csv=a.labels,
-        out_report_md=a.out,
+        labels_csv=labels_csv,
+        out_report_md=out_md,
         dataset_roots=dataset_roots if dataset_roots else None,
     )
+
 
 
 def cmd_preflight(a: argparse.Namespace) -> int:
@@ -554,8 +600,10 @@ def main(argv: list[str] | None = None) -> int:
     lbl.set_defaults(fn=cmd_label)
 
     evl = sub.add_parser("evaluate", parents=[cfg_parent])
-    evl.add_argument("--labels", default="labels.csv", help="Path to labels.csv ground truth")
-    evl.add_argument("--out", default="eval_report.md", help="Path to output markdown report")
+    evl.add_argument("--labels", default=None, help="Path to labels CSV ground truth (default: inferred from --split)")
+    evl.add_argument("--split", choices=["fit", "holdout", "both"], default="fit",
+                     help="Dataset split to evaluate: fit (default), holdout, or both")
+    evl.add_argument("--out", default=None, help="Path to output markdown report (default: eval_report.md or per-split)")
     evl.add_argument("--dataset", action="append", default=None,
                      help="Path to dataset folder containing manifest.jsonl (can be passed multiple times)")
     evl.set_defaults(fn=cmd_evaluate)
