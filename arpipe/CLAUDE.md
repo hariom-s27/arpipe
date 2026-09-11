@@ -450,6 +450,14 @@ documents proving xy_cut's reassembly holds. `orphan_start_frac` now excludes
 ordered-list markers (`a)` `b)` `iv.`) - post-P22 no real document is above the
 gate, only the P17 synthetic shuffle.
 
+**P33 pointer refinement:** `MDA_POINTER_RE` separates `given`/`presented`/`provided`
+from `enclosed`/`attached`/`annexed`, adding a negative lookahead so forward-pointing
+introductory clauses ("is given below", "is presented hereunder", "is provided as under",
+"is given as follows") do not falsely trigger cross-reference pointer rejection on genuine
+MD&A section headings (eliminating false positives in Sar Auto Products and Craftsman Automation).
+True cross-reference pointers referring away to separate sections or annexures ("is given separately in Annexure III")
+remain strictly rejected.
+
 Targets: high tier ≥ 75%, low tier ≤ 6%.
 
 ---

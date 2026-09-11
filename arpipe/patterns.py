@@ -70,8 +70,13 @@ MDA_TERMINATOR_RE = re.compile("|".join(f"(?:{p})" for p in MDA_TERMINATOR_PATTE
 
 # Pointers in Directors' Reports that mention MD&A but only refer to the
 # separate section enclosed or annexed elsewhere in the report (P27).
+# In P33, 'given/presented/provided' were separated from 'enclosed/attached/annexed'
+# and given a negative lookahead so introductory forward references ("is given below",
+# "is presented hereunder", etc.) do not falsely trigger pointer rejection on
+# genuine MD&A section headings.
 MDA_POINTER_PATTERNS = [
-    r"\b(?:is|are)\s+(?:enclosed|attached|annexed|given|presented|provided)\b",
+    r"\b(?:is|are)\s+(?:enclosed|attached|annexed)\b",
+    r"\b(?:is|are)\s+(?:given|presented|provided)\b(?!\s*[:–—-]*\s*(?:below|hereunder|as\s+under|as\s+follows)\b)",
     r"\bforms?\s+part\s+of\s+(?:this|the)\s+(?:Annual\s+)?Report\b",
     r"\bforms?\s+part\s+of\s+(?:this|the)\s+(?:Integrated\s+)?(?:Annual\s+)?Report\b",
     r"\bforms?\s+part\s+of\s+(?:this|the)\s+Report\b",

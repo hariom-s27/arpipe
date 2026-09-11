@@ -1803,6 +1803,34 @@ def test_to_the_members_of_terminator():
     assert match["shape_ok"] is True
 
 
+def test_p33_is_given_below_not_pointer():
+    from arpipe.segment import is_cross_reference_pointer
+
+    # Real text from Sar Auto Products FY2018 page 9:
+    # A genuine MD&A section heading followed by introductory regulatory preamble:
+    # "...a Management Discussion and Analysis report is given below:-"
+    # Must NOT be rejected as a cross-reference pointer (P33).
+    sar_auto_text = (
+        "7\n\n\n"
+        "MANAGEMENT DISCUSSION AND ANALYSIS REPORT\n\n"
+        "Pursuant to Regulation 34(2)(e) of SEBI LODR Regulations 2015, a Management Discussion and\n"
+        "Analysis report is given below:-\n\n"
+        "1) OVERALL REVIEW\n\n"
+        "Company manufactures auto components comprising of automobile gears like Spur, Helical,\n"
+        "Straight Bevel, Sprockets along with Transmission Spline Shaft, Couplings and Power Takeoff Clutch."
+    )
+    assert not is_cross_reference_pointer(sar_auto_text, "MANAGEMENT DISCUSSION AND ANALYSIS REPORT")
+
+    # A genuine cross-reference pointer in Directors' Report referring away to an annexure:
+    pointer_text = (
+        "MANAGEMENT DISCUSSION AND ANALYSIS REPORT\n"
+        "The Management Discussion and Analysis Report is given separately in Annexure III.\n"
+        "AUDITORS' REPORT\n"
+    )
+    assert is_cross_reference_pointer(pointer_text, "MANAGEMENT DISCUSSION AND ANALYSIS REPORT")
+
+
+
 
 
 
