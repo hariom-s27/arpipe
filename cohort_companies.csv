@@ -1,0 +1,37 @@
+company_id,canonical_name,isin,cin,nse_symbol,bse_scrip,aliases,sector,cap_band,status,alternate_isins,series_type,exchange,cap_band_current
+INE002A01018,Reliance Industries Limited,INE002A01018,,RELIANCE,500325,RELIANCE|Reliance Industries Ltd,,large,active,,ordinary,both,large
+INE009A01021,Infosys Limited,INE009A01021,,INFY,500209,INFOSYSTCH|INFY|Infosys Ltd,,large,active,,ordinary,both,large
+INE040A01034,HDFC Bank Limited,INE040A01034,,HDFCBANK,500180,HDFC Bank Ltd|HDFC Bank Ltd.|HDFCBANK,,large,active,,ordinary,both,large
+INE044A01036,Sun Pharmaceutical Industries Limited,INE044A01036,,SUNPHARMA,524715,SUNPHARMA|Sun Pharmaceutical Industries Ltd|Sun Pharmaceutical Industries Ltd.,,large,active,,ordinary,both,large
+INE081A01020,Tata Steel Limited,INE081A01020,,TATASTEEL,500470,TATA STEEL LIMITED|TATASTEEL|TISCO|Tata Steel Ltd,,large,active,,ordinary,both,large
+INE154A01025,ITC Limited,INE154A01025,,ITC,500875,ITC|ITC Ltd,,large,active,,ordinary,both,large
+INE002L01015,SJVN Limited,INE002L01015,,SJVN,533206,SJVN|SJVN LIMITED|SJVN Ltd,,mid,active,,ordinary,both,mid
+INE006I01046,Astral Limited,INE006I01046,,ASTRAL,532830,ASTRAL|ASTRAL LIMITED|Astral Ltd,,mid,active,,ordinary,both,mid
+INE007A01025,Crisil Limited,INE007A01025,,CRISIL,500092,CRISIL|CRISIL Ltd.|Crisil Ltd,,mid,active,,ordinary,both,mid
+INE151A01013,Tata Communications Limited,INE151A01013,,TATACOMM,500483,TATACOMM|Tata Communications Ltd|VSNL,,mid,active,,ordinary,both,mid
+INE171A01029,The Federal Bank  Limited,INE171A01029,,FEDERALBNK,500469,FEDERALBNK|Federal Bank Ltd|Federal Bank Ltd.,,mid,active,,ordinary,both,mid
+INE226A01021,Voltas Limited,INE226A01021,,VOLTAS,500575,VOLTAS|Voltas Ltd|Voltas Ltd.,,mid,active,,ordinary,both,mid
+INE761H01022,Page Industries Limited,INE761H01022,,PAGEIND,532827,PAGEIND|Page Industries Ltd|Page Industries Ltd.,,mid,active,,ordinary,both,mid
+INE797F01020,Jubilant Foodworks Limited,INE797F01020,,JUBLFOOD,533155,JUBLFOOD|Jubilant FoodWorks Ltd,,mid,active,,ordinary,both,mid
+INE002S01010,Mahanagar Gas Limited,INE002S01010,,MGL,539957,MGL|Mahanagar Gas Ltd,,small,active,,ordinary,both,small
+INE008A01015,IDBI Bank Limited,INE008A01015,,IDBI,500116,IDBI|IDBI Bank Ltd,,small,active,,ordinary,both,small
+INE119A01028,Balrampur Chini Mills Limited,INE119A01028,,BALRAMCHIN,500038,BALRAMCHIN|BALRAMPUR CHINI MILLS LTD|Balrampur Chini Mills Ltd,,small,active,,ordinary,both,small
+INE191H01014,PVR INOX Limited,INE191H01014,,PVRINOX,532689,PVR|PVR INOX LIMITED|PVR Inox Ltd|PVRINOX,,small,active,,ordinary,both,small
+INE192B01031,Welspun Living Limited,INE192B01031,,WELSPUNLIV,514162,WELSPUN LIVING LIMITED|WELSPUNIND|WELSPUNLIV|Welspun Living Ltd,,small,active,,ordinary,both,small
+INE482A01020,CEAT Limited,INE482A01020,,CEATLTD,500878,CEATLTD|Ceat Ltd|Ceat Ltd.,,small,active,,ordinary,both,small
+INE00E101023,Bikaji Foods International Limited,INE00E101023,,BIKAJI,543653,BIKAJI|Bikaji Foods International Ltd,,small,active,,ordinary,both,small
+INE00FF01025,Acutaas Chemicals Limited,INE00FF01025,,ACUTAAS,543349,ACUTAAS|ACUTAAS CHEMICALS LIMITED|AMIORG|Acutaas Chemicals Ltd,,small,active,,ordinary,both,small
+INE00LO01017,Craftsman Automation Limited,INE00LO01017,,CRAFTSMAN,543276,CRAFTSMAN|Craftsman Automation Ltd,,small,active,,ordinary,both,small
+INE00WC01027,Affle 3i Limited,INE00WC01027,,AFFLE,542752,AFFLE|AFFLE 3I LIMITED|Affle 3I Ltd,,small,active,,ordinary,both,small
+INE001B01026,KRBL Limited,INE001B01026,,KRBL,530813,KRBL|KRBL Ltd|KRBL Ltd.,,micro,active,,ordinary,both,micro
+INE001F01019,Modern Steels Limited,INE001F01019,,,513303,MDRNSTL|Modern Steels Ltd,,micro,active,,ordinary,bse,micro
+INE003B01014,Inter State Oil Carrier Ltd,INE003B01014,,,530259,INTSTOIL,,micro,active,,ordinary,bse,micro
+INE003F01015,Muller & Phipps (India) Ltd.,INE003F01015,,,501477,MULLER|Muller & Phipps India Ltd,,micro,active,,ordinary,bse,micro
+INE004C01028,Gujarat Cotex Ltd,INE004C01028,,,514386,GUJCOTEX,,micro,active,,ordinary,bse,micro
+INE004E01016,Span Divergent Limited,INE004E01016,,,524727,SDL|Span Divergent Ltd,,micro,active,,ordinary,bse,micro
+INE005E01013,Ekansh Concepts Limited,INE005E01013,,,531364,EKANSH|Ekansh Concepts Ltd,,micro,active,,ordinary,bse,micro
+INE006C01015,K.Z.Leasing & Finance Ltd.,INE006C01015,,,511728,KZ Leasing & Finance Ltd|KZLFIN,,micro,active,,ordinary,bse,micro
+INE001O01029,Risa International Limited,INE001O01029,,,530251,RISAINTL|Risa International Ltd,,micro,active,,ordinary,bse,micro
+INE002B01016,MADALA HOLDINGS LIMITED,INE002B01016,,,532344,MADALA|Madala Holdings Ltd,,micro,active,,ordinary,bse,micro
+INE002E01010,Sar  Auto Products Limited,INE002E01010,,,538992,SAPL|SAR Auto Products Ltd,,micro,active,,ordinary,bse,micro
+INE004Z01011,Mac Hotels Limited,INE004Z01011,,,541973,MACH|Mac Hotels Ltd,,micro,active,,ordinary,bse,micro
