@@ -322,6 +322,18 @@ def cmd_label(a: argparse.Namespace) -> int:
     return 1
 
 
+def cmd_evaluate(a: argparse.Namespace) -> int:
+    from . import evaluate
+    dataset_roots = []
+    if a.dataset:
+        dataset_roots = a.dataset if isinstance(a.dataset, list) else [a.dataset]
+    return evaluate.evaluate_file(
+        labels_csv=a.labels,
+        out_report_md=a.out,
+        dataset_roots=dataset_roots if dataset_roots else None,
+    )
+
+
 def main(argv: list[str] | None = None) -> int:
     p = argparse.ArgumentParser("arpipe")
     sub = p.add_subparsers(dest="cmd", required=True)
@@ -390,6 +402,13 @@ def main(argv: list[str] | None = None) -> int:
     lbl.add_argument("--cap-band", default=None)
     lbl.add_argument("--exchange", default=None)
     lbl.set_defaults(fn=cmd_label)
+
+    evl = sub.add_parser("evaluate")
+    evl.add_argument("--labels", default="labels.csv", help="Path to labels.csv ground truth")
+    evl.add_argument("--out", default="eval_report.md", help="Path to output markdown report")
+    evl.add_argument("--dataset", action="append", default=None,
+                     help="Path to dataset folder containing manifest.jsonl (can be passed multiple times)")
+    evl.set_defaults(fn=cmd_evaluate)
 
     ns = p.parse_args(argv)
     return ns.fn(ns)

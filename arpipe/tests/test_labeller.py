@@ -94,3 +94,4 @@ def test_sample_for_labelling():
         assert os.path.exists(out_csv)
         assert res["total_selected"] > 0
         assert len(res["cells"]) == 36
+
