@@ -124,11 +124,24 @@ class TesseractBackend(OcrBackend):
 
     def __init__(self, psm: int = 3, oem: int = 1):
         self.psm, self.oem = psm, oem
+        if not shutil.which("tesseract"):
+            win_tess = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
+            if os.path.exists(win_tess):
+                try:
+                    import pytesseract
+                    pytesseract.pytesseract.tesseract_cmd = win_tess
+                except ImportError:
+                    pass
 
     def run(self, pdf_path: str, page_nos: list[int], lang: str = "eng",
             dpi: int = DEFAULT_DPI) -> list[OcrPage]:
         import pytesseract
         from PIL import Image
+
+        if not shutil.which("tesseract"):
+            win_tess = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
+            if os.path.exists(win_tess):
+                pytesseract.pytesseract.tesseract_cmd = win_tess
 
         out: list[OcrPage] = []
         cfg = f"--oem {self.oem} --psm {self.psm}"

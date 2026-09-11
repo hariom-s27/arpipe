@@ -115,7 +115,8 @@ def test_terminator_regex_matches_common_next_sections():
     for s in ["Report on Corporate Governance", "Independent Auditor's Report",
               "Business Responsibility and Sustainability Report",
               "Notice of the 27th Annual General Meeting",
-              "Balance Sheet as at 31st March, 2019"]:
+              "Balance Sheet as at 31st March, 2019",
+              "AUDITORS REPORT", "AUDITORS' REPORT", "Auditor's Report"]:
         assert MDA_TERMINATOR_RE.search(s), s
 
 
@@ -1380,6 +1381,64 @@ def test_p25_outline_direct_prose_accepted():
     assert val["accepted_start"] == 10
     assert val["walked"] == 0
     assert val["reason"] == "valid_prose_at_target"
+
+
+def test_p26_sampler_includes_page_15_for_48_page_scanned_doc():
+    from arpipe.models import DocProfile, PageProfile, PageKind, Script
+    from arpipe.pipeline import sample_index_pages
+
+    # 48-page scanned document (like Inter State Oil Carrier FY2011)
+    profile = DocProfile(
+        sha256="test_p26_scanned_48",
+        n_pages=48,
+        pages=[PageProfile(i, PageKind.SCANNED, 10, 0, 0.0, 0.0, 1, 0, Script.LATIN, 0.0) for i in range(48)],
+        doc_kind="scan",
+        frac_needing_ocr=1.0,
+        has_outline=False,
+        outline_titles=[],
+    )
+
+    index, sample_info = sample_index_pages(profile)
+
+    assert sample_info["mode"] == "exhaustive"
+    assert sample_info["pages_sampled"] == 48
+    assert sample_info["pages_total"] == 48
+    assert sample_info["stride"] is None
+    assert sample_info["cost_pages"] == 48
+    assert 15 in index
+    assert index == list(range(48))
+
+
+def test_p26_sampler_sweeps_offset_for_longer_doc():
+    from arpipe.models import DocProfile, PageProfile, PageKind, Script
+    from arpipe.pipeline import sample_index_pages
+
+    # 100-page scanned document
+    profile = DocProfile(
+        sha256="test_p26_scanned_100",
+        n_pages=100,
+        pages=[PageProfile(i, PageKind.SCANNED, 10, 0, 0.0, 0.0, 1, 0, Script.LATIN, 0.0) for i in range(100)],
+        doc_kind="scan",
+        frac_needing_ocr=1.0,
+        has_outline=False,
+        outline_titles=[],
+    )
+
+    index, sample_info = sample_index_pages(profile)
+
+    assert sample_info["mode"] == "stride"
+    assert sample_info["stride"] == 6
+    assert sample_info["cost_pages"] <= 60
+    # Page 15 is 15 % 6 == 3 (half-stride), so it must be included!
+    assert 15 in index
+    # Pages < 14 should be included
+    for p in range(14):
+        assert p in index
+    # Pages >= 14 with n % 6 in (0, 3) should be included up to 60 pages cap
+    assert 18 in index  # 18 % 6 == 0
+    assert 21 in index  # 21 % 6 == 3
+    assert 24 in index  # 24 % 6 == 0
+
 
 
 

@@ -103,6 +103,45 @@ def _ocr_pages(pdf: str, profile: DocProfile, pages: list[int],
     return got, len(got), ",".join(sorted(engines))
 
 
+def sample_index_pages(
+    profile: DocProfile, need: list[int] | None = None
+) -> tuple[list[int], dict]:
+    """Determine the pages to OCR in pass 2 for locating MD&A.
+
+    For short, heavily-scanned documents (<= 60 pages and > 80% needing OCR),
+    sample every page. The <= 60 pages bound is a BUDGET statement, not a
+    tuned threshold: an extra ~130s of OCR wall-clock ensures the true section
+    is visible in short historical filings without risking OOM or timeout.
+
+    For longer documents, keep front matter and stride, but sweep the offset
+    (page % stride in (0, stride // 2)) to halve the blind spot.
+    """
+    if need is None:
+        need = triage.ocr_page_numbers(profile)
+
+    if profile.n_pages <= 60 and profile.frac_needing_ocr > 0.80:
+        index = sorted(need)
+        sample_info = {
+            "mode": "exhaustive",
+            "pages_sampled": len(index),
+            "pages_total": profile.n_pages,
+            "stride": None,
+            "cost_pages": len(index),
+        }
+    else:
+        stride = INDEX_STRIDE
+        half_stride = max(1, stride // 2)
+        index = sorted({n for n in need if n < FRONT_PAGES or (n % stride in (0, half_stride))})[:60]
+        sample_info = {
+            "mode": "stride",
+            "pages_sampled": len(index),
+            "pages_total": profile.n_pages,
+            "stride": stride,
+            "cost_pages": len(index),
+        }
+    return index, sample_info
+
+
 def process_document(doc: StoredDoc, company: Company, out_root: str,
                      escalator: ocr_mod.Escalator | None = None,
                      call_llm=None, keep_pages: bool = False,
@@ -135,21 +174,23 @@ def process_document(doc: StoredDoc, company: Company, out_root: str,
         ocr_used = 0
         engine = None
         ocr_stats: list[dict] = []
+        index_sample_info: dict = {}
         if (span is None or span.score < 0.55) and profile.frac_needing_ocr > 0.05:
             need = triage.ocr_page_numbers(profile)
-            index = sorted({n for n in need
-                            if n < FRONT_PAGES or n % INDEX_STRIDE == 0})[:60]
+            index, index_sample_info = sample_index_pages(profile, need)
             if index:
                 got, k, engine = _ocr_pages(blob, profile, index, escalator, stats=ocr_stats)
                 page_texts.update(got)
                 ocr_used += k
                 span, diag = segment.locate(pdf, profile, page_texts, call_llm=None)
+                diag["index_sample"] = index_sample_info
 
         # ---- pass 3: LLM adjudication for the residue --------------------
         if call_llm and (span is None or span.score < 0.7):
             span2, diag2 = segment.locate(pdf, profile, page_texts, call_llm=call_llm)
             if span2 and (span is None or span2.score > span.score):
                 span, diag = span2, diag2
+                diag["index_sample"] = index_sample_info
 
         if span is None:
             res.errors.append("mda_not_located")
@@ -173,7 +214,8 @@ def process_document(doc: StoredDoc, company: Company, out_root: str,
                       "pdf_producer": doc.pdf_producer,
                       "ocr_stats": ocr_stats,
                       "ocr_sec_total": round(sum(s["seconds"] for s in ocr_stats), 2) if ocr_stats else 0.0,
-                      "ocr_sec_mean": round(sum(s["seconds"] for s in ocr_stats) / len(ocr_stats), 3) if ocr_stats else 0.0}
+                      "ocr_sec_mean": round(sum(s["seconds"] for s in ocr_stats) / len(ocr_stats), 3) if ocr_stats else 0.0,
+                      "index_sample": index_sample_info}
             return res
 
         # ---- refine the end boundary --------------------------------------
@@ -275,6 +317,7 @@ def process_document(doc: StoredDoc, company: Company, out_root: str,
                   "ocr_stats": ocr_stats,
                   "ocr_sec_total": round(sum(s["seconds"] for s in ocr_stats), 2) if ocr_stats else 0.0,
                   "ocr_sec_mean": round(sum(s["seconds"] for s in ocr_stats) / len(ocr_stats), 3) if ocr_stats else 0.0,
+                  "index_sample": index_sample_info,
                   # P21: pdf_producer sits next to a source_shredded reason -
                   # the free web compressors (iLovePDF, Smallpdf, ...) shred the
                   # text layer to near-per-line and that is the whole residual.
