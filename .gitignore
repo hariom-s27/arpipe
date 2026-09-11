@@ -20,3 +20,21 @@ arpipe/live_dataset/
 arpipe/_prior_runs/
 arpipe/smoke_dataset/
 arpipe/_demo_out/
+
+# ---- root-level store/dataset runs (fetch/extract against full universe) ----
+# all re-derivable via `discover` / `fetch` / `extract` --resume
+/live_store/
+/live_dataset/
+/live_dataset_prev/
+/all_reports.jsonl
+/cohort_reports.jsonl
+/p11_reports.jsonl
+arpipe/live_dataset_p20/
+arpipe/live_dataset_p8/
+arpipe/p11_dataset/
+arpipe/p11_dataset_p30/
+arpipe/p11_store/
+arpipe/pilot_dataset/
+arpipe/pilot_store/
+arpipe/mini_pilot_reports.jsonl
+arpipe/p11_reports.jsonl
