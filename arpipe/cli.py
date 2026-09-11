@@ -156,42 +156,65 @@ def cmd_discover(a: argparse.Namespace) -> int:
 
 def cmd_fetch(a: argparse.Namespace) -> int:
     import httpx
-    refs = [ReportRef(**json.loads(l)) for l in open(a.manifest) if l.strip()]
+    raw_refs = [ReportRef(**json.loads(l)) for l in open(a.manifest, encoding="utf-8") if l.strip()]
     limiter = fetch.HostLimiter(min_interval=a.min_interval)
     os.makedirs(a.root, exist_ok=True)
     done: set[tuple[str, int]] = set()
     if os.path.exists(os.path.join(a.root, "documents.jsonl")):
-        for l in open(os.path.join(a.root, "documents.jsonl")):
+        for l in open(os.path.join(a.root, "documents.jsonl"), encoding="utf-8"):
             d = json.loads(l)
             done.add((d["company_id"], d["fy_end"]))
+
+    # Group candidate URLs by (company_id, fy_end), ordered by priority (NSE > BSE > Screener)
+    by_pair: dict[tuple[str, int], list[ReportRef]] = {}
+    for r in raw_refs:
+        by_pair.setdefault((r.company_id, r.fy_end), []).append(r)
+    for pair in by_pair:
+        by_pair[pair].sort(key=lambda r: (r.priority, r.url))
+
     out = open(os.path.join(a.root, "documents.jsonl"), "a", encoding="utf-8")
     cl = httpx.Client(headers={"User-Agent": discover.UA}, timeout=120,
                       follow_redirects=True)
     ok = err = skip = 0
+
+    def _fetch_pair(candidates: list[ReportRef]) -> StoredDoc | None:
+        for r in candidates:
+            try:
+                doc = fetch.fetch_one(r, a.root, cl, limiter)
+                if doc:
+                    return doc
+            except Exception as exc:
+                print(f"WARN fetch failover {r.company_id} {r.fy_end} [{r.source}]: {type(exc).__name__}", file=sys.stderr)
+        return None
+
     try:
         with ThreadPoolExecutor(a.workers) as ex:
             futs = {}
-            for r in refs:
-                if (r.company_id, r.fy_end) in done:
+            for pair, candidates in by_pair.items():
+                if pair in done:
                     skip += 1
                     continue
-                futs[ex.submit(fetch.fetch_one, r, a.root, cl, limiter)] = r
+                futs[ex.submit(_fetch_pair, candidates)] = pair
             for f in as_completed(futs):
-                r = futs[f]
+                pair = futs[f]
                 try:
                     doc = f.result()
                 except Exception as exc:              # noqa: BLE001
                     err += 1
-                    print(f"ERR {r.company_id} {r.fy_end} {type(exc).__name__}",
+                    print(f"ERR {pair[0]} {pair[1]} {type(exc).__name__}",
                           file=sys.stderr)
                     continue
                 if doc is None:
                     err += 1
+                    print(f"FAILED {pair[0]} {pair[1]} across all candidate sources",
+                          file=sys.stderr)
                     continue
-                out.write(to_json(doc) + "\n"); out.flush()
+                out.write(to_json(doc) + "\n")
+                out.flush()
                 ok += 1
     finally:
-        out.close(); cl.close()
+        out.close()
+        cl.close()
     print(f"fetched ok={ok} err={err} skipped={skip}")
     return 0
 
