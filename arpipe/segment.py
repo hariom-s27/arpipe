@@ -212,6 +212,10 @@ def is_cross_reference_pointer(page_text: str, heading_text: str) -> bool:
     snippet = " ".join(words[:80])
     full_snippet = " ".join(page_text[idx:].split()[:80])
     if MDA_POINTER_RE.search(snippet) or MDA_POINTER_RE.search(full_snippet):
+        if MDA_TERMINATOR_RE.search(snippet) or MDA_TERMINATOR_RE.search(full_snippet):
+            return True
+        if len(words) < 60:
+            return True
         return True
 
     return False
@@ -678,6 +682,10 @@ def from_headings(doc: pymupdf.Document, page_texts: dict[int, str],
     for n in sorted(page_texts):
         if n < skip_first:
             continue
+        # a contents / TOC page mentions multiple sections; do not start there
+        page_lines = [l.strip() for l in page_texts.get(n, "").splitlines() if l.strip()]
+        if sum(1 for l in page_lines if MDA_TERMINATOR_RE.search(l)) >= 3:
+            continue
         try:
             hits = page_headings(doc.load_page(n))
         except Exception:
@@ -766,6 +774,7 @@ def _find_terminator(doc: pymupdf.Document, page_texts: dict[int, str],
             hits = page_headings(doc.load_page(n))
         except Exception:
             hits = []
+        match = find_terminator_match_on_page(n, txt, hits)
         match = find_terminator_match_on_page(n, txt, hits, start_headers=start_headers)
         if match:
             return _terminator_end_page(start, n, match, txt), match
@@ -906,6 +915,7 @@ def _find_terminator_text(page_texts: dict[int, str], start: int,
         txt = page_texts.get(n, "")
         if not txt:
             continue
+        match = find_terminator_match_on_page(n, txt)
         match = find_terminator_match_on_page(n, txt, start_headers=start_headers)
         if match:
             return _terminator_end_page(start, n, match, txt), match
@@ -935,6 +945,7 @@ def refine_end(span: MDASpan, page_texts: dict[int, str], fetch_text,
             if txt is None:
                 break
             page_texts[nxt] = txt
+        match = find_terminator_match_on_page(nxt, txt)
         match = find_terminator_match_on_page(nxt, txt, start_headers=start_headers)
         if match:
             term_match = match
@@ -984,6 +995,7 @@ def trim_span(span: MDASpan, page_texts: dict[int, str]) -> MDASpan:
         t = page_texts.get(n)
         if not t:
             continue
+        match = find_terminator_match_on_page(n, t)
         match = find_terminator_match_on_page(n, t, start_headers=start_headers)
         if match:
             end = _terminator_end_page(start, n, match, t)

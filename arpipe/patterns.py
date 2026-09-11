@@ -45,6 +45,7 @@ MDA_TERMINATOR_PATTERNS = [
     r"\bBRSR\s+Report\b",
     r"Independent\s+Auditor(?:'s|s'|’s|s’|s)?\s+Report",
     r"Auditor(?:'s|s'|’s|s’|s)?\s+Report",
+    r"To\s+the\s+Members\s+of\b",
     r"(?:Standalone|Consolidated)\s+Financial\s+Statements?",
     r"Balance\s+Sheet\s+as\s+at",
     r"Statement\s+of\s+Profit\s+(?:and|&)\s+Loss",
@@ -71,10 +72,12 @@ MDA_TERMINATOR_RE = re.compile("|".join(f"(?:{p})" for p in MDA_TERMINATOR_PATTE
 # separate section enclosed or annexed elsewhere in the report (P27).
 MDA_POINTER_PATTERNS = [
     r"\b(?:is|are)\s+(?:enclosed|attached|annexed|given|presented|provided)\b",
+    r"\bforms?\s+part\s+of\s+(?:this|the)\s+(?:Annual\s+)?Report\b",
     r"\bforms?\s+part\s+of\s+(?:this|the)\s+(?:Integrated\s+)?(?:Annual\s+)?Report\b",
     r"\bforms?\s+part\s+of\s+(?:this|the)\s+Report\b",
     r"\b(?:enclosed|attached|annexed)\s+(?:herewith|hereto|as\s+Annexure|at\s+Annexure)\b",
     r"\bseparately\s+(?:enclosed|attached|annexed|presented|given)\b",
+    r"\bpresented\s+in\s+a\s+separate\s+section\b",
     r"\b(?:presented|included|given)\s+in\s+a\s+separate\s+section\b",
     r"\ba\s+separate\s+section\s+on\b",
 ]
