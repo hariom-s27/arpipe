@@ -95,6 +95,8 @@ def _ocr_pages(pdf: str, profile: DocProfile, pages: list[int],
                 "words": res.words,
                 "conf": res.mean_conf,
                 "degenerate": bool(res.meta.get("degenerate")),
+                "ocr_geometry": res.meta.get("ocr_geometry", "flat"),
+                "column_cut": bool(res.meta.get("column_cut")),
                 "trail": trail,
             })
         if res.text.strip():
@@ -259,12 +261,17 @@ def process_document(doc: StoredDoc, company: Company, out_root: str,
                         and profile.pages[n].kind is PageKind.DIGITAL}
         ordered, mda_blocks, order_diag = textlayer.extract_prose_and_tables(
             blob, span_pages, page_texts, digital_span)
-        # P21: fraction of digital span pages on which the P16B column splitter
-        # fired. Near 1 => ordering is as good as we can make it (a residual
+        # P21: fraction of span pages on which the P16B column splitter
+        # fired (across digital pages and OCR pages with block geometry).
+        # Near 1 => ordering is as good as we can make it (a residual
         # orphan_start_frac is source_shredded, not order_scrambled).
         _dig = order_diag["digital_pages"]
-        column_cut_fire_frac = (order_diag["column_cut_pages"] / _dig
-                                if _dig else None)
+        ocr_span_stats = [s for s in ocr_stats if s.get("page_no") in span_pages]
+        _ocr_blocks = sum(1 for s in ocr_span_stats if s.get("ocr_geometry") == "blocks")
+        _ocr_col = sum(1 for s in ocr_span_stats if s.get("column_cut"))
+        total_geom = _dig + _ocr_blocks
+        column_cut_fire_frac = ((order_diag["column_cut_pages"] + _ocr_col) / total_geom
+                                if total_geom else None)
         # P23: running furniture is stripped inside extract_prose_and_tables now
         # (block geometry + repetition, before the reading-order sort), not here.
         mda_text = "\n\n".join(t for t in ordered if t.strip()).strip()

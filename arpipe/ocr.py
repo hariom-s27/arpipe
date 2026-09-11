@@ -113,6 +113,9 @@ def choose_dpi(image_dpi: int | None) -> int:
 
 
 # --------------------------------------------------------------------- rung 1
+from . import textlayer
+
+
 class TesseractBackend(OcrBackend):
     """Local Tesseract via pytesseract, with per-word confidence.
 
@@ -137,35 +140,111 @@ class TesseractBackend(OcrBackend):
             dpi: int = DEFAULT_DPI) -> list[OcrPage]:
         import pytesseract
         from PIL import Image
+        from collections import defaultdict
 
         if not shutil.which("tesseract"):
             win_tess = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
             if os.path.exists(win_tess):
                 pytesseract.pytesseract.tesseract_cmd = win_tess
+        win_tess_dir = r"C:\Program Files\Tesseract-OCR"
+        if os.path.isdir(win_tess_dir) and win_tess_dir not in os.environ.get("PATH", ""):
+            os.environ["PATH"] = win_tess_dir + os.pathsep + os.environ.get("PATH", "")
 
         out: list[OcrPage] = []
         cfg = f"--oem {self.oem} --psm {self.psm}"
         for n in page_nos:
             png = self.render(pdf_path, n, dpi)
             img = Image.open(io.BytesIO(png))
-            data = pytesseract.image_to_data(
-                img, lang=lang, config=cfg,
-                output_type=pytesseract.Output.DICT)
+
+            blocks_mode = False
             words, confs = [], []
-            for txt, c in zip(data["text"], data["conf"]):
-                if txt and txt.strip():
+            text = ""
+            meta: dict = {}
+
+            try:
+                data = pytesseract.image_to_data(
+                    img, lang=lang, config=cfg,
+                    output_type=pytesseract.Output.DICT)
+
+                n_records = len(data.get("text", []))
+                groups = defaultdict(list)
+                for i in range(n_records):
+                    txt = data["text"][i]
+                    if not txt or not txt.strip():
+                        continue
+                    txt = txt.strip()
                     words.append(txt)
                     try:
-                        cv = float(c)
+                        cv = float(data["conf"][i])
                         if cv >= 0:
                             confs.append(cv)
                     except (TypeError, ValueError):
                         pass
-            text = pytesseract.image_to_string(img, lang=lang, config=cfg)
+
+                    b_num = data["block_num"][i]
+                    p_num = data["par_num"][i]
+                    l_num = data["line_num"][i]
+                    groups[(b_num, p_num)].append({
+                        "text": txt,
+                        "line_num": l_num,
+                        "left": data["left"][i],
+                        "top": data["top"][i],
+                        "width": data["width"][i],
+                        "height": data["height"][i],
+                    })
+
+                scale = 72.0 / dpi
+                page_rect = pymupdf.Rect(0, 0, img.width * scale, img.height * scale)
+
+                blocks: list[textlayer.Block] = []
+                for (b_num, p_num), items in groups.items():
+                    if not items:
+                        continue
+                    x0 = min(item["left"] for item in items) * scale
+                    y0 = min(item["top"] for item in items) * scale
+                    x1 = max(item["left"] + item["width"] for item in items) * scale
+                    y1 = max(item["top"] + item["height"] for item in items) * scale
+
+                    line_groups = defaultdict(list)
+                    for item in items:
+                        line_groups[item["line_num"]].append(item)
+
+                    line_texts = []
+                    for l_num in sorted(line_groups.keys()):
+                        line_items = sorted(line_groups[l_num], key=lambda x: x["left"])
+                        line_str = " ".join(it["text"] for it in line_items)
+                        if line_str.strip():
+                            line_texts.append(line_str.strip())
+
+                    blk_text = "\n".join(line_texts).strip()
+                    if blk_text:
+                        blocks.append(textlayer.Block(x0=x0, y0=y0, x1=x1, y1=y1, text=blk_text))
+
+                if blocks:
+                    stats: dict = {}
+                    ordered = textlayer.xy_cut(blocks, page_rect, stats=stats)
+                    text = "\n\n".join(b.text for b in ordered)
+                    meta["ocr_geometry"] = "blocks"
+                    if stats.get("column_cut"):
+                        meta["column_cut"] = True
+                    blocks_mode = True
+            except Exception:
+                blocks_mode = False
+
+            if not blocks_mode or not text.strip():
+                try:
+                    text = pytesseract.image_to_string(img, lang=lang, config=cfg)
+                except Exception:
+                    text = ""
+                meta["ocr_geometry"] = "flat"
+                if not words:
+                    words = [w for w in text.split() if w.strip()]
+
             out.append(OcrPage(
                 page_no=n, text=text, engine=f"{self.name}:{lang}",
                 mean_conf=(sum(confs) / len(confs) / 100.0) if confs else None,
-                words=len(words)))
+                words=len(words),
+                meta=meta))
         return out
 
 

@@ -1658,6 +1658,69 @@ def test_modern_steels_synthetic_locate():
     assert span.heading_text == "MANAGEMENT DISCUSSIONS AND ANALYSIS"
 
 
+def test_p29_tesseract_block_geometry_two_columns(monkeypatch, tmp_path):
+    import pymupdf
+    import pytesseract
+    from arpipe.ocr import TesseractBackend
+
+    pdf_path = str(tmp_path / "two_col.pdf")
+    doc = pymupdf.open()
+    doc.new_page(width=600, height=800)
+    doc.save(pdf_path)
+    doc.close()
+
+    fake_data = {
+        "text": ["ColOne", "WordA", "ColTwo", "WordB", "ColOne", "WordC", "ColTwo", "WordD"],
+        "conf": [90, 90, 95, 95, 90, 90, 95, 95],
+        "block_num": [1, 1, 2, 2, 1, 1, 2, 2],
+        "par_num": [1, 1, 1, 1, 1, 1, 1, 1],
+        "line_num": [1, 1, 1, 1, 2, 2, 2, 2],
+        "left": [50, 100, 350, 400, 50, 100, 350, 400],
+        "top": [100, 100, 100, 100, 150, 150, 150, 150],
+        "width": [40, 40, 40, 40, 40, 40, 40, 40],
+        "height": [20, 20, 20, 20, 20, 20, 20, 20],
+    }
+    monkeypatch.setattr(pytesseract, "image_to_data", lambda *args, **kwargs: fake_data)
+
+    be = TesseractBackend()
+    pages = be.run(pdf_path, [0], dpi=72)
+    assert len(pages) == 1
+    p = pages[0]
+    assert p.meta["ocr_geometry"] == "blocks"
+    assert p.words == 8
+    assert p.mean_conf == 0.925
+    idx_col1 = p.text.find("ColOne WordA")
+    idx_col1_line2 = p.text.find("ColOne WordC")
+    idx_col2 = p.text.find("ColTwo WordB")
+    assert idx_col1 < idx_col1_line2 < idx_col2
+
+
+def test_p29_tesseract_fallback_to_flat(monkeypatch, tmp_path):
+    import pymupdf
+    import pytesseract
+    from arpipe.ocr import TesseractBackend
+
+    pdf_path = str(tmp_path / "fallback.pdf")
+    doc = pymupdf.open()
+    doc.new_page(width=600, height=800)
+    doc.save(pdf_path)
+    doc.close()
+
+    def _fail(*args, **kwargs):
+        raise RuntimeError("tesseract crash")
+
+    monkeypatch.setattr(pytesseract, "image_to_data", _fail)
+    monkeypatch.setattr(pytesseract, "image_to_string", lambda *args, **kwargs: "fallback string text")
+
+    be = TesseractBackend()
+    pages = be.run(pdf_path, [0], dpi=72)
+    assert len(pages) == 1
+    p = pages[0]
+    assert p.meta["ocr_geometry"] == "flat"
+    assert p.text == "fallback string text"
+
+
+
 
 
 

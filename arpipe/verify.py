@@ -650,7 +650,9 @@ def build_reasons(rep: VerificationReport, qc: dict, *,
         reasons.append("too_long")
 
     osf = qc.get("orphan_start_frac", 0.0)
-    over_gate = osf > qc.get("orphan_gate_max", ORPHAN_START_FRAC_MAX)
+    starts = qc.get("orphan_starts")
+    over_gate = (osf > qc.get("orphan_gate_max", ORPHAN_START_FRAC_MAX)
+                 and (starts is None or starts > 1))
     fired_most = (column_cut_fire_frac is not None
                   and column_cut_fire_frac >= 0.5)
     if is_reprocessor(pdf_producer) or (over_gate and fired_most):
@@ -682,13 +684,16 @@ def grade(rep: VerificationReport, qc: dict, span_score: float,
     reading order still force `low` regardless of supporters.
     """
     osf = qc.get("orphan_start_frac", 0.0)
+    starts = qc.get("orphan_starts")
+    is_scrambled = (osf > ORPHAN_START_FRAC_MAX) and (starts is None or starts > 1)
+    is_badly_scrambled = (osf > 2 * ORPHAN_START_FRAC_MAX) and (starts is None or starts > 1)
     if (not rep.company_ok or qc["too_short"] or qc["long_token_frac"] > 0.03
-            or osf > 2 * ORPHAN_START_FRAC_MAX):     # P17: badly scrambled order
+            or is_badly_scrambled):     # P17: badly scrambled order
         return "low"
     verif_errors = [n for n in rep.notes if not n.startswith("mandated ratios table absent") and "disclosure finding" not in n]
     if (supporters >= GRADE_HIGH_MIN_SUPPORTERS and rep.year_ok and span_score >= GRADE_HIGH_MIN_SCORE
             and not qc["leaks"] and not verif_errors
-            and osf <= ORPHAN_START_FRAC_MAX):       # P17: mild scramble -> medium
+            and not is_scrambled):       # P17: mild scramble -> medium
         # P22: a reprocessor-sourced PDF has been re-laid line by line; the span
         # can look clean and still hide a splice xy_cut could not catch. Cap it
         # at `medium` (+ source_shredded) until P11 has >= 5 such docs proving
@@ -698,7 +703,7 @@ def grade(rep: VerificationReport, qc: dict, span_score: float,
             and len(qc["leaks"]) <= 1):
         return "medium"
     if (supporters == 0 and rep.year_ok and span_score >= GRADE_SOLO_MIN_SCORE
-            and not qc["leaks"] and osf <= ORPHAN_START_FRAC_MAX):
+            and not qc["leaks"] and not is_scrambled):
         return "medium"
     return "low"
 
