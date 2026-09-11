@@ -399,7 +399,8 @@ def main(argv: list[str] | None = None) -> int:
     d.add_argument("--from-year", type=int, default=2010)
     d.add_argument("--to-year", type=int, default=2025)
     d.add_argument("--limit", type=int, default=0)
-    d.add_argument("--use-bse", action="store_true", default=True)
+    d.add_argument("--use-bse", action=argparse.BooleanOptionalAction, default=True,
+                   help="Query BSE for annual reports (default: True, use --no-use-bse to disable)")
     d.add_argument("--use-screener", action="store_true")
     d.set_defaults(fn=cmd_discover)
 

@@ -151,3 +151,4 @@ class TestPrintConfigAndManifest:
         assert len(serialized) > 100
         loaded = json.loads(serialized)
         assert loaded["triage"]["column_hist_bins"] == 120
+

@@ -87,8 +87,7 @@ def _repair(path: str) -> bool:
         return False
     out = path + ".fixed"
     try:
-        subprocess.run(["qpdf", "--replace-input" if False else out,
-                        "--qdf", "--object-streams=disable", path, out],
+        subprocess.run(["qpdf", "--qdf", "--object-streams=disable", path, out],
                        check=True, capture_output=True, timeout=180)
     except Exception:
         try:
