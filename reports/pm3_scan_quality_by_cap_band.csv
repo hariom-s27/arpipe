@@ -1,0 +1,5 @@
+cap_band,N_documents,N_physical_pages,N_full_page_raster,raster_page_fraction,N_measurable_pages,measurable_page_fraction,median_dpi,median_skew,median_contrast,median_noise,median_blur
+large,36,10988,438,0.0399,438,1.0,165.55,-0.4,0.6745,0.0094,2995.665
+mid,48,10251,969,0.0945,969,1.0,150.0,-0.2,0.4902,0.012,3083.84
+small,44,10728,619,0.0577,619,1.0,144.02,-0.2,0.5098,0.0073,1847.74
+micro,66,5950,883,0.1484,883,1.0,152.0,-0.4,0.5569,0.0104,2965.72

@@ -1,0 +1,6425 @@
+{
+  "task": "PM1 - per-page orphan_start_frac telemetry + arpipe orderqc",
+  "headline_result": "84 of 194 documents have at least one page with orphan_start_frac > 0.03 while the document-level score remains <= 0.03.",
+  "implementation": {
+    "files_changed": [
+      "arpipe/verify.py",
+      "arpipe/textlayer.py",
+      "arpipe/pipeline.py",
+      "arpipe/cli.py"
+    ],
+    "files_added": [
+      "arpipe/tests/test_pm1_orderqc.py",
+      "tools/pm1_run_corpus.py",
+      "tools/pm1_build_baseline.py",
+      "tools/pm1_regression_check.py"
+    ],
+    "metric_source": "verify.order_quality() internals, refactored (not reimplemented) into shared helpers _reconstruct_paragraphs_tagged and _score_paragraphs, reused by both order_quality() (document level, unchanged output) and order_quality_by_page() (new, page level)",
+    "page_attribution_rule": "a reconstructed paragraph is attributed to the physical page containing its first non-whitespace source line; page tags are threaded through paragraph reconstruction itself, never recovered from offsets in the joined text",
+    "page_array_schema": "qc.orphan_start_frac_pages: list[float|None], length == document total physical page count (profile.n_pages), index i corresponds to 1-based physical page i+1; null = not measured (outside MD&A span, or fewer than 2 reconstructed paragraphs attributed to that page); 0.0 = measured, no orphan starts observed",
+    "full_width_block_rule": "textlayer.page_has_full_width_block(pdf_path, page_no): reuses the existing COLUMN_FULLWIDTH_FRAC=0.60 threshold and _blocks() geometry _column_cut already uses internally to decide a block masks the gutter; returns None when the page has no extractable block geometry (e.g. a scanned page, or the annual_report.pdf copy is unavailable)",
+    "diagnostic_threshold": "verify.PAGE_ORPHAN_DIAGNOSTIC_THRESHOLD = 0.03, a fixed constant independent of (though numerically equal to, today) verify.ORPHAN_START_FRAC_MAX; never recalibrated, never read by grade()/build_reasons()"
+  },
+  "regression_against_baseline": {
+    "documents_compared": 194,
+    "orphan_document_score_changes": 0,
+    "grade_changes": 0,
+    "confidence_changes": 0,
+    "reason_changes": 0,
+    "span_start_changes": 0,
+    "span_end_changes": 0,
+    "accept_reject_changes": 0,
+    "total_documents_with_any_diff": 0
+  },
+  "page_level_findings": {
+    "threshold": 0.03,
+    "total_documents": 194,
+    "documents_measured": 182,
+    "pages_measured": 2728,
+    "documents_with_bad_pages": 135,
+    "documents_with_hidden_bad_page": 84,
+    "total_bad_pages": 706,
+    "bad_pages_with_full_width_block": 429,
+    "bad_pages_without_full_width_block": 199,
+    "page_score_distribution": {
+      "min": 0.0,
+      "p25": 0.0,
+      "median": 0.0,
+      "p75": 0.0312,
+      "p90": 0.0833,
+      "p95": 0.125,
+      "max": 0.6471
+    }
+  },
+  "pages": [
+    {
+      "company_id": "INE001B01026",
+      "company": "KRBL Limited",
+      "fiscal_year": 2012,
+      "document_level_orphan_start_frac": 0.0384,
+      "physical_page": 14,
+      "page_orphan_start_frac": 0.102,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE001B01026",
+      "company": "KRBL Limited",
+      "fiscal_year": 2012,
+      "document_level_orphan_start_frac": 0.0384,
+      "physical_page": 17,
+      "page_orphan_start_frac": 0.1928,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE001B01026",
+      "company": "KRBL Limited",
+      "fiscal_year": 2012,
+      "document_level_orphan_start_frac": 0.0384,
+      "physical_page": 18,
+      "page_orphan_start_frac": 0.1687,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE001B01026",
+      "company": "KRBL Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.023,
+      "physical_page": 19,
+      "page_orphan_start_frac": 0.0312,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE001B01026",
+      "company": "KRBL Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.023,
+      "physical_page": 22,
+      "page_orphan_start_frac": 0.0816,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE001B01026",
+      "company": "KRBL Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.023,
+      "physical_page": 23,
+      "page_orphan_start_frac": 0.0625,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE001B01026",
+      "company": "KRBL Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.023,
+      "physical_page": 26,
+      "page_orphan_start_frac": 0.0667,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE001B01026",
+      "company": "KRBL Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.0114,
+      "physical_page": 14,
+      "page_orphan_start_frac": 0.1176,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE001B01026",
+      "company": "KRBL Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.0114,
+      "physical_page": 18,
+      "page_orphan_start_frac": 0.0417,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE001B01026",
+      "company": "KRBL Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.0114,
+      "physical_page": 24,
+      "page_orphan_start_frac": 0.0909,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE001B01026",
+      "company": "KRBL Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.0114,
+      "physical_page": 26,
+      "page_orphan_start_frac": 0.0667,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE001B01026",
+      "company": "KRBL Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.0114,
+      "physical_page": 35,
+      "page_orphan_start_frac": 0.1667,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE001B01026",
+      "company": "KRBL Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.0114,
+      "physical_page": 48,
+      "page_orphan_start_frac": 0.0833,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE001B01026",
+      "company": "KRBL Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0321,
+      "physical_page": 27,
+      "page_orphan_start_frac": 0.087,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE001B01026",
+      "company": "KRBL Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0321,
+      "physical_page": 29,
+      "page_orphan_start_frac": 0.0769,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE001B01026",
+      "company": "KRBL Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0321,
+      "physical_page": 38,
+      "page_orphan_start_frac": 0.0417,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE001B01026",
+      "company": "KRBL Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0321,
+      "physical_page": 41,
+      "page_orphan_start_frac": 0.0323,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE001B01026",
+      "company": "KRBL Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0321,
+      "physical_page": 42,
+      "page_orphan_start_frac": 0.0714,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE001B01026",
+      "company": "KRBL Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0321,
+      "physical_page": 44,
+      "page_orphan_start_frac": 0.0417,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE001B01026",
+      "company": "KRBL Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0321,
+      "physical_page": 47,
+      "page_orphan_start_frac": 0.1765,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE001B01026",
+      "company": "KRBL Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0321,
+      "physical_page": 48,
+      "page_orphan_start_frac": 0.125,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE001B01026",
+      "company": "KRBL Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0321,
+      "physical_page": 54,
+      "page_orphan_start_frac": 0.0882,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE001B01026",
+      "company": "KRBL Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0321,
+      "physical_page": 55,
+      "page_orphan_start_frac": 0.0769,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE001B01026",
+      "company": "KRBL Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0321,
+      "physical_page": 59,
+      "page_orphan_start_frac": 0.1111,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE001B01026",
+      "company": "KRBL Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0321,
+      "physical_page": 63,
+      "page_orphan_start_frac": 0.0784,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE001B01026",
+      "company": "KRBL Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0044,
+      "physical_page": 34,
+      "page_orphan_start_frac": 0.0556,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE001F01019",
+      "company": "Modern Steels Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0244,
+      "physical_page": 29,
+      "page_orphan_start_frac": 0.0417,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE001F01019",
+      "company": "Modern Steels Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0435,
+      "physical_page": 19,
+      "page_orphan_start_frac": 0.0435,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE001F01019",
+      "company": "Modern Steels Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0169,
+      "physical_page": 16,
+      "page_orphan_start_frac": 0.037,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE001O01029",
+      "company": "Risa International Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.0564,
+      "physical_page": 14,
+      "page_orphan_start_frac": 0.16,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE001O01029",
+      "company": "Risa International Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.0564,
+      "physical_page": 15,
+      "page_orphan_start_frac": 0.2,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE001O01029",
+      "company": "Risa International Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.0564,
+      "physical_page": 16,
+      "page_orphan_start_frac": 0.1053,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE001O01029",
+      "company": "Risa International Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.0564,
+      "physical_page": 21,
+      "page_orphan_start_frac": 0.1017,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE001O01029",
+      "company": "Risa International Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.0564,
+      "physical_page": 22,
+      "page_orphan_start_frac": 0.1053,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE001O01029",
+      "company": "Risa International Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.0564,
+      "physical_page": 24,
+      "page_orphan_start_frac": 0.1,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE001O01029",
+      "company": "Risa International Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.0564,
+      "physical_page": 25,
+      "page_orphan_start_frac": 0.125,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE001O01029",
+      "company": "Risa International Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.0564,
+      "physical_page": 26,
+      "page_orphan_start_frac": 0.1765,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE001O01029",
+      "company": "Risa International Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0461,
+      "physical_page": 11,
+      "page_orphan_start_frac": 0.1212,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE001O01029",
+      "company": "Risa International Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0461,
+      "physical_page": 12,
+      "page_orphan_start_frac": 0.2414,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE001O01029",
+      "company": "Risa International Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0461,
+      "physical_page": 18,
+      "page_orphan_start_frac": 0.0896,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE001O01029",
+      "company": "Risa International Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0461,
+      "physical_page": 19,
+      "page_orphan_start_frac": 0.0455,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE001O01029",
+      "company": "Risa International Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0461,
+      "physical_page": 21,
+      "page_orphan_start_frac": 0.0455,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE001O01029",
+      "company": "Risa International Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0461,
+      "physical_page": 23,
+      "page_orphan_start_frac": 0.0769,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE001O01029",
+      "company": "Risa International Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0461,
+      "physical_page": 24,
+      "page_orphan_start_frac": 0.0426,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE001O01029",
+      "company": "Risa International Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0461,
+      "physical_page": 27,
+      "page_orphan_start_frac": 0.0308,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE001O01029",
+      "company": "Risa International Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0455,
+      "physical_page": 33,
+      "page_orphan_start_frac": 0.08,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE002A01018",
+      "company": "Reliance Industries Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.0244,
+      "physical_page": 24,
+      "page_orphan_start_frac": 0.093,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE002A01018",
+      "company": "Reliance Industries Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.0244,
+      "physical_page": 45,
+      "page_orphan_start_frac": 0.1852,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE002A01018",
+      "company": "Reliance Industries Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.0244,
+      "physical_page": 49,
+      "page_orphan_start_frac": 0.1724,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE002A01018",
+      "company": "Reliance Industries Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.0244,
+      "physical_page": 50,
+      "page_orphan_start_frac": 0.1786,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE002A01018",
+      "company": "Reliance Industries Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.006,
+      "physical_page": 64,
+      "page_orphan_start_frac": 0.0833,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE002A01018",
+      "company": "Reliance Industries Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.006,
+      "physical_page": 65,
+      "page_orphan_start_frac": 0.0667,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE002A01018",
+      "company": "Reliance Industries Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.006,
+      "physical_page": 82,
+      "page_orphan_start_frac": 0.0667,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE002A01018",
+      "company": "Reliance Industries Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.006,
+      "physical_page": 96,
+      "page_orphan_start_frac": 0.0556,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE002A01018",
+      "company": "Reliance Industries Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.006,
+      "physical_page": 100,
+      "page_orphan_start_frac": 0.04,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE002A01018",
+      "company": "Reliance Industries Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.006,
+      "physical_page": 107,
+      "page_orphan_start_frac": 0.0556,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE002A01018",
+      "company": "Reliance Industries Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0383,
+      "physical_page": 59,
+      "page_orphan_start_frac": 0.0385,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE002A01018",
+      "company": "Reliance Industries Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0383,
+      "physical_page": 63,
+      "page_orphan_start_frac": 0.0323,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE002A01018",
+      "company": "Reliance Industries Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0383,
+      "physical_page": 65,
+      "page_orphan_start_frac": 0.0606,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE002A01018",
+      "company": "Reliance Industries Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0383,
+      "physical_page": 68,
+      "page_orphan_start_frac": 0.1667,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE002A01018",
+      "company": "Reliance Industries Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0383,
+      "physical_page": 69,
+      "page_orphan_start_frac": 0.037,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE002A01018",
+      "company": "Reliance Industries Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0383,
+      "physical_page": 70,
+      "page_orphan_start_frac": 0.1,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE002A01018",
+      "company": "Reliance Industries Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0383,
+      "physical_page": 71,
+      "page_orphan_start_frac": 0.0345,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE002A01018",
+      "company": "Reliance Industries Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0383,
+      "physical_page": 72,
+      "page_orphan_start_frac": 0.0526,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE002A01018",
+      "company": "Reliance Industries Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0383,
+      "physical_page": 73,
+      "page_orphan_start_frac": 0.0769,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE002A01018",
+      "company": "Reliance Industries Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0383,
+      "physical_page": 75,
+      "page_orphan_start_frac": 0.0833,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE002A01018",
+      "company": "Reliance Industries Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0383,
+      "physical_page": 77,
+      "page_orphan_start_frac": 0.0345,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE002A01018",
+      "company": "Reliance Industries Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0383,
+      "physical_page": 80,
+      "page_orphan_start_frac": 0.0588,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE002A01018",
+      "company": "Reliance Industries Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0383,
+      "physical_page": 81,
+      "page_orphan_start_frac": 0.125,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE002A01018",
+      "company": "Reliance Industries Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0383,
+      "physical_page": 83,
+      "page_orphan_start_frac": 0.0526,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE002A01018",
+      "company": "Reliance Industries Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0383,
+      "physical_page": 86,
+      "page_orphan_start_frac": 0.1081,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE002A01018",
+      "company": "Reliance Industries Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0383,
+      "physical_page": 87,
+      "page_orphan_start_frac": 0.15,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE002A01018",
+      "company": "Reliance Industries Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0383,
+      "physical_page": 88,
+      "page_orphan_start_frac": 0.25,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE002A01018",
+      "company": "Reliance Industries Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0383,
+      "physical_page": 89,
+      "page_orphan_start_frac": 0.0645,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE002A01018",
+      "company": "Reliance Industries Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0383,
+      "physical_page": 92,
+      "page_orphan_start_frac": 0.037,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE002A01018",
+      "company": "Reliance Industries Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0383,
+      "physical_page": 94,
+      "page_orphan_start_frac": 0.0345,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE002A01018",
+      "company": "Reliance Industries Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0383,
+      "physical_page": 95,
+      "page_orphan_start_frac": 0.1333,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE002A01018",
+      "company": "Reliance Industries Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0383,
+      "physical_page": 96,
+      "page_orphan_start_frac": 0.0769,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE002A01018",
+      "company": "Reliance Industries Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0383,
+      "physical_page": 98,
+      "page_orphan_start_frac": 0.0417,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE002A01018",
+      "company": "Reliance Industries Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0383,
+      "physical_page": 99,
+      "page_orphan_start_frac": 0.1333,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE002A01018",
+      "company": "Reliance Industries Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0383,
+      "physical_page": 100,
+      "page_orphan_start_frac": 0.2105,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE002A01018",
+      "company": "Reliance Industries Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0383,
+      "physical_page": 101,
+      "page_orphan_start_frac": 0.04,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE002A01018",
+      "company": "Reliance Industries Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0383,
+      "physical_page": 102,
+      "page_orphan_start_frac": 0.0769,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE002A01018",
+      "company": "Reliance Industries Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0383,
+      "physical_page": 103,
+      "page_orphan_start_frac": 0.1786,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE002A01018",
+      "company": "Reliance Industries Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0383,
+      "physical_page": 104,
+      "page_orphan_start_frac": 0.1667,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE002A01018",
+      "company": "Reliance Industries Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0383,
+      "physical_page": 114,
+      "page_orphan_start_frac": 0.0345,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE002A01018",
+      "company": "Reliance Industries Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0383,
+      "physical_page": 119,
+      "page_orphan_start_frac": 0.0357,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE002A01018",
+      "company": "Reliance Industries Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0383,
+      "physical_page": 121,
+      "page_orphan_start_frac": 0.04,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE002A01018",
+      "company": "Reliance Industries Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0383,
+      "physical_page": 122,
+      "page_orphan_start_frac": 0.0714,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE002A01018",
+      "company": "Reliance Industries Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0383,
+      "physical_page": 124,
+      "page_orphan_start_frac": 0.037,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE002A01018",
+      "company": "Reliance Industries Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0383,
+      "physical_page": 126,
+      "page_orphan_start_frac": 0.0625,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE002A01018",
+      "company": "Reliance Industries Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.042,
+      "physical_page": 32,
+      "page_orphan_start_frac": 0.1143,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE002A01018",
+      "company": "Reliance Industries Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.042,
+      "physical_page": 34,
+      "page_orphan_start_frac": 0.0769,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE002A01018",
+      "company": "Reliance Industries Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.042,
+      "physical_page": 35,
+      "page_orphan_start_frac": 0.0784,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE002A01018",
+      "company": "Reliance Industries Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.042,
+      "physical_page": 39,
+      "page_orphan_start_frac": 0.0316,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE002A01018",
+      "company": "Reliance Industries Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.042,
+      "physical_page": 46,
+      "page_orphan_start_frac": 0.0345,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE002A01018",
+      "company": "Reliance Industries Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.042,
+      "physical_page": 47,
+      "page_orphan_start_frac": 0.0492,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE002A01018",
+      "company": "Reliance Industries Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.042,
+      "physical_page": 48,
+      "page_orphan_start_frac": 0.1596,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE002A01018",
+      "company": "Reliance Industries Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.042,
+      "physical_page": 49,
+      "page_orphan_start_frac": 0.0545,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE002A01018",
+      "company": "Reliance Industries Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.042,
+      "physical_page": 50,
+      "page_orphan_start_frac": 0.0741,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE002A01018",
+      "company": "Reliance Industries Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.042,
+      "physical_page": 51,
+      "page_orphan_start_frac": 0.0351,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE002A01018",
+      "company": "Reliance Industries Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0249,
+      "physical_page": 38,
+      "page_orphan_start_frac": 0.08,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE002A01018",
+      "company": "Reliance Industries Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0249,
+      "physical_page": 39,
+      "page_orphan_start_frac": 0.0492,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE002A01018",
+      "company": "Reliance Industries Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0249,
+      "physical_page": 45,
+      "page_orphan_start_frac": 0.0678,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE002A01018",
+      "company": "Reliance Industries Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0249,
+      "physical_page": 48,
+      "page_orphan_start_frac": 0.0633,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE002A01018",
+      "company": "Reliance Industries Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0249,
+      "physical_page": 50,
+      "page_orphan_start_frac": 0.093,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE002E01010",
+      "company": "Sar  Auto Products Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.0323,
+      "physical_page": 10,
+      "page_orphan_start_frac": 0.0714,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE002E01010",
+      "company": "Sar  Auto Products Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0374,
+      "physical_page": 51,
+      "page_orphan_start_frac": 0.1509,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE002L01015",
+      "company": "SJVN Limited",
+      "fiscal_year": 2012,
+      "document_level_orphan_start_frac": 0.0526,
+      "physical_page": 10,
+      "page_orphan_start_frac": 0.0455,
+      "full_width_block": null
+    },
+    {
+      "company_id": "INE002L01015",
+      "company": "SJVN Limited",
+      "fiscal_year": 2012,
+      "document_level_orphan_start_frac": 0.0526,
+      "physical_page": 11,
+      "page_orphan_start_frac": 0.0847,
+      "full_width_block": null
+    },
+    {
+      "company_id": "INE002L01015",
+      "company": "SJVN Limited",
+      "fiscal_year": 2012,
+      "document_level_orphan_start_frac": 0.0526,
+      "physical_page": 12,
+      "page_orphan_start_frac": 0.0556,
+      "full_width_block": null
+    },
+    {
+      "company_id": "INE002L01015",
+      "company": "SJVN Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0616,
+      "physical_page": 40,
+      "page_orphan_start_frac": 0.5,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE002L01015",
+      "company": "SJVN Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.206,
+      "physical_page": 44,
+      "page_orphan_start_frac": 0.1899,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE002L01015",
+      "company": "SJVN Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.206,
+      "physical_page": 45,
+      "page_orphan_start_frac": 0.1769,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE002L01015",
+      "company": "SJVN Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.206,
+      "physical_page": 46,
+      "page_orphan_start_frac": 0.3093,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE002L01015",
+      "company": "SJVN Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.206,
+      "physical_page": 47,
+      "page_orphan_start_frac": 0.2577,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE002L01015",
+      "company": "SJVN Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.206,
+      "physical_page": 48,
+      "page_orphan_start_frac": 0.2791,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE002L01015",
+      "company": "SJVN Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.206,
+      "physical_page": 49,
+      "page_orphan_start_frac": 0.1739,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE002L01015",
+      "company": "SJVN Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.206,
+      "physical_page": 50,
+      "page_orphan_start_frac": 0.1351,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE002S01010",
+      "company": "Mahanagar Gas Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.1531,
+      "physical_page": 33,
+      "page_orphan_start_frac": 0.2778,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE002S01010",
+      "company": "Mahanagar Gas Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.1531,
+      "physical_page": 34,
+      "page_orphan_start_frac": 0.2308,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE002S01010",
+      "company": "Mahanagar Gas Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.1531,
+      "physical_page": 36,
+      "page_orphan_start_frac": 0.0625,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE002S01010",
+      "company": "Mahanagar Gas Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.1531,
+      "physical_page": 40,
+      "page_orphan_start_frac": 0.0769,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE002S01010",
+      "company": "Mahanagar Gas Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.1531,
+      "physical_page": 44,
+      "page_orphan_start_frac": 0.0833,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE002S01010",
+      "company": "Mahanagar Gas Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.1531,
+      "physical_page": 45,
+      "page_orphan_start_frac": 0.6471,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE002S01010",
+      "company": "Mahanagar Gas Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.1531,
+      "physical_page": 46,
+      "page_orphan_start_frac": 0.5333,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE002S01010",
+      "company": "Mahanagar Gas Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0421,
+      "physical_page": 35,
+      "page_orphan_start_frac": 0.0833,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE002S01010",
+      "company": "Mahanagar Gas Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0421,
+      "physical_page": 36,
+      "page_orphan_start_frac": 0.1379,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE002S01010",
+      "company": "Mahanagar Gas Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0421,
+      "physical_page": 38,
+      "page_orphan_start_frac": 0.0769,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE002S01010",
+      "company": "Mahanagar Gas Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0421,
+      "physical_page": 41,
+      "page_orphan_start_frac": 0.04,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE002S01010",
+      "company": "Mahanagar Gas Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0421,
+      "physical_page": 44,
+      "page_orphan_start_frac": 0.0909,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE002S01010",
+      "company": "Mahanagar Gas Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0421,
+      "physical_page": 48,
+      "page_orphan_start_frac": 0.1,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE002S01010",
+      "company": "Mahanagar Gas Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.027,
+      "physical_page": 48,
+      "page_orphan_start_frac": 0.0862,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE002S01010",
+      "company": "Mahanagar Gas Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.027,
+      "physical_page": 51,
+      "page_orphan_start_frac": 0.0303,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE002S01010",
+      "company": "Mahanagar Gas Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0344,
+      "physical_page": 55,
+      "page_orphan_start_frac": 0.0333,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE002S01010",
+      "company": "Mahanagar Gas Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0344,
+      "physical_page": 58,
+      "page_orphan_start_frac": 0.06,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE002S01010",
+      "company": "Mahanagar Gas Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0344,
+      "physical_page": 61,
+      "page_orphan_start_frac": 0.0545,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE002S01010",
+      "company": "Mahanagar Gas Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0344,
+      "physical_page": 62,
+      "page_orphan_start_frac": 0.0484,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE002S01010",
+      "company": "Mahanagar Gas Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0344,
+      "physical_page": 64,
+      "page_orphan_start_frac": 0.0377,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE002S01010",
+      "company": "Mahanagar Gas Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0344,
+      "physical_page": 66,
+      "page_orphan_start_frac": 0.0333,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE002S01010",
+      "company": "Mahanagar Gas Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0344,
+      "physical_page": 68,
+      "page_orphan_start_frac": 0.069,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE002S01010",
+      "company": "Mahanagar Gas Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0344,
+      "physical_page": 69,
+      "page_orphan_start_frac": 0.0545,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE003B01014",
+      "company": "Inter State Oil Carrier Ltd",
+      "fiscal_year": 2011,
+      "document_level_orphan_start_frac": 0.0556,
+      "physical_page": 16,
+      "page_orphan_start_frac": 0.0556,
+      "full_width_block": null
+    },
+    {
+      "company_id": "INE003B01014",
+      "company": "Inter State Oil Carrier Ltd",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0583,
+      "physical_page": 50,
+      "page_orphan_start_frac": 0.0385,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE003B01014",
+      "company": "Inter State Oil Carrier Ltd",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0583,
+      "physical_page": 51,
+      "page_orphan_start_frac": 0.08,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE003B01014",
+      "company": "Inter State Oil Carrier Ltd",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0583,
+      "physical_page": 53,
+      "page_orphan_start_frac": 0.1154,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE003B01014",
+      "company": "Inter State Oil Carrier Ltd",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0583,
+      "physical_page": 55,
+      "page_orphan_start_frac": 0.037,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE003B01014",
+      "company": "Inter State Oil Carrier Ltd",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0583,
+      "physical_page": 56,
+      "page_orphan_start_frac": 0.0526,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE003B01014",
+      "company": "Inter State Oil Carrier Ltd",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0583,
+      "physical_page": 57,
+      "page_orphan_start_frac": 0.1452,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE003B01014",
+      "company": "Inter State Oil Carrier Ltd",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0583,
+      "physical_page": 59,
+      "page_orphan_start_frac": 0.0426,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE004C01028",
+      "company": "Gujarat Cotex Ltd",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.0378,
+      "physical_page": 37,
+      "page_orphan_start_frac": 0.0476,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE004C01028",
+      "company": "Gujarat Cotex Ltd",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.0378,
+      "physical_page": 39,
+      "page_orphan_start_frac": 0.1429,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE004C01028",
+      "company": "Gujarat Cotex Ltd",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.0378,
+      "physical_page": 41,
+      "page_orphan_start_frac": 0.037,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE004C01028",
+      "company": "Gujarat Cotex Ltd",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.0378,
+      "physical_page": 47,
+      "page_orphan_start_frac": 0.1111,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE004C01028",
+      "company": "Gujarat Cotex Ltd",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.0378,
+      "physical_page": 48,
+      "page_orphan_start_frac": 0.0345,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE004C01028",
+      "company": "Gujarat Cotex Ltd",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.0378,
+      "physical_page": 49,
+      "page_orphan_start_frac": 0.1111,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE004C01028",
+      "company": "Gujarat Cotex Ltd",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.0378,
+      "physical_page": 50,
+      "page_orphan_start_frac": 0.1053,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE004C01028",
+      "company": "Gujarat Cotex Ltd",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.0378,
+      "physical_page": 51,
+      "page_orphan_start_frac": 0.0385,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE004C01028",
+      "company": "Gujarat Cotex Ltd",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0108,
+      "physical_page": 35,
+      "page_orphan_start_frac": 0.0312,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE004C01028",
+      "company": "Gujarat Cotex Ltd",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0236,
+      "physical_page": 63,
+      "page_orphan_start_frac": 0.0769,
+      "full_width_block": null
+    },
+    {
+      "company_id": "INE004C01028",
+      "company": "Gujarat Cotex Ltd",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0236,
+      "physical_page": 66,
+      "page_orphan_start_frac": 0.0741,
+      "full_width_block": null
+    },
+    {
+      "company_id": "INE004C01028",
+      "company": "Gujarat Cotex Ltd",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.011,
+      "physical_page": 23,
+      "page_orphan_start_frac": 0.0333,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE004E01016",
+      "company": "Span Divergent Limited",
+      "fiscal_year": 2012,
+      "document_level_orphan_start_frac": 0.0526,
+      "physical_page": 13,
+      "page_orphan_start_frac": 0.0952,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE004E01016",
+      "company": "Span Divergent Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.0142,
+      "physical_page": 12,
+      "page_orphan_start_frac": 0.0435,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE004E01016",
+      "company": "Span Divergent Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0132,
+      "physical_page": 21,
+      "page_orphan_start_frac": 0.0769,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE004Z01011",
+      "company": "Mac Hotels Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0435,
+      "physical_page": 47,
+      "page_orphan_start_frac": 0.3,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE004Z01011",
+      "company": "Mac Hotels Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0448,
+      "physical_page": 37,
+      "page_orphan_start_frac": 0.25,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE005E01013",
+      "company": "Ekansh Concepts Limited",
+      "fiscal_year": 2012,
+      "document_level_orphan_start_frac": 0.0208,
+      "physical_page": 15,
+      "page_orphan_start_frac": 0.0625,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE005E01013",
+      "company": "Ekansh Concepts Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.0231,
+      "physical_page": 26,
+      "page_orphan_start_frac": 0.0909,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE005E01013",
+      "company": "Ekansh Concepts Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.0231,
+      "physical_page": 27,
+      "page_orphan_start_frac": 0.0732,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE005E01013",
+      "company": "Ekansh Concepts Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.0231,
+      "physical_page": 28,
+      "page_orphan_start_frac": 0.0526,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE005E01013",
+      "company": "Ekansh Concepts Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.0231,
+      "physical_page": 37,
+      "page_orphan_start_frac": 0.0476,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE006C01015",
+      "company": "K.Z.Leasing & Finance Ltd.",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0431,
+      "physical_page": 16,
+      "page_orphan_start_frac": 0.0526,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE006C01015",
+      "company": "K.Z.Leasing & Finance Ltd.",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0431,
+      "physical_page": 17,
+      "page_orphan_start_frac": 0.0909,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE006C01015",
+      "company": "K.Z.Leasing & Finance Ltd.",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0431,
+      "physical_page": 19,
+      "page_orphan_start_frac": 0.0811,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE006I01046",
+      "company": "Astral Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.0116,
+      "physical_page": 32,
+      "page_orphan_start_frac": 0.0556,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE006I01046",
+      "company": "Astral Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0117,
+      "physical_page": 19,
+      "page_orphan_start_frac": 0.087,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE006I01046",
+      "company": "Astral Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0117,
+      "physical_page": 21,
+      "page_orphan_start_frac": 0.0323,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE006I01046",
+      "company": "Astral Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0117,
+      "physical_page": 25,
+      "page_orphan_start_frac": 0.0526,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE006I01046",
+      "company": "Astral Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0117,
+      "physical_page": 33,
+      "page_orphan_start_frac": 0.0417,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE006I01046",
+      "company": "Astral Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0097,
+      "physical_page": 20,
+      "page_orphan_start_frac": 0.0417,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE006I01046",
+      "company": "Astral Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0097,
+      "physical_page": 21,
+      "page_orphan_start_frac": 0.04,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE007A01025",
+      "company": "Crisil Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.032,
+      "physical_page": 89,
+      "page_orphan_start_frac": 0.0588,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE007A01025",
+      "company": "Crisil Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.032,
+      "physical_page": 91,
+      "page_orphan_start_frac": 0.08,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE007A01025",
+      "company": "Crisil Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.032,
+      "physical_page": 93,
+      "page_orphan_start_frac": 0.08,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE007A01025",
+      "company": "Crisil Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.032,
+      "physical_page": 95,
+      "page_orphan_start_frac": 0.0769,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE007A01025",
+      "company": "Crisil Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.032,
+      "physical_page": 96,
+      "page_orphan_start_frac": 0.0833,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE007A01025",
+      "company": "Crisil Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0223,
+      "physical_page": 72,
+      "page_orphan_start_frac": 0.0455,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE007A01025",
+      "company": "Crisil Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0223,
+      "physical_page": 74,
+      "page_orphan_start_frac": 0.1111,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE007A01025",
+      "company": "Crisil Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0223,
+      "physical_page": 79,
+      "page_orphan_start_frac": 0.1,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE007A01025",
+      "company": "Crisil Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0189,
+      "physical_page": 67,
+      "page_orphan_start_frac": 0.0645,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE007A01025",
+      "company": "Crisil Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0189,
+      "physical_page": 70,
+      "page_orphan_start_frac": 0.0833,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE007A01025",
+      "company": "Crisil Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0189,
+      "physical_page": 71,
+      "page_orphan_start_frac": 0.0625,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE007A01025",
+      "company": "Crisil Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.014,
+      "physical_page": 103,
+      "page_orphan_start_frac": 0.08,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE007A01025",
+      "company": "Crisil Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.014,
+      "physical_page": 107,
+      "page_orphan_start_frac": 0.0556,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2012,
+      "document_level_orphan_start_frac": 0.0083,
+      "physical_page": 57,
+      "page_orphan_start_frac": 0.0769,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2012,
+      "document_level_orphan_start_frac": 0.0083,
+      "physical_page": 61,
+      "page_orphan_start_frac": 0.0625,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.061,
+      "physical_page": 55,
+      "page_orphan_start_frac": 0.0615,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.061,
+      "physical_page": 56,
+      "page_orphan_start_frac": 0.0417,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.061,
+      "physical_page": 57,
+      "page_orphan_start_frac": 0.0703,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.061,
+      "physical_page": 58,
+      "page_orphan_start_frac": 0.0614,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.061,
+      "physical_page": 59,
+      "page_orphan_start_frac": 0.0794,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.061,
+      "physical_page": 60,
+      "page_orphan_start_frac": 0.0508,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.061,
+      "physical_page": 61,
+      "page_orphan_start_frac": 0.0813,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.061,
+      "physical_page": 62,
+      "page_orphan_start_frac": 0.0583,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.061,
+      "physical_page": 63,
+      "page_orphan_start_frac": 0.0312,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.061,
+      "physical_page": 64,
+      "page_orphan_start_frac": 0.0756,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.061,
+      "physical_page": 65,
+      "page_orphan_start_frac": 0.112,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.061,
+      "physical_page": 66,
+      "page_orphan_start_frac": 0.0672,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.061,
+      "physical_page": 67,
+      "page_orphan_start_frac": 0.1417,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.061,
+      "physical_page": 68,
+      "page_orphan_start_frac": 0.0583,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.061,
+      "physical_page": 70,
+      "page_orphan_start_frac": 0.0642,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.061,
+      "physical_page": 71,
+      "page_orphan_start_frac": 0.0465,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.061,
+      "physical_page": 72,
+      "page_orphan_start_frac": 0.0531,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.061,
+      "physical_page": 74,
+      "page_orphan_start_frac": 0.0614,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.061,
+      "physical_page": 76,
+      "page_orphan_start_frac": 0.0833,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.061,
+      "physical_page": 78,
+      "page_orphan_start_frac": 0.0948,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.061,
+      "physical_page": 79,
+      "page_orphan_start_frac": 0.031,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.061,
+      "physical_page": 80,
+      "page_orphan_start_frac": 0.0738,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.061,
+      "physical_page": 81,
+      "page_orphan_start_frac": 0.0714,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.061,
+      "physical_page": 82,
+      "page_orphan_start_frac": 0.1197,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.061,
+      "physical_page": 83,
+      "page_orphan_start_frac": 0.037,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.008,
+      "physical_page": 46,
+      "page_orphan_start_frac": 0.05,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.008,
+      "physical_page": 65,
+      "page_orphan_start_frac": 0.1333,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0147,
+      "physical_page": 43,
+      "page_orphan_start_frac": 0.0435,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0147,
+      "physical_page": 54,
+      "page_orphan_start_frac": 0.0435,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0147,
+      "physical_page": 57,
+      "page_orphan_start_frac": 0.087,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0147,
+      "physical_page": 60,
+      "page_orphan_start_frac": 0.125,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0811,
+      "physical_page": 75,
+      "page_orphan_start_frac": 0.0625,
+      "full_width_block": null
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0811,
+      "physical_page": 79,
+      "page_orphan_start_frac": 0.0588,
+      "full_width_block": null
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0811,
+      "physical_page": 87,
+      "page_orphan_start_frac": 0.0385,
+      "full_width_block": null
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0811,
+      "physical_page": 89,
+      "page_orphan_start_frac": 0.0312,
+      "full_width_block": null
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0811,
+      "physical_page": 97,
+      "page_orphan_start_frac": 0.2222,
+      "full_width_block": null
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0811,
+      "physical_page": 98,
+      "page_orphan_start_frac": 0.1154,
+      "full_width_block": null
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0811,
+      "physical_page": 100,
+      "page_orphan_start_frac": 0.0714,
+      "full_width_block": null
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0811,
+      "physical_page": 101,
+      "page_orphan_start_frac": 0.0333,
+      "full_width_block": null
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0811,
+      "physical_page": 102,
+      "page_orphan_start_frac": 0.0769,
+      "full_width_block": null
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0811,
+      "physical_page": 106,
+      "page_orphan_start_frac": 0.0385,
+      "full_width_block": null
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0811,
+      "physical_page": 107,
+      "page_orphan_start_frac": 0.1333,
+      "full_width_block": null
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0811,
+      "physical_page": 108,
+      "page_orphan_start_frac": 0.3214,
+      "full_width_block": null
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0811,
+      "physical_page": 109,
+      "page_orphan_start_frac": 0.1,
+      "full_width_block": null
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0811,
+      "physical_page": 110,
+      "page_orphan_start_frac": 0.1429,
+      "full_width_block": null
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0811,
+      "physical_page": 111,
+      "page_orphan_start_frac": 0.1852,
+      "full_width_block": null
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0811,
+      "physical_page": 112,
+      "page_orphan_start_frac": 0.1515,
+      "full_width_block": null
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0811,
+      "physical_page": 113,
+      "page_orphan_start_frac": 0.129,
+      "full_width_block": null
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0811,
+      "physical_page": 114,
+      "page_orphan_start_frac": 0.0938,
+      "full_width_block": null
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0811,
+      "physical_page": 115,
+      "page_orphan_start_frac": 0.1538,
+      "full_width_block": null
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0811,
+      "physical_page": 116,
+      "page_orphan_start_frac": 0.1667,
+      "full_width_block": null
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0811,
+      "physical_page": 117,
+      "page_orphan_start_frac": 0.1667,
+      "full_width_block": null
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0811,
+      "physical_page": 118,
+      "page_orphan_start_frac": 0.1765,
+      "full_width_block": null
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0811,
+      "physical_page": 119,
+      "page_orphan_start_frac": 0.1579,
+      "full_width_block": null
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0811,
+      "physical_page": 121,
+      "page_orphan_start_frac": 0.1053,
+      "full_width_block": null
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0811,
+      "physical_page": 122,
+      "page_orphan_start_frac": 0.1429,
+      "full_width_block": null
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0811,
+      "physical_page": 124,
+      "page_orphan_start_frac": 0.0625,
+      "full_width_block": null
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0811,
+      "physical_page": 126,
+      "page_orphan_start_frac": 0.0526,
+      "full_width_block": null
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0811,
+      "physical_page": 127,
+      "page_orphan_start_frac": 0.1053,
+      "full_width_block": null
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0811,
+      "physical_page": 128,
+      "page_orphan_start_frac": 0.1786,
+      "full_width_block": null
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0811,
+      "physical_page": 129,
+      "page_orphan_start_frac": 0.1538,
+      "full_width_block": null
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0811,
+      "physical_page": 130,
+      "page_orphan_start_frac": 0.1429,
+      "full_width_block": null
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0811,
+      "physical_page": 132,
+      "page_orphan_start_frac": 0.1579,
+      "full_width_block": null
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0811,
+      "physical_page": 133,
+      "page_orphan_start_frac": 0.0833,
+      "full_width_block": null
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0811,
+      "physical_page": 134,
+      "page_orphan_start_frac": 0.2857,
+      "full_width_block": null
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0811,
+      "physical_page": 136,
+      "page_orphan_start_frac": 0.0312,
+      "full_width_block": null
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0811,
+      "physical_page": 137,
+      "page_orphan_start_frac": 0.0333,
+      "full_width_block": null
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0811,
+      "physical_page": 143,
+      "page_orphan_start_frac": 0.3077,
+      "full_width_block": null
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0811,
+      "physical_page": 144,
+      "page_orphan_start_frac": 0.375,
+      "full_width_block": null
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0583,
+      "physical_page": 89,
+      "page_orphan_start_frac": 0.0556,
+      "full_width_block": null
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0583,
+      "physical_page": 91,
+      "page_orphan_start_frac": 0.0833,
+      "full_width_block": null
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0583,
+      "physical_page": 93,
+      "page_orphan_start_frac": 0.1,
+      "full_width_block": null
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0583,
+      "physical_page": 99,
+      "page_orphan_start_frac": 0.0345,
+      "full_width_block": null
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0583,
+      "physical_page": 100,
+      "page_orphan_start_frac": 0.1724,
+      "full_width_block": null
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0583,
+      "physical_page": 101,
+      "page_orphan_start_frac": 0.0625,
+      "full_width_block": null
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0583,
+      "physical_page": 105,
+      "page_orphan_start_frac": 0.1053,
+      "full_width_block": null
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0583,
+      "physical_page": 109,
+      "page_orphan_start_frac": 0.2692,
+      "full_width_block": null
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0583,
+      "physical_page": 110,
+      "page_orphan_start_frac": 0.0435,
+      "full_width_block": null
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0583,
+      "physical_page": 113,
+      "page_orphan_start_frac": 0.0882,
+      "full_width_block": null
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0583,
+      "physical_page": 119,
+      "page_orphan_start_frac": 0.0857,
+      "full_width_block": null
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0583,
+      "physical_page": 120,
+      "page_orphan_start_frac": 0.2424,
+      "full_width_block": null
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0583,
+      "physical_page": 121,
+      "page_orphan_start_frac": 0.0857,
+      "full_width_block": null
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0583,
+      "physical_page": 122,
+      "page_orphan_start_frac": 0.125,
+      "full_width_block": null
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0583,
+      "physical_page": 123,
+      "page_orphan_start_frac": 0.1515,
+      "full_width_block": null
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0583,
+      "physical_page": 124,
+      "page_orphan_start_frac": 0.0882,
+      "full_width_block": null
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0583,
+      "physical_page": 125,
+      "page_orphan_start_frac": 0.0909,
+      "full_width_block": null
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0583,
+      "physical_page": 126,
+      "page_orphan_start_frac": 0.1034,
+      "full_width_block": null
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0583,
+      "physical_page": 127,
+      "page_orphan_start_frac": 0.1154,
+      "full_width_block": null
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0583,
+      "physical_page": 128,
+      "page_orphan_start_frac": 0.125,
+      "full_width_block": null
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0583,
+      "physical_page": 129,
+      "page_orphan_start_frac": 0.0909,
+      "full_width_block": null
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0583,
+      "physical_page": 130,
+      "page_orphan_start_frac": 0.1481,
+      "full_width_block": null
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0583,
+      "physical_page": 131,
+      "page_orphan_start_frac": 0.1304,
+      "full_width_block": null
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0583,
+      "physical_page": 134,
+      "page_orphan_start_frac": 0.125,
+      "full_width_block": null
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0583,
+      "physical_page": 139,
+      "page_orphan_start_frac": 0.05,
+      "full_width_block": null
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0583,
+      "physical_page": 140,
+      "page_orphan_start_frac": 0.0645,
+      "full_width_block": null
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0583,
+      "physical_page": 142,
+      "page_orphan_start_frac": 0.125,
+      "full_width_block": null
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0583,
+      "physical_page": 144,
+      "page_orphan_start_frac": 0.2083,
+      "full_width_block": null
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0583,
+      "physical_page": 145,
+      "page_orphan_start_frac": 0.125,
+      "full_width_block": null
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0583,
+      "physical_page": 146,
+      "page_orphan_start_frac": 0.4167,
+      "full_width_block": null
+    },
+    {
+      "company_id": "INE008A01015",
+      "company": "IDBI Bank Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0583,
+      "physical_page": 148,
+      "page_orphan_start_frac": 0.0357,
+      "full_width_block": null
+    },
+    {
+      "company_id": "INE009A01021",
+      "company": "Infosys Limited",
+      "fiscal_year": 2012,
+      "document_level_orphan_start_frac": 0.0066,
+      "physical_page": 44,
+      "page_orphan_start_frac": 0.04,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE009A01021",
+      "company": "Infosys Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.039,
+      "physical_page": 40,
+      "page_orphan_start_frac": 0.0345,
+      "full_width_block": null
+    },
+    {
+      "company_id": "INE009A01021",
+      "company": "Infosys Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.039,
+      "physical_page": 41,
+      "page_orphan_start_frac": 0.0417,
+      "full_width_block": null
+    },
+    {
+      "company_id": "INE009A01021",
+      "company": "Infosys Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.0146,
+      "physical_page": 80,
+      "page_orphan_start_frac": 0.0909,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE009A01021",
+      "company": "Infosys Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.0146,
+      "physical_page": 87,
+      "page_orphan_start_frac": 0.0714,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE009A01021",
+      "company": "Infosys Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.0146,
+      "physical_page": 88,
+      "page_orphan_start_frac": 0.0909,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE009A01021",
+      "company": "Infosys Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.1406,
+      "physical_page": 97,
+      "page_orphan_start_frac": 0.1333,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE009A01021",
+      "company": "Infosys Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.1406,
+      "physical_page": 98,
+      "page_orphan_start_frac": 0.1509,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE009A01021",
+      "company": "Infosys Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0039,
+      "physical_page": 78,
+      "page_orphan_start_frac": 0.0435,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE009A01021",
+      "company": "Infosys Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0038,
+      "physical_page": 74,
+      "page_orphan_start_frac": 0.0385,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE00E101023",
+      "company": "Bikaji Foods International Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0095,
+      "physical_page": 23,
+      "page_orphan_start_frac": 0.0625,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE00E101023",
+      "company": "Bikaji Foods International Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0047,
+      "physical_page": 31,
+      "page_orphan_start_frac": 0.0476,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE00FF01025",
+      "company": "Acutaas Chemicals Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0113,
+      "physical_page": 43,
+      "page_orphan_start_frac": 0.1154,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE00FF01025",
+      "company": "Acutaas Chemicals Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0414,
+      "physical_page": 47,
+      "page_orphan_start_frac": 0.0769,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE00FF01025",
+      "company": "Acutaas Chemicals Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0414,
+      "physical_page": 48,
+      "page_orphan_start_frac": 0.0833,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE00FF01025",
+      "company": "Acutaas Chemicals Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0414,
+      "physical_page": 49,
+      "page_orphan_start_frac": 0.1,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE00FF01025",
+      "company": "Acutaas Chemicals Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0414,
+      "physical_page": 53,
+      "page_orphan_start_frac": 0.1429,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE00FF01025",
+      "company": "Acutaas Chemicals Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0414,
+      "physical_page": 55,
+      "page_orphan_start_frac": 0.037,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE00FF01025",
+      "company": "Acutaas Chemicals Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0414,
+      "physical_page": 57,
+      "page_orphan_start_frac": 0.1176,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE00LO01017",
+      "company": "Craftsman Automation Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.026,
+      "physical_page": 29,
+      "page_orphan_start_frac": 0.0339,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE00LO01017",
+      "company": "Craftsman Automation Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.026,
+      "physical_page": 34,
+      "page_orphan_start_frac": 0.0484,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE00LO01017",
+      "company": "Craftsman Automation Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0212,
+      "physical_page": 18,
+      "page_orphan_start_frac": 0.1304,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE00LO01017",
+      "company": "Craftsman Automation Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0212,
+      "physical_page": 28,
+      "page_orphan_start_frac": 0.0357,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE00LO01017",
+      "company": "Craftsman Automation Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0212,
+      "physical_page": 29,
+      "page_orphan_start_frac": 0.125,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE00WC01027",
+      "company": "Affle 3i Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0033,
+      "physical_page": 53,
+      "page_orphan_start_frac": 0.0476,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE00WC01027",
+      "company": "Affle 3i Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.015,
+      "physical_page": 54,
+      "page_orphan_start_frac": 0.0811,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE040A01034",
+      "company": "HDFC Bank Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.064,
+      "physical_page": 22,
+      "page_orphan_start_frac": 0.0476,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE040A01034",
+      "company": "HDFC Bank Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.064,
+      "physical_page": 25,
+      "page_orphan_start_frac": 0.2188,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE040A01034",
+      "company": "HDFC Bank Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.064,
+      "physical_page": 26,
+      "page_orphan_start_frac": 0.0909,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE040A01034",
+      "company": "HDFC Bank Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.064,
+      "physical_page": 27,
+      "page_orphan_start_frac": 0.0952,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE040A01034",
+      "company": "HDFC Bank Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.064,
+      "physical_page": 31,
+      "page_orphan_start_frac": 0.16,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE040A01034",
+      "company": "HDFC Bank Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.064,
+      "physical_page": 32,
+      "page_orphan_start_frac": 0.1739,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE040A01034",
+      "company": "HDFC Bank Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.064,
+      "physical_page": 35,
+      "page_orphan_start_frac": 0.0476,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE040A01034",
+      "company": "HDFC Bank Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0518,
+      "physical_page": 25,
+      "page_orphan_start_frac": 0.0385,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE040A01034",
+      "company": "HDFC Bank Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0518,
+      "physical_page": 29,
+      "page_orphan_start_frac": 0.08,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE040A01034",
+      "company": "HDFC Bank Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0518,
+      "physical_page": 31,
+      "page_orphan_start_frac": 0.1143,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE040A01034",
+      "company": "HDFC Bank Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0518,
+      "physical_page": 35,
+      "page_orphan_start_frac": 0.4118,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE040A01034",
+      "company": "HDFC Bank Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0518,
+      "physical_page": 37,
+      "page_orphan_start_frac": 0.0455,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE040A01034",
+      "company": "HDFC Bank Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0518,
+      "physical_page": 40,
+      "page_orphan_start_frac": 0.1538,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE040A01034",
+      "company": "HDFC Bank Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0518,
+      "physical_page": 45,
+      "page_orphan_start_frac": 0.069,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE040A01034",
+      "company": "HDFC Bank Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0145,
+      "physical_page": 248,
+      "page_orphan_start_frac": 0.1333,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE040A01034",
+      "company": "HDFC Bank Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0145,
+      "physical_page": 249,
+      "page_orphan_start_frac": 0.0811,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE040A01034",
+      "company": "HDFC Bank Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0145,
+      "physical_page": 270,
+      "page_orphan_start_frac": 0.0303,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE040A01034",
+      "company": "HDFC Bank Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0145,
+      "physical_page": 274,
+      "page_orphan_start_frac": 0.04,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE040A01034",
+      "company": "HDFC Bank Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0236,
+      "physical_page": 215,
+      "page_orphan_start_frac": 0.0588,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE040A01034",
+      "company": "HDFC Bank Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0236,
+      "physical_page": 219,
+      "page_orphan_start_frac": 0.1071,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE040A01034",
+      "company": "HDFC Bank Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0236,
+      "physical_page": 220,
+      "page_orphan_start_frac": 0.0976,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE040A01034",
+      "company": "HDFC Bank Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0236,
+      "physical_page": 229,
+      "page_orphan_start_frac": 0.0645,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE040A01034",
+      "company": "HDFC Bank Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0236,
+      "physical_page": 232,
+      "page_orphan_start_frac": 0.3478,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE040A01034",
+      "company": "HDFC Bank Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0236,
+      "physical_page": 233,
+      "page_orphan_start_frac": 0.0526,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE040A01034",
+      "company": "HDFC Bank Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0236,
+      "physical_page": 241,
+      "page_orphan_start_frac": 0.0625,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE044A01036",
+      "company": "Sun Pharmaceutical Industries Limited",
+      "fiscal_year": 2012,
+      "document_level_orphan_start_frac": 0.0168,
+      "physical_page": 11,
+      "page_orphan_start_frac": 0.0625,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE044A01036",
+      "company": "Sun Pharmaceutical Industries Limited",
+      "fiscal_year": 2012,
+      "document_level_orphan_start_frac": 0.0168,
+      "physical_page": 12,
+      "page_orphan_start_frac": 0.0417,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE044A01036",
+      "company": "Sun Pharmaceutical Industries Limited",
+      "fiscal_year": 2012,
+      "document_level_orphan_start_frac": 0.0168,
+      "physical_page": 13,
+      "page_orphan_start_frac": 0.1667,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE044A01036",
+      "company": "Sun Pharmaceutical Industries Limited",
+      "fiscal_year": 2012,
+      "document_level_orphan_start_frac": 0.0168,
+      "physical_page": 21,
+      "page_orphan_start_frac": 0.0952,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE044A01036",
+      "company": "Sun Pharmaceutical Industries Limited",
+      "fiscal_year": 2012,
+      "document_level_orphan_start_frac": 0.0168,
+      "physical_page": 25,
+      "page_orphan_start_frac": 0.05,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE044A01036",
+      "company": "Sun Pharmaceutical Industries Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.0838,
+      "physical_page": 12,
+      "page_orphan_start_frac": 0.1875,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE044A01036",
+      "company": "Sun Pharmaceutical Industries Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.0838,
+      "physical_page": 15,
+      "page_orphan_start_frac": 0.0606,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE044A01036",
+      "company": "Sun Pharmaceutical Industries Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.0838,
+      "physical_page": 16,
+      "page_orphan_start_frac": 0.4359,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE044A01036",
+      "company": "Sun Pharmaceutical Industries Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.0838,
+      "physical_page": 17,
+      "page_orphan_start_frac": 0.0882,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE044A01036",
+      "company": "Sun Pharmaceutical Industries Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.0838,
+      "physical_page": 25,
+      "page_orphan_start_frac": 0.12,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE044A01036",
+      "company": "Sun Pharmaceutical Industries Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.0838,
+      "physical_page": 26,
+      "page_orphan_start_frac": 0.0667,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE044A01036",
+      "company": "Sun Pharmaceutical Industries Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.0838,
+      "physical_page": 27,
+      "page_orphan_start_frac": 0.0882,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE044A01036",
+      "company": "Sun Pharmaceutical Industries Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.0838,
+      "physical_page": 28,
+      "page_orphan_start_frac": 0.1333,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE044A01036",
+      "company": "Sun Pharmaceutical Industries Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.0838,
+      "physical_page": 29,
+      "page_orphan_start_frac": 0.1515,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE044A01036",
+      "company": "Sun Pharmaceutical Industries Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.0838,
+      "physical_page": 30,
+      "page_orphan_start_frac": 0.2059,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE044A01036",
+      "company": "Sun Pharmaceutical Industries Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.0057,
+      "physical_page": 14,
+      "page_orphan_start_frac": 0.0588,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE044A01036",
+      "company": "Sun Pharmaceutical Industries Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.0057,
+      "physical_page": 23,
+      "page_orphan_start_frac": 0.1,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE044A01036",
+      "company": "Sun Pharmaceutical Industries Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.0057,
+      "physical_page": 30,
+      "page_orphan_start_frac": 0.0345,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE044A01036",
+      "company": "Sun Pharmaceutical Industries Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0044,
+      "physical_page": 13,
+      "page_orphan_start_frac": 0.0455,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE044A01036",
+      "company": "Sun Pharmaceutical Industries Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0126,
+      "physical_page": 18,
+      "page_orphan_start_frac": 0.1429,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE044A01036",
+      "company": "Sun Pharmaceutical Industries Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0126,
+      "physical_page": 19,
+      "page_orphan_start_frac": 0.0333,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE044A01036",
+      "company": "Sun Pharmaceutical Industries Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0126,
+      "physical_page": 29,
+      "page_orphan_start_frac": 0.069,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE044A01036",
+      "company": "Sun Pharmaceutical Industries Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0126,
+      "physical_page": 37,
+      "page_orphan_start_frac": 0.0333,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE044A01036",
+      "company": "Sun Pharmaceutical Industries Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0047,
+      "physical_page": 22,
+      "page_orphan_start_frac": 0.0476,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE044A01036",
+      "company": "Sun Pharmaceutical Industries Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0047,
+      "physical_page": 28,
+      "page_orphan_start_frac": 0.1111,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE081A01020",
+      "company": "Tata Steel Limited",
+      "fiscal_year": 2012,
+      "document_level_orphan_start_frac": 0.0155,
+      "physical_page": 94,
+      "page_orphan_start_frac": 0.0769,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE081A01020",
+      "company": "Tata Steel Limited",
+      "fiscal_year": 2012,
+      "document_level_orphan_start_frac": 0.0155,
+      "physical_page": 95,
+      "page_orphan_start_frac": 0.0946,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE081A01020",
+      "company": "Tata Steel Limited",
+      "fiscal_year": 2012,
+      "document_level_orphan_start_frac": 0.0155,
+      "physical_page": 105,
+      "page_orphan_start_frac": 0.0357,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE081A01020",
+      "company": "Tata Steel Limited",
+      "fiscal_year": 2012,
+      "document_level_orphan_start_frac": 0.0155,
+      "physical_page": 107,
+      "page_orphan_start_frac": 0.0959,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE081A01020",
+      "company": "Tata Steel Limited",
+      "fiscal_year": 2012,
+      "document_level_orphan_start_frac": 0.0155,
+      "physical_page": 116,
+      "page_orphan_start_frac": 0.0465,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE081A01020",
+      "company": "Tata Steel Limited",
+      "fiscal_year": 2012,
+      "document_level_orphan_start_frac": 0.0155,
+      "physical_page": 118,
+      "page_orphan_start_frac": 0.0682,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE081A01020",
+      "company": "Tata Steel Limited",
+      "fiscal_year": 2012,
+      "document_level_orphan_start_frac": 0.0155,
+      "physical_page": 127,
+      "page_orphan_start_frac": 0.1071,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE081A01020",
+      "company": "Tata Steel Limited",
+      "fiscal_year": 2012,
+      "document_level_orphan_start_frac": 0.0155,
+      "physical_page": 132,
+      "page_orphan_start_frac": 0.0588,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE081A01020",
+      "company": "Tata Steel Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.0387,
+      "physical_page": 60,
+      "page_orphan_start_frac": 0.0312,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE081A01020",
+      "company": "Tata Steel Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.0387,
+      "physical_page": 61,
+      "page_orphan_start_frac": 0.0317,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE081A01020",
+      "company": "Tata Steel Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.0387,
+      "physical_page": 62,
+      "page_orphan_start_frac": 0.1688,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE081A01020",
+      "company": "Tata Steel Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.0387,
+      "physical_page": 63,
+      "page_orphan_start_frac": 0.0959,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE081A01020",
+      "company": "Tata Steel Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.0387,
+      "physical_page": 64,
+      "page_orphan_start_frac": 0.1231,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE081A01020",
+      "company": "Tata Steel Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.0387,
+      "physical_page": 65,
+      "page_orphan_start_frac": 0.0933,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE081A01020",
+      "company": "Tata Steel Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.0387,
+      "physical_page": 69,
+      "page_orphan_start_frac": 0.1194,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE081A01020",
+      "company": "Tata Steel Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.0387,
+      "physical_page": 70,
+      "page_orphan_start_frac": 0.1,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE081A01020",
+      "company": "Tata Steel Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.0387,
+      "physical_page": 72,
+      "page_orphan_start_frac": 0.0769,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE081A01020",
+      "company": "Tata Steel Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.0387,
+      "physical_page": 73,
+      "page_orphan_start_frac": 0.0333,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE081A01020",
+      "company": "Tata Steel Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.0387,
+      "physical_page": 74,
+      "page_orphan_start_frac": 0.08,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE081A01020",
+      "company": "Tata Steel Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.0387,
+      "physical_page": 75,
+      "page_orphan_start_frac": 0.0784,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE081A01020",
+      "company": "Tata Steel Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.0387,
+      "physical_page": 78,
+      "page_orphan_start_frac": 0.1299,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE081A01020",
+      "company": "Tata Steel Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.0387,
+      "physical_page": 80,
+      "page_orphan_start_frac": 0.0517,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE081A01020",
+      "company": "Tata Steel Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.0387,
+      "physical_page": 86,
+      "page_orphan_start_frac": 0.0351,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE081A01020",
+      "company": "Tata Steel Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.0387,
+      "physical_page": 87,
+      "page_orphan_start_frac": 0.0364,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE081A01020",
+      "company": "Tata Steel Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.0387,
+      "physical_page": 88,
+      "page_orphan_start_frac": 0.0784,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE081A01020",
+      "company": "Tata Steel Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.0387,
+      "physical_page": 100,
+      "page_orphan_start_frac": 0.0667,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE081A01020",
+      "company": "Tata Steel Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.0526,
+      "physical_page": 93,
+      "page_orphan_start_frac": 0.0732,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE081A01020",
+      "company": "Tata Steel Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0108,
+      "physical_page": 184,
+      "page_orphan_start_frac": 0.0526,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE081A01020",
+      "company": "Tata Steel Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0108,
+      "physical_page": 192,
+      "page_orphan_start_frac": 0.0345,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE081A01020",
+      "company": "Tata Steel Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0108,
+      "physical_page": 195,
+      "page_orphan_start_frac": 0.0303,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE081A01020",
+      "company": "Tata Steel Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0108,
+      "physical_page": 203,
+      "page_orphan_start_frac": 0.0455,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE081A01020",
+      "company": "Tata Steel Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0108,
+      "physical_page": 204,
+      "page_orphan_start_frac": 0.0323,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE081A01020",
+      "company": "Tata Steel Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0108,
+      "physical_page": 210,
+      "page_orphan_start_frac": 0.0435,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE081A01020",
+      "company": "Tata Steel Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0108,
+      "physical_page": 216,
+      "page_orphan_start_frac": 0.05,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE081A01020",
+      "company": "Tata Steel Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0108,
+      "physical_page": 220,
+      "page_orphan_start_frac": 0.0435,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE081A01020",
+      "company": "Tata Steel Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0061,
+      "physical_page": 193,
+      "page_orphan_start_frac": 0.0303,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE081A01020",
+      "company": "Tata Steel Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0061,
+      "physical_page": 197,
+      "page_orphan_start_frac": 0.0385,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE081A01020",
+      "company": "Tata Steel Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0061,
+      "physical_page": 205,
+      "page_orphan_start_frac": 0.0517,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE119A01028",
+      "company": "Balrampur Chini Mills Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.0339,
+      "physical_page": 65,
+      "page_orphan_start_frac": 0.0667,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE119A01028",
+      "company": "Balrampur Chini Mills Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.0339,
+      "physical_page": 66,
+      "page_orphan_start_frac": 0.0769,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE119A01028",
+      "company": "Balrampur Chini Mills Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.0339,
+      "physical_page": 68,
+      "page_orphan_start_frac": 0.4286,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE119A01028",
+      "company": "Balrampur Chini Mills Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.0339,
+      "physical_page": 69,
+      "page_orphan_start_frac": 0.0333,
+      "full_width_block": null
+    },
+    {
+      "company_id": "INE119A01028",
+      "company": "Balrampur Chini Mills Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.0339,
+      "physical_page": 70,
+      "page_orphan_start_frac": 0.1277,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE119A01028",
+      "company": "Balrampur Chini Mills Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.0282,
+      "physical_page": 32,
+      "page_orphan_start_frac": 0.0625,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE119A01028",
+      "company": "Balrampur Chini Mills Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.0282,
+      "physical_page": 35,
+      "page_orphan_start_frac": 0.0417,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE119A01028",
+      "company": "Balrampur Chini Mills Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.0282,
+      "physical_page": 38,
+      "page_orphan_start_frac": 0.0455,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE119A01028",
+      "company": "Balrampur Chini Mills Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.0282,
+      "physical_page": 41,
+      "page_orphan_start_frac": 0.0909,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE119A01028",
+      "company": "Balrampur Chini Mills Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.0282,
+      "physical_page": 43,
+      "page_orphan_start_frac": 0.0714,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE119A01028",
+      "company": "Balrampur Chini Mills Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.0282,
+      "physical_page": 45,
+      "page_orphan_start_frac": 0.0345,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE119A01028",
+      "company": "Balrampur Chini Mills Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.144,
+      "physical_page": 54,
+      "page_orphan_start_frac": 0.0909,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE119A01028",
+      "company": "Balrampur Chini Mills Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.144,
+      "physical_page": 55,
+      "page_orphan_start_frac": 0.0909,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE119A01028",
+      "company": "Balrampur Chini Mills Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.144,
+      "physical_page": 56,
+      "page_orphan_start_frac": 0.16,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE119A01028",
+      "company": "Balrampur Chini Mills Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.144,
+      "physical_page": 58,
+      "page_orphan_start_frac": 0.2105,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE119A01028",
+      "company": "Balrampur Chini Mills Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.144,
+      "physical_page": 59,
+      "page_orphan_start_frac": 0.25,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE119A01028",
+      "company": "Balrampur Chini Mills Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.144,
+      "physical_page": 60,
+      "page_orphan_start_frac": 0.1667,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE119A01028",
+      "company": "Balrampur Chini Mills Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0458,
+      "physical_page": 136,
+      "page_orphan_start_frac": 0.0435,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE119A01028",
+      "company": "Balrampur Chini Mills Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0458,
+      "physical_page": 137,
+      "page_orphan_start_frac": 0.0417,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE119A01028",
+      "company": "Balrampur Chini Mills Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0458,
+      "physical_page": 138,
+      "page_orphan_start_frac": 0.1667,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE119A01028",
+      "company": "Balrampur Chini Mills Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0458,
+      "physical_page": 139,
+      "page_orphan_start_frac": 0.1739,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE119A01028",
+      "company": "Balrampur Chini Mills Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0458,
+      "physical_page": 140,
+      "page_orphan_start_frac": 0.0667,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE119A01028",
+      "company": "Balrampur Chini Mills Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0458,
+      "physical_page": 141,
+      "page_orphan_start_frac": 0.0952,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE119A01028",
+      "company": "Balrampur Chini Mills Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0458,
+      "physical_page": 147,
+      "page_orphan_start_frac": 0.0909,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE119A01028",
+      "company": "Balrampur Chini Mills Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0458,
+      "physical_page": 151,
+      "page_orphan_start_frac": 0.0667,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE119A01028",
+      "company": "Balrampur Chini Mills Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0348,
+      "physical_page": 152,
+      "page_orphan_start_frac": 0.0303,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE119A01028",
+      "company": "Balrampur Chini Mills Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0348,
+      "physical_page": 153,
+      "page_orphan_start_frac": 0.0833,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE119A01028",
+      "company": "Balrampur Chini Mills Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0348,
+      "physical_page": 154,
+      "page_orphan_start_frac": 0.0938,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE119A01028",
+      "company": "Balrampur Chini Mills Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0348,
+      "physical_page": 155,
+      "page_orphan_start_frac": 0.0625,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE119A01028",
+      "company": "Balrampur Chini Mills Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0348,
+      "physical_page": 157,
+      "page_orphan_start_frac": 0.0333,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE119A01028",
+      "company": "Balrampur Chini Mills Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0348,
+      "physical_page": 158,
+      "page_orphan_start_frac": 0.0556,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE119A01028",
+      "company": "Balrampur Chini Mills Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0348,
+      "physical_page": 159,
+      "page_orphan_start_frac": 0.08,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE119A01028",
+      "company": "Balrampur Chini Mills Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0348,
+      "physical_page": 161,
+      "page_orphan_start_frac": 0.0333,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE119A01028",
+      "company": "Balrampur Chini Mills Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0348,
+      "physical_page": 162,
+      "page_orphan_start_frac": 0.0741,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE119A01028",
+      "company": "Balrampur Chini Mills Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0348,
+      "physical_page": 165,
+      "page_orphan_start_frac": 0.0645,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE119A01028",
+      "company": "Balrampur Chini Mills Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0348,
+      "physical_page": 169,
+      "page_orphan_start_frac": 0.0952,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE151A01013",
+      "company": "Tata Communications Limited",
+      "fiscal_year": 2012,
+      "document_level_orphan_start_frac": 0.014,
+      "physical_page": 20,
+      "page_orphan_start_frac": 0.05,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE151A01013",
+      "company": "Tata Communications Limited",
+      "fiscal_year": 2012,
+      "document_level_orphan_start_frac": 0.014,
+      "physical_page": 22,
+      "page_orphan_start_frac": 0.0769,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE151A01013",
+      "company": "Tata Communications Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.0163,
+      "physical_page": 23,
+      "page_orphan_start_frac": 0.15,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE151A01013",
+      "company": "Tata Communications Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.0201,
+      "physical_page": 42,
+      "page_orphan_start_frac": 0.0333,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE151A01013",
+      "company": "Tata Communications Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.0201,
+      "physical_page": 44,
+      "page_orphan_start_frac": 0.0556,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE151A01013",
+      "company": "Tata Communications Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.0201,
+      "physical_page": 45,
+      "page_orphan_start_frac": 0.15,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE151A01013",
+      "company": "Tata Communications Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.0201,
+      "physical_page": 50,
+      "page_orphan_start_frac": 0.0588,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE151A01013",
+      "company": "Tata Communications Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0129,
+      "physical_page": 51,
+      "page_orphan_start_frac": 0.0556,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE151A01013",
+      "company": "Tata Communications Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0129,
+      "physical_page": 52,
+      "page_orphan_start_frac": 0.0357,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE151A01013",
+      "company": "Tata Communications Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0129,
+      "physical_page": 65,
+      "page_orphan_start_frac": 0.2,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE151A01013",
+      "company": "Tata Communications Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0333,
+      "physical_page": 60,
+      "page_orphan_start_frac": 0.0541,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE151A01013",
+      "company": "Tata Communications Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0333,
+      "physical_page": 63,
+      "page_orphan_start_frac": 0.0303,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE151A01013",
+      "company": "Tata Communications Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0333,
+      "physical_page": 64,
+      "page_orphan_start_frac": 0.1071,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE151A01013",
+      "company": "Tata Communications Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0333,
+      "physical_page": 65,
+      "page_orphan_start_frac": 0.0714,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE151A01013",
+      "company": "Tata Communications Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0277,
+      "physical_page": 66,
+      "page_orphan_start_frac": 0.0377,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE151A01013",
+      "company": "Tata Communications Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0277,
+      "physical_page": 68,
+      "page_orphan_start_frac": 0.0435,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE151A01013",
+      "company": "Tata Communications Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0277,
+      "physical_page": 69,
+      "page_orphan_start_frac": 0.1,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE154A01025",
+      "company": "ITC Limited",
+      "fiscal_year": 2012,
+      "document_level_orphan_start_frac": 0.0185,
+      "physical_page": 52,
+      "page_orphan_start_frac": 0.0625,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE154A01025",
+      "company": "ITC Limited",
+      "fiscal_year": 2012,
+      "document_level_orphan_start_frac": 0.0185,
+      "physical_page": 54,
+      "page_orphan_start_frac": 0.0588,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE154A01025",
+      "company": "ITC Limited",
+      "fiscal_year": 2012,
+      "document_level_orphan_start_frac": 0.0185,
+      "physical_page": 56,
+      "page_orphan_start_frac": 0.0588,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE154A01025",
+      "company": "ITC Limited",
+      "fiscal_year": 2012,
+      "document_level_orphan_start_frac": 0.0185,
+      "physical_page": 58,
+      "page_orphan_start_frac": 0.0588,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE154A01025",
+      "company": "ITC Limited",
+      "fiscal_year": 2012,
+      "document_level_orphan_start_frac": 0.0185,
+      "physical_page": 60,
+      "page_orphan_start_frac": 0.0769,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE154A01025",
+      "company": "ITC Limited",
+      "fiscal_year": 2012,
+      "document_level_orphan_start_frac": 0.0185,
+      "physical_page": 62,
+      "page_orphan_start_frac": 0.0769,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE154A01025",
+      "company": "ITC Limited",
+      "fiscal_year": 2012,
+      "document_level_orphan_start_frac": 0.0185,
+      "physical_page": 64,
+      "page_orphan_start_frac": 0.0625,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE154A01025",
+      "company": "ITC Limited",
+      "fiscal_year": 2012,
+      "document_level_orphan_start_frac": 0.0185,
+      "physical_page": 66,
+      "page_orphan_start_frac": 0.0625,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE154A01025",
+      "company": "ITC Limited",
+      "fiscal_year": 2012,
+      "document_level_orphan_start_frac": 0.0185,
+      "physical_page": 67,
+      "page_orphan_start_frac": 0.0625,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE154A01025",
+      "company": "ITC Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.0193,
+      "physical_page": 62,
+      "page_orphan_start_frac": 0.0667,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE154A01025",
+      "company": "ITC Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.0193,
+      "physical_page": 63,
+      "page_orphan_start_frac": 0.0556,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE154A01025",
+      "company": "ITC Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.0193,
+      "physical_page": 64,
+      "page_orphan_start_frac": 0.0385,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE154A01025",
+      "company": "ITC Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.0193,
+      "physical_page": 66,
+      "page_orphan_start_frac": 0.0588,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE154A01025",
+      "company": "ITC Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.0193,
+      "physical_page": 67,
+      "page_orphan_start_frac": 0.0769,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE154A01025",
+      "company": "ITC Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.0193,
+      "physical_page": 68,
+      "page_orphan_start_frac": 0.0714,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE154A01025",
+      "company": "ITC Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.0193,
+      "physical_page": 69,
+      "page_orphan_start_frac": 0.125,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE154A01025",
+      "company": "ITC Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.0193,
+      "physical_page": 73,
+      "page_orphan_start_frac": 0.0588,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE154A01025",
+      "company": "ITC Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.0193,
+      "physical_page": 75,
+      "page_orphan_start_frac": 0.1,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE154A01025",
+      "company": "ITC Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.0193,
+      "physical_page": 76,
+      "page_orphan_start_frac": 0.0769,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE154A01025",
+      "company": "ITC Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.0193,
+      "physical_page": 78,
+      "page_orphan_start_frac": 0.0667,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE154A01025",
+      "company": "ITC Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.0211,
+      "physical_page": 67,
+      "page_orphan_start_frac": 0.0714,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE154A01025",
+      "company": "ITC Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.0211,
+      "physical_page": 68,
+      "page_orphan_start_frac": 0.0465,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE154A01025",
+      "company": "ITC Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.0211,
+      "physical_page": 71,
+      "page_orphan_start_frac": 0.0435,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE154A01025",
+      "company": "ITC Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.0211,
+      "physical_page": 72,
+      "page_orphan_start_frac": 0.1538,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE154A01025",
+      "company": "ITC Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.0211,
+      "physical_page": 73,
+      "page_orphan_start_frac": 0.0667,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE154A01025",
+      "company": "ITC Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.0211,
+      "physical_page": 74,
+      "page_orphan_start_frac": 0.0667,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE154A01025",
+      "company": "ITC Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.0211,
+      "physical_page": 75,
+      "page_orphan_start_frac": 0.0714,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE154A01025",
+      "company": "ITC Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.0211,
+      "physical_page": 76,
+      "page_orphan_start_frac": 0.125,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE154A01025",
+      "company": "ITC Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.0211,
+      "physical_page": 77,
+      "page_orphan_start_frac": 0.0667,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE154A01025",
+      "company": "ITC Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.0211,
+      "physical_page": 79,
+      "page_orphan_start_frac": 0.1,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE154A01025",
+      "company": "ITC Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.0211,
+      "physical_page": 80,
+      "page_orphan_start_frac": 0.0833,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE154A01025",
+      "company": "ITC Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.0211,
+      "physical_page": 82,
+      "page_orphan_start_frac": 0.1111,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE154A01025",
+      "company": "ITC Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.0211,
+      "physical_page": 84,
+      "page_orphan_start_frac": 0.0833,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE154A01025",
+      "company": "ITC Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.0211,
+      "physical_page": 87,
+      "page_orphan_start_frac": 0.0625,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE154A01025",
+      "company": "ITC Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.0211,
+      "physical_page": 92,
+      "page_orphan_start_frac": 0.0423,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE154A01025",
+      "company": "ITC Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.0211,
+      "physical_page": 94,
+      "page_orphan_start_frac": 0.0833,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE154A01025",
+      "company": "ITC Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.0211,
+      "physical_page": 96,
+      "page_orphan_start_frac": 0.0714,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE154A01025",
+      "company": "ITC Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.0211,
+      "physical_page": 99,
+      "page_orphan_start_frac": 0.05,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE154A01025",
+      "company": "ITC Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0276,
+      "physical_page": 62,
+      "page_orphan_start_frac": 0.0714,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE154A01025",
+      "company": "ITC Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0276,
+      "physical_page": 63,
+      "page_orphan_start_frac": 0.0833,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE154A01025",
+      "company": "ITC Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0276,
+      "physical_page": 65,
+      "page_orphan_start_frac": 0.0769,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE154A01025",
+      "company": "ITC Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0276,
+      "physical_page": 68,
+      "page_orphan_start_frac": 0.0652,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE154A01025",
+      "company": "ITC Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0276,
+      "physical_page": 69,
+      "page_orphan_start_frac": 0.0556,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE154A01025",
+      "company": "ITC Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0276,
+      "physical_page": 70,
+      "page_orphan_start_frac": 0.0909,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE154A01025",
+      "company": "ITC Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0276,
+      "physical_page": 72,
+      "page_orphan_start_frac": 0.0909,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE154A01025",
+      "company": "ITC Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0276,
+      "physical_page": 73,
+      "page_orphan_start_frac": 0.0714,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE154A01025",
+      "company": "ITC Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0276,
+      "physical_page": 74,
+      "page_orphan_start_frac": 0.0417,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE154A01025",
+      "company": "ITC Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0276,
+      "physical_page": 78,
+      "page_orphan_start_frac": 0.0556,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE154A01025",
+      "company": "ITC Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0276,
+      "physical_page": 80,
+      "page_orphan_start_frac": 0.0435,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE154A01025",
+      "company": "ITC Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0276,
+      "physical_page": 82,
+      "page_orphan_start_frac": 0.0909,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE154A01025",
+      "company": "ITC Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0276,
+      "physical_page": 83,
+      "page_orphan_start_frac": 0.0833,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE154A01025",
+      "company": "ITC Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0276,
+      "physical_page": 86,
+      "page_orphan_start_frac": 0.2143,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE154A01025",
+      "company": "ITC Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0276,
+      "physical_page": 87,
+      "page_orphan_start_frac": 0.0769,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE154A01025",
+      "company": "ITC Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0276,
+      "physical_page": 88,
+      "page_orphan_start_frac": 0.0714,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE154A01025",
+      "company": "ITC Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0276,
+      "physical_page": 89,
+      "page_orphan_start_frac": 0.1176,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE154A01025",
+      "company": "ITC Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0276,
+      "physical_page": 90,
+      "page_orphan_start_frac": 0.0769,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE154A01025",
+      "company": "ITC Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0276,
+      "physical_page": 91,
+      "page_orphan_start_frac": 0.05,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE154A01025",
+      "company": "ITC Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0276,
+      "physical_page": 94,
+      "page_orphan_start_frac": 0.0625,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE154A01025",
+      "company": "ITC Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0276,
+      "physical_page": 97,
+      "page_orphan_start_frac": 0.0476,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE154A01025",
+      "company": "ITC Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0276,
+      "physical_page": 117,
+      "page_orphan_start_frac": 0.0556,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE154A01025",
+      "company": "ITC Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0145,
+      "physical_page": 60,
+      "page_orphan_start_frac": 0.0465,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE171A01029",
+      "company": "The Federal Bank  Limited",
+      "fiscal_year": 2012,
+      "document_level_orphan_start_frac": 0.0691,
+      "physical_page": 25,
+      "page_orphan_start_frac": 0.0769,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE171A01029",
+      "company": "The Federal Bank  Limited",
+      "fiscal_year": 2012,
+      "document_level_orphan_start_frac": 0.0691,
+      "physical_page": 26,
+      "page_orphan_start_frac": 0.0769,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE171A01029",
+      "company": "The Federal Bank  Limited",
+      "fiscal_year": 2012,
+      "document_level_orphan_start_frac": 0.0691,
+      "physical_page": 27,
+      "page_orphan_start_frac": 0.2381,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE171A01029",
+      "company": "The Federal Bank  Limited",
+      "fiscal_year": 2012,
+      "document_level_orphan_start_frac": 0.0691,
+      "physical_page": 29,
+      "page_orphan_start_frac": 0.0556,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE171A01029",
+      "company": "The Federal Bank  Limited",
+      "fiscal_year": 2012,
+      "document_level_orphan_start_frac": 0.0691,
+      "physical_page": 31,
+      "page_orphan_start_frac": 0.0769,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE171A01029",
+      "company": "The Federal Bank  Limited",
+      "fiscal_year": 2012,
+      "document_level_orphan_start_frac": 0.0691,
+      "physical_page": 33,
+      "page_orphan_start_frac": 0.0714,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE171A01029",
+      "company": "The Federal Bank  Limited",
+      "fiscal_year": 2012,
+      "document_level_orphan_start_frac": 0.0691,
+      "physical_page": 34,
+      "page_orphan_start_frac": 0.375,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE171A01029",
+      "company": "The Federal Bank  Limited",
+      "fiscal_year": 2012,
+      "document_level_orphan_start_frac": 0.0691,
+      "physical_page": 35,
+      "page_orphan_start_frac": 0.1875,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE171A01029",
+      "company": "The Federal Bank  Limited",
+      "fiscal_year": 2012,
+      "document_level_orphan_start_frac": 0.0691,
+      "physical_page": 38,
+      "page_orphan_start_frac": 0.0952,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE171A01029",
+      "company": "The Federal Bank  Limited",
+      "fiscal_year": 2012,
+      "document_level_orphan_start_frac": 0.0691,
+      "physical_page": 39,
+      "page_orphan_start_frac": 0.0526,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE171A01029",
+      "company": "The Federal Bank  Limited",
+      "fiscal_year": 2012,
+      "document_level_orphan_start_frac": 0.0691,
+      "physical_page": 41,
+      "page_orphan_start_frac": 0.3529,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE171A01029",
+      "company": "The Federal Bank  Limited",
+      "fiscal_year": 2012,
+      "document_level_orphan_start_frac": 0.0691,
+      "physical_page": 42,
+      "page_orphan_start_frac": 0.3548,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE171A01029",
+      "company": "The Federal Bank  Limited",
+      "fiscal_year": 2012,
+      "document_level_orphan_start_frac": 0.0691,
+      "physical_page": 43,
+      "page_orphan_start_frac": 0.125,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE171A01029",
+      "company": "The Federal Bank  Limited",
+      "fiscal_year": 2012,
+      "document_level_orphan_start_frac": 0.0691,
+      "physical_page": 49,
+      "page_orphan_start_frac": 0.0312,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE171A01029",
+      "company": "The Federal Bank  Limited",
+      "fiscal_year": 2012,
+      "document_level_orphan_start_frac": 0.0691,
+      "physical_page": 50,
+      "page_orphan_start_frac": 0.0417,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE171A01029",
+      "company": "The Federal Bank  Limited",
+      "fiscal_year": 2012,
+      "document_level_orphan_start_frac": 0.0691,
+      "physical_page": 53,
+      "page_orphan_start_frac": 0.0833,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE171A01029",
+      "company": "The Federal Bank  Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.0064,
+      "physical_page": 55,
+      "page_orphan_start_frac": 0.0345,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE171A01029",
+      "company": "The Federal Bank  Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.0064,
+      "physical_page": 56,
+      "page_orphan_start_frac": 0.0429,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE171A01029",
+      "company": "The Federal Bank  Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.0126,
+      "physical_page": 55,
+      "page_orphan_start_frac": 0.0455,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE171A01029",
+      "company": "The Federal Bank  Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.0126,
+      "physical_page": 59,
+      "page_orphan_start_frac": 0.0333,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE171A01029",
+      "company": "The Federal Bank  Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.0126,
+      "physical_page": 61,
+      "page_orphan_start_frac": 0.0667,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE171A01029",
+      "company": "The Federal Bank  Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.0126,
+      "physical_page": 64,
+      "page_orphan_start_frac": 0.069,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE171A01029",
+      "company": "The Federal Bank  Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.0126,
+      "physical_page": 67,
+      "page_orphan_start_frac": 0.0323,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE171A01029",
+      "company": "The Federal Bank  Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.0126,
+      "physical_page": 87,
+      "page_orphan_start_frac": 0.0638,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE171A01029",
+      "company": "The Federal Bank  Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.0126,
+      "physical_page": 88,
+      "page_orphan_start_frac": 0.0676,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE171A01029",
+      "company": "The Federal Bank  Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.0126,
+      "physical_page": 90,
+      "page_orphan_start_frac": 0.0606,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE171A01029",
+      "company": "The Federal Bank  Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0148,
+      "physical_page": 53,
+      "page_orphan_start_frac": 0.0526,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE171A01029",
+      "company": "The Federal Bank  Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0148,
+      "physical_page": 58,
+      "page_orphan_start_frac": 0.0667,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE171A01029",
+      "company": "The Federal Bank  Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0148,
+      "physical_page": 61,
+      "page_orphan_start_frac": 0.0769,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE171A01029",
+      "company": "The Federal Bank  Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0148,
+      "physical_page": 63,
+      "page_orphan_start_frac": 0.0526,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE171A01029",
+      "company": "The Federal Bank  Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0148,
+      "physical_page": 65,
+      "page_orphan_start_frac": 0.04,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE171A01029",
+      "company": "The Federal Bank  Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0148,
+      "physical_page": 67,
+      "page_orphan_start_frac": 0.0968,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE171A01029",
+      "company": "The Federal Bank  Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0148,
+      "physical_page": 73,
+      "page_orphan_start_frac": 0.0364,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE171A01029",
+      "company": "The Federal Bank  Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0148,
+      "physical_page": 78,
+      "page_orphan_start_frac": 0.0556,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE171A01029",
+      "company": "The Federal Bank  Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0148,
+      "physical_page": 82,
+      "page_orphan_start_frac": 0.0476,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE171A01029",
+      "company": "The Federal Bank  Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0148,
+      "physical_page": 87,
+      "page_orphan_start_frac": 0.0303,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE171A01029",
+      "company": "The Federal Bank  Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0148,
+      "physical_page": 90,
+      "page_orphan_start_frac": 0.0417,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE171A01029",
+      "company": "The Federal Bank  Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0198,
+      "physical_page": 106,
+      "page_orphan_start_frac": 0.0312,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE171A01029",
+      "company": "The Federal Bank  Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0198,
+      "physical_page": 107,
+      "page_orphan_start_frac": 0.0625,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE171A01029",
+      "company": "The Federal Bank  Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0198,
+      "physical_page": 108,
+      "page_orphan_start_frac": 0.037,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE171A01029",
+      "company": "The Federal Bank  Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0198,
+      "physical_page": 112,
+      "page_orphan_start_frac": 0.0435,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE171A01029",
+      "company": "The Federal Bank  Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0198,
+      "physical_page": 114,
+      "page_orphan_start_frac": 0.0455,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE171A01029",
+      "company": "The Federal Bank  Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0051,
+      "physical_page": 217,
+      "page_orphan_start_frac": 0.0833,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE171A01029",
+      "company": "The Federal Bank  Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0051,
+      "physical_page": 227,
+      "page_orphan_start_frac": 0.04,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE191H01014",
+      "company": "PVR INOX Limited",
+      "fiscal_year": 2012,
+      "document_level_orphan_start_frac": 0.0415,
+      "physical_page": 10,
+      "page_orphan_start_frac": 0.0526,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE191H01014",
+      "company": "PVR INOX Limited",
+      "fiscal_year": 2012,
+      "document_level_orphan_start_frac": 0.0415,
+      "physical_page": 14,
+      "page_orphan_start_frac": 0.2222,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE191H01014",
+      "company": "PVR INOX Limited",
+      "fiscal_year": 2012,
+      "document_level_orphan_start_frac": 0.0415,
+      "physical_page": 16,
+      "page_orphan_start_frac": 0.037,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE191H01014",
+      "company": "PVR INOX Limited",
+      "fiscal_year": 2012,
+      "document_level_orphan_start_frac": 0.0415,
+      "physical_page": 17,
+      "page_orphan_start_frac": 0.0345,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE191H01014",
+      "company": "PVR INOX Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.0206,
+      "physical_page": 16,
+      "page_orphan_start_frac": 0.1429,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE191H01014",
+      "company": "PVR INOX Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.0469,
+      "physical_page": 62,
+      "page_orphan_start_frac": 0.0625,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE191H01014",
+      "company": "PVR INOX Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.0469,
+      "physical_page": 63,
+      "page_orphan_start_frac": 0.0952,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE191H01014",
+      "company": "PVR INOX Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.007,
+      "physical_page": 45,
+      "page_orphan_start_frac": 0.0667,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE191H01014",
+      "company": "PVR INOX Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0244,
+      "physical_page": 65,
+      "page_orphan_start_frac": 0.0784,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE191H01014",
+      "company": "PVR INOX Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0244,
+      "physical_page": 70,
+      "page_orphan_start_frac": 0.0476,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE191H01014",
+      "company": "PVR INOX Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0244,
+      "physical_page": 71,
+      "page_orphan_start_frac": 0.1765,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE191H01014",
+      "company": "PVR INOX Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0244,
+      "physical_page": 74,
+      "page_orphan_start_frac": 0.04,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE191H01014",
+      "company": "PVR INOX Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0244,
+      "physical_page": 75,
+      "page_orphan_start_frac": 0.0938,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE191H01014",
+      "company": "PVR INOX Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0244,
+      "physical_page": 76,
+      "page_orphan_start_frac": 0.0513,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE191H01014",
+      "company": "PVR INOX Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0244,
+      "physical_page": 78,
+      "page_orphan_start_frac": 0.0312,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE191H01014",
+      "company": "PVR INOX Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0936,
+      "physical_page": 79,
+      "page_orphan_start_frac": 0.0909,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE191H01014",
+      "company": "PVR INOX Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0936,
+      "physical_page": 82,
+      "page_orphan_start_frac": 0.0833,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE191H01014",
+      "company": "PVR INOX Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0936,
+      "physical_page": 85,
+      "page_orphan_start_frac": 0.05,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE191H01014",
+      "company": "PVR INOX Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0936,
+      "physical_page": 86,
+      "page_orphan_start_frac": 0.125,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE191H01014",
+      "company": "PVR INOX Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0936,
+      "physical_page": 88,
+      "page_orphan_start_frac": 0.2069,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE191H01014",
+      "company": "PVR INOX Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0936,
+      "physical_page": 89,
+      "page_orphan_start_frac": 0.0909,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE191H01014",
+      "company": "PVR INOX Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0936,
+      "physical_page": 91,
+      "page_orphan_start_frac": 0.0476,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE191H01014",
+      "company": "PVR INOX Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0936,
+      "physical_page": 92,
+      "page_orphan_start_frac": 0.2632,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE191H01014",
+      "company": "PVR INOX Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0936,
+      "physical_page": 93,
+      "page_orphan_start_frac": 0.1818,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE191H01014",
+      "company": "PVR INOX Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0936,
+      "physical_page": 94,
+      "page_orphan_start_frac": 0.1429,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE191H01014",
+      "company": "PVR INOX Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0936,
+      "physical_page": 95,
+      "page_orphan_start_frac": 0.2857,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE191H01014",
+      "company": "PVR INOX Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0936,
+      "physical_page": 96,
+      "page_orphan_start_frac": 0.2917,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE191H01014",
+      "company": "PVR INOX Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0936,
+      "physical_page": 97,
+      "page_orphan_start_frac": 0.1522,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE191H01014",
+      "company": "PVR INOX Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0936,
+      "physical_page": 98,
+      "page_orphan_start_frac": 0.2424,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE191H01014",
+      "company": "PVR INOX Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0936,
+      "physical_page": 99,
+      "page_orphan_start_frac": 0.3077,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE191H01014",
+      "company": "PVR INOX Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0936,
+      "physical_page": 100,
+      "page_orphan_start_frac": 0.125,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE191H01014",
+      "company": "PVR INOX Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0936,
+      "physical_page": 103,
+      "page_orphan_start_frac": 0.087,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE191H01014",
+      "company": "PVR INOX Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0936,
+      "physical_page": 105,
+      "page_orphan_start_frac": 0.04,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE192B01031",
+      "company": "Welspun Living Limited",
+      "fiscal_year": 2012,
+      "document_level_orphan_start_frac": 0.0515,
+      "physical_page": 38,
+      "page_orphan_start_frac": 0.0455,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE192B01031",
+      "company": "Welspun Living Limited",
+      "fiscal_year": 2012,
+      "document_level_orphan_start_frac": 0.0515,
+      "physical_page": 39,
+      "page_orphan_start_frac": 0.0385,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE192B01031",
+      "company": "Welspun Living Limited",
+      "fiscal_year": 2012,
+      "document_level_orphan_start_frac": 0.0515,
+      "physical_page": 41,
+      "page_orphan_start_frac": 0.0588,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE192B01031",
+      "company": "Welspun Living Limited",
+      "fiscal_year": 2012,
+      "document_level_orphan_start_frac": 0.0515,
+      "physical_page": 47,
+      "page_orphan_start_frac": 0.05,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE192B01031",
+      "company": "Welspun Living Limited",
+      "fiscal_year": 2012,
+      "document_level_orphan_start_frac": 0.0515,
+      "physical_page": 52,
+      "page_orphan_start_frac": 0.0476,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE192B01031",
+      "company": "Welspun Living Limited",
+      "fiscal_year": 2012,
+      "document_level_orphan_start_frac": 0.0515,
+      "physical_page": 53,
+      "page_orphan_start_frac": 0.303,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE192B01031",
+      "company": "Welspun Living Limited",
+      "fiscal_year": 2012,
+      "document_level_orphan_start_frac": 0.0515,
+      "physical_page": 54,
+      "page_orphan_start_frac": 0.0435,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE192B01031",
+      "company": "Welspun Living Limited",
+      "fiscal_year": 2012,
+      "document_level_orphan_start_frac": 0.0515,
+      "physical_page": 57,
+      "page_orphan_start_frac": 0.12,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE192B01031",
+      "company": "Welspun Living Limited",
+      "fiscal_year": 2012,
+      "document_level_orphan_start_frac": 0.0515,
+      "physical_page": 58,
+      "page_orphan_start_frac": 0.24,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE192B01031",
+      "company": "Welspun Living Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.0102,
+      "physical_page": 36,
+      "page_orphan_start_frac": 0.0476,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE192B01031",
+      "company": "Welspun Living Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.0102,
+      "physical_page": 37,
+      "page_orphan_start_frac": 0.0714,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE192B01031",
+      "company": "Welspun Living Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.0102,
+      "physical_page": 43,
+      "page_orphan_start_frac": 0.0312,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE192B01031",
+      "company": "Welspun Living Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.0302,
+      "physical_page": 43,
+      "page_orphan_start_frac": 0.0769,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE192B01031",
+      "company": "Welspun Living Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.0302,
+      "physical_page": 44,
+      "page_orphan_start_frac": 0.0714,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE192B01031",
+      "company": "Welspun Living Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.0302,
+      "physical_page": 47,
+      "page_orphan_start_frac": 0.0526,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE192B01031",
+      "company": "Welspun Living Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.0302,
+      "physical_page": 53,
+      "page_orphan_start_frac": 0.1579,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE192B01031",
+      "company": "Welspun Living Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.0302,
+      "physical_page": 54,
+      "page_orphan_start_frac": 0.2333,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE192B01031",
+      "company": "Welspun Living Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.0302,
+      "physical_page": 56,
+      "page_orphan_start_frac": 0.0417,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE192B01031",
+      "company": "Welspun Living Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0175,
+      "physical_page": 35,
+      "page_orphan_start_frac": 0.125,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE192B01031",
+      "company": "Welspun Living Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0175,
+      "physical_page": 36,
+      "page_orphan_start_frac": 0.0588,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE192B01031",
+      "company": "Welspun Living Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0175,
+      "physical_page": 40,
+      "page_orphan_start_frac": 0.0476,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE192B01031",
+      "company": "Welspun Living Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0175,
+      "physical_page": 42,
+      "page_orphan_start_frac": 0.0833,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE192B01031",
+      "company": "Welspun Living Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0175,
+      "physical_page": 45,
+      "page_orphan_start_frac": 0.0476,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE192B01031",
+      "company": "Welspun Living Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0175,
+      "physical_page": 47,
+      "page_orphan_start_frac": 0.0714,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE192B01031",
+      "company": "Welspun Living Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0175,
+      "physical_page": 53,
+      "page_orphan_start_frac": 0.0667,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE192B01031",
+      "company": "Welspun Living Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0029,
+      "physical_page": 130,
+      "page_orphan_start_frac": 0.1667,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE192B01031",
+      "company": "Welspun Living Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0069,
+      "physical_page": 147,
+      "page_orphan_start_frac": 0.0526,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE192B01031",
+      "company": "Welspun Living Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0069,
+      "physical_page": 151,
+      "page_orphan_start_frac": 0.0667,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE192B01031",
+      "company": "Welspun Living Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0069,
+      "physical_page": 154,
+      "page_orphan_start_frac": 0.1429,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE192B01031",
+      "company": "Welspun Living Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0069,
+      "physical_page": 159,
+      "page_orphan_start_frac": 0.1111,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE226A01021",
+      "company": "Voltas Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.0387,
+      "physical_page": 27,
+      "page_orphan_start_frac": 0.0435,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE226A01021",
+      "company": "Voltas Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.0387,
+      "physical_page": 28,
+      "page_orphan_start_frac": 0.1613,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE226A01021",
+      "company": "Voltas Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.0387,
+      "physical_page": 29,
+      "page_orphan_start_frac": 0.0769,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE226A01021",
+      "company": "Voltas Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.0387,
+      "physical_page": 31,
+      "page_orphan_start_frac": 0.1739,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE226A01021",
+      "company": "Voltas Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.0387,
+      "physical_page": 35,
+      "page_orphan_start_frac": 0.0571,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE226A01021",
+      "company": "Voltas Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.0387,
+      "physical_page": 36,
+      "page_orphan_start_frac": 0.0556,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE226A01021",
+      "company": "Voltas Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.0196,
+      "physical_page": 44,
+      "page_orphan_start_frac": 0.0556,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE226A01021",
+      "company": "Voltas Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.0196,
+      "physical_page": 51,
+      "page_orphan_start_frac": 0.1176,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE226A01021",
+      "company": "Voltas Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0273,
+      "physical_page": 51,
+      "page_orphan_start_frac": 0.0345,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE226A01021",
+      "company": "Voltas Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0273,
+      "physical_page": 54,
+      "page_orphan_start_frac": 0.0714,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE226A01021",
+      "company": "Voltas Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0273,
+      "physical_page": 57,
+      "page_orphan_start_frac": 0.0896,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE226A01021",
+      "company": "Voltas Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0146,
+      "physical_page": 108,
+      "page_orphan_start_frac": 0.1,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE226A01021",
+      "company": "Voltas Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0146,
+      "physical_page": 112,
+      "page_orphan_start_frac": 0.125,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE226A01021",
+      "company": "Voltas Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0146,
+      "physical_page": 121,
+      "page_orphan_start_frac": 0.0667,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE226A01021",
+      "company": "Voltas Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0146,
+      "physical_page": 122,
+      "page_orphan_start_frac": 0.0625,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE226A01021",
+      "company": "Voltas Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0146,
+      "physical_page": 138,
+      "page_orphan_start_frac": 0.0789,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE482A01020",
+      "company": "CEAT Limited",
+      "fiscal_year": 2012,
+      "document_level_orphan_start_frac": 0.0238,
+      "physical_page": 36,
+      "page_orphan_start_frac": 0.0667,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE482A01020",
+      "company": "CEAT Limited",
+      "fiscal_year": 2012,
+      "document_level_orphan_start_frac": 0.0238,
+      "physical_page": 38,
+      "page_orphan_start_frac": 0.0323,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE482A01020",
+      "company": "CEAT Limited",
+      "fiscal_year": 2012,
+      "document_level_orphan_start_frac": 0.0238,
+      "physical_page": 39,
+      "page_orphan_start_frac": 0.037,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE482A01020",
+      "company": "CEAT Limited",
+      "fiscal_year": 2012,
+      "document_level_orphan_start_frac": 0.0238,
+      "physical_page": 40,
+      "page_orphan_start_frac": 0.0741,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE482A01020",
+      "company": "CEAT Limited",
+      "fiscal_year": 2012,
+      "document_level_orphan_start_frac": 0.0238,
+      "physical_page": 42,
+      "page_orphan_start_frac": 0.0323,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE482A01020",
+      "company": "CEAT Limited",
+      "fiscal_year": 2012,
+      "document_level_orphan_start_frac": 0.0238,
+      "physical_page": 43,
+      "page_orphan_start_frac": 0.0312,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE482A01020",
+      "company": "CEAT Limited",
+      "fiscal_year": 2012,
+      "document_level_orphan_start_frac": 0.0238,
+      "physical_page": 45,
+      "page_orphan_start_frac": 0.0312,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE482A01020",
+      "company": "CEAT Limited",
+      "fiscal_year": 2012,
+      "document_level_orphan_start_frac": 0.0238,
+      "physical_page": 47,
+      "page_orphan_start_frac": 0.0541,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE482A01020",
+      "company": "CEAT Limited",
+      "fiscal_year": 2012,
+      "document_level_orphan_start_frac": 0.0238,
+      "physical_page": 48,
+      "page_orphan_start_frac": 0.0526,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE482A01020",
+      "company": "CEAT Limited",
+      "fiscal_year": 2012,
+      "document_level_orphan_start_frac": 0.0238,
+      "physical_page": 49,
+      "page_orphan_start_frac": 0.05,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE482A01020",
+      "company": "CEAT Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.0556,
+      "physical_page": 39,
+      "page_orphan_start_frac": 0.3043,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE482A01020",
+      "company": "CEAT Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.0246,
+      "physical_page": 36,
+      "page_orphan_start_frac": 0.1111,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE482A01020",
+      "company": "CEAT Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.0246,
+      "physical_page": 37,
+      "page_orphan_start_frac": 0.0357,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE482A01020",
+      "company": "CEAT Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.0246,
+      "physical_page": 43,
+      "page_orphan_start_frac": 0.0714,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE482A01020",
+      "company": "CEAT Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.0246,
+      "physical_page": 44,
+      "page_orphan_start_frac": 0.04,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE482A01020",
+      "company": "CEAT Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.0246,
+      "physical_page": 48,
+      "page_orphan_start_frac": 0.1,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE482A01020",
+      "company": "CEAT Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.0246,
+      "physical_page": 49,
+      "page_orphan_start_frac": 0.0769,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE482A01020",
+      "company": "CEAT Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.0246,
+      "physical_page": 53,
+      "page_orphan_start_frac": 0.1064,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE482A01020",
+      "company": "CEAT Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.0246,
+      "physical_page": 54,
+      "page_orphan_start_frac": 0.0667,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE482A01020",
+      "company": "CEAT Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.0246,
+      "physical_page": 55,
+      "page_orphan_start_frac": 0.1,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE482A01020",
+      "company": "CEAT Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.0246,
+      "physical_page": 58,
+      "page_orphan_start_frac": 0.0588,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE482A01020",
+      "company": "CEAT Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0056,
+      "physical_page": 42,
+      "page_orphan_start_frac": 0.1111,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE482A01020",
+      "company": "CEAT Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0056,
+      "physical_page": 63,
+      "page_orphan_start_frac": 0.05,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE482A01020",
+      "company": "CEAT Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0056,
+      "physical_page": 65,
+      "page_orphan_start_frac": 0.0625,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE482A01020",
+      "company": "CEAT Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0056,
+      "physical_page": 69,
+      "page_orphan_start_frac": 0.0455,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE482A01020",
+      "company": "CEAT Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0299,
+      "physical_page": 43,
+      "page_orphan_start_frac": 0.0308,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE482A01020",
+      "company": "CEAT Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0299,
+      "physical_page": 44,
+      "page_orphan_start_frac": 0.0308,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE482A01020",
+      "company": "CEAT Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0299,
+      "physical_page": 45,
+      "page_orphan_start_frac": 0.0541,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE482A01020",
+      "company": "CEAT Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0299,
+      "physical_page": 46,
+      "page_orphan_start_frac": 0.1132,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE482A01020",
+      "company": "CEAT Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0159,
+      "physical_page": 41,
+      "page_orphan_start_frac": 0.0377,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE482A01020",
+      "company": "CEAT Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0159,
+      "physical_page": 42,
+      "page_orphan_start_frac": 0.0312,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE761H01022",
+      "company": "Page Industries Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.0333,
+      "physical_page": 32,
+      "page_orphan_start_frac": 0.1053,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE761H01022",
+      "company": "Page Industries Limited",
+      "fiscal_year": 2013,
+      "document_level_orphan_start_frac": 0.0333,
+      "physical_page": 35,
+      "page_orphan_start_frac": 0.0625,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE761H01022",
+      "company": "Page Industries Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.0292,
+      "physical_page": 48,
+      "page_orphan_start_frac": 0.0417,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE761H01022",
+      "company": "Page Industries Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.0292,
+      "physical_page": 49,
+      "page_orphan_start_frac": 0.0667,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE761H01022",
+      "company": "Page Industries Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.0292,
+      "physical_page": 51,
+      "page_orphan_start_frac": 0.1111,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE761H01022",
+      "company": "Page Industries Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.0292,
+      "physical_page": 53,
+      "page_orphan_start_frac": 0.05,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE761H01022",
+      "company": "Page Industries Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.016,
+      "physical_page": 52,
+      "page_orphan_start_frac": 0.0435,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE761H01022",
+      "company": "Page Industries Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.016,
+      "physical_page": 57,
+      "page_orphan_start_frac": 0.0833,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE761H01022",
+      "company": "Page Industries Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.009,
+      "physical_page": 96,
+      "page_orphan_start_frac": 0.0556,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE761H01022",
+      "company": "Page Industries Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.009,
+      "physical_page": 101,
+      "page_orphan_start_frac": 0.087,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE761H01022",
+      "company": "Page Industries Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.009,
+      "physical_page": 102,
+      "page_orphan_start_frac": 0.0426,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE761H01022",
+      "company": "Page Industries Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0192,
+      "physical_page": 89,
+      "page_orphan_start_frac": 0.087,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE761H01022",
+      "company": "Page Industries Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0192,
+      "physical_page": 92,
+      "page_orphan_start_frac": 0.1111,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE761H01022",
+      "company": "Page Industries Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0192,
+      "physical_page": 97,
+      "page_orphan_start_frac": 0.0769,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE761H01022",
+      "company": "Page Industries Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0192,
+      "physical_page": 99,
+      "page_orphan_start_frac": 0.0526,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE761H01022",
+      "company": "Page Industries Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0192,
+      "physical_page": 100,
+      "page_orphan_start_frac": 0.0392,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE797F01020",
+      "company": "Jubilant Foodworks Limited",
+      "fiscal_year": 2012,
+      "document_level_orphan_start_frac": 0.1038,
+      "physical_page": 27,
+      "page_orphan_start_frac": 0.1163,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE797F01020",
+      "company": "Jubilant Foodworks Limited",
+      "fiscal_year": 2012,
+      "document_level_orphan_start_frac": 0.1038,
+      "physical_page": 29,
+      "page_orphan_start_frac": 0.3729,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE797F01020",
+      "company": "Jubilant Foodworks Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.0184,
+      "physical_page": 25,
+      "page_orphan_start_frac": 0.0625,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE797F01020",
+      "company": "Jubilant Foodworks Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.0184,
+      "physical_page": 29,
+      "page_orphan_start_frac": 0.1,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE797F01020",
+      "company": "Jubilant Foodworks Limited",
+      "fiscal_year": 2017,
+      "document_level_orphan_start_frac": 0.0184,
+      "physical_page": 33,
+      "page_orphan_start_frac": 0.0333,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE797F01020",
+      "company": "Jubilant Foodworks Limited",
+      "fiscal_year": 2018,
+      "document_level_orphan_start_frac": 0.0088,
+      "physical_page": 26,
+      "page_orphan_start_frac": 0.0556,
+      "full_width_block": false
+    },
+    {
+      "company_id": "INE797F01020",
+      "company": "Jubilant Foodworks Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0222,
+      "physical_page": 40,
+      "page_orphan_start_frac": 0.0333,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE797F01020",
+      "company": "Jubilant Foodworks Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0222,
+      "physical_page": 42,
+      "page_orphan_start_frac": 0.0484,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE797F01020",
+      "company": "Jubilant Foodworks Limited",
+      "fiscal_year": 2024,
+      "document_level_orphan_start_frac": 0.0222,
+      "physical_page": 45,
+      "page_orphan_start_frac": 0.0312,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE797F01020",
+      "company": "Jubilant Foodworks Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0304,
+      "physical_page": 34,
+      "page_orphan_start_frac": 0.0714,
+      "full_width_block": true
+    },
+    {
+      "company_id": "INE797F01020",
+      "company": "Jubilant Foodworks Limited",
+      "fiscal_year": 2025,
+      "document_level_orphan_start_frac": 0.0304,
+      "physical_page": 37,
+      "page_orphan_start_frac": 0.05,
+      "full_width_block": true
+    }
+  ],
+  "baseline_reference": {
+    "artifact": "reports/pm1_baseline.json",
+    "artifact_sha256": "fc4bb4f2249acffa669e9d8abfb8ac4c811c0c82d8d765c5a9af6e90803f860d",
+    "git_sha_at_baseline": "0fb8cbf6d932f4190bdfe3b2a1fecf62170cca14",
+    "corpus_sha256": "3a7c7bf15f554298e1c7f4a62b90ea6328a9e1e1e4ecde4840aee7ce42abab31"
+  },
+  "interpretation": {
+    "aggregate_hiding": "The document-level orphan_start_frac hides a page-level spike (a page strictly over the 0.03 diagnostic threshold while the document average reads <= 0.03) in 84 of 194 documents (43.3%) - more than four in ten documents that would look clean on the document-level metric alone actually contain at least one page whose reading order is as bad as, or worse than, documents already flagged low/order_scrambled.",
+    "concentration": "Bad pages are not spread evenly: 135 of 194 documents (69.6%) have at least one bad page, but those 135 documents produce 706 bad pages between them (median ~5 bad pages per affected document), and the page-score distribution is heavily right-skewed (median page score across all 2728 measured pages is 0.0; even P75 is only 0.0312, just above the diagnostic threshold, while P95 reaches 0.125 and the single worst page scores 0.6471) - most measured pages are clean, and the badness concentrated in a a minority of pages within a majority of documents.",
+    "full_width_block_cooccurrence": "Of the 706 bad pages, 429 (60.8%) carry a block wider than 60% of the page text band (the known _column_cut full-width-masking mechanism) and 199 (28.2%) do not; the remaining 78 (11.0%) could not be measured (no extractable block geometry, typically a scanned/OCR page). A full-width block co-occurs with a bad page more often than not, but nearly three in ten bad pages show no such block - co-occurrence is not proof of causality, and no causal claim is made here."
+  },
+  "caveats": [
+    "A concurrent, unrelated Claude Code session was observed actively modifying files in this same repository (segment.py, triage.py, new test files) during this work. Both the baseline and after-PM1 extraction runs were verified via sha256 checkpointing to have used byte-identical segment.py/triage.py/patterns.py/config.py/ocr.py/store.py/models.py throughout each run (workers import these once at process start; no live-reload risk). Any content difference between the two runs could therefore only come from the PM1 diff itself, and the regression check found none.",
+    "The full pytest suite carries one pre-existing failure (tests/test_pipeline.py::test_p33_is_given_below_not_pointer) in segment.py logic never touched by PM1; it fails identically with PM1 code present or reverted."
+  ]
+}

@@ -578,3 +578,37 @@ def extract_pages(path: str, page_nos: list[int] | None = None,
                 for n in nos if 0 <= n < doc.page_count}
     finally:
         doc.close()
+
+
+def page_has_full_width_block(path: str, page_no: int) -> bool | None:
+    """PM1 diagnostic only: does physical page `page_no` (0-based) carry a
+    block wider than COLUMN_FULLWIDTH_FRAC of the page's text band?
+
+    This is the exact "wide" test _column_cut already uses to decide a block
+    is not evidence of a column - a full-width block (a running head, a
+    banner image, a table spanning both columns) masks the gutter from
+    _gap_cut and is the documented mechanism that forces the column-split
+    fallback (see _column_cut's docstring and CLAUDE.md's reading-order
+    rules). Reusing the same threshold here, purely to report it, so this
+    diagnostic can never drift from what the extractor itself treats as
+    full-width.
+
+    Returns None when there is no page geometry to measure (page out of
+    range, or no text blocks at all - e.g. a scanned/blank page).  Never
+    called from the extraction path itself; `arpipe orderqc` calls this only
+    for pages it has already flagged, against the page's own
+    `annual_report.pdf` copy.
+    """
+    doc = pymupdf.open(path)
+    try:
+        if not (0 <= page_no < doc.page_count):
+            return None
+        blocks = _blocks(doc.load_page(page_no))
+        if not blocks:
+            return None
+        text_w = max(b.x1 for b in blocks) - min(b.x0 for b in blocks)
+        if text_w <= 0:
+            return None
+        return any(b.w > COLUMN_FULLWIDTH_FRAC * text_w for b in blocks)
+    finally:
+        doc.close()

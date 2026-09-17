@@ -1,0 +1,12 @@
+{
+  "documents_compared": 194,
+  "orphan_document_score_changes": 0,
+  "grade_changes": 0,
+  "confidence_changes": 0,
+  "reason_changes": 0,
+  "span_start_changes": 0,
+  "span_end_changes": 0,
+  "accept_reject_changes": 0,
+  "total_documents_with_any_diff": 0,
+  "diffs": []
+}
