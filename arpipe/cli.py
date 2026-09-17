@@ -16,12 +16,14 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import shutil
 import sys
 import time
 from collections import defaultdict
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-from . import config, discover, fetch, ocr, pipeline, store, triage, universe, verify
+from . import (config, discover, fetch, ocr, pipeline, store, textlayer,
+              triage, universe, verify)
 from .models import Company, ReportRef, StoredDoc, to_json
 
 
@@ -251,6 +253,188 @@ def _make_escalator(a: argparse.Namespace) -> ocr.Escalator:
     return ocr.Escalator(rungs)
 
 
+# --------------------------------------------------------------------- P-B5
+# OCR preflight. A missing Tesseract binary or language pack must be caught
+# HERE, loudly, before a single document is opened - not discovered three
+# passes later as an empty OcrPage that reads exactly like "this document
+# has no MD&A" (mda_not_located). See ocr.OcrEngineUnavailable for the other
+# half of this fix (the runtime path, for a document that slips past this
+# gate with --allow-missing-ocr).
+
+def _ocr_engine_rows(a: argparse.Namespace) -> list[dict]:
+    """One row per OCR engine this run could use, reusing preflight.py's
+    existing probes (same ground truth as `arpipe preflight`) reshaped into
+    the engine/configured/binary/language-pack table P-B5 asks for."""
+    from . import preflight as pf
+
+    rows: list[dict] = []
+
+    tess_checks = {r.name: r for r in pf.check_tesseract()}
+    binary = tess_checks.get("tesseract")
+    eng = tess_checks.get("tesseract lang: eng")
+    hin = tess_checks.get("tesseract lang: hin")
+    binary_present = bool(binary and binary.status == pf.Status.PASS)
+    eng_present = bool(eng and eng.status == pf.Status.PASS)
+    hin_present = bool(hin and hin.status == pf.Status.PASS)
+    exe = shutil.which("tesseract")
+    if not exe and os.path.exists(r"C:\Program Files\Tesseract-OCR\tesseract.exe"):
+        exe = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
+
+    if not binary_present:
+        status, detail = "unavailable", (binary.detail if binary else "not found")
+        fix_hint = binary.fix_hint if binary else ""
+    elif not (eng_present and hin_present):
+        status = "partial"
+        missing = [n for n, present in (("eng", eng_present), ("hin", hin_present)) if not present]
+        detail = f"binary ok; missing language pack(s): {', '.join(missing)}"
+        fix_hint = (hin.fix_hint if hin and not hin_present else "") or (eng.fix_hint if eng else "")
+    else:
+        status, detail, fix_hint = "ready", "binary and eng+hin language packs present", ""
+
+    rows.append({
+        "engine": "tesseract", "configured": True,
+        "binary_or_path": exe or "(not found on PATH)",
+        "binary_present": binary_present,
+        "language_packs": "eng, hin",
+        "language_pack_present": eng_present and hin_present,
+        "lang_present": {"eng": eng_present, "hin": hin_present},
+        "status": status, "detail": detail, "fix_hint": fix_hint,
+    })
+
+    vlm_url = getattr(a, "vlm_url", None)
+    if vlm_url:
+        check = pf.check_vlm(vlm_url, getattr(a, "vlm_model", None))[0]
+        reachable = check.status == pf.Status.PASS
+        rows.append({
+            "engine": "vlm", "configured": True,
+            "binary_or_path": vlm_url, "binary_present": reachable,
+            "language_packs": "n/a (vision model)", "language_pack_present": reachable,
+            "lang_present": {}, "status": "ready" if reachable else "unavailable",
+            "detail": check.detail, "fix_hint": check.fix_hint,
+        })
+    else:
+        rows.append({
+            "engine": "vlm", "configured": False,
+            "binary_or_path": "-", "binary_present": False,
+            "language_packs": "-", "language_pack_present": False,
+            "lang_present": {}, "status": "not_configured",
+            "detail": "no --vlm-url given", "fix_hint": "",
+        })
+
+    textract_on = getattr(a, "textract", False)
+    aws_region = getattr(a, "aws_region", "ap-south-1")
+    if textract_on:
+        check = pf.check_textract(True, aws_region)[0]
+        ok = check.status == pf.Status.PASS
+        rows.append({
+            "engine": "textract", "configured": True,
+            "binary_or_path": f"aws:{aws_region}", "binary_present": ok,
+            "language_packs": "eng (Latin scripts only, no Devanagari)",
+            "language_pack_present": ok, "lang_present": {},
+            "status": "ready" if ok else "unavailable",
+            "detail": check.detail, "fix_hint": check.fix_hint,
+        })
+    else:
+        rows.append({
+            "engine": "textract", "configured": False,
+            "binary_or_path": "-", "binary_present": False,
+            "language_packs": "-", "language_pack_present": False,
+            "lang_present": {}, "status": "not_configured",
+            "detail": "no --textract flag", "fix_hint": "",
+        })
+    return rows
+
+
+def _format_ocr_preflight_table(rows: list[dict]) -> str:
+    cols = ["engine", "configured", "binary/path", "binary_present",
+            "language_pack(s)", "language_pack_present", "status"]
+    data = [[r["engine"], str(r["configured"]), r["binary_or_path"],
+            str(r["binary_present"]), r["language_packs"],
+            str(r["language_pack_present"]), r["status"]] for r in rows]
+    widths = [max([len(cols[i])] + [len(row[i]) for row in data]) for i in range(len(cols))]
+    lines = ["", "  OCR PREFLIGHT (P-B5)"]
+    lines.append("  " + "  ".join(c.ljust(widths[i]) for i, c in enumerate(cols)))
+    lines.append("  " + "-" * (sum(widths) + 2 * (len(cols) - 1)))
+    for row in data:
+        lines.append("  " + "  ".join(v.ljust(widths[i]) for i, v in enumerate(row)))
+    lines.append("")
+    return "\n".join(lines)
+
+
+def _scan_ocr_requirement(docs: list[StoredDoc], root: str) -> dict:
+    """Cheap page-profile scan (no rendering) across the WHOLE batch, run
+    before any document is processed, so 'this run needs OCR' can never be
+    discovered only after some documents already went through the pipeline.
+    """
+    needs_ocr = False
+    languages: set[str] = set()
+    for d in docs:
+        blob = store.blob_abspath(root, d.path)
+        try:
+            profile = triage.profile_document(blob)
+        except Exception:
+            continue   # profiling failures surface later as a normal per-doc error
+        pages = triage.ocr_page_numbers(profile)
+        if pages:
+            needs_ocr = True
+            for n in pages:
+                languages.update(pipeline._lang_for(profile, n).split("+"))
+    return {"needs_ocr": needs_ocr, "languages": languages}
+
+
+def _ocr_preflight_gate(a: argparse.Namespace, docs: list[StoredDoc]) -> int | None:
+    """Print the OCR preflight table and, unless --allow-missing-ocr was
+    passed, block the run before any document is processed when this batch
+    needs OCR and no configured engine can provide it.
+
+    Returns a process exit code to block on, or None to proceed.
+    """
+    rows = _ocr_engine_rows(a)
+    print(_format_ocr_preflight_table(rows))
+
+    scan = _scan_ocr_requirement(docs, a.root)
+    if not scan["needs_ocr"]:
+        return None   # nothing in this batch needs OCR at all
+
+    tess = next(r for r in rows if r["engine"] == "tesseract")
+    other_ready = [r for r in rows if r["engine"] != "tesseract"
+                   and r["configured"] and r["status"] == "ready"]
+
+    missing_reasons: list[str] = []
+    for lang in sorted(scan["languages"]):
+        tess_ok = tess["binary_present"] and tess["lang_present"].get(lang, False)
+        if not tess_ok and not other_ready:
+            if not tess["binary_present"]:
+                missing_reasons.append(
+                    f"tesseract binary not found (needed for '{lang}' OCR): "
+                    f"{tess['detail']}")
+            else:
+                missing_reasons.append(
+                    f"tesseract language pack '{lang}' is not installed")
+
+    if not missing_reasons:
+        return None
+
+    allow_missing = getattr(a, "allow_missing_ocr", False)
+    print("  OCR PREFLIGHT: this run needs OCR and no configured engine can "
+         "provide it.", file=sys.stderr)
+    for reason in missing_reasons:
+        print(f"    missing: {reason}", file=sys.stderr)
+    fix = tess["fix_hint"] or "install tesseract and the required language pack(s)"
+    print(f"    suggested fix: {fix}", file=sys.stderr)
+
+    if allow_missing:
+        print("  --allow-missing-ocr set: continuing. Documents whose pages need "
+             "OCR will be recorded with reason_code=ocr_engine_unavailable, "
+             "never mda_not_located.\n", file=sys.stderr)
+        return None
+
+    print("  Refusing to start: zero documents will be processed. Pass "
+         "--allow-missing-ocr to run digital-only documents anyway.\n",
+         file=sys.stderr)
+    return 1
+
+
 def cmd_extract(a: argparse.Namespace) -> int:
     loaded = _load_companies(a.companies)
     companies: dict[str, Company] = {}
@@ -266,6 +450,10 @@ def cmd_extract(a: argparse.Namespace) -> int:
     esc = _make_escalator(a)
     todo = [d for d in docs if (d.company_id, d.fy_end) not in already]
     print(f"{len(todo)} documents to process ({len(docs) - len(todo)} already done)")
+
+    gate_rc = _ocr_preflight_gate(a, todo)
+    if gate_rc is not None:
+        return gate_rc
 
     def work(d: StoredDoc):
         co = companies.get(d.company_id)
@@ -359,6 +547,125 @@ def cmd_audit(a: argparse.Namespace) -> int:
             1 for r in rows
             if verify.is_reprocessor((r.get("qc") or {}).get("pdf_producer"))),
     }, indent=2))
+    return 0
+
+
+def cmd_orderqc(a: argparse.Namespace) -> int:
+    """PM1: surface the per-physical-page orphan_start_frac telemetry that the
+    document-level score can hide. Reads stored mda.json rows via the
+    existing manifest (never reruns extraction/OCR/segmentation), and only
+    opens a document's own `annual_report.pdf` copy (already materialised by
+    `arpipe extract`) to check the full-width-block diagnostic on pages it has
+    already flagged.
+
+    Diagnostic only: this command changes nothing about extraction, grading,
+    or acceptance. `PAGE_ORPHAN_DIAGNOSTIC_THRESHOLD` (0.03, same value as the
+    production ORPHAN_START_FRAC_MAX gate today) is a fixed reporting cutoff,
+    never a production threshold and never recalibrated by this command.
+    """
+    rows = store.load_manifest(a.out)
+    if not rows:
+        print("empty manifest"); return 1
+
+    names: dict[str, str] = {}
+    comp_path = a.companies
+    if comp_path and (os.path.exists(comp_path)
+                      or os.path.exists(os.path.join("arpipe", comp_path))):
+        if not os.path.exists(comp_path):
+            comp_path = os.path.join("arpipe", comp_path)
+        for c in _load_companies(comp_path):
+            names[c.company_id] = c.canonical_name
+            if c.isin:
+                names[c.isin] = c.canonical_name
+
+    threshold = verify.PAGE_ORPHAN_DIAGNOSTIC_THRESHOLD
+    findings: list[dict] = []
+    documents_with_bad_pages = 0
+    documents_with_hidden_bad_page = 0
+    documents_measured = 0
+    pages_measured = 0
+    all_page_scores: list[float] = []
+
+    for r in rows:
+        qc = r.get("qc") or {}
+        pages_arr = qc.get("orphan_start_frac_pages")
+        if pages_arr is None:
+            continue
+        documents_measured += 1
+        measured = [v for v in pages_arr if v is not None]
+        pages_measured += len(measured)
+        all_page_scores.extend(measured)
+        bad = verify.pages_over_diagnostic_threshold(pages_arr, threshold)
+        if not bad:
+            continue
+        documents_with_bad_pages += 1
+        doc_osf = qc.get("orphan_start_frac", 0.0)
+        if verify.document_hides_bad_page(doc_osf, pages_arr, threshold):
+            documents_with_hidden_bad_page += 1
+
+        year_dir = os.path.dirname(r.get("path") or "")
+        pdf_path = (os.path.join(a.out, year_dir, "annual_report.pdf")
+                   if year_dir else None)
+        for physical_page, score in bad:
+            full_width_block = None
+            if pdf_path and os.path.exists(pdf_path):
+                full_width_block = textlayer.page_has_full_width_block(
+                    pdf_path, physical_page - 1)
+            findings.append({
+                "company_id": r.get("company_id"),
+                "company": names.get(r.get("company_id"), r.get("company_id")),
+                "fiscal_year": r.get("fy_end"),
+                "document_level_orphan_start_frac": doc_osf,
+                "physical_page": physical_page,
+                "page_orphan_start_frac": score,
+                "full_width_block": full_width_block,
+            })
+
+    findings.sort(key=lambda f: (f["company_id"], f["fiscal_year"], f["physical_page"]))
+
+    for f in findings:
+        print(f"{f['company']}\t{f['fiscal_year']}\t"
+              f"doc_orphan_start_frac={f['document_level_orphan_start_frac']}\t"
+              f"page={f['physical_page']}\t"
+              f"page_orphan_start_frac={f['page_orphan_start_frac']}\t"
+              f"full_width_block={f['full_width_block']}")
+
+    total_bad_pages = len(findings)
+    bad_with_fw = sum(1 for f in findings if f["full_width_block"] is True)
+    bad_without_fw = sum(1 for f in findings if f["full_width_block"] is False)
+
+    def _pctile(xs: list[float], p: float) -> float | None:
+        if not xs:
+            return None
+        s = sorted(xs)
+        k = (len(s) - 1) * p
+        lo, hi = int(k), min(int(k) + 1, len(s) - 1)
+        return round(s[lo] + (s[hi] - s[lo]) * (k - lo), 4)
+
+    summary = {
+        "threshold": threshold,
+        "total_documents": len(rows),
+        "documents_measured": documents_measured,
+        "pages_measured": pages_measured,
+        "documents_with_bad_pages": documents_with_bad_pages,
+        "documents_with_hidden_bad_page": documents_with_hidden_bad_page,
+        "total_bad_pages": total_bad_pages,
+        "bad_pages_with_full_width_block": bad_with_fw,
+        "bad_pages_without_full_width_block": bad_without_fw,
+        "page_score_distribution": {
+            "min": min(all_page_scores) if all_page_scores else None,
+            "p25": _pctile(all_page_scores, 0.25),
+            "median": _pctile(all_page_scores, 0.50),
+            "p75": _pctile(all_page_scores, 0.75),
+            "p90": _pctile(all_page_scores, 0.90),
+            "p95": _pctile(all_page_scores, 0.95),
+            "max": max(all_page_scores) if all_page_scores else None,
+        },
+    }
+    print(json.dumps(summary, indent=2))
+    if a.json:
+        with open(a.json, "w", encoding="utf-8") as fh:
+            json.dump({"summary": summary, "pages": findings}, fh, indent=2)
     return 0
 
 
@@ -497,7 +804,7 @@ def cmd_preflight(a: argparse.Namespace) -> int:
 def main(argv: list[str] | None = None) -> int:
     args_list = sys.argv[1:] if argv is None else argv
     subcmds = {"universe", "discover", "fetch", "triage", "extract", "audit",
-               "sample-for-labelling", "label", "evaluate", "preflight"}
+               "orderqc", "sample-for-labelling", "label", "evaluate", "preflight"}
 
     # Top-level --print-config without requiring a subcommand
     if "--print-config" in args_list and not any(a in subcmds for a in args_list):
@@ -573,10 +880,27 @@ def main(argv: list[str] | None = None) -> int:
                                                          "PaddlePaddle/PaddleOCR-VL"))
     e.add_argument("--textract", action="store_true")
     e.add_argument("--aws-region", default="ap-south-1")
+    e.add_argument("--allow-missing-ocr", action="store_true",
+                   help="Start the run even if a required OCR engine/language pack "
+                        "is unavailable. Digital-only documents still proceed; any "
+                        "document/page that actually needs OCR gets "
+                        "reason_code=ocr_engine_unavailable instead of blocking the "
+                        "whole run. Without this flag, the run refuses to start "
+                        "(zero documents processed) when OCR is required but "
+                        "unavailable.")
     e.set_defaults(fn=cmd_extract)
 
     a = sub.add_parser("audit", parents=[cfg_parent]); a.add_argument("--out", default="dataset")
     a.set_defaults(fn=cmd_audit)
+
+    oq = sub.add_parser("orderqc", parents=[cfg_parent])
+    oq.add_argument("--out", default="dataset",
+                    help="Dataset root previously written by `arpipe extract`")
+    oq.add_argument("--companies", default="companies.csv",
+                    help="Optional: resolve company_id to a display name")
+    oq.add_argument("--json", default=None,
+                    help="Optional: write the full findings + summary to this JSON path")
+    oq.set_defaults(fn=cmd_orderqc)
 
     sfl = sub.add_parser("sample-for-labelling", parents=[cfg_parent])
     sfl.add_argument("--n", type=int, default=300, help="Number of documents to sample (stratified across 36 cells)")

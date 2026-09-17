@@ -35,8 +35,9 @@ from collections import Counter
 from rapidfuzz import fuzz
 
 from .models import Company, VerificationReport
-from .patterns import (AS_AT_RE, CIN_RE, FY_RANGE_RE, FY_SINGLE_RE, ISIN_RE,
-                       MANDATED_RATIOS, YEAR_ENDED_RE, is_valid_isin)
+from .patterns import (AS_AT_RE, CIN_RE, DEVANAGARI_RE, FY_RANGE_RE,
+                       FY_SINGLE_RE, ISIN_RE, MANDATED_RATIOS, MDA_HEADING_RE,
+                       YEAR_ENDED_RE, is_valid_isin)
 
 # --- tunable thresholds ---------------------------------------------------
 # All thresholds provisional until re-fit against the labelled 300.
@@ -48,6 +49,16 @@ NAME_MATCH_WEAK = 72
 REQUIRE_YEAR_EVIDENCE = True
 # provisional until re-fit against the labelled 300
 ORPHAN_START_FRAC_MAX = 0.03
+# PM1: diagnostic-only threshold for the per-physical-page orphan_start_frac
+# telemetry (arpipe orderqc). Deliberately a separate constant from
+# ORPHAN_START_FRAC_MAX above - it exists to describe how often the page-level
+# signal exceeds the historical gate value, even if that gate is ever retuned.
+# Never read by grade(), build_reasons(), or any acceptance/rejection path.
+PAGE_ORPHAN_DIAGNOSTIC_THRESHOLD = 0.03
+# PM1: a page attributed only 0 or 1 reconstructed paragraphs cannot support a
+# rate estimate (0/1 or 1/1 is not a fraction, it is a coin flip) - such pages
+# report None ("not measured"), never a fabricated 0.0 or 1.0.
+PAGE_ORPHAN_MIN_PARAGRAPHS = 2
 # provisional until re-fit against the labelled 300
 FY_WEIGHT_FLOOR = 15
 # provisional until re-fit against the labelled 300
@@ -70,6 +81,24 @@ REPROCESSOR_CAP_GRADE = "medium"
 ORPHAN_BASIS = "prose_only"          # or "prose_and_tables" (pre-P18)
 ORPHAN_GATE_VERSION = "p17.1"        # p17 gate + p16b column-cut fire signal
 
+# P34: wrong-language quarantine (looks_like_wrong_language / page_has_bilingual_heading).
+# provisional until re-fit against the labelled 300
+DEVANAGARI_FRAC_MIN = 0.10
+# provisional until re-fit against the labelled 300
+ENGLISH_WORD_FRAC_MAX = 0.30
+# provisional until re-fit against the labelled 300
+RARE_PUNCT_FREQ_MIN = 0.020
+# provisional until re-fit against the labelled 300
+DIGIT_EMBEDDED_FRAC_MIN = 0.02
+# provisional until re-fit against the labelled 300
+HIGH_CODEPOINT_FREQ_MIN = 0.15
+# provisional until re-fit against the labelled 300
+LONG_WORD_FRAC_MIN = 0.10
+# provisional until re-fit against the labelled 300
+WRONG_LANGUAGE_WINDOW = 2000
+# provisional until re-fit against the labelled 300
+WRONG_LANGUAGE_MIN_TOKENS = 15
+
 
 def configure(cfg: dict | None = None) -> None:
     """Update thresholds from resolved configuration."""
@@ -77,6 +106,9 @@ def configure(cfg: dict | None = None) -> None:
     global ORPHAN_START_FRAC_MAX, FY_WEIGHT_FLOOR, TOO_SHORT_WORDS, TOO_LONG_WORDS
     global LOOKS_LIKE_TABLES_DIGIT_RATIO, GRADE_HIGH_MIN_SUPPORTERS, GRADE_HIGH_MIN_SCORE
     global GRADE_MEDIUM_MIN_SCORE, GRADE_SOLO_MIN_SCORE, REPROCESSOR_CAP_GRADE
+    global DEVANAGARI_FRAC_MIN, ENGLISH_WORD_FRAC_MAX, RARE_PUNCT_FREQ_MIN
+    global DIGIT_EMBEDDED_FRAC_MIN, HIGH_CODEPOINT_FREQ_MIN, LONG_WORD_FRAC_MIN
+    global WRONG_LANGUAGE_WINDOW, WRONG_LANGUAGE_MIN_TOKENS
     if not cfg:
         return
     NAME_MATCH_STRONG = cfg.get("name_match_strong", NAME_MATCH_STRONG)
@@ -92,6 +124,14 @@ def configure(cfg: dict | None = None) -> None:
     GRADE_MEDIUM_MIN_SCORE = cfg.get("grade_medium_min_score", GRADE_MEDIUM_MIN_SCORE)
     GRADE_SOLO_MIN_SCORE = cfg.get("grade_solo_min_score", GRADE_SOLO_MIN_SCORE)
     REPROCESSOR_CAP_GRADE = cfg.get("reprocessor_cap_grade", REPROCESSOR_CAP_GRADE)
+    DEVANAGARI_FRAC_MIN = cfg.get("devanagari_frac_min", DEVANAGARI_FRAC_MIN)
+    ENGLISH_WORD_FRAC_MAX = cfg.get("english_word_frac_max", ENGLISH_WORD_FRAC_MAX)
+    RARE_PUNCT_FREQ_MIN = cfg.get("rare_punct_freq_min", RARE_PUNCT_FREQ_MIN)
+    DIGIT_EMBEDDED_FRAC_MIN = cfg.get("digit_embedded_frac_min", DIGIT_EMBEDDED_FRAC_MIN)
+    HIGH_CODEPOINT_FREQ_MIN = cfg.get("high_codepoint_freq_min", HIGH_CODEPOINT_FREQ_MIN)
+    LONG_WORD_FRAC_MIN = cfg.get("long_word_frac_min", LONG_WORD_FRAC_MIN)
+    WRONG_LANGUAGE_WINDOW = cfg.get("wrong_language_window", WRONG_LANGUAGE_WINDOW)
+    WRONG_LANGUAGE_MIN_TOKENS = cfg.get("wrong_language_min_tokens", WRONG_LANGUAGE_MIN_TOKENS)
 
 # P22: free web PDF compressors / converters that re-lay the text layer into
 # near-per-line fragments (the iLovePDF-shredded Jain reports are the known
@@ -428,6 +468,196 @@ def section_qc(mda_text: str) -> dict:
     }
 
 
+# --------------------------------------------------------- wrong-language QC
+# P34: PSU bank reports print the full report twice - Hindi, then English -
+# behind a single bilingual heading line ("प्रबंधन विचार-विमर्श ... Management
+# Discussion and Analysis"). MDA_HEADING_RE only needs to match the Latin
+# half, so it can lock onto the Hindi copy. Confirmed on real filings (PNB
+# 2010-2015, IDBI 2024-2025), the mis-located body decodes as one of:
+#   - a legacy Hindi font with no ToUnicode CMap -> Latin-range noise
+#     ("çca/ku fopkj&foe'kZ") or Latin-1-extended noise ("Ÿ¸Ê „›í¸Ê›¸½")
+#   - a scanned Hindi page OCR'd with the wrong language pack -> pseudo-English
+#     lowercase noise ("wae faugt sit fascraut")
+# All three are plain Latin/extended-Latin codepoints, so a script check
+# (triage.detect_script) sees Latin and passes clean, and every existing QC
+# band (word count, orphan_start_frac, confidence) measures prose *shape*,
+# not language, so it is silent too - hence a dedicated gate.
+_RARE_PUNCT_CHARS = frozenset("'/;][&~`")
+# Letter-digit(s)-letter *within one token* ("H1N1"). Deliberately excludes a
+# leading digit followed by letters ("21st", "2.2MMTA") - ordinal-date suffixes
+# and number+unit notation are routine in Indian financial prose and are not
+# a language signal.
+_DIGIT_SANDWICH_RE = re.compile(r"[A-Za-z]\d+[A-Za-z]")
+_ALPHA_WORD_RE = re.compile(r"[A-Za-z]+")
+_TOKEN_RE = re.compile(r"\S+")
+
+# Not a dictionary - the ~150 English function/common words that dominate any
+# real English paragraph by raw token count, plus MD&A/annual-report domain
+# vocabulary, so genuine but jargon- or number-heavy financial prose does not
+# read as "not English". Evaluated per-window (see looks_like_wrong_language):
+# a whole-document average dilutes below any sane threshold once a scrambled
+# reading order interleaves short gibberish runs into real English pages.
+_COMMON_ENGLISH_WORDS = frozenset("""
+    the of and a to in is you that it he was for on are as with his they i at
+    be this have from or one had by word but not what all were we when your
+    can said there use an each which she do how their if will up other about
+    out many then them these so some her would make like him into time has
+    look two more write go see number no way could people my than first
+    water been call who oil its now find long down day did get come made may
+    part over new sound take only little work know place year live me back
+    give most very after thing our just name good sentence man think say
+    great where help through much before line right too mean old any same
+    tell boy follow came want show also around form three small set put end
+    does another well large must big even such because turn here why ask
+    went men read need land different home us move try kind hand picture
+    again change off play air away animal house point page letter mother
+    answer found study still learn should world high every near add food
+    between own below country plant last school father keep tree never start
+    city earth eye light thought head under story saw left few while along
+    might close something seem next hard open example begin life always
+    those both paper together got group often run important until children
+    side feet car mile night walk white began grow took river four carry
+    state once book hear stop without second later miss idea enough eat face
+    watch far west grand sun today report annual financial company management
+    discussion analysis business bank banking growth increase decrease
+    decreased increased performance total net profit loss income expense
+    expenses expenditure capital market industry sector government policy
+    economic economy international national development investment credit
+    deposit deposits advances asset assets liability liabilities risk
+    operation operations service services customer customers branch branches
+    employee employees board director directors shareholder shareholders
+    statement statements rate percent crore lakh india indian global domestic
+    rural urban technology digital infrastructure sustainable corporate
+    governance compliance audit review outlook strategy initiative
+    initiatives ratio ratios turnover margin equity debt interest revenue
+    budget fiscal quarter half previous current future significant various
+    several including following above below during within across through
+    among such also well further however therefore thus accordingly
+    moreover overall continued continues remained remains expected achieved
+    recorded reported noted observed particularly especially since period
+    ended march comparison compared million billion crores lakhs section
+    chapter table figure percentage gross public private limited companies
+    scheme schemes fund funds reserve reserves provision provisions measures
+    taken committee committees meeting held members member chairman managing
+    executive officer officers staff human resources training system systems
+    process processes framework product products segment segments region
+    regions unit units plan plans project projects programme programmes
+""".split())
+
+
+def _wrong_language_window(chunk: str) -> dict | None:
+    """Character/token statistics for one chunk of text. None if too short
+    (fewer than WRONG_LANGUAGE_MIN_TOKENS alphabetic tokens) to score."""
+    words = _ALPHA_WORD_RE.findall(chunk)
+    lower_words = [w.lower() for w in words if len(w) >= 2]
+    if len(lower_words) < WRONG_LANGUAGE_MIN_TOKENS:
+        return None
+    tokens = _TOKEN_RE.findall(chunk)
+    return {
+        "english_word_frac": round(
+            sum(1 for w in lower_words if w in _COMMON_ENGLISH_WORDS) / len(lower_words), 4),
+        "long_word_frac": round(
+            sum(1 for w in words if len(w) >= 7) / len(words), 4),
+        "rare_punct_freq": round(
+            sum(1 for c in chunk if c in _RARE_PUNCT_CHARS) / max(1, len(chunk)), 4),
+        "high_codepoint_freq": round(
+            sum(1 for c in chunk if ord(c) > 127) / max(1, len(chunk)), 4),
+        "digit_embedded_frac": round(
+            sum(1 for t in tokens if _DIGIT_SANDWICH_RE.search(t)) / max(1, len(tokens)), 4),
+    }
+
+
+def _window_is_legacy_font(m: dict) -> bool:
+    if m["english_word_frac"] >= ENGLISH_WORD_FRAC_MAX:
+        return False
+    # "unusual frequency of characters rare in English prose": the literal
+    # punctuation + digit-sandwich signal catches the ASCII-heavy 2010-2014
+    # PNB font; high_codepoint_freq generalises it to the Latin-1-extended
+    # IDBI font, and long_word_frac catches wrong-language-OCR noise, which
+    # uses almost no punctuation at all (PNB 2015) - real English prose (even
+    # terse infographic/table fragments; see live_dataset false-positive
+    # sweep) reliably clears at least one of these.
+    return (m["rare_punct_freq"] > RARE_PUNCT_FREQ_MIN
+            or m["digit_embedded_frac"] > DIGIT_EMBEDDED_FRAC_MIN
+            or m["high_codepoint_freq"] > HIGH_CODEPOINT_FREQ_MIN
+            or m["long_word_frac"] < LONG_WORD_FRAC_MIN)
+
+
+def looks_like_wrong_language(text: str) -> dict:
+    """Detect MD&A text that is actually the Hindi copy of a bilingual PSU
+    report (see module comment above for the three observed encodings).
+
+    Two independent signals, either is sufficient:
+      (a) real Unicode Devanagari (U+0900-U+097F) above DEVANAGARI_FRAC_MIN
+          of all characters.
+      (b) "legacy font" heuristic, scored per WRONG_LANGUAGE_WINDOW-character
+          window rather than over the whole text: fewer than
+          ENGLISH_WORD_FRAC_MAX of a window's tokens are common English words
+          AND the window's characters are anomalous for English prose. Windowing
+          matters because a scrambled reading order interleaves short gibberish
+          runs into an otherwise-real-English document; a whole-document
+          average dilutes below any sane threshold (verified: PNB 2011 is only
+          ~12% contaminated by character count).
+
+    Returns every measured value, not just the verdict, so a quarantined row
+    can be diagnosed from mda.json without re-deriving it.
+    """
+    if not text:
+        return {"wrong_language_risk": False, "devanagari_frac": 0.0,
+                "devanagari_hit": False, "legacy_font_hit": False,
+                "windows_scored": 0, "windows_fired": 0, "worst_window": None}
+
+    devanagari_frac = len(DEVANAGARI_RE.findall(text)) / len(text)
+    devanagari_hit = devanagari_frac > DEVANAGARI_FRAC_MIN
+
+    worst: tuple[tuple[int, float], int, dict, bool] | None = None
+    windows_scored = windows_fired = 0
+    for i in range(0, len(text), WRONG_LANGUAGE_WINDOW):
+        m = _wrong_language_window(text[i:i + WRONG_LANGUAGE_WINDOW])
+        if m is None:
+            continue
+        windows_scored += 1
+        fired = _window_is_legacy_font(m)
+        if fired:
+            windows_fired += 1
+        # worst = the fired window with the lowest english_word_frac; if none
+        # fired, the lowest-scoring window overall (still useful for review).
+        key = (0 if fired else 1, m["english_word_frac"])
+        if worst is None or key < worst[0]:
+            worst = (key, i, m, fired)
+
+    legacy_font_hit = windows_fired > 0
+    return {
+        "wrong_language_risk": bool(devanagari_hit or legacy_font_hit),
+        "devanagari_frac": round(devanagari_frac, 4),
+        "devanagari_hit": devanagari_hit,
+        "legacy_font_hit": legacy_font_hit,
+        "windows_scored": windows_scored,
+        "windows_fired": windows_fired,
+        "worst_window": ({"offset": worst[1], "fired": worst[3], **worst[2]}
+                         if worst else None),
+    }
+
+
+def page_has_bilingual_heading(page_text: str) -> dict:
+    """True if a single page carries both an MD&A heading match and a
+    substantial fraction of real Devanagari - the bilingual heading line
+    itself, as opposed to looks_like_wrong_language's mis-decoded legacy-font
+    body text. Complementary signal: fires even when the heading page's
+    Hindi is properly Unicode-encoded (so devanagari_frac reads real, unlike
+    the legacy-font case) but the body afterwards is not (yet) sampled."""
+    if not page_text:
+        return {"bilingual_heading_page": False, "heading_match": False,
+                "devanagari_frac": 0.0}
+    heading_match = bool(MDA_HEADING_RE.search(page_text))
+    devanagari_frac = len(DEVANAGARI_RE.findall(page_text)) / len(page_text)
+    return {
+        "bilingual_heading_page": heading_match and devanagari_frac > DEVANAGARI_FRAC_MIN,
+        "heading_match": heading_match,
+        "devanagari_frac": round(devanagari_frac, 4),
+    }
+
+
 # ------------------------------------------------------------- reading order
 # Everything in section_qc measures *what characters are present*. None of it
 # measures *whether they are in the right order*. Column interleaving splices
@@ -453,6 +683,40 @@ _HEADING_MAX_CHARS = 60
 _HEADING_MAX_WORDS = 8
 
 
+def _reconstruct_paragraphs_tagged(
+        lines: list[tuple[str, int | None]]) -> list[tuple[str, int | None]]:
+    """Same reconstruction algorithm as _reconstruct_paragraphs, generalised to
+    carry an opaque per-line tag (PM1: the physical page a line came from).
+
+    Each returned paragraph carries the tag of its FIRST line - the
+    physical-page attribution rule: a reconstructed paragraph belongs to the
+    page containing its first non-whitespace source line. A blank tagged line
+    (tag=None) forces a paragraph break exactly like a blank text line does,
+    so this is a drop-in generalisation, not a new algorithm.
+    """
+    paras: list[tuple[str, int | None]] = []
+    cur: list[str] = []
+    cur_tag: int | None = None
+    for raw, tag in lines:
+        ln = raw.strip()
+        if not ln:
+            if cur:
+                paras.append((" ".join(cur), cur_tag))
+                cur = []
+                cur_tag = None
+            continue
+        if not cur:
+            cur_tag = tag
+        cur.append(ln)
+        if _SENT_END_RE.search(ln):
+            paras.append((" ".join(cur), cur_tag))
+            cur = []
+            cur_tag = None
+    if cur:
+        paras.append((" ".join(cur), cur_tag))
+    return paras
+
+
 def _reconstruct_paragraphs(text: str) -> list[str]:
     """Rebuild logical paragraphs from wrapped / shredded lines.
 
@@ -462,22 +726,8 @@ def _reconstruct_paragraphs(text: str) -> list[str]:
     paragraph, breaking only on a blank line or once a line has closed a
     sentence.
     """
-    paras: list[str] = []
-    cur: list[str] = []
-    for raw in text.split("\n"):
-        ln = raw.strip()
-        if not ln:
-            if cur:
-                paras.append(" ".join(cur))
-                cur = []
-            continue
-        cur.append(ln)
-        if _SENT_END_RE.search(ln):
-            paras.append(" ".join(cur))
-            cur = []
-    if cur:
-        paras.append(" ".join(cur))
-    return paras
+    return [p for p, _ in
+            _reconstruct_paragraphs_tagged([(ln, None) for ln in text.split("\n")])]
 
 
 def _looks_like_heading(p: str) -> bool:
@@ -541,6 +791,31 @@ def _dangling_tail(p: str) -> bool:
     return bool(last) and last[0].islower() and last.lower() not in _FUNCTION_TAIL
 
 
+def _score_paragraphs(paras: list[str]) -> tuple[int, int, list[bool], list[bool]]:
+    """The orphan/dangling test, shared verbatim by order_quality (document
+    level) and order_quality_by_page (PM1, physical-page level) so the two can
+    never compute the test differently. Returns (orphans, danglers,
+    orphan_flags, dangling_flags), the flag lists aligned index-for-index with
+    `paras`."""
+    total = len(paras)
+    orphan_flags = [False] * total
+    dangling_flags = [False] * total
+    orphans = danglers = 0
+    for i, p in enumerate(paras):
+        prev = paras[i - 1] if i else ""
+        nxt = paras[i + 1] if i + 1 < total else ""
+        if i and _orphan_start(p) and (
+                _SENT_END_RE.search(prev) or _looks_like_heading(prev)):
+            orphan_flags[i] = True
+            orphans += 1
+        if (nxt and not _SENT_END_RE.search(p) and not _looks_like_heading(p)
+                and _dangling_tail(p)
+                and not (nxt[:1].islower() or nxt[:1].isdigit())):
+            dangling_flags[i] = True
+            danglers += 1
+    return orphans, danglers, orphan_flags, dangling_flags
+
+
 def order_quality(mda_text: str) -> dict:
     """Reading-order signal the character-ratio bands cannot see.
 
@@ -560,18 +835,7 @@ def order_quality(mda_text: str) -> dict:
         return {"orphan_start_frac": 0.0, "dangling_end_frac": 0.0,
                 "orphan_starts": 0, "dangling_ends": 0, "n_paragraphs": total}
 
-    orphans = danglers = 0
-    for i, p in enumerate(paras):
-        prev = paras[i - 1] if i else ""
-        nxt = paras[i + 1] if i + 1 < total else ""
-        if i and _orphan_start(p) and (
-                _SENT_END_RE.search(prev) or _looks_like_heading(prev)):
-            orphans += 1
-        if (nxt and not _SENT_END_RE.search(p) and not _looks_like_heading(p)
-                and _dangling_tail(p)
-                and not (nxt[:1].islower() or nxt[:1].isdigit())):
-            danglers += 1
-
+    orphans, danglers, _, _ = _score_paragraphs(paras)
     return {
         "orphan_start_frac": round(orphans / total, 4),
         "dangling_end_frac": round(danglers / total, 4),
@@ -579,6 +843,108 @@ def order_quality(mda_text: str) -> dict:
         "dangling_ends": danglers,
         "n_paragraphs": total,
     }
+
+
+# --------------------------------------------------------- PM1: per-page QC
+# Everything above measures orphan_start_frac for the WHOLE MD&A span as one
+# string. That document-level number can hide a single badly-scrambled page
+# inside an otherwise-clean span (a 12-page span with one bad page averages to
+# a small fraction). This section exposes the identical metric per physical
+# PDF page, purely as diagnostic telemetry for `arpipe orderqc` - it must
+# never feed grade(), build_reasons(), or any accept/reject decision, and it
+# must never change what order_quality() returns for the same text.
+#
+# Page attribution rule: a reconstructed paragraph belongs to the physical
+# page containing its first non-whitespace source line/character. Page
+# provenance is threaded through paragraph reconstruction itself (each source
+# line carries its page tag before reconstruction), never recovered later by
+# searching offsets in the joined text - see _reconstruct_paragraphs_tagged.
+
+
+def order_quality_by_page(pages: list[tuple[int, str]],
+                          min_paragraphs: int = PAGE_ORPHAN_MIN_PARAGRAPHS) -> dict:
+    """orphan_start_frac, computed per physical page instead of per document.
+
+    `pages` is [(physical_page, prose_text), ...] for every page that
+    contributed prose to the MD&A span, IN DOCUMENT ORDER - the same
+    per-page prose strings (post furniture-strip/xy_cut/table-quarantine)
+    that the caller already joins with "\\n\\n" to build the document-level
+    mda_text, so this reproduces the exact same paragraph boundaries
+    order_quality(mda_text) would see (see pipeline.py: `ordered` paired with
+    `span_pages`). `physical_page` is caller-defined (PM1 callers pass
+    1-based physical PDF page numbers); a page with an empty/blank prose
+    string is dropped before scoring, same as the document-level join drops
+    it via `if t.strip()`.
+
+    Returns:
+      pages               {physical_page: frac | None}. None means the page
+                          was not scored: either it never appears here (no
+                          prose at all - "not measured"), or it scored fewer
+                          than `min_paragraphs` reconstructed paragraphs
+                          ("insufficient qualifying prose" - a rate from 0 or
+                          1 paragraphs is not a stable estimate, so it is
+                          reported as unavailable, never a fabricated 0.0).
+      n_paragraphs_total  paragraph count across all pages passed in, for
+                          cross-checking against order_quality()'s own count.
+      min_paragraphs      the threshold used, echoed for reproducibility.
+    """
+    kept = [(pg, t) for pg, t in pages if t and t.strip()]
+    tagged_lines: list[tuple[str, int | None]] = []
+    for i, (pg, t) in enumerate(kept):
+        tagged_lines.extend((ln, pg) for ln in t.split("\n"))
+        if i != len(kept) - 1:
+            tagged_lines.append(("", None))     # the blank line "\n\n".join inserts
+    tagged_paras = _reconstruct_paragraphs_tagged(tagged_lines)
+    paras = [p for p, _ in tagged_paras]
+    owners = [pg for _, pg in tagged_paras]
+    total = len(paras)
+
+    per_page: dict[int, dict[str, int]] = {pg: {"orphans": 0, "paragraphs": 0}
+                                           for pg, _ in kept}
+    if total >= 5:                       # same floor order_quality() uses
+        _, _, orphan_flags, _ = _score_paragraphs(paras)
+        for pg, flagged in zip(owners, orphan_flags):
+            if pg is None:
+                continue
+            per_page[pg]["paragraphs"] += 1
+            per_page[pg]["orphans"] += int(flagged)
+
+    page_scores: dict[int, float | None] = {
+        pg: (round(v["orphans"] / v["paragraphs"], 4)
+             if v["paragraphs"] >= min_paragraphs else None)
+        for pg, v in per_page.items()
+    }
+    return {
+        "pages": page_scores,
+        "n_paragraphs_total": total,
+        "min_paragraphs": min_paragraphs,
+    }
+
+
+def pages_over_diagnostic_threshold(
+        orphan_start_frac_pages: list[float | None],
+        threshold: float = PAGE_ORPHAN_DIAGNOSTIC_THRESHOLD) -> list[tuple[int, float]]:
+    """(physical_page, score) pairs from a page-aligned array (as stored in
+    qc["orphan_start_frac_pages"], index i = physical page i+1) whose score is
+    STRICTLY over `threshold`. Ascending by physical page - the array is
+    already page-ordered, so this is deterministic for free. `arpipe orderqc`
+    is the only intended caller; a diagnostic listing, never a gate."""
+    return [(i + 1, v) for i, v in enumerate(orphan_start_frac_pages)
+            if v is not None and v > threshold]
+
+
+def document_hides_bad_page(
+        doc_orphan_start_frac: float,
+        orphan_start_frac_pages: list[float | None],
+        threshold: float = PAGE_ORPHAN_DIAGNOSTIC_THRESHOLD) -> bool:
+    """PM1's aggregate-hiding measure (see M1.7): true exactly when the
+    document-level score reads clean (<= threshold) while at least one page
+    does not - i.e. the document average hid a page-level spike. A
+    descriptive count, not a quality score and not a gate; a document already
+    flagged bad at the document level does not count as "hidden" here even if
+    it also has bad pages."""
+    return (doc_orphan_start_frac <= threshold
+            and bool(pages_over_diagnostic_threshold(orphan_start_frac_pages, threshold)))
 
 
 # ------------------------------------------------------------- reason codes

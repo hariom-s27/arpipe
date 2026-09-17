@@ -164,6 +164,8 @@ def process_document(doc: StoredDoc, company: Company, out_root: str,
         res.errors.append(f"profile_failed:{type(exc).__name__}:{exc}")
         return res
 
+    doc.script_map = profile.script_map
+
     pdf = pymupdf.open(blob)
     try:
         digital = [p.page_no for p in profile.pages if p.kind is PageKind.DIGITAL]
@@ -276,6 +278,19 @@ def process_document(doc: StoredDoc, company: Company, out_root: str,
         # (block geometry + repetition, before the reading-order sort), not here.
         mda_text = "\n\n".join(t for t in ordered if t.strip()).strip()
 
+        # PM1: per-physical-page orphan_start_frac telemetry, diagnostic only
+        # (arpipe orderqc). `ordered` is already one prose string per entry of
+        # `span_pages`, in the same order used to build mda_text above, so
+        # this reuses the exact same per-page prose order_quality() would see
+        # - no new extraction, no re-deriving page membership from offsets.
+        # 1-based physical PDF page numbers per PM1 (span.start_page is 0-based).
+        page_qc = verify.order_quality_by_page(
+            [(n + 1, t) for n, t in zip(span_pages, ordered)])
+        orphan_start_frac_pages: list[float | None] = [None] * profile.n_pages
+        for phys_page, frac in page_qc["pages"].items():
+            if 1 <= phys_page <= profile.n_pages:
+                orphan_start_frac_pages[phys_page - 1] = frac
+
         # ---- verification -------------------------------------------------
         front_nos = [n for n in sorted(page_texts) if n < FRONT_PAGES]
         front = "\n".join(page_texts[n] for n in front_nos)
@@ -295,6 +310,20 @@ def process_document(doc: StoredDoc, company: Company, out_root: str,
         reasons = verify.build_reasons(
             vrep, qc, column_cut_fire_frac=column_cut_fire_frac,
             pdf_producer=doc.pdf_producer, mda_text=mda_text)
+
+        # P34: quarantine gate. A bilingual PSU report (Hindi copy printed
+        # before the English one) can be located, verified and graded clean
+        # while the extracted body is actually the Hindi section rendered as
+        # Latin/Latin-1-extended noise by a legacy font, or English-OCR'd off
+        # a Hindi scan - every check above measures prose shape, not
+        # language, so none of them catch it. This overrides `grade`
+        # regardless of what verify.grade() computed above.
+        wrong_language = verify.looks_like_wrong_language(mda_text)
+        bilingual_heading = verify.page_has_bilingual_heading(
+            page_texts.get(span.start_page, ""))
+        if wrong_language["wrong_language_risk"] or bilingual_heading["bilingual_heading_page"]:
+            grade = "quarantine"
+            reasons = [*reasons, "WRONG_LANGUAGE_RISK"]
 
         res.span = span
         res.supporters = span.supporters
@@ -336,21 +365,48 @@ def process_document(doc: StoredDoc, company: Company, out_root: str,
                   # done before xy_cut, so n_words no longer depends on the sort.
                   "furniture_blocks_removed": order_diag["furniture_blocks_removed"],
                   "furniture_strings": order_diag["furniture_strings"],
+                  # PM1: diagnostic only (arpipe orderqc) - page-aligned array,
+                  # length profile.n_pages, index i = 1-based physical page i+1.
+                  # null = not measured (outside the span, or insufficient
+                  # qualifying prose on that page); never fed into grade/reasons.
+                  "orphan_start_frac_pages": orphan_start_frac_pages,
+                  "orphan_start_frac_pages_min_paragraphs": page_qc["min_paragraphs"],
                   # P18: n_words / n_chars / digit_ratio above are prose only
                   "n_words_note": "prose only; tables/charts in mda_blocks.json",
                   "blocks_quarantined": len(mda_blocks),
                   "words_quarantined": sum(len(b["text"].split())
-                                           for b in mda_blocks)}
+                                           for b in mda_blocks),
+                  # P34: diagnosis kept even though the span itself is withheld
+                  # from the research corpus below - never an absence (rule 3).
+                  "wrong_language": wrong_language,
+                  "bilingual_heading_page": bilingual_heading}
         res.confidence = {"high": Confidence.HIGH, "medium": Confidence.MEDIUM,
-                          "low": Confidence.LOW}[grade]
+                          "low": Confidence.LOW,
+                          "quarantine": Confidence.QUARANTINE}[grade]
         res.ok = grade in ("high", "medium")
 
         store.write_year(out_root, company.canonical_name, doc, mda_text, res,
                          page_texts if keep_pages else None,
                          mda_blocks=mda_blocks, blob_path=blob,
-                         store_root=store_root)
+                         store_root=store_root,
+                         write_span=(grade != "quarantine"))
         # store.write_year sets res.path (mda.txt relative to the dataset root).
         assert not res.ok or res.path, "ok extraction wrote no mda.txt path"
+        return res
+    except ocr_mod.OcrEngineUnavailable as exc:
+        # P-B5: a page inside this document needed OCR and no configured
+        # engine could even attempt it (missing binary / language pack /
+        # unreachable endpoint). This must reach the manifest as its own
+        # reason, never fall through to mda_not_located - an infrastructure
+        # failure and "this document has no MD&A" must stay distinguishable.
+        res.errors.append(f"ocr_engine_unavailable:page={exc.page_no}:{exc.detail}")
+        res.reasons = ["ocr_engine_unavailable"]
+        res.total_pages = profile.n_pages
+        res.qc = {"stage": "ocr", "doc_kind": profile.doc_kind,
+                  "frac_needing_ocr": profile.frac_needing_ocr,
+                  "pdf_producer": doc.pdf_producer,
+                  "ocr_failure_page": exc.page_no,
+                  "ocr_failure_trail": exc.trail}
         return res
     finally:
         pdf.close()

@@ -1,0 +1,3036 @@
+{
+  "task": "PM1 M1.1 - immutable pre-implementation baseline",
+  "git_sha": "0fb8cbf6d932f4190bdfe3b2a1fecf62170cca14",
+  "git_worktree_dirty": true,
+  "git_status_porcelain": [
+    "M arpipe/cli.py",
+    " M arpipe/configs/default.yaml",
+    " M arpipe/models.py",
+    " M arpipe/ocr.py",
+    " M arpipe/patterns.py",
+    " M arpipe/pipeline.py",
+    " M arpipe/segment.py",
+    " M arpipe/store.py",
+    " M arpipe/tests/test_pipeline.py",
+    " M arpipe/textlayer.py",
+    " M arpipe/triage.py",
+    " M arpipe/verify.py",
+    " M configs/eval_protocol.md",
+    " M reports/pattern_audit.md",
+    "?? arpipe/STATE.md",
+    "?? arpipe/pnb_dataset/",
+    "?? arpipe/pnb_only.csv",
+    "?? arpipe/reports.jsonl",
+    "?? arpipe/state.py",
+    "?? arpipe/tests/test_legacy_font_corpus_measurement.py",
+    "?? arpipe/tests/test_ocr_bakeoff.py",
+    "?? arpipe/tests/test_ocr_preflight.py",
+    "?? arpipe/tests/test_pb2_candidate_body_script.py",
+    "?? arpipe/tests/test_pm1_orderqc.py",
+    "?? arpipe/tests/test_script_map.py",
+    "?? arpipe/tests/test_state.py",
+    "?? manifest_split_exceptions.json",
+    "?? ocr_bakeoff_development.csv",
+    "?? ocr_bakeoff_holdout.csv",
+    "?? ocr_bakeoff_population.csv",
+    "?? ocr_bakeoff_population_manifest.json",
+    "?? pm1_baseline_run.log",
+    "?? pm1_baseline_run/",
+    "?? reports/b4_baseline_metrics.json",
+    "?? reports/label_model.md",
+    "?? reports/label_model_runs/",
+    "?? reports/label_model_task_baseline.json",
+    "?? reports/label_model_test_results.json",
+    "?? reports/legacy_font_corpus_measurement.csv",
+    "?? reports/legacy_font_corpus_measurement.json",
+    "?? reports/legacy_font_corpus_measurement.md",
+    "?? reports/ocr_bakeoff/",
+    "?? reports/pb2_phase1_baseline.json",
+    "?? reports/pb4_corpus_validation.json",
+    "?? reports/script_map_architecture.md",
+    "?? runs/",
+    "?? scratch/",
+    "?? tools/label_model_analysis.py",
+    "?? tools/legacy_font_measurement.py",
+    "?? tools/ocr_bakeoff/",
+    "?? tools/pb2_phase1_baseline.py",
+    "?? tools/pb2_phase1_diagnostic.py",
+    "?? tools/pm1_build_baseline.py",
+    "?? tools/pm1_run_corpus.py",
+    "?? tools/test_label_model_analysis.py"
+  ],
+  "note_on_git_state": "The working tree already carried substantial uncommitted work (P34 wrong-language quarantine, P-B7 state.py, script-map telemetry, etc.) before PM1 started, on top of commit 0fb8cbf (P33). This baseline was captured from that exact pre-PM1 state: PM1's own edits to verify.py/textlayer.py/pipeline.py/cli.py were reversed (restoring the four files to their pre-PM1 content byte-for-byte, verified by re-running the full test suite and by grep for PM1-only symbols returning nothing) immediately before this run, then reapplied afterward.",
+  "corpus_source": "live_store/documents.jsonl",
+  "corpus_sha256": "3a7c7bf15f554298e1c7f4a62b90ea6328a9e1e1e4ecde4840aee7ce42abab31",
+  "corpus_document_count": 194,
+  "companies_file": "cohort_companies.csv",
+  "companies_file_sha256": "5f2d8078b9367c23aaf0cdd096f1cd0c819c321d4e3eb648a10019deaa2eb71b",
+  "extraction_tool": "tools/pm1_run_corpus.py",
+  "extraction_tool_sha256": "51d4a7626a4355f0eceff274dd1d8e27925bb10ee1d63d4586ff6c8276de85e8",
+  "extraction_config": {
+    "root": "live_store",
+    "workers": 1,
+    "escalator": [
+      "tesseract"
+    ],
+    "ARPIPE_OCR_WORKERS": "1"
+  },
+  "timestamp_utc": "2026-09-17T07:13:12Z",
+  "grade_distribution": {
+    "failed": 12,
+    "high": 42,
+    "low": 53,
+    "medium": 85,
+    "quarantine": 2
+  },
+  "accepted_count": 127,
+  "rejected_count": 67,
+  "documents": [
+    {
+      "document_id": "INE001B01026_2012",
+      "company_id": "INE001B01026",
+      "fiscal_year": 2012,
+      "sha256": "85a43a887ebb82dfa83e2be710dcf39e815571c702aa0459ecfda2ce0b4481b4",
+      "orphan_start_frac": 0.0384,
+      "grade": "medium",
+      "confidence": "medium",
+      "failure_reasons": [
+        "source_shredded"
+      ],
+      "mda_start_page": 9,
+      "mda_end_page": 25,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE001B01026_2013",
+      "company_id": "INE001B01026",
+      "fiscal_year": 2013,
+      "sha256": "65a39f97ae2faecdebd901d5487886dbdc3380a282772fc6528fe9449edebd85",
+      "orphan_start_frac": 0.023,
+      "grade": "medium",
+      "confidence": "medium",
+      "failure_reasons": [],
+      "mda_start_page": 13,
+      "mda_end_page": 28,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE001B01026_2017",
+      "company_id": "INE001B01026",
+      "fiscal_year": 2017,
+      "sha256": "a7f1aa3e11271d82730e322f7bff4ff0bf937809e3bde6af26c1086426cd0393",
+      "orphan_start_frac": 0.0114,
+      "grade": "high",
+      "confidence": "high",
+      "failure_reasons": [],
+      "mda_start_page": 13,
+      "mda_end_page": 49,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE001B01026_2018",
+      "company_id": "INE001B01026",
+      "fiscal_year": 2018,
+      "sha256": "cff36dacff70715da6b6e09b4509abc9b9190ff15ed7bf2e4c840d8561f2f5b2",
+      "orphan_start_frac": 0.0321,
+      "grade": "low",
+      "confidence": "low",
+      "failure_reasons": [
+        "source_shredded",
+        "span_truncated"
+      ],
+      "mda_start_page": 23,
+      "mda_end_page": 68,
+      "accepted_or_rejected": "rejected"
+    },
+    {
+      "document_id": "INE001B01026_2024",
+      "company_id": "INE001B01026",
+      "fiscal_year": 2024,
+      "sha256": "47744fb5b66bf3c5c47e8647e30f91d1243c2a671d26b580275772feca3be610",
+      "orphan_start_frac": 0.0,
+      "grade": "high",
+      "confidence": "high",
+      "failure_reasons": [],
+      "mda_start_page": 27,
+      "mda_end_page": 33,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE001B01026_2025",
+      "company_id": "INE001B01026",
+      "fiscal_year": 2025,
+      "sha256": "aebce9df42a3fec535b85099546b61d94c406086e2e183220c894808554d5d07",
+      "orphan_start_frac": 0.0044,
+      "grade": "high",
+      "confidence": "high",
+      "failure_reasons": [],
+      "mda_start_page": 33,
+      "mda_end_page": 40,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE001F01019_2012",
+      "company_id": "INE001F01019",
+      "fiscal_year": 2012,
+      "sha256": "7ca96fce59cda07b884371a9af00365ccde511c33e5aaabb515b79df5e459dcb",
+      "orphan_start_frac": 0.0,
+      "grade": "medium",
+      "confidence": "medium",
+      "failure_reasons": [
+        "year_unproven",
+        "span_truncated"
+      ],
+      "mda_start_page": 5,
+      "mda_end_page": 6,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE001F01019_2013",
+      "company_id": "INE001F01019",
+      "fiscal_year": 2013,
+      "sha256": "b43ffd8429742abbb63df738c25524448013c04f24a16ab8ce7a841307d1dd06",
+      "orphan_start_frac": 0.0,
+      "grade": "low",
+      "confidence": "low",
+      "failure_reasons": [
+        "year_unproven",
+        "span_truncated"
+      ],
+      "mda_start_page": 9,
+      "mda_end_page": 10,
+      "accepted_or_rejected": "rejected"
+    },
+    {
+      "document_id": "INE001F01019_2017",
+      "company_id": "INE001F01019",
+      "fiscal_year": 2017,
+      "sha256": "7d6c7f1dff985bd0ddb0e3f676f1673c0a0a73c9a8e5561ea362e0c5b00118cc",
+      "orphan_start_frac": 0.0,
+      "grade": "low",
+      "confidence": "low",
+      "failure_reasons": [],
+      "mda_start_page": 3,
+      "mda_end_page": 5,
+      "accepted_or_rejected": "rejected"
+    },
+    {
+      "document_id": "INE001F01019_2018",
+      "company_id": "INE001F01019",
+      "fiscal_year": 2018,
+      "sha256": "eb1db90ac4b641369bbef5c6fdec9cbe9848c6abe16943b39588d0cd8f3958fe",
+      "orphan_start_frac": 0.0244,
+      "grade": "medium",
+      "confidence": "medium",
+      "failure_reasons": [
+        "span_truncated"
+      ],
+      "mda_start_page": 27,
+      "mda_end_page": 28,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE001F01019_2024",
+      "company_id": "INE001F01019",
+      "fiscal_year": 2024,
+      "sha256": "be99894412fec2286577b6347fd4a6f6800470ccf44b5a905db3b2db4aa54e38",
+      "orphan_start_frac": 0.0435,
+      "grade": "low",
+      "confidence": "low",
+      "failure_reasons": [
+        "source_shredded",
+        "span_truncated"
+      ],
+      "mda_start_page": 18,
+      "mda_end_page": 18,
+      "accepted_or_rejected": "rejected"
+    },
+    {
+      "document_id": "INE001F01019_2025",
+      "company_id": "INE001F01019",
+      "fiscal_year": 2025,
+      "sha256": "e66945691df2a14d83442d060cf61e398e8317f1d9ad63bbe6202a410f588f22",
+      "orphan_start_frac": 0.0169,
+      "grade": "low",
+      "confidence": "low",
+      "failure_reasons": [
+        "source_shredded",
+        "span_truncated"
+      ],
+      "mda_start_page": 14,
+      "mda_end_page": 15,
+      "accepted_or_rejected": "rejected"
+    },
+    {
+      "document_id": "INE001O01029_2012",
+      "company_id": "INE001O01029",
+      "fiscal_year": 2012,
+      "sha256": "9f97d060e4ea6dc5435edc1e758bcf83f38247880952e872c5465ad814069ee6",
+      "orphan_start_frac": 0.0,
+      "grade": "medium",
+      "confidence": "medium",
+      "failure_reasons": [
+        "year_unproven",
+        "span_truncated"
+      ],
+      "mda_start_page": 8,
+      "mda_end_page": 9,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE001O01029_2013",
+      "company_id": "INE001O01029",
+      "fiscal_year": 2013,
+      "sha256": "3f8c94f2ccc212bbe21873647892c51e7a83ddd9c98ce4f0eeadc0e96be9383e",
+      "orphan_start_frac": 0.0,
+      "grade": "high",
+      "confidence": "high",
+      "failure_reasons": [],
+      "mda_start_page": 7,
+      "mda_end_page": 7,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE001O01029_2017",
+      "company_id": "INE001O01029",
+      "fiscal_year": 2017,
+      "sha256": "81f182a29e1321adae44e7022763374fefd9b3fad75d51f94c8ef34b85f5e4f3",
+      "orphan_start_frac": 0.0564,
+      "grade": "medium",
+      "confidence": "medium",
+      "failure_reasons": [
+        "source_shredded",
+        "span_truncated"
+      ],
+      "mda_start_page": 13,
+      "mda_end_page": 29,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE001O01029_2018",
+      "company_id": "INE001O01029",
+      "fiscal_year": 2018,
+      "sha256": "07d7ef68807f64353f662e3bbd38b9e1a76e9c448307381ed41ceee241c788a7",
+      "orphan_start_frac": 0.0461,
+      "grade": "low",
+      "confidence": "low",
+      "failure_reasons": [
+        "source_shredded",
+        "span_truncated"
+      ],
+      "mda_start_page": 10,
+      "mda_end_page": 26,
+      "accepted_or_rejected": "rejected"
+    },
+    {
+      "document_id": "INE001O01029_2024",
+      "company_id": "INE001O01029",
+      "fiscal_year": 2024,
+      "sha256": "22b287d7c3e3306dcb741a0e2551d5ad7d1dfb4670aca4ecda4d9156bc8a8630",
+      "orphan_start_frac": 0.0455,
+      "grade": "medium",
+      "confidence": "medium",
+      "failure_reasons": [
+        "source_shredded",
+        "span_truncated"
+      ],
+      "mda_start_page": 32,
+      "mda_end_page": 33,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE001O01029_2025",
+      "company_id": "INE001O01029",
+      "fiscal_year": 2025,
+      "sha256": "b94f484e5c56c1a354763aab059fd81c53e867128c2f321ec5fdf51a401b2606",
+      "orphan_start_frac": 0.0,
+      "grade": "medium",
+      "confidence": "medium",
+      "failure_reasons": [
+        "source_shredded",
+        "span_truncated"
+      ],
+      "mda_start_page": 34,
+      "mda_end_page": 35,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE002A01018_2012",
+      "company_id": "INE002A01018",
+      "fiscal_year": 2012,
+      "sha256": "7d5e6932d247fc16e41791ecbd03fc25403955c65b4b649536e09a46d50e795a",
+      "orphan_start_frac": 0.0,
+      "grade": "medium",
+      "confidence": "medium",
+      "failure_reasons": [
+        "span_truncated"
+      ],
+      "mda_start_page": 21,
+      "mda_end_page": 57,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE002A01018_2013",
+      "company_id": "INE002A01018",
+      "fiscal_year": 2013,
+      "sha256": "39f0bf74cb5ae371b4d4613b016c854bb19b63ff7f4fb44084f4ecd9fbf23cdd",
+      "orphan_start_frac": 0.0244,
+      "grade": "medium",
+      "confidence": "medium",
+      "failure_reasons": [
+        "span_truncated"
+      ],
+      "mda_start_page": 20,
+      "mda_end_page": 55,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE002A01018_2017",
+      "company_id": "INE002A01018",
+      "fiscal_year": 2017,
+      "sha256": "a92ec874a698232e567b718ac71f406995a2ea89b7ad39d14810efc75b4d7248",
+      "orphan_start_frac": 0.006,
+      "grade": "medium",
+      "confidence": "medium",
+      "failure_reasons": [
+        "span_truncated"
+      ],
+      "mda_start_page": 59,
+      "mda_end_page": 130,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE002A01018_2018",
+      "company_id": "INE002A01018",
+      "fiscal_year": 2018,
+      "sha256": "3c12799b657541213f47910b4326952652cdc6ee53ec593e8a959f933e2ae0f3",
+      "orphan_start_frac": 0.0383,
+      "grade": "low",
+      "confidence": "low",
+      "failure_reasons": [
+        "source_shredded",
+        "span_truncated"
+      ],
+      "mda_start_page": 57,
+      "mda_end_page": 128,
+      "accepted_or_rejected": "rejected"
+    },
+    {
+      "document_id": "INE002A01018_2024",
+      "company_id": "INE002A01018",
+      "fiscal_year": 2024,
+      "sha256": "4d7d6038b4d6957981fb422bc501ea893765c24611ea1fa8a5d3cd9425541eae",
+      "orphan_start_frac": 0.042,
+      "grade": "medium",
+      "confidence": "medium",
+      "failure_reasons": [
+        "source_shredded",
+        "span_truncated"
+      ],
+      "mda_start_page": 29,
+      "mda_end_page": 53,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE002A01018_2025",
+      "company_id": "INE002A01018",
+      "fiscal_year": 2025,
+      "sha256": "c46ac824ba00bc39d70f66fcaece42dc1af4e32dd91c2a9038fc443618ec2908",
+      "orphan_start_frac": 0.0249,
+      "grade": "high",
+      "confidence": "high",
+      "failure_reasons": [
+        "span_truncated"
+      ],
+      "mda_start_page": 32,
+      "mda_end_page": 50,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE002B01016_2012",
+      "company_id": "INE002B01016",
+      "fiscal_year": 2012,
+      "sha256": "eab8aa48f124b68ab28a362ded5f6e46331154125654bd629c4942aba9aaae2e",
+      "orphan_start_frac": 0.0,
+      "grade": "high",
+      "confidence": "high",
+      "failure_reasons": [
+        "year_unproven",
+        "span_truncated"
+      ],
+      "mda_start_page": 22,
+      "mda_end_page": 24,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE002B01016_2013",
+      "company_id": "INE002B01016",
+      "fiscal_year": 2013,
+      "sha256": "e9260e0004a0acea803a172956029d231b7dee6aa184dbf222f582da173ed9ce",
+      "orphan_start_frac": 0.0,
+      "grade": "high",
+      "confidence": "high",
+      "failure_reasons": [
+        "year_unproven",
+        "span_truncated"
+      ],
+      "mda_start_page": 19,
+      "mda_end_page": 21,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE002B01016_2017",
+      "company_id": "INE002B01016",
+      "fiscal_year": 2017,
+      "sha256": "760754d9348d868700c6afe3a99e365241a5e0bcbe20f2930f9c7b24a417ffdb",
+      "orphan_start_frac": 0.0,
+      "grade": "medium",
+      "confidence": "medium",
+      "failure_reasons": [
+        "span_truncated"
+      ],
+      "mda_start_page": 32,
+      "mda_end_page": 39,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE002B01016_2018",
+      "company_id": "INE002B01016",
+      "fiscal_year": 2018,
+      "sha256": "84dc91e82accd8ec6cd972fc26c149df1a90cd5aaf30c97d3579cb49cf4df2e4",
+      "orphan_start_frac": 0.0,
+      "grade": "high",
+      "confidence": "high",
+      "failure_reasons": [
+        "span_truncated"
+      ],
+      "mda_start_page": 32,
+      "mda_end_page": 40,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE002B01016_2024",
+      "company_id": "INE002B01016",
+      "fiscal_year": 2024,
+      "sha256": "dcfb7065c6a6a4ebe2b37309b78689e61025380dc5d0e36a451d925be0be6ab6",
+      "orphan_start_frac": 0.0,
+      "grade": "low",
+      "confidence": "low",
+      "failure_reasons": [
+        "source_shredded",
+        "span_truncated"
+      ],
+      "mda_start_page": 27,
+      "mda_end_page": 30,
+      "accepted_or_rejected": "rejected"
+    },
+    {
+      "document_id": "INE002B01016_2025",
+      "company_id": "INE002B01016",
+      "fiscal_year": 2025,
+      "sha256": "67439158974b6f3dca1e27d73c7272949391b886f8ea55086a4e2b6a66e9acd8",
+      "orphan_start_frac": 0.0,
+      "grade": "low",
+      "confidence": "low",
+      "failure_reasons": [
+        "source_shredded",
+        "span_truncated"
+      ],
+      "mda_start_page": 25,
+      "mda_end_page": 34,
+      "accepted_or_rejected": "rejected"
+    },
+    {
+      "document_id": "INE002E01010_2012",
+      "company_id": "INE002E01010",
+      "fiscal_year": 2012,
+      "sha256": "f14b33e27ee960e8eea8d66e80036ffa45f132194765af3fda617950512b6e25",
+      "orphan_start_frac": 0.0,
+      "grade": "high",
+      "confidence": "high",
+      "failure_reasons": [],
+      "mda_start_page": 11,
+      "mda_end_page": 11,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE002E01010_2013",
+      "company_id": "INE002E01010",
+      "fiscal_year": 2013,
+      "sha256": "506af41f735e68862997ee112b2a80df1b288149d7bcff69324b822567cc8dab",
+      "orphan_start_frac": 0.0,
+      "grade": "low",
+      "confidence": "low",
+      "failure_reasons": [],
+      "mda_start_page": 8,
+      "mda_end_page": 8,
+      "accepted_or_rejected": "rejected"
+    },
+    {
+      "document_id": "INE002E01010_2017",
+      "company_id": "INE002E01010",
+      "fiscal_year": 2017,
+      "sha256": "6d0cb7f7c3148ec7a6dcecfa01e3e5c1711ee64ea09a61f356828fd82b2b704b",
+      "orphan_start_frac": 0.0323,
+      "grade": "low",
+      "confidence": "low",
+      "failure_reasons": [
+        "year_unproven"
+      ],
+      "mda_start_page": 9,
+      "mda_end_page": 10,
+      "accepted_or_rejected": "rejected"
+    },
+    {
+      "document_id": "INE002E01010_2018",
+      "company_id": "INE002E01010",
+      "fiscal_year": 2018,
+      "sha256": "380487f45c313901f6306e1dd24d44f629d63c071902b2b1e327e4227fd6e0c5",
+      "orphan_start_frac": 0.0061,
+      "grade": "low",
+      "confidence": "low",
+      "failure_reasons": [
+        "span_truncated"
+      ],
+      "mda_start_page": 12,
+      "mda_end_page": 18,
+      "accepted_or_rejected": "rejected"
+    },
+    {
+      "document_id": "INE002E01010_2024",
+      "company_id": "INE002E01010",
+      "fiscal_year": 2024,
+      "sha256": "9cab164dfae58457f4b2ced9e2dfb2b46b2ec493528acf9f50c3906da7324e24",
+      "orphan_start_frac": 0.0374,
+      "grade": "low",
+      "confidence": "low",
+      "failure_reasons": [
+        "source_shredded",
+        "span_truncated"
+      ],
+      "mda_start_page": 40,
+      "mda_end_page": 50,
+      "accepted_or_rejected": "rejected"
+    },
+    {
+      "document_id": "INE002E01010_2025",
+      "company_id": "INE002E01010",
+      "fiscal_year": 2025,
+      "sha256": "05da41540d2e075326ef41b2c9e264f69f047410b8df041fe942bbf7ab9fe5ac",
+      "orphan_start_frac": 0.0,
+      "grade": "low",
+      "confidence": "low",
+      "failure_reasons": [
+        "source_shredded",
+        "span_truncated"
+      ],
+      "mda_start_page": 38,
+      "mda_end_page": 47,
+      "accepted_or_rejected": "rejected"
+    },
+    {
+      "document_id": "INE002L01015_2012",
+      "company_id": "INE002L01015",
+      "fiscal_year": 2012,
+      "sha256": "5e0a412d4a192774c403daa7956fee178fa3465078f1503e34d34d22003fce51",
+      "orphan_start_frac": 0.0526,
+      "grade": "low",
+      "confidence": "low",
+      "failure_reasons": [
+        "source_shredded",
+        "span_truncated"
+      ],
+      "mda_start_page": 8,
+      "mda_end_page": 11,
+      "accepted_or_rejected": "rejected"
+    },
+    {
+      "document_id": "INE002L01015_2013",
+      "company_id": "INE002L01015",
+      "fiscal_year": 2013,
+      "sha256": "5d2774e84efc03637c72202dc28782e0178c2f36162b424f2c6a4e147a3e63f4",
+      "orphan_start_frac": 0.0,
+      "grade": "high",
+      "confidence": "high",
+      "failure_reasons": [
+        "span_truncated"
+      ],
+      "mda_start_page": 13,
+      "mda_end_page": 16,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE002L01015_2017",
+      "company_id": "INE002L01015",
+      "fiscal_year": 2017,
+      "sha256": "41bf69f3f6ef06c856a0bbdf3fb38abc66de123b7e0f79565fd20c777ed1d65c",
+      "orphan_start_frac": 0.0,
+      "grade": "medium",
+      "confidence": "medium",
+      "failure_reasons": [
+        "section_leak",
+        "span_truncated"
+      ],
+      "mda_start_page": 126,
+      "mda_end_page": 127,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE002L01015_2018",
+      "company_id": "INE002L01015",
+      "fiscal_year": 2018,
+      "sha256": "9c1ab47a56b86dc7867960b1ff14f8cfa4861fc09fcb09d05597bf2bba3df1ba",
+      "orphan_start_frac": 0.0075,
+      "grade": "low",
+      "confidence": "low",
+      "failure_reasons": [
+        "section_leak",
+        "source_shredded",
+        "span_truncated"
+      ],
+      "mda_start_page": 121,
+      "mda_end_page": 123,
+      "accepted_or_rejected": "rejected"
+    },
+    {
+      "document_id": "INE002L01015_2024",
+      "company_id": "INE002L01015",
+      "fiscal_year": 2024,
+      "sha256": "730233fd582027ea7c09a53e3df0aee73afc2949e38cbbf8c6f852f9681fe75f",
+      "orphan_start_frac": 0.0616,
+      "grade": "low",
+      "confidence": "low",
+      "failure_reasons": [
+        "source_shredded",
+        "span_truncated"
+      ],
+      "mda_start_page": 39,
+      "mda_end_page": 45,
+      "accepted_or_rejected": "rejected"
+    },
+    {
+      "document_id": "INE002L01015_2025",
+      "company_id": "INE002L01015",
+      "fiscal_year": 2025,
+      "sha256": "1070a70a65c9f05df0de48a7a7484cd1adf6eddd51803209aad362b912db7406",
+      "orphan_start_frac": 0.206,
+      "grade": "low",
+      "confidence": "low",
+      "failure_reasons": [
+        "source_shredded",
+        "span_truncated"
+      ],
+      "mda_start_page": 43,
+      "mda_end_page": 49,
+      "accepted_or_rejected": "rejected"
+    },
+    {
+      "document_id": "INE002S01010_2017",
+      "company_id": "INE002S01010",
+      "fiscal_year": 2017,
+      "sha256": "4b9cd8aa0e62a3236733e450e4c9fe7a02b13177672f8a824ee351a9d35efe48",
+      "orphan_start_frac": 0.1531,
+      "grade": "low",
+      "confidence": "low",
+      "failure_reasons": [
+        "source_shredded"
+      ],
+      "mda_start_page": 28,
+      "mda_end_page": 45,
+      "accepted_or_rejected": "rejected"
+    },
+    {
+      "document_id": "INE002S01010_2018",
+      "company_id": "INE002S01010",
+      "fiscal_year": 2018,
+      "sha256": "78e81b08cebe7913b9f1584bef0f449d66d6e404f28c8161d5a88d24dbfd1e65",
+      "orphan_start_frac": 0.0421,
+      "grade": "medium",
+      "confidence": "medium",
+      "failure_reasons": [
+        "source_shredded",
+        "span_truncated"
+      ],
+      "mda_start_page": 32,
+      "mda_end_page": 47,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE002S01010_2024",
+      "company_id": "INE002S01010",
+      "fiscal_year": 2024,
+      "sha256": "b0c5d9e610ca5676a1a408a459a8531441816becf9a757471c546262c15f7356",
+      "orphan_start_frac": 0.027,
+      "grade": "low",
+      "confidence": "low",
+      "failure_reasons": [
+        "span_truncated"
+      ],
+      "mda_start_page": 47,
+      "mda_end_page": 52,
+      "accepted_or_rejected": "rejected"
+    },
+    {
+      "document_id": "INE002S01010_2025",
+      "company_id": "INE002S01010",
+      "fiscal_year": 2025,
+      "sha256": "da8365dd2657815beed152e56a4f9ada1214e203716f15f09a831c2490cde272",
+      "orphan_start_frac": 0.0344,
+      "grade": "medium",
+      "confidence": "medium",
+      "failure_reasons": [
+        "source_shredded",
+        "span_truncated"
+      ],
+      "mda_start_page": 54,
+      "mda_end_page": 68,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE003B01014_2011",
+      "company_id": "INE003B01014",
+      "fiscal_year": 2011,
+      "sha256": "edc9a15f53d68ac648fad9db5afc2d47906021f98b7a5e3085f8858450075a66",
+      "orphan_start_frac": 0.0556,
+      "grade": "low",
+      "confidence": "low",
+      "failure_reasons": [],
+      "mda_start_page": 15,
+      "mda_end_page": 15,
+      "accepted_or_rejected": "rejected"
+    },
+    {
+      "document_id": "INE003B01014_2013",
+      "company_id": "INE003B01014",
+      "fiscal_year": 2013,
+      "sha256": "ac45a5735528f6231356054269077496160bddd78b616fa01823bcf778e232a1",
+      "orphan_start_frac": 0.0,
+      "grade": "medium",
+      "confidence": "medium",
+      "failure_reasons": [],
+      "mda_start_page": 17,
+      "mda_end_page": 17,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE003B01014_2017",
+      "company_id": "INE003B01014",
+      "fiscal_year": 2017,
+      "sha256": "7978d1c86cecaa825d81a8be5ff04531878e88f432a6fcd0432f8bd87b296bb0",
+      "orphan_start_frac": null,
+      "grade": "failed",
+      "confidence": "failed",
+      "failure_reasons": [
+        "mda_not_located"
+      ],
+      "mda_start_page": null,
+      "mda_end_page": null,
+      "accepted_or_rejected": "rejected"
+    },
+    {
+      "document_id": "INE003B01014_2018",
+      "company_id": "INE003B01014",
+      "fiscal_year": 2018,
+      "sha256": "1407c9446c3b97c2617117cdc5edfe0149680c7bb5812244623430ad4981ac2d",
+      "orphan_start_frac": null,
+      "grade": "failed",
+      "confidence": "failed",
+      "failure_reasons": [
+        "mda_not_located"
+      ],
+      "mda_start_page": null,
+      "mda_end_page": null,
+      "accepted_or_rejected": "rejected"
+    },
+    {
+      "document_id": "INE003B01014_2024",
+      "company_id": "INE003B01014",
+      "fiscal_year": 2024,
+      "sha256": "880f44f7449c8a8b08536c6ca06318b19e9a74cc096fabd9bf8520f431b0f4ac",
+      "orphan_start_frac": 0.0583,
+      "grade": "medium",
+      "confidence": "medium",
+      "failure_reasons": [
+        "source_shredded",
+        "span_truncated"
+      ],
+      "mda_start_page": 48,
+      "mda_end_page": 58,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE003B01014_2025",
+      "company_id": "INE003B01014",
+      "fiscal_year": 2025,
+      "sha256": "7788c26d0d47f50c0256c1d486f996777e29cb18c9e14b616e3c81a40a0cd169",
+      "orphan_start_frac": 0.0,
+      "grade": "medium",
+      "confidence": "medium",
+      "failure_reasons": [
+        "source_shredded",
+        "span_truncated"
+      ],
+      "mda_start_page": 41,
+      "mda_end_page": 41,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE003F01015_2012",
+      "company_id": "INE003F01015",
+      "fiscal_year": 2012,
+      "sha256": "51f9884c026445d0f7687d41414d9193ea16fe637c3b74617fa7d8477f94dbe4",
+      "orphan_start_frac": null,
+      "grade": "failed",
+      "confidence": "failed",
+      "failure_reasons": [
+        "mda_not_located"
+      ],
+      "mda_start_page": null,
+      "mda_end_page": null,
+      "accepted_or_rejected": "rejected"
+    },
+    {
+      "document_id": "INE003F01015_2013",
+      "company_id": "INE003F01015",
+      "fiscal_year": 2013,
+      "sha256": "82dddee265891d2900a0c1029d97d91856a2decb8361a6c52275f49d5053cc9e",
+      "orphan_start_frac": null,
+      "grade": "failed",
+      "confidence": "failed",
+      "failure_reasons": [
+        "mda_not_located"
+      ],
+      "mda_start_page": null,
+      "mda_end_page": null,
+      "accepted_or_rejected": "rejected"
+    },
+    {
+      "document_id": "INE003F01015_2017",
+      "company_id": "INE003F01015",
+      "fiscal_year": 2017,
+      "sha256": "ede8a4693046d2182c3a5cbc068c708305be3b5f2c09e30278d63de3e7ef01c8",
+      "orphan_start_frac": null,
+      "grade": "failed",
+      "confidence": "failed",
+      "failure_reasons": [
+        "mda_not_located"
+      ],
+      "mda_start_page": null,
+      "mda_end_page": null,
+      "accepted_or_rejected": "rejected"
+    },
+    {
+      "document_id": "INE003F01015_2018",
+      "company_id": "INE003F01015",
+      "fiscal_year": 2018,
+      "sha256": "64c5b3573df779a3a158609b06b5cd3d7e50b83087aaa14d438bf2604cd36872",
+      "orphan_start_frac": null,
+      "grade": "failed",
+      "confidence": "failed",
+      "failure_reasons": [
+        "mda_not_located"
+      ],
+      "mda_start_page": null,
+      "mda_end_page": null,
+      "accepted_or_rejected": "rejected"
+    },
+    {
+      "document_id": "INE003F01015_2024",
+      "company_id": "INE003F01015",
+      "fiscal_year": 2024,
+      "sha256": "3c4d0fa1932189e3b3bf9acf1def7603dd909f4bd771dd0a6f9d200ceae9c51b",
+      "orphan_start_frac": null,
+      "grade": "failed",
+      "confidence": "failed",
+      "failure_reasons": [
+        "mda_not_located"
+      ],
+      "mda_start_page": null,
+      "mda_end_page": null,
+      "accepted_or_rejected": "rejected"
+    },
+    {
+      "document_id": "INE003F01015_2025",
+      "company_id": "INE003F01015",
+      "fiscal_year": 2025,
+      "sha256": "15a71c45b368a79f9c0a185740eb97876582915dad14cbca7567e8b46ba1b450",
+      "orphan_start_frac": null,
+      "grade": "failed",
+      "confidence": "failed",
+      "failure_reasons": [
+        "mda_not_located"
+      ],
+      "mda_start_page": null,
+      "mda_end_page": null,
+      "accepted_or_rejected": "rejected"
+    },
+    {
+      "document_id": "INE004C01028_2017",
+      "company_id": "INE004C01028",
+      "fiscal_year": 2017,
+      "sha256": "73c9aba9314f2a879e5bba9d9bbec279f90505b62c16f97e2d893a89c124612e",
+      "orphan_start_frac": 0.0378,
+      "grade": "low",
+      "confidence": "low",
+      "failure_reasons": [
+        "year_unproven",
+        "order_scrambled",
+        "span_truncated"
+      ],
+      "mda_start_page": 36,
+      "mda_end_page": 50,
+      "accepted_or_rejected": "rejected"
+    },
+    {
+      "document_id": "INE004C01028_2018",
+      "company_id": "INE004C01028",
+      "fiscal_year": 2018,
+      "sha256": "7abb0ef1750e2a916f4f281eb41337a9d9a59510a54f9bb3fa24aa54065edc85",
+      "orphan_start_frac": 0.0108,
+      "grade": "medium",
+      "confidence": "medium",
+      "failure_reasons": [
+        "year_unproven",
+        "span_truncated"
+      ],
+      "mda_start_page": 34,
+      "mda_end_page": 37,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE004C01028_2024",
+      "company_id": "INE004C01028",
+      "fiscal_year": 2024,
+      "sha256": "2077b668cbc7290b91420f4a49abfb0585df84bddfdbc03cd94fac8bc6412914",
+      "orphan_start_frac": 0.0236,
+      "grade": "low",
+      "confidence": "low",
+      "failure_reasons": [
+        "source_shredded",
+        "span_truncated"
+      ],
+      "mda_start_page": 60,
+      "mda_end_page": 66,
+      "accepted_or_rejected": "rejected"
+    },
+    {
+      "document_id": "INE004C01028_2025",
+      "company_id": "INE004C01028",
+      "fiscal_year": 2025,
+      "sha256": "0f1522f3a2dd3ea093d24f6896b42186b7c8e31218edba71d2149e1af38cff2b",
+      "orphan_start_frac": 0.011,
+      "grade": "medium",
+      "confidence": "medium",
+      "failure_reasons": [
+        "source_shredded",
+        "span_truncated"
+      ],
+      "mda_start_page": 22,
+      "mda_end_page": 25,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE004E01016_2012",
+      "company_id": "INE004E01016",
+      "fiscal_year": 2012,
+      "sha256": "eadc5029f16c33a91cf122fa51bc516ba896f37aa9e4b9751aba7efe5d264ba8",
+      "orphan_start_frac": 0.0526,
+      "grade": "low",
+      "confidence": "low",
+      "failure_reasons": [
+        "identity_unproven",
+        "source_shredded",
+        "span_truncated"
+      ],
+      "mda_start_page": 11,
+      "mda_end_page": 12,
+      "accepted_or_rejected": "rejected"
+    },
+    {
+      "document_id": "INE004E01016_2013",
+      "company_id": "INE004E01016",
+      "fiscal_year": 2013,
+      "sha256": "bd6ad137a7a3b8e4609c93ff8bc16265aa0efc709233a4dd5b79e54ccc853fbc",
+      "orphan_start_frac": 0.0,
+      "grade": "low",
+      "confidence": "low",
+      "failure_reasons": [
+        "identity_unproven",
+        "span_truncated"
+      ],
+      "mda_start_page": 11,
+      "mda_end_page": 12,
+      "accepted_or_rejected": "rejected"
+    },
+    {
+      "document_id": "INE004E01016_2017",
+      "company_id": "INE004E01016",
+      "fiscal_year": 2017,
+      "sha256": "23bfad65fdf36889ddbea27e76b532d2464b3f76eacc70f52e9a8bb7c5ea1002",
+      "orphan_start_frac": 0.0142,
+      "grade": "medium",
+      "confidence": "medium",
+      "failure_reasons": [],
+      "mda_start_page": 7,
+      "mda_end_page": 11,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE004E01016_2018",
+      "company_id": "INE004E01016",
+      "fiscal_year": 2018,
+      "sha256": "8bd164a01b993db8d3ef7c4f70553a3c0aec1581ae70dfea0a3dfe480670d8d3",
+      "orphan_start_frac": null,
+      "grade": "failed",
+      "confidence": "failed",
+      "failure_reasons": [
+        "mda_not_located"
+      ],
+      "mda_start_page": null,
+      "mda_end_page": null,
+      "accepted_or_rejected": "rejected"
+    },
+    {
+      "document_id": "INE004E01016_2024",
+      "company_id": "INE004E01016",
+      "fiscal_year": 2024,
+      "sha256": "5df0bb9af53232cc35ffadba97d1ae74fcfbb6b05ba44e004f972287823b0203",
+      "orphan_start_frac": 0.0,
+      "grade": "low",
+      "confidence": "low",
+      "failure_reasons": [
+        "source_shredded",
+        "span_truncated"
+      ],
+      "mda_start_page": 21,
+      "mda_end_page": 27,
+      "accepted_or_rejected": "rejected"
+    },
+    {
+      "document_id": "INE004E01016_2025",
+      "company_id": "INE004E01016",
+      "fiscal_year": 2025,
+      "sha256": "8944db14283b448a6e1fe1d873cdad5b01643593bc0d5dbfd043fb82a9aaee3f",
+      "orphan_start_frac": 0.0132,
+      "grade": "low",
+      "confidence": "low",
+      "failure_reasons": [
+        "source_shredded",
+        "span_truncated"
+      ],
+      "mda_start_page": 15,
+      "mda_end_page": 21,
+      "accepted_or_rejected": "rejected"
+    },
+    {
+      "document_id": "INE004Z01011_2024",
+      "company_id": "INE004Z01011",
+      "fiscal_year": 2024,
+      "sha256": "ecf45ab9f08aad31c007355d127d13e2ba2097588ee221834fbcedb9ecea8c85",
+      "orphan_start_frac": 0.0435,
+      "grade": "medium",
+      "confidence": "medium",
+      "failure_reasons": [
+        "source_shredded",
+        "span_truncated"
+      ],
+      "mda_start_page": 45,
+      "mda_end_page": 49,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE004Z01011_2025",
+      "company_id": "INE004Z01011",
+      "fiscal_year": 2025,
+      "sha256": "7a4f1a963222265043d2cc62f24d525cbd85af2da8342fa248089ecce38296e4",
+      "orphan_start_frac": 0.0448,
+      "grade": "medium",
+      "confidence": "medium",
+      "failure_reasons": [
+        "source_shredded",
+        "span_truncated"
+      ],
+      "mda_start_page": 35,
+      "mda_end_page": 39,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE005E01013_2012",
+      "company_id": "INE005E01013",
+      "fiscal_year": 2012,
+      "sha256": "dc8bb17c415cf9952bd2c9b545ed733e20fee7e5a9bc61aa612d727035fe8135",
+      "orphan_start_frac": 0.0208,
+      "grade": "high",
+      "confidence": "high",
+      "failure_reasons": [
+        "span_truncated"
+      ],
+      "mda_start_page": 13,
+      "mda_end_page": 15,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE005E01013_2013",
+      "company_id": "INE005E01013",
+      "fiscal_year": 2013,
+      "sha256": "f934459f048686d3c2169322c6b2bc731a83e4ac182dbffa878257222736e386",
+      "orphan_start_frac": 0.0231,
+      "grade": "medium",
+      "confidence": "medium",
+      "failure_reasons": [
+        "section_leak",
+        "span_truncated"
+      ],
+      "mda_start_page": 19,
+      "mda_end_page": 36,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE005E01013_2017",
+      "company_id": "INE005E01013",
+      "fiscal_year": 2017,
+      "sha256": "bcbd2c26ca1aacccb1a7b7b68adf3fda2f10b09b27a0fcfbc255dc7072bd9324",
+      "orphan_start_frac": 0.0,
+      "grade": "high",
+      "confidence": "high",
+      "failure_reasons": [
+        "span_truncated"
+      ],
+      "mda_start_page": 21,
+      "mda_end_page": 24,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE005E01013_2018",
+      "company_id": "INE005E01013",
+      "fiscal_year": 2018,
+      "sha256": "a6ea0d82912d6cd21525719b3047b3e2d5907e4f89f2ca8d43eccb0bda4db1c8",
+      "orphan_start_frac": 0.0,
+      "grade": "high",
+      "confidence": "high",
+      "failure_reasons": [
+        "span_truncated"
+      ],
+      "mda_start_page": 19,
+      "mda_end_page": 22,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE005E01013_2024",
+      "company_id": "INE005E01013",
+      "fiscal_year": 2024,
+      "sha256": "3febf85887da6640e50371d6d726ada073275da379f5406dfcb2a3bb86bfb46f",
+      "orphan_start_frac": 0.0,
+      "grade": "medium",
+      "confidence": "medium",
+      "failure_reasons": [
+        "source_shredded"
+      ],
+      "mda_start_page": 29,
+      "mda_end_page": 30,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE005E01013_2025",
+      "company_id": "INE005E01013",
+      "fiscal_year": 2025,
+      "sha256": "22d87e86093fe19cc7250f3a282dc9bff3536ac5fe4b2bde81fca1f73a29e7c5",
+      "orphan_start_frac": 0.0,
+      "grade": "medium",
+      "confidence": "medium",
+      "failure_reasons": [
+        "source_shredded",
+        "span_truncated"
+      ],
+      "mda_start_page": 21,
+      "mda_end_page": 22,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE006C01015_2012",
+      "company_id": "INE006C01015",
+      "fiscal_year": 2012,
+      "sha256": "2bac9f14c400ea136247d2e16cc9da8826f7b773c31de7e148db1cbd1190a2db",
+      "orphan_start_frac": 0.0,
+      "grade": "low",
+      "confidence": "low",
+      "failure_reasons": [
+        "span_truncated"
+      ],
+      "mda_start_page": 8,
+      "mda_end_page": 11,
+      "accepted_or_rejected": "rejected"
+    },
+    {
+      "document_id": "INE006C01015_2013",
+      "company_id": "INE006C01015",
+      "fiscal_year": 2013,
+      "sha256": "1293abc0a3835396a6c82d1dd327d076ae350dc7a64d49bf682dba0602d05fc0",
+      "orphan_start_frac": 0.0,
+      "grade": "high",
+      "confidence": "high",
+      "failure_reasons": [],
+      "mda_start_page": 5,
+      "mda_end_page": 5,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE006C01015_2017",
+      "company_id": "INE006C01015",
+      "fiscal_year": 2017,
+      "sha256": "f3b1f24c7beb87cf4e001e452cdaf1e936bc6c632aea1ef3b25885ba90ba9fff",
+      "orphan_start_frac": 0.0,
+      "grade": "medium",
+      "confidence": "medium",
+      "failure_reasons": [
+        "section_leak",
+        "span_truncated"
+      ],
+      "mda_start_page": 25,
+      "mda_end_page": 26,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE006C01015_2018",
+      "company_id": "INE006C01015",
+      "fiscal_year": 2018,
+      "sha256": "79ffd006fc0fc6b8d97c28e00fa4f9eae09d63f6b84df1b48d15d2faf19bcfec",
+      "orphan_start_frac": 0.0431,
+      "grade": "low",
+      "confidence": "low",
+      "failure_reasons": [
+        "source_shredded",
+        "span_truncated"
+      ],
+      "mda_start_page": 12,
+      "mda_end_page": 18,
+      "accepted_or_rejected": "rejected"
+    },
+    {
+      "document_id": "INE006C01015_2024",
+      "company_id": "INE006C01015",
+      "fiscal_year": 2024,
+      "sha256": "630adfbb19a1f021a2353d6f92831bdb4deec4ac32005be839ac336ba6da8902",
+      "orphan_start_frac": 0.0,
+      "grade": "medium",
+      "confidence": "medium",
+      "failure_reasons": [
+        "source_shredded",
+        "span_truncated"
+      ],
+      "mda_start_page": 21,
+      "mda_end_page": 22,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE006C01015_2025",
+      "company_id": "INE006C01015",
+      "fiscal_year": 2025,
+      "sha256": "445f0d7dc6b77177994abb8d1aecd92c6ddac70f71b7d21bfa232bc6e524610f",
+      "orphan_start_frac": 0.0,
+      "grade": "medium",
+      "confidence": "medium",
+      "failure_reasons": [
+        "source_shredded",
+        "span_truncated"
+      ],
+      "mda_start_page": 22,
+      "mda_end_page": 23,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE006I01046_2012",
+      "company_id": "INE006I01046",
+      "fiscal_year": 2012,
+      "sha256": "4d7094047ffdcd917b71c6ede5941a036328a3d10cd2f8a03beb2bc517565166",
+      "orphan_start_frac": 0.0,
+      "grade": "medium",
+      "confidence": "medium",
+      "failure_reasons": [
+        "span_truncated"
+      ],
+      "mda_start_page": 24,
+      "mda_end_page": 27,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE006I01046_2013",
+      "company_id": "INE006I01046",
+      "fiscal_year": 2013,
+      "sha256": "c2e25d3bba43d69f4e34577ff37ca249b44da3937d60ed947642692b6418790c",
+      "orphan_start_frac": 0.0,
+      "grade": "medium",
+      "confidence": "medium",
+      "failure_reasons": [
+        "span_truncated"
+      ],
+      "mda_start_page": 24,
+      "mda_end_page": 27,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE006I01046_2017",
+      "company_id": "INE006I01046",
+      "fiscal_year": 2017,
+      "sha256": "c6e3283c6a5cf247244f996de7ec23d79309e2bc5e08a64909e28616bba56dd0",
+      "orphan_start_frac": 0.0116,
+      "grade": "medium",
+      "confidence": "medium",
+      "failure_reasons": [],
+      "mda_start_page": 27,
+      "mda_end_page": 31,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE006I01046_2018",
+      "company_id": "INE006I01046",
+      "fiscal_year": 2018,
+      "sha256": "209b84f6166675b8879329e7e5a56c0a15d834c6fe97e2f572aeee4fe971bc56",
+      "orphan_start_frac": 0.0,
+      "grade": "high",
+      "confidence": "high",
+      "failure_reasons": [],
+      "mda_start_page": 25,
+      "mda_end_page": 28,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE006I01046_2024",
+      "company_id": "INE006I01046",
+      "fiscal_year": 2024,
+      "sha256": "e1f48191c3aa007a4d2c0bd3f72076e67359fb7df62e6d2e3074cd381c566c71",
+      "orphan_start_frac": 0.0117,
+      "grade": "high",
+      "confidence": "high",
+      "failure_reasons": [
+        "span_truncated"
+      ],
+      "mda_start_page": 18,
+      "mda_end_page": 33,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE006I01046_2025",
+      "company_id": "INE006I01046",
+      "fiscal_year": 2025,
+      "sha256": "3b08080af3d1d69a27620c06a97784b3bbb8fb5187a24b9c02f252a9ade6d6bf",
+      "orphan_start_frac": 0.0097,
+      "grade": "high",
+      "confidence": "high",
+      "failure_reasons": [
+        "span_truncated"
+      ],
+      "mda_start_page": 17,
+      "mda_end_page": 23,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE007A01025_2012",
+      "company_id": "INE007A01025",
+      "fiscal_year": 2012,
+      "sha256": "4c64fbf7aec3f61bfa8e421e8e642ea4b52d0af92e2083e9c58ab39d867fd51b",
+      "orphan_start_frac": 0.0,
+      "grade": "low",
+      "confidence": "low",
+      "failure_reasons": [
+        "year_unproven",
+        "span_truncated"
+      ],
+      "mda_start_page": 60,
+      "mda_end_page": 62,
+      "accepted_or_rejected": "rejected"
+    },
+    {
+      "document_id": "INE007A01025_2013",
+      "company_id": "INE007A01025",
+      "fiscal_year": 2013,
+      "sha256": "419ba79d4446909585bb873d122982ec626bab8417ea7ee877d5a93e1beb4ffc",
+      "orphan_start_frac": 0.0,
+      "grade": "low",
+      "confidence": "low",
+      "failure_reasons": [
+        "year_unproven",
+        "span_truncated"
+      ],
+      "mda_start_page": 67,
+      "mda_end_page": 67,
+      "accepted_or_rejected": "rejected"
+    },
+    {
+      "document_id": "INE007A01025_2017",
+      "company_id": "INE007A01025",
+      "fiscal_year": 2017,
+      "sha256": "eef4c6eec79325d71fcf4e4808347f30f0947430425c49376debec4bf3e6ffac",
+      "orphan_start_frac": 0.032,
+      "grade": "low",
+      "confidence": "low",
+      "failure_reasons": [
+        "year_unproven",
+        "source_shredded",
+        "span_truncated"
+      ],
+      "mda_start_page": 88,
+      "mda_end_page": 99,
+      "accepted_or_rejected": "rejected"
+    },
+    {
+      "document_id": "INE007A01025_2018",
+      "company_id": "INE007A01025",
+      "fiscal_year": 2018,
+      "sha256": "f3870645c3d4c599bf761f37a76bbafbeed7a4ea95f67ae561e4ac5d4ccfd53d",
+      "orphan_start_frac": 0.0223,
+      "grade": "low",
+      "confidence": "low",
+      "failure_reasons": [
+        "year_unproven",
+        "span_truncated"
+      ],
+      "mda_start_page": 70,
+      "mda_end_page": 81,
+      "accepted_or_rejected": "rejected"
+    },
+    {
+      "document_id": "INE007A01025_2024",
+      "company_id": "INE007A01025",
+      "fiscal_year": 2024,
+      "sha256": "ba5ca28c77ae87453fbf869451bc15b09a14dfc6dbaee8cce13aed08c9767838",
+      "orphan_start_frac": 0.0189,
+      "grade": "high",
+      "confidence": "high",
+      "failure_reasons": [
+        "year_unproven",
+        "span_truncated"
+      ],
+      "mda_start_page": 64,
+      "mda_end_page": 74,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE007A01025_2025",
+      "company_id": "INE007A01025",
+      "fiscal_year": 2025,
+      "sha256": "4e65d79ed0c336f5a97ae1664f18af9db7fbefbef30fafd35595dea0925c746a",
+      "orphan_start_frac": 0.014,
+      "grade": "low",
+      "confidence": "low",
+      "failure_reasons": [
+        "year_unproven",
+        "span_truncated"
+      ],
+      "mda_start_page": 100,
+      "mda_end_page": 110,
+      "accepted_or_rejected": "rejected"
+    },
+    {
+      "document_id": "INE008A01015_2012",
+      "company_id": "INE008A01015",
+      "fiscal_year": 2012,
+      "sha256": "a8bcd04d6ec38da4f503aa9c4abf9c51c264a617b4b6b18f56215224234695a0",
+      "orphan_start_frac": 0.0083,
+      "grade": "low",
+      "confidence": "low",
+      "failure_reasons": [
+        "span_truncated"
+      ],
+      "mda_start_page": 53,
+      "mda_end_page": 66,
+      "accepted_or_rejected": "rejected"
+    },
+    {
+      "document_id": "INE008A01015_2013",
+      "company_id": "INE008A01015",
+      "fiscal_year": 2013,
+      "sha256": "41e7e3720ea2060b23a5c0aa91bafe3ab1f4bf165150f93f2195e4f5c6a54f4e",
+      "orphan_start_frac": 0.061,
+      "grade": "low",
+      "confidence": "low",
+      "failure_reasons": [
+        "identity_unproven",
+        "order_scrambled",
+        "span_truncated"
+      ],
+      "mda_start_page": 53,
+      "mda_end_page": 82,
+      "accepted_or_rejected": "rejected"
+    },
+    {
+      "document_id": "INE008A01015_2017",
+      "company_id": "INE008A01015",
+      "fiscal_year": 2017,
+      "sha256": "06c8df4d32962c388909c765f4554c12635fd7fe3c2279b1ea51e08cbcc1210d",
+      "orphan_start_frac": 0.008,
+      "grade": "medium",
+      "confidence": "medium",
+      "failure_reasons": [
+        "span_truncated"
+      ],
+      "mda_start_page": 45,
+      "mda_end_page": 64,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE008A01015_2018",
+      "company_id": "INE008A01015",
+      "fiscal_year": 2018,
+      "sha256": "63dbce38652ba5a68ae68554303ea8e99478c7cd79450576e1f44535418f9345",
+      "orphan_start_frac": 0.0147,
+      "grade": "low",
+      "confidence": "low",
+      "failure_reasons": [
+        "identity_unproven",
+        "span_truncated"
+      ],
+      "mda_start_page": 42,
+      "mda_end_page": 59,
+      "accepted_or_rejected": "rejected"
+    },
+    {
+      "document_id": "INE008A01015_2024",
+      "company_id": "INE008A01015",
+      "fiscal_year": 2024,
+      "sha256": "f79ba9e881edaa6cfb4a5b2b620e06ef589bc49d8d292000c0a1fc3571b0bdf2",
+      "orphan_start_frac": 0.0811,
+      "grade": "quarantine",
+      "confidence": "quarantine",
+      "failure_reasons": [
+        "source_shredded",
+        "span_truncated",
+        "WRONG_LANGUAGE_RISK"
+      ],
+      "mda_start_page": 72,
+      "mda_end_page": 143,
+      "accepted_or_rejected": "rejected"
+    },
+    {
+      "document_id": "INE008A01015_2025",
+      "company_id": "INE008A01015",
+      "fiscal_year": 2025,
+      "sha256": "79b590350451bb6eedb98984b4bacd91b31380c85a6526816e55af8b97cd55b5",
+      "orphan_start_frac": 0.0583,
+      "grade": "quarantine",
+      "confidence": "quarantine",
+      "failure_reasons": [
+        "source_shredded",
+        "span_truncated",
+        "WRONG_LANGUAGE_RISK"
+      ],
+      "mda_start_page": 79,
+      "mda_end_page": 150,
+      "accepted_or_rejected": "rejected"
+    },
+    {
+      "document_id": "INE009A01021_2012",
+      "company_id": "INE009A01021",
+      "fiscal_year": 2012,
+      "sha256": "7b7beda2e37b28d73a39a4250118c8ab04894fd7440a6abb6de203aede9eb576",
+      "orphan_start_frac": 0.0066,
+      "grade": "high",
+      "confidence": "high",
+      "failure_reasons": [
+        "span_truncated"
+      ],
+      "mda_start_page": 35,
+      "mda_end_page": 43,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE009A01021_2013",
+      "company_id": "INE009A01021",
+      "fiscal_year": 2013,
+      "sha256": "a6253e70f855ebedb03d9c5745f15b371c107a270fb9d1bff9952eb22fc15178",
+      "orphan_start_frac": 0.039,
+      "grade": "medium",
+      "confidence": "medium",
+      "failure_reasons": [
+        "source_shredded",
+        "span_truncated"
+      ],
+      "mda_start_page": 39,
+      "mda_end_page": 40,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE009A01021_2017",
+      "company_id": "INE009A01021",
+      "fiscal_year": 2017,
+      "sha256": "5378aa22c774a2be796fbf6490844f0fc1fd31632d5b149897894614cc6dfbf7",
+      "orphan_start_frac": 0.0146,
+      "grade": "high",
+      "confidence": "high",
+      "failure_reasons": [
+        "span_truncated"
+      ],
+      "mda_start_page": 75,
+      "mda_end_page": 92,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE009A01021_2018",
+      "company_id": "INE009A01021",
+      "fiscal_year": 2018,
+      "sha256": "e7c871f5fd43287bbaa1627774e509472ae44372075a6179135a8fd80dd487d7",
+      "orphan_start_frac": 0.1406,
+      "grade": "low",
+      "confidence": "low",
+      "failure_reasons": [
+        "source_shredded",
+        "span_truncated"
+      ],
+      "mda_start_page": 96,
+      "mda_end_page": 97,
+      "accepted_or_rejected": "rejected"
+    },
+    {
+      "document_id": "INE009A01021_2024",
+      "company_id": "INE009A01021",
+      "fiscal_year": 2024,
+      "sha256": "b0a9bb9e802aff5f09733b8c78c88e9878732ac46e0fb29754c6da87ad47326a",
+      "orphan_start_frac": 0.0039,
+      "grade": "high",
+      "confidence": "high",
+      "failure_reasons": [
+        "span_truncated"
+      ],
+      "mda_start_page": 69,
+      "mda_end_page": 78,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE009A01021_2025",
+      "company_id": "INE009A01021",
+      "fiscal_year": 2025,
+      "sha256": "6224d11244d3f44f7e95901428a8ff23164f383cd1960e02a47483c48612a3c5",
+      "orphan_start_frac": 0.0038,
+      "grade": "high",
+      "confidence": "high",
+      "failure_reasons": [
+        "span_truncated"
+      ],
+      "mda_start_page": 71,
+      "mda_end_page": 81,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE00E101023_2024",
+      "company_id": "INE00E101023",
+      "fiscal_year": 2024,
+      "sha256": "0791d7e713c37c45a13249c4e9214d03419500fbd80d0436ca3183b1f9effde3",
+      "orphan_start_frac": 0.0095,
+      "grade": "high",
+      "confidence": "high",
+      "failure_reasons": [],
+      "mda_start_page": 22,
+      "mda_end_page": 26,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE00E101023_2025",
+      "company_id": "INE00E101023",
+      "fiscal_year": 2025,
+      "sha256": "9b8c4a3c89885f392061f293f0afe18128be2bcbec5666f62255ea974937ba57",
+      "orphan_start_frac": 0.0047,
+      "grade": "high",
+      "confidence": "high",
+      "failure_reasons": [],
+      "mda_start_page": 30,
+      "mda_end_page": 40,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE00FF01025_2015",
+      "company_id": "INE00FF01025",
+      "fiscal_year": 2015,
+      "sha256": "ad5579d7193f5bff7e97d9e05e7711e0b030fa42fb874971032c13a0ef84ca0c",
+      "orphan_start_frac": null,
+      "grade": "failed",
+      "confidence": "failed",
+      "failure_reasons": [
+        "mda_not_located"
+      ],
+      "mda_start_page": null,
+      "mda_end_page": null,
+      "accepted_or_rejected": "rejected"
+    },
+    {
+      "document_id": "INE00FF01025_2024",
+      "company_id": "INE00FF01025",
+      "fiscal_year": 2024,
+      "sha256": "d137843e94954d0ce3f16ea0f28600688501af03bf75a18ed04e230d4d7d9f13",
+      "orphan_start_frac": 0.0113,
+      "grade": "medium",
+      "confidence": "medium",
+      "failure_reasons": [],
+      "mda_start_page": 31,
+      "mda_end_page": 43,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE00FF01025_2025",
+      "company_id": "INE00FF01025",
+      "fiscal_year": 2025,
+      "sha256": "0cd2d75144a18f342cc451f489feaacd6ee6dfe5304b268f4d485267f43051c2",
+      "orphan_start_frac": 0.0414,
+      "grade": "medium",
+      "confidence": "medium",
+      "failure_reasons": [
+        "source_shredded"
+      ],
+      "mda_start_page": 45,
+      "mda_end_page": 56,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE00LO01017_2015",
+      "company_id": "INE00LO01017",
+      "fiscal_year": 2015,
+      "sha256": "7026f85eaacc0f30795ed78351afdeb6c3637cdf4b460cf91d5acaa8f3c2a0fd",
+      "orphan_start_frac": null,
+      "grade": "failed",
+      "confidence": "failed",
+      "failure_reasons": [
+        "mda_not_located"
+      ],
+      "mda_start_page": null,
+      "mda_end_page": null,
+      "accepted_or_rejected": "rejected"
+    },
+    {
+      "document_id": "INE00LO01017_2024",
+      "company_id": "INE00LO01017",
+      "fiscal_year": 2024,
+      "sha256": "bbc5156db65cead9890e170eba069390b43aad1948b69ef52fa8b42d594f765e",
+      "orphan_start_frac": 0.026,
+      "grade": "medium",
+      "confidence": "medium",
+      "failure_reasons": [
+        "span_truncated"
+      ],
+      "mda_start_page": 27,
+      "mda_end_page": 33,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE00LO01017_2025",
+      "company_id": "INE00LO01017",
+      "fiscal_year": 2025,
+      "sha256": "ba9e95a54851c5b23f503df932bcde1943dda492b2369c0b0d82d26e6f18d14b",
+      "orphan_start_frac": 0.0212,
+      "grade": "medium",
+      "confidence": "medium",
+      "failure_reasons": [
+        "span_truncated"
+      ],
+      "mda_start_page": 15,
+      "mda_end_page": 29,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE00WC01027_2024",
+      "company_id": "INE00WC01027",
+      "fiscal_year": 2024,
+      "sha256": "62fc13523833027d7db9a50ca50ab6444b03b8377ec13938ba01e32691194293",
+      "orphan_start_frac": 0.0033,
+      "grade": "medium",
+      "confidence": "medium",
+      "failure_reasons": [
+        "source_shredded"
+      ],
+      "mda_start_page": 44,
+      "mda_end_page": 52,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE00WC01027_2025",
+      "company_id": "INE00WC01027",
+      "fiscal_year": 2025,
+      "sha256": "b62c63aa43a4309b297fe13958b0995c8497b8eca0829cb0ea83446a8bfd8bb8",
+      "orphan_start_frac": 0.015,
+      "grade": "medium",
+      "confidence": "medium",
+      "failure_reasons": [
+        "source_shredded"
+      ],
+      "mda_start_page": 50,
+      "mda_end_page": 58,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE040A01034_2012",
+      "company_id": "INE040A01034",
+      "fiscal_year": 2012,
+      "sha256": "54115ccf3bf53dec4626c618a136125eeee2815941427982d677cae7b89baf23",
+      "orphan_start_frac": 0.0,
+      "grade": "medium",
+      "confidence": "medium",
+      "failure_reasons": [
+        "span_truncated"
+      ],
+      "mda_start_page": 17,
+      "mda_end_page": 29,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE040A01034_2013",
+      "company_id": "INE040A01034",
+      "fiscal_year": 2013,
+      "sha256": "fc8290a6faf39e34385fd09d52462e08b0b554162d5b78ca730551a52c6cacc6",
+      "orphan_start_frac": 0.0,
+      "grade": "medium",
+      "confidence": "medium",
+      "failure_reasons": [
+        "span_truncated"
+      ],
+      "mda_start_page": 17,
+      "mda_end_page": 25,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE040A01034_2017",
+      "company_id": "INE040A01034",
+      "fiscal_year": 2017,
+      "sha256": "528fb52b970812d51d621216b9667115fa35c499e980b8dc6d119b1972e8006d",
+      "orphan_start_frac": 0.064,
+      "grade": "low",
+      "confidence": "low",
+      "failure_reasons": [
+        "source_shredded",
+        "span_truncated"
+      ],
+      "mda_start_page": 20,
+      "mda_end_page": 34,
+      "accepted_or_rejected": "rejected"
+    },
+    {
+      "document_id": "INE040A01034_2018",
+      "company_id": "INE040A01034",
+      "fiscal_year": 2018,
+      "sha256": "98012b40f1bb58d93cca9dfa643da9216e1bab8467da924eccb034d113b33bc5",
+      "orphan_start_frac": 0.0518,
+      "grade": "medium",
+      "confidence": "medium",
+      "failure_reasons": [
+        "source_shredded",
+        "span_truncated"
+      ],
+      "mda_start_page": 24,
+      "mda_end_page": 44,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE040A01034_2024",
+      "company_id": "INE040A01034",
+      "fiscal_year": 2024,
+      "sha256": "fcd7ef37de26997fed3bcf2b7cfb9eb90f08d4e2617f5f3f967a1ac621c2a73e",
+      "orphan_start_frac": 0.0145,
+      "grade": "medium",
+      "confidence": "medium",
+      "failure_reasons": [
+        "section_leak",
+        "span_truncated"
+      ],
+      "mda_start_page": 240,
+      "mda_end_page": 276,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE040A01034_2025",
+      "company_id": "INE040A01034",
+      "fiscal_year": 2025,
+      "sha256": "875360e8667a46c33d0e33859b4cf363a6cdf68754e3220db9ce77b62fae434a",
+      "orphan_start_frac": 0.0236,
+      "grade": "medium",
+      "confidence": "medium",
+      "failure_reasons": [
+        "section_leak",
+        "span_truncated"
+      ],
+      "mda_start_page": 209,
+      "mda_end_page": 247,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE044A01036_2012",
+      "company_id": "INE044A01036",
+      "fiscal_year": 2012,
+      "sha256": "71a1ee5d35cdbc4654c0f314f92cf58e94cf72ed43c6044530bf9b9db5010149",
+      "orphan_start_frac": 0.0168,
+      "grade": "medium",
+      "confidence": "medium",
+      "failure_reasons": [
+        "span_truncated"
+      ],
+      "mda_start_page": 9,
+      "mda_end_page": 29,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE044A01036_2013",
+      "company_id": "INE044A01036",
+      "fiscal_year": 2013,
+      "sha256": "ed03112a1847f9eda8b621bf22377bfa5612d21d10467eea05979a6d0faa0ab0",
+      "orphan_start_frac": 0.0838,
+      "grade": "low",
+      "confidence": "low",
+      "failure_reasons": [
+        "source_shredded",
+        "span_truncated"
+      ],
+      "mda_start_page": 5,
+      "mda_end_page": 33,
+      "accepted_or_rejected": "rejected"
+    },
+    {
+      "document_id": "INE044A01036_2017",
+      "company_id": "INE044A01036",
+      "fiscal_year": 2017,
+      "sha256": "72ffe7dd0038b00a2a95ddcc0f22e6b626b472de8633713313b090ec02493914",
+      "orphan_start_frac": 0.0057,
+      "grade": "medium",
+      "confidence": "medium",
+      "failure_reasons": [
+        "year_unproven",
+        "source_shredded",
+        "span_truncated"
+      ],
+      "mda_start_page": 10,
+      "mda_end_page": 33,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE044A01036_2018",
+      "company_id": "INE044A01036",
+      "fiscal_year": 2018,
+      "sha256": "8e699f31caa074fa14ff605e281acc3dc14de73336e0cb7bd0bce7b59d964a61",
+      "orphan_start_frac": 0.0044,
+      "grade": "high",
+      "confidence": "high",
+      "failure_reasons": [
+        "span_truncated"
+      ],
+      "mda_start_page": 8,
+      "mda_end_page": 25,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE044A01036_2024",
+      "company_id": "INE044A01036",
+      "fiscal_year": 2024,
+      "sha256": "dbb9d8021b365cc095ef9e5c6917e4ec4fe7cca079672ece3beb6284128c9343",
+      "orphan_start_frac": 0.0126,
+      "grade": "medium",
+      "confidence": "medium",
+      "failure_reasons": [],
+      "mda_start_page": 16,
+      "mda_end_page": 37,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE044A01036_2025",
+      "company_id": "INE044A01036",
+      "fiscal_year": 2025,
+      "sha256": "abc0664bb0f83fc60b54898aef71b5554ae95a8eeb7fbe8a3a854309bd84224b",
+      "orphan_start_frac": 0.0047,
+      "grade": "medium",
+      "confidence": "medium",
+      "failure_reasons": [
+        "span_truncated"
+      ],
+      "mda_start_page": 16,
+      "mda_end_page": 39,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE081A01020_2012",
+      "company_id": "INE081A01020",
+      "fiscal_year": 2012,
+      "sha256": "dc0e15483617c2e785a26c800be32b6cfd74339495025866b9b31573a40229a4",
+      "orphan_start_frac": 0.0155,
+      "grade": "medium",
+      "confidence": "medium",
+      "failure_reasons": [
+        "span_truncated"
+      ],
+      "mda_start_page": 88,
+      "mda_end_page": 132,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE081A01020_2013",
+      "company_id": "INE081A01020",
+      "fiscal_year": 2013,
+      "sha256": "3e58ef4edf7239d3fe4e101d7f5a6eebec2d31e6190f7032d58b0ded3e3dffec",
+      "orphan_start_frac": 0.0387,
+      "grade": "medium",
+      "confidence": "medium",
+      "failure_reasons": [
+        "source_shredded",
+        "span_truncated"
+      ],
+      "mda_start_page": 56,
+      "mda_end_page": 100,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE081A01020_2017",
+      "company_id": "INE081A01020",
+      "fiscal_year": 2017,
+      "sha256": "b588fbff20f69bf75cbd0dd1207e4ad48b616875218fb58488a4b047a40c4208",
+      "orphan_start_frac": 0.0526,
+      "grade": "medium",
+      "confidence": "medium",
+      "failure_reasons": [
+        "source_shredded",
+        "span_truncated"
+      ],
+      "mda_start_page": 92,
+      "mda_end_page": 93,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE081A01020_2018",
+      "company_id": "INE081A01020",
+      "fiscal_year": 2018,
+      "sha256": "b9d52ac73af11d751b6996d38a1f95897f0fec87046e3cb8af53109ae02e0fe7",
+      "orphan_start_frac": 0.0,
+      "grade": "medium",
+      "confidence": "medium",
+      "failure_reasons": [
+        "span_truncated"
+      ],
+      "mda_start_page": 100,
+      "mda_end_page": 112,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE081A01020_2024",
+      "company_id": "INE081A01020",
+      "fiscal_year": 2024,
+      "sha256": "870be0ca867c1c562337a5319d09cac353a85dbb7907dce7c13ee47ad7af3e21",
+      "orphan_start_frac": 0.0108,
+      "grade": "medium",
+      "confidence": "medium",
+      "failure_reasons": [
+        "span_truncated"
+      ],
+      "mda_start_page": 183,
+      "mda_end_page": 226,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE081A01020_2025",
+      "company_id": "INE081A01020",
+      "fiscal_year": 2025,
+      "sha256": "7631720e90f7e7623b993c5d4109f008966516a7f08c193d5c6ba16e7f0af480",
+      "orphan_start_frac": 0.0061,
+      "grade": "medium",
+      "confidence": "medium",
+      "failure_reasons": [
+        "span_truncated"
+      ],
+      "mda_start_page": 156,
+      "mda_end_page": 204,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE119A01028_2012",
+      "company_id": "INE119A01028",
+      "fiscal_year": 2012,
+      "sha256": "1e61c8f8f1b707d33ce30dc89c031246cbe2f81f59d4353e596d53d151f2d252",
+      "orphan_start_frac": 0.0101,
+      "grade": "low",
+      "confidence": "low",
+      "failure_reasons": [],
+      "mda_start_page": 49,
+      "mda_end_page": 53,
+      "accepted_or_rejected": "rejected"
+    },
+    {
+      "document_id": "INE119A01028_2013",
+      "company_id": "INE119A01028",
+      "fiscal_year": 2013,
+      "sha256": "ffeb15ba2d5dce924fa35d1c00a56ec981f5e740f36fbb288d23c3db5ccad6b5",
+      "orphan_start_frac": 0.0339,
+      "grade": "low",
+      "confidence": "low",
+      "failure_reasons": [
+        "source_shredded",
+        "span_truncated"
+      ],
+      "mda_start_page": 61,
+      "mda_end_page": 70,
+      "accepted_or_rejected": "rejected"
+    },
+    {
+      "document_id": "INE119A01028_2017",
+      "company_id": "INE119A01028",
+      "fiscal_year": 2017,
+      "sha256": "d62ee8c61f4e885b97ac3f8491f23b8a7db55b8d8807e7d01f9e7f104bbb60f7",
+      "orphan_start_frac": 0.0282,
+      "grade": "low",
+      "confidence": "low",
+      "failure_reasons": [
+        "span_truncated"
+      ],
+      "mda_start_page": 28,
+      "mda_end_page": 44,
+      "accepted_or_rejected": "rejected"
+    },
+    {
+      "document_id": "INE119A01028_2018",
+      "company_id": "INE119A01028",
+      "fiscal_year": 2018,
+      "sha256": "29781cdde4c132519a7ac8a70bf633d7b409249ca665611fec76c945b3f89e37",
+      "orphan_start_frac": 0.144,
+      "grade": "low",
+      "confidence": "low",
+      "failure_reasons": [
+        "source_shredded",
+        "span_truncated"
+      ],
+      "mda_start_page": 53,
+      "mda_end_page": 59,
+      "accepted_or_rejected": "rejected"
+    },
+    {
+      "document_id": "INE119A01028_2024",
+      "company_id": "INE119A01028",
+      "fiscal_year": 2024,
+      "sha256": "1d26601c877ba57cf163f9454174ce45cfdb803b777345c44bf7e7a3103586f2",
+      "orphan_start_frac": 0.0458,
+      "grade": "medium",
+      "confidence": "medium",
+      "failure_reasons": [
+        "source_shredded",
+        "span_truncated"
+      ],
+      "mda_start_page": 135,
+      "mda_end_page": 150,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE119A01028_2025",
+      "company_id": "INE119A01028",
+      "fiscal_year": 2025,
+      "sha256": "c649947487fb9b43909572987333bddab11b0227b33c0a7094d7c50654eef657",
+      "orphan_start_frac": 0.0348,
+      "grade": "medium",
+      "confidence": "medium",
+      "failure_reasons": [
+        "source_shredded",
+        "span_truncated"
+      ],
+      "mda_start_page": 151,
+      "mda_end_page": 171,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE151A01013_2012",
+      "company_id": "INE151A01013",
+      "fiscal_year": 2012,
+      "sha256": "29b68699a9c265cc5df77a46b11d0e1507ac272c86b9db8c480351b314134ad0",
+      "orphan_start_frac": 0.014,
+      "grade": "high",
+      "confidence": "high",
+      "failure_reasons": [],
+      "mda_start_page": 14,
+      "mda_end_page": 21,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE151A01013_2013",
+      "company_id": "INE151A01013",
+      "fiscal_year": 2013,
+      "sha256": "37a21f8e4f7cc3c811a2a8b270b75a1ed60ac4b210e9fc9d0aabcde7eb78ecab",
+      "orphan_start_frac": 0.0163,
+      "grade": "high",
+      "confidence": "high",
+      "failure_reasons": [],
+      "mda_start_page": 14,
+      "mda_end_page": 24,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE151A01013_2017",
+      "company_id": "INE151A01013",
+      "fiscal_year": 2017,
+      "sha256": "c65d2ada7910502e7ccc83992c98f68ad4bade44b0e1cd58a55b3bd1775d5803",
+      "orphan_start_frac": 0.0201,
+      "grade": "medium",
+      "confidence": "medium",
+      "failure_reasons": [],
+      "mda_start_page": 41,
+      "mda_end_page": 57,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE151A01013_2018",
+      "company_id": "INE151A01013",
+      "fiscal_year": 2018,
+      "sha256": "1b050de55772f50d63f6e8ccf5ab97a49db64ff5caadb39b8b01325e5f9acf6b",
+      "orphan_start_frac": 0.0129,
+      "grade": "medium",
+      "confidence": "medium",
+      "failure_reasons": [
+        "span_truncated"
+      ],
+      "mda_start_page": 48,
+      "mda_end_page": 66,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE151A01013_2024",
+      "company_id": "INE151A01013",
+      "fiscal_year": 2024,
+      "sha256": "8d50b3dacf0a39d2e58cacad0375beb7d2a23f8899472c598eea915405d35e30",
+      "orphan_start_frac": 0.0333,
+      "grade": "medium",
+      "confidence": "medium",
+      "failure_reasons": [
+        "source_shredded",
+        "span_truncated"
+      ],
+      "mda_start_page": 58,
+      "mda_end_page": 64,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE151A01013_2025",
+      "company_id": "INE151A01013",
+      "fiscal_year": 2025,
+      "sha256": "9bcbcecb4113f4a7ee5360e55d869880c779d66dbefa19007ae1c8ab220b305b",
+      "orphan_start_frac": 0.0277,
+      "grade": "high",
+      "confidence": "high",
+      "failure_reasons": [
+        "span_truncated"
+      ],
+      "mda_start_page": 62,
+      "mda_end_page": 68,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE154A01025_2012",
+      "company_id": "INE154A01025",
+      "fiscal_year": 2012,
+      "sha256": "ac5529d7cf0757abfc755cf6a93e56b5e2379b82384ede37590b3854428ebbc5",
+      "orphan_start_frac": 0.0185,
+      "grade": "high",
+      "confidence": "high",
+      "failure_reasons": [
+        "span_truncated"
+      ],
+      "mda_start_page": 49,
+      "mda_end_page": 80,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE154A01025_2013",
+      "company_id": "INE154A01025",
+      "fiscal_year": 2013,
+      "sha256": "616ed821eb51e80de32cfad964e6a1451187fac8ccff7e6813361c549a70f7ce",
+      "orphan_start_frac": 0.0193,
+      "grade": "medium",
+      "confidence": "medium",
+      "failure_reasons": [
+        "span_truncated"
+      ],
+      "mda_start_page": 59,
+      "mda_end_page": 95,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE154A01025_2017",
+      "company_id": "INE154A01025",
+      "fiscal_year": 2017,
+      "sha256": "a194d6ff73fc9975bb0095c3269d2c63480a802eebd0919ceef5bd389da6e42e",
+      "orphan_start_frac": 0.0211,
+      "grade": "medium",
+      "confidence": "medium",
+      "failure_reasons": [
+        "span_truncated"
+      ],
+      "mda_start_page": 65,
+      "mda_end_page": 118,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE154A01025_2018",
+      "company_id": "INE154A01025",
+      "fiscal_year": 2018,
+      "sha256": "65f9f2569702dee3187aa6a57caeba1c295e5c97eab21570990cd900716f4796",
+      "orphan_start_frac": 0.0276,
+      "grade": "high",
+      "confidence": "high",
+      "failure_reasons": [
+        "span_truncated"
+      ],
+      "mda_start_page": 61,
+      "mda_end_page": 118,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE154A01025_2024",
+      "company_id": "INE154A01025",
+      "fiscal_year": 2024,
+      "sha256": "cef9cf09cefa71094985018a88b936733ff2c3a02b7cc6cd772fdeb8b75a9c97",
+      "orphan_start_frac": 0.0165,
+      "grade": "medium",
+      "confidence": "medium",
+      "failure_reasons": [
+        "span_truncated"
+      ],
+      "mda_start_page": 77,
+      "mda_end_page": 84,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE154A01025_2025",
+      "company_id": "INE154A01025",
+      "fiscal_year": 2025,
+      "sha256": "6b4cb6251ee52c35e7b2d0744089f7dcaba4da86f64a522ff249d0aa376e0925",
+      "orphan_start_frac": 0.0145,
+      "grade": "medium",
+      "confidence": "medium",
+      "failure_reasons": [
+        "span_truncated"
+      ],
+      "mda_start_page": 59,
+      "mda_end_page": 64,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE171A01029_2012",
+      "company_id": "INE171A01029",
+      "fiscal_year": 2012,
+      "sha256": "e86db8c8662456ca12b99c9afb18c30dd0b717413d4335c599f5ceadec773076",
+      "orphan_start_frac": 0.0691,
+      "grade": "low",
+      "confidence": "low",
+      "failure_reasons": [
+        "section_leak",
+        "order_scrambled",
+        "span_truncated"
+      ],
+      "mda_start_page": 22,
+      "mda_end_page": 56,
+      "accepted_or_rejected": "rejected"
+    },
+    {
+      "document_id": "INE171A01029_2013",
+      "company_id": "INE171A01029",
+      "fiscal_year": 2013,
+      "sha256": "6b4f799f452c9c8bccfe514aec03cc440aaaf164880f92dedd309e9d89963062",
+      "orphan_start_frac": 0.0064,
+      "grade": "low",
+      "confidence": "low",
+      "failure_reasons": [
+        "section_leak",
+        "span_truncated"
+      ],
+      "mda_start_page": 29,
+      "mda_end_page": 58,
+      "accepted_or_rejected": "rejected"
+    },
+    {
+      "document_id": "INE171A01029_2017",
+      "company_id": "INE171A01029",
+      "fiscal_year": 2017,
+      "sha256": "0eff7ba82b8e5811a09d2ead5189605ce1cfbca072bee5b0f57f003b91b08769",
+      "orphan_start_frac": 0.0126,
+      "grade": "medium",
+      "confidence": "medium",
+      "failure_reasons": [
+        "section_leak",
+        "span_truncated"
+      ],
+      "mda_start_page": 49,
+      "mda_end_page": 91,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE171A01029_2018",
+      "company_id": "INE171A01029",
+      "fiscal_year": 2018,
+      "sha256": "d1b6a479cc7e28829f2f786ac2e46208b2b2f4d4a59ec0b30cb47421a3aeeaa0",
+      "orphan_start_frac": 0.0148,
+      "grade": "medium",
+      "confidence": "medium",
+      "failure_reasons": [
+        "section_leak",
+        "span_truncated"
+      ],
+      "mda_start_page": 49,
+      "mda_end_page": 91,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE171A01029_2024",
+      "company_id": "INE171A01029",
+      "fiscal_year": 2024,
+      "sha256": "f3b76769d526798f8db2e84d197469be97b24c070ddcf1bde2506e6d4205ef59",
+      "orphan_start_frac": 0.0198,
+      "grade": "medium",
+      "confidence": "medium",
+      "failure_reasons": [
+        "span_truncated"
+      ],
+      "mda_start_page": 101,
+      "mda_end_page": 116,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE171A01029_2025",
+      "company_id": "INE171A01029",
+      "fiscal_year": 2025,
+      "sha256": "9eea027a8f86f6f5bc196f6e14bc07b67db2c56c9cd4d6d137334b06b9634bbf",
+      "orphan_start_frac": 0.0051,
+      "grade": "high",
+      "confidence": "high",
+      "failure_reasons": [
+        "span_truncated"
+      ],
+      "mda_start_page": 215,
+      "mda_end_page": 241,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE191H01014_2012",
+      "company_id": "INE191H01014",
+      "fiscal_year": 2012,
+      "sha256": "f97f93eef3bb87fced844242ac7789d10002e30f27ea2fe92f51e30f11344ead",
+      "orphan_start_frac": 0.0415,
+      "grade": "medium",
+      "confidence": "medium",
+      "failure_reasons": [
+        "section_leak",
+        "source_shredded",
+        "span_truncated"
+      ],
+      "mda_start_page": 9,
+      "mda_end_page": 20,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE191H01014_2013",
+      "company_id": "INE191H01014",
+      "fiscal_year": 2013,
+      "sha256": "e68cb02ddc41f4b53977b367c337add55a834facbbc907bb8505a5d22bc0bd96",
+      "orphan_start_frac": 0.0206,
+      "grade": "low",
+      "confidence": "low",
+      "failure_reasons": [
+        "section_leak",
+        "span_truncated"
+      ],
+      "mda_start_page": 10,
+      "mda_end_page": 23,
+      "accepted_or_rejected": "rejected"
+    },
+    {
+      "document_id": "INE191H01014_2017",
+      "company_id": "INE191H01014",
+      "fiscal_year": 2017,
+      "sha256": "141e69522edec37b5823a058ed210412a3774fd9f125548d6683e38cefdeb765",
+      "orphan_start_frac": 0.0469,
+      "grade": "medium",
+      "confidence": "medium",
+      "failure_reasons": [
+        "source_shredded",
+        "span_truncated"
+      ],
+      "mda_start_page": 60,
+      "mda_end_page": 63,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE191H01014_2018",
+      "company_id": "INE191H01014",
+      "fiscal_year": 2018,
+      "sha256": "28ed7b6a3053aa475dcfe8e587417fdbd25c4f7dfaaf670e76eb30595b7bee81",
+      "orphan_start_frac": 0.007,
+      "grade": "high",
+      "confidence": "high",
+      "failure_reasons": [
+        "span_truncated"
+      ],
+      "mda_start_page": 39,
+      "mda_end_page": 45,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE191H01014_2024",
+      "company_id": "INE191H01014",
+      "fiscal_year": 2024,
+      "sha256": "b59ae03a8541538b39baae54453536722f03b6c4ebe9dc62208bd450ed901c2b",
+      "orphan_start_frac": 0.0244,
+      "grade": "medium",
+      "confidence": "medium",
+      "failure_reasons": [
+        "span_truncated"
+      ],
+      "mda_start_page": 61,
+      "mda_end_page": 77,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE191H01014_2025",
+      "company_id": "INE191H01014",
+      "fiscal_year": 2025,
+      "sha256": "f51fa2ce953846c8906a5e2fb6f2e7e9766ac305a7e3ddc2e4482e51039169db",
+      "orphan_start_frac": 0.0936,
+      "grade": "low",
+      "confidence": "low",
+      "failure_reasons": [
+        "source_shredded",
+        "span_truncated"
+      ],
+      "mda_start_page": 78,
+      "mda_end_page": 107,
+      "accepted_or_rejected": "rejected"
+    },
+    {
+      "document_id": "INE192B01031_2012",
+      "company_id": "INE192B01031",
+      "fiscal_year": 2012,
+      "sha256": "4e62913a8863fab4f45c90c7f4ee328b232124ec02071cf61b1e4864cf850606",
+      "orphan_start_frac": 0.0515,
+      "grade": "low",
+      "confidence": "low",
+      "failure_reasons": [
+        "identity_unproven",
+        "year_unproven",
+        "source_shredded",
+        "span_truncated"
+      ],
+      "mda_start_page": 34,
+      "mda_end_page": 57,
+      "accepted_or_rejected": "rejected"
+    },
+    {
+      "document_id": "INE192B01031_2013",
+      "company_id": "INE192B01031",
+      "fiscal_year": 2013,
+      "sha256": "1711171ff8edc5051f62c21869c885059481311309757f85954f6fa35df94f3d",
+      "orphan_start_frac": 0.0102,
+      "grade": "low",
+      "confidence": "low",
+      "failure_reasons": [
+        "identity_unproven"
+      ],
+      "mda_start_page": 26,
+      "mda_end_page": 43,
+      "accepted_or_rejected": "rejected"
+    },
+    {
+      "document_id": "INE192B01031_2017",
+      "company_id": "INE192B01031",
+      "fiscal_year": 2017,
+      "sha256": "52b4f4ced950788a3c852bd9474f83c092f8a58fe9181c2cf7acb6dcfc612a6c",
+      "orphan_start_frac": 0.0302,
+      "grade": "medium",
+      "confidence": "medium",
+      "failure_reasons": [
+        "source_shredded",
+        "span_truncated"
+      ],
+      "mda_start_page": 33,
+      "mda_end_page": 56,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE192B01031_2018",
+      "company_id": "INE192B01031",
+      "fiscal_year": 2018,
+      "sha256": "8626ed2609023d2906a47e8bcefc91749a4945e797ac4e3e861f68794f8ed54d",
+      "orphan_start_frac": 0.0175,
+      "grade": "high",
+      "confidence": "high",
+      "failure_reasons": [
+        "span_truncated"
+      ],
+      "mda_start_page": 33,
+      "mda_end_page": 54,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE192B01031_2024",
+      "company_id": "INE192B01031",
+      "fiscal_year": 2024,
+      "sha256": "814886152ee1e682bc610e861e41d1806f6531eef5bd1c9f472c5abfc75972cc",
+      "orphan_start_frac": 0.0029,
+      "grade": "high",
+      "confidence": "high",
+      "failure_reasons": [
+        "span_truncated"
+      ],
+      "mda_start_page": 122,
+      "mda_end_page": 149,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE192B01031_2025",
+      "company_id": "INE192B01031",
+      "fiscal_year": 2025,
+      "sha256": "07ecda71317e04d48499e654f42b294123694064ac48948f19d88c60f34bcd8f",
+      "orphan_start_frac": 0.0069,
+      "grade": "high",
+      "confidence": "high",
+      "failure_reasons": [
+        "span_truncated"
+      ],
+      "mda_start_page": 144,
+      "mda_end_page": 181,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE226A01021_2012",
+      "company_id": "INE226A01021",
+      "fiscal_year": 2012,
+      "sha256": "d79a05fd419ea504728658a5dbba78ea5ca806a67115c27e41548555eadb4b06",
+      "orphan_start_frac": null,
+      "grade": "failed",
+      "confidence": "failed",
+      "failure_reasons": [
+        "mda_not_located"
+      ],
+      "mda_start_page": null,
+      "mda_end_page": null,
+      "accepted_or_rejected": "rejected"
+    },
+    {
+      "document_id": "INE226A01021_2013",
+      "company_id": "INE226A01021",
+      "fiscal_year": 2013,
+      "sha256": "e21553df4c21f11c35ecbc9ae0fdbb7891057bcf2c93a874d06438c7448e3901",
+      "orphan_start_frac": 0.0387,
+      "grade": "low",
+      "confidence": "low",
+      "failure_reasons": [
+        "source_shredded"
+      ],
+      "mda_start_page": 26,
+      "mda_end_page": 37,
+      "accepted_or_rejected": "rejected"
+    },
+    {
+      "document_id": "INE226A01021_2017",
+      "company_id": "INE226A01021",
+      "fiscal_year": 2017,
+      "sha256": "4dff5dd592bd347194798f9e25e96f3531db7a5d0961fb6434544a4f0234e6bf",
+      "orphan_start_frac": 0.0196,
+      "grade": "medium",
+      "confidence": "medium",
+      "failure_reasons": [],
+      "mda_start_page": 42,
+      "mda_end_page": 52,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE226A01021_2018",
+      "company_id": "INE226A01021",
+      "fiscal_year": 2018,
+      "sha256": "c8d336a0196c0ad223fee41601386b8f512a7a4829d98c7db8368a9ff2abda7e",
+      "orphan_start_frac": 0.0273,
+      "grade": "medium",
+      "confidence": "medium",
+      "failure_reasons": [],
+      "mda_start_page": 47,
+      "mda_end_page": 58,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE226A01021_2024",
+      "company_id": "INE226A01021",
+      "fiscal_year": 2024,
+      "sha256": "1894487aceade75f001e04e7e39ed74fb44381b25927f7c05c9e424c42ba1b40",
+      "orphan_start_frac": 0.0,
+      "grade": "low",
+      "confidence": "low",
+      "failure_reasons": [
+        "span_truncated"
+      ],
+      "mda_start_page": 129,
+      "mda_end_page": 136,
+      "accepted_or_rejected": "rejected"
+    },
+    {
+      "document_id": "INE226A01021_2025",
+      "company_id": "INE226A01021",
+      "fiscal_year": 2025,
+      "sha256": "dd2809d9995af9172a3c9bdfb93fa60752f244998703362a444a4e15dc559c7f",
+      "orphan_start_frac": 0.0146,
+      "grade": "medium",
+      "confidence": "medium",
+      "failure_reasons": [],
+      "mda_start_page": 107,
+      "mda_end_page": 139,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE482A01020_2012",
+      "company_id": "INE482A01020",
+      "fiscal_year": 2012,
+      "sha256": "ac056f0de39913579ff7e3546c78ea784492f46b256e0e86be69aa5736162557",
+      "orphan_start_frac": 0.0238,
+      "grade": "high",
+      "confidence": "high",
+      "failure_reasons": [
+        "span_truncated"
+      ],
+      "mda_start_page": 35,
+      "mda_end_page": 54,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE482A01020_2013",
+      "company_id": "INE482A01020",
+      "fiscal_year": 2013,
+      "sha256": "43eb0d49e59d7fee138022b874d8e303e671a683d9763a8864c3c9747656f518",
+      "orphan_start_frac": 0.0556,
+      "grade": "medium",
+      "confidence": "medium",
+      "failure_reasons": [
+        "source_shredded"
+      ],
+      "mda_start_page": 33,
+      "mda_end_page": 38,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE482A01020_2017",
+      "company_id": "INE482A01020",
+      "fiscal_year": 2017,
+      "sha256": "be4593eab67359eebfc4aa6749168e343b04c2699b1879fbb1ebb26340c08c07",
+      "orphan_start_frac": 0.0246,
+      "grade": "high",
+      "confidence": "high",
+      "failure_reasons": [
+        "span_truncated"
+      ],
+      "mda_start_page": 30,
+      "mda_end_page": 65,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE482A01020_2018",
+      "company_id": "INE482A01020",
+      "fiscal_year": 2018,
+      "sha256": "177d0e4dc477f822973a7fe7cad58523f93ed89967280340d6bf452421ca5189",
+      "orphan_start_frac": 0.0056,
+      "grade": "medium",
+      "confidence": "medium",
+      "failure_reasons": [
+        "section_leak",
+        "span_truncated"
+      ],
+      "mda_start_page": 34,
+      "mda_end_page": 73,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE482A01020_2024",
+      "company_id": "INE482A01020",
+      "fiscal_year": 2024,
+      "sha256": "26e9064031e3684c4f86b78f829f090e6fff185bc74c9d1ddb5458477b56433a",
+      "orphan_start_frac": 0.0299,
+      "grade": "medium",
+      "confidence": "medium",
+      "failure_reasons": [
+        "span_truncated"
+      ],
+      "mda_start_page": 40,
+      "mda_end_page": 47,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE482A01020_2025",
+      "company_id": "INE482A01020",
+      "fiscal_year": 2025,
+      "sha256": "599fa0156caf55027fa2a482979b5288311ed46e5c2b0464f812146540f35e6d",
+      "orphan_start_frac": 0.0159,
+      "grade": "medium",
+      "confidence": "medium",
+      "failure_reasons": [
+        "span_truncated"
+      ],
+      "mda_start_page": 38,
+      "mda_end_page": 47,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE761H01022_2012",
+      "company_id": "INE761H01022",
+      "fiscal_year": 2012,
+      "sha256": "3fadc2ee4bc3a2e6afe0c81cc5110982b27324e5fd1ffa5a5e36dfd2efa1442a",
+      "orphan_start_frac": 0.0,
+      "grade": "high",
+      "confidence": "high",
+      "failure_reasons": [],
+      "mda_start_page": 24,
+      "mda_end_page": 26,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE761H01022_2013",
+      "company_id": "INE761H01022",
+      "fiscal_year": 2013,
+      "sha256": "e75eb3c9e6a3a73f18f96a2906419a4221c8e9406c713ca976cc82306110de45",
+      "orphan_start_frac": 0.0333,
+      "grade": "medium",
+      "confidence": "medium",
+      "failure_reasons": [
+        "source_shredded"
+      ],
+      "mda_start_page": 30,
+      "mda_end_page": 34,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE761H01022_2017",
+      "company_id": "INE761H01022",
+      "fiscal_year": 2017,
+      "sha256": "8480ff44472d387fa845563745e4539989bb0a8ae6c4f1c79b44e7908f7fadb0",
+      "orphan_start_frac": 0.0292,
+      "grade": "high",
+      "confidence": "high",
+      "failure_reasons": [],
+      "mda_start_page": 44,
+      "mda_end_page": 52,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE761H01022_2018",
+      "company_id": "INE761H01022",
+      "fiscal_year": 2018,
+      "sha256": "caae2c5d920664fb02ac91e33083635ee91b3671f03a8e73ca63990bd6c4dfc8",
+      "orphan_start_frac": 0.016,
+      "grade": "high",
+      "confidence": "high",
+      "failure_reasons": [],
+      "mda_start_page": 48,
+      "mda_end_page": 57,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE761H01022_2024",
+      "company_id": "INE761H01022",
+      "fiscal_year": 2024,
+      "sha256": "d9fb425a6fa53e873fbd3ef4930fde251f54f9f276a0ee03d7be3877e1e2869e",
+      "orphan_start_frac": 0.009,
+      "grade": "high",
+      "confidence": "high",
+      "failure_reasons": [
+        "span_truncated"
+      ],
+      "mda_start_page": 88,
+      "mda_end_page": 108,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE761H01022_2025",
+      "company_id": "INE761H01022",
+      "fiscal_year": 2025,
+      "sha256": "e2027f21bb684518e643f74b01ba21eb54e8c5f42696af3cc255ed4f241ba47e",
+      "orphan_start_frac": 0.0192,
+      "grade": "high",
+      "confidence": "high",
+      "failure_reasons": [
+        "span_truncated"
+      ],
+      "mda_start_page": 88,
+      "mda_end_page": 107,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE797F01020_2012",
+      "company_id": "INE797F01020",
+      "fiscal_year": 2012,
+      "sha256": "b8939a3dff730b9112d76029ab17c09f2646e41ce40fd4c503cbc7dcc73393a7",
+      "orphan_start_frac": 0.1038,
+      "grade": "low",
+      "confidence": "low",
+      "failure_reasons": [
+        "source_shredded",
+        "span_truncated"
+      ],
+      "mda_start_page": 23,
+      "mda_end_page": 31,
+      "accepted_or_rejected": "rejected"
+    },
+    {
+      "document_id": "INE797F01020_2013",
+      "company_id": "INE797F01020",
+      "fiscal_year": 2013,
+      "sha256": "e3aa3b9f3bad935331d44fa9942bda156f3f7bc98c04427117bfd86ae89306fb",
+      "orphan_start_frac": 0.0,
+      "grade": "medium",
+      "confidence": "medium",
+      "failure_reasons": [
+        "span_truncated"
+      ],
+      "mda_start_page": 25,
+      "mda_end_page": 33,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE797F01020_2017",
+      "company_id": "INE797F01020",
+      "fiscal_year": 2017,
+      "sha256": "c4061954a05c44aef57c01c894a0b3ca4a199c9df53167adea6c97ca223238bb",
+      "orphan_start_frac": 0.0184,
+      "grade": "medium",
+      "confidence": "medium",
+      "failure_reasons": [
+        "span_truncated"
+      ],
+      "mda_start_page": 23,
+      "mda_end_page": 32,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE797F01020_2018",
+      "company_id": "INE797F01020",
+      "fiscal_year": 2018,
+      "sha256": "1796908df6c06c13b1ce4e5c04f39c8c876d0494262d36f3aab705482ce1e06b",
+      "orphan_start_frac": 0.0088,
+      "grade": "medium",
+      "confidence": "medium",
+      "failure_reasons": [
+        "span_truncated"
+      ],
+      "mda_start_page": 23,
+      "mda_end_page": 32,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE797F01020_2024",
+      "company_id": "INE797F01020",
+      "fiscal_year": 2024,
+      "sha256": "fbcb4a73b67620f6bfd0dad541e76e11bfb2c6adf2b8bddf72ca6eb1134fb581",
+      "orphan_start_frac": 0.0222,
+      "grade": "medium",
+      "confidence": "medium",
+      "failure_reasons": [
+        "year_unproven"
+      ],
+      "mda_start_page": 39,
+      "mda_end_page": 48,
+      "accepted_or_rejected": "accepted"
+    },
+    {
+      "document_id": "INE797F01020_2025",
+      "company_id": "INE797F01020",
+      "fiscal_year": 2025,
+      "sha256": "0931a7abc8ca646c5dc6afde716db8fbda9223e5f30f1a1f4f14bf59daf55ed6",
+      "orphan_start_frac": 0.0304,
+      "grade": "medium",
+      "confidence": "medium",
+      "failure_reasons": [
+        "source_shredded"
+      ],
+      "mda_start_page": 33,
+      "mda_end_page": 39,
+      "accepted_or_rejected": "accepted"
+    }
+  ]
+}
