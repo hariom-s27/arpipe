@@ -1,0 +1,197 @@
+{
+  "task": "ARPipe R1 Telemetry Analysis and Acquisition-Resolution Experiment Design",
+  "status": "COMPLETED",
+  "final_verdict": "TELEMETRY ANALYSIS COMPLETE — NEXT EXPERIMENT SPECIFIED",
+  "base_commit": "56497721cb68c4831e6f225074b6bd7ea17bffb0",
+  "worktree": "D:\\sem_iitk\\sem9\\thesis\\sep_week1\\arpipe-r1-telemetry-analysis",
+  "branch": "r1-telemetry-analysis",
+  "statistical_restriction": {
+    "rule": "The R1 deterministic test matrix is a synthetic test fixture and NOT a random sample of historical failures. Population failure rates, historical prevalence, or probability distributions must NEVER be computed from this matrix.",
+    "applied": true
+  },
+  "evidence_sources": [
+    {
+      "path": "reports/r1_telemetry/r1_matrix_telemetry.jsonl",
+      "type": "CONTROLLED_TEST_EVIDENCE",
+      "sha256": "466dca2953cea16b698fe81dec2ef852634c4b6e5a476acb831033b941a90631"
+    },
+    {
+      "path": "reports/r1_telemetry/r1_generation_summary.json",
+      "type": "CONTROLLED_TEST_EVIDENCE",
+      "sha256": "92e2dc8e4a82eec021dd1c91684b9b04ab51a42367cf5a6099a8e200135dce05"
+    },
+    {
+      "path": "reports/r1_fetch_telemetry.json",
+      "type": "CONTROLLED_TEST_EVIDENCE",
+      "sha256": "10310bd9cce4f55b198a7e6f5777e7c86d3ecce029f068003e750623fc6d26ab"
+    },
+    {
+      "path": "reports/r1_fetch_telemetry.md",
+      "type": "CONTROLLED_TEST_EVIDENCE",
+      "sha256": "edf26f03a433e1e344c956195c1cab605b519dc3aec62a4e142a0dbbf48a895c"
+    },
+    {
+      "path": "D:/sem_iitk/sem9/thesis/sep_week1/arpipe-pm5-coverage/reports/pm5_stage_table.csv",
+      "type": "HISTORICALLY_ESTABLISHED",
+      "sha256": "30e93b59ac689f00fab182583fb25883322e429be42b4ba14e13a1011b916dc9"
+    },
+    {
+      "path": "D:/sem_iitk/sem9/thesis/sep_week1/arpipe-pc0-coverage-diag/reports/pc0_sample_manifest.json",
+      "type": "HISTORICALLY_ESTABLISHED",
+      "sha256": "394c628d842bdcf967b6dd82ab695fb4b17a88602c7c79c0b17561a3d931bb0e"
+    },
+    {
+      "path": "D:/sem_iitk/sem9/thesis/sep_week1/arpipe-pc0r-acquisition-pilot/reports/pc0r_diagnosis.json",
+      "type": "CURRENTLY_REPRODUCED",
+      "sha256": "b0f745be326f53a6d71329bf8df3a2862a98444a7ec52c92e92ec40b3bfaebf7"
+    }
+  ],
+  "controlled_telemetry_findings": {
+    "total_records": 17,
+    "total_test_matrix_cases": 9,
+    "total_requests_executed": 21,
+    "terminal_records": 7,
+    "non_terminal_records": 10,
+    "retry_exhausted_records": 5,
+    "http_statuses_represented": [200, 403, 429, 503, null],
+    "error_types_represented": ["HTTP_FAILURE", "TIMEOUT", "NETWORK_FAILURE", "VALIDATION_FAILURE"],
+    "failure_layers_represented": ["L1_CONNECT", "L3_HTTP", "L4_RECEIPT", "L6_VALIDATION"],
+    "latency_range_ms": {
+      "mock_network_http_min": 0.10,
+      "mock_network_http_max": 0.59,
+      "qpdf_repair_attempt": 63.59
+    },
+    "url_redaction_verified": true,
+    "url_sha256_verified": true,
+    "telemetry_writer_failure_absorbed": true
+  },
+  "telemetry_schema_r1_v1": {
+    "mandatory_fields": [
+      "telemetry_schema_version",
+      "run_id",
+      "request_sequence_id",
+      "timestamp_utc",
+      "company_id",
+      "fy_end",
+      "source",
+      "url_redacted",
+      "url_sha256",
+      "attempt_number",
+      "terminal_state",
+      "retry_exhausted",
+      "error_type",
+      "status_code",
+      "error_message"
+    ],
+    "optional_fields": [
+      "exception_class",
+      "first_failure_layer",
+      "response_content_type",
+      "bytes_received",
+      "elapsed_ms"
+    ]
+  },
+  "historical_evidence_classification": {
+    "HISTORICALLY_ESTABLISHED": [
+      "318 company-years lost at DISCOVERED -> DOWNLOADED transition on 2026-09-11 (pm5_stage_table.csv).",
+      "Historical reason-code completeness was 0.0% (all 318 coded REASON_CODE_MISSING).",
+      "Pre-R1 fetch code silently returned None on exhausted 403/429/503 and logged network exceptions only to stderr.",
+      "All 194 successful downloads occurred within a single 4.5-minute burst on 2026-09-11 (live_store_documents.jsonl).",
+      "Strictly 8 fiscal years had 0 successful archive downloads (FY2010, 2014, 2016, 2019, 2020, 2021, 2022, 2023)."
+    ],
+    "CURRENTLY_REPRODUCED": [
+      "Archive endpoint nsearchives.nseindia.com exhibits temporal access variation across sub-hour windows (0/9 at 13:17 UTC vs 10/10 at 13:59 UTC vs 50/50 at 14:40-15:20 UTC).",
+      "Zero-download URLs sampled in P-C0 return valid payloads when the server is responsive.",
+      "Client configuration asymmetry (cookies, Referer, browser headers) does NOT explain failures (10/10 identical success in P-C0R).",
+      "R1 non-blocking attempt-level failure telemetry operates without altering acquisition behavior (32/32 tests pass)."
+    ],
+    "UNKNOWN": [
+      "Historical HTTP status code distribution for the 318 losses.",
+      "Historical exception distribution for the 318 losses.",
+      "Historical failure layer distribution for the 318 losses.",
+      "Historical retry-exhaustion distribution for the 318 losses.",
+      "Exact historical request dispatch timing and ordering on 2026-09-11.",
+      "Exact historical client machine IP/proxy/network environment on 2026-09-11."
+    ],
+    "RULED_OUT": [
+      "Pre-fetch filter hypothesis (cohort_fetch_manifest.jsonl was a post-hoc labeling artifact).",
+      "Client header/cookie asymmetry as current failure cause (P-C0R 10/10 paired arms both succeeded).",
+      "Persistent payload corruption for successful downloads (valid ZIPs and PDFs verified).",
+      "R1 behavioral drift (15/15 test matrix fixtures identical)."
+    ]
+  },
+  "remaining_hypotheses": [
+    {
+      "id": "H1",
+      "name": "Transient Endpoint Instability / Transport Collapse",
+      "status": "PLAUSIBLE BUT UNPROVEN",
+      "confidence": "MEDIUM",
+      "distinguishing_observation": "Live failure telemetry records first_failure_layer in ('L1_CONNECT', 'L4_RECEIPT') with status_code=null and ConnectError, ReadTimeout, or ConnectionResetError."
+    },
+    {
+      "id": "H2",
+      "name": "Rate / Cadence Limiting by Origin or CDN",
+      "status": "PLAUSIBLE BUT UNPROVEN",
+      "confidence": "MEDIUM",
+      "distinguishing_observation": "Live failure telemetry records first_failure_layer='L3_HTTP' with status_code=429 (Too Many Requests) or 403 (Akamai challenge)."
+    },
+    {
+      "id": "H3",
+      "name": "Temporal Window / Operational Schedule Restriction",
+      "status": "CURRENTLY REPRODUCED (Access Variation)",
+      "confidence": "HIGH",
+      "distinguishing_observation": "Acquisition success/failure correlates strongly with time-of-day (e.g. market hours vs off-market maintenance) across identical URLs."
+    },
+    {
+      "id": "H4",
+      "name": "URL-Specific Missing or Corrupt Artifacts",
+      "status": "PLAUSIBLE BUT UNPROVEN",
+      "confidence": "LOW",
+      "distinguishing_observation": "Specific un-downloaded URLs fail persistently with 404 or L6_VALIDATION while control URLs succeed in the same window."
+    },
+    {
+      "id": "H5",
+      "name": "Historical Invocation Gap / Batch Abortion",
+      "status": "PLAUSIBLE BUT UNPROVEN",
+      "confidence": "MEDIUM",
+      "distinguishing_observation": "External execution audit or archival evidence confirming batch script abort on 2026-09-11."
+    }
+  ],
+  "information_gap": "Absence of layer-classified, attempt-level failure telemetry on candidate un-downloaded URLs during live acquisition, leaving transport collapse (L1/L4) indistinguishable from HTTP rejection (L3 403/429) and URL invalidity (L3 404 / L6).",
+  "proposed_next_experiment": {
+    "experiment_id": "P-R1X",
+    "name": "Instrumented Acquisition Telemetry Pilot",
+    "objective": "Deploy frozen R1 attempt-level telemetry (r1-v1) in a controlled live acquisition probe against the frozen 10-observation sample across 3 scheduled temporal windows, capturing structured telemetry on any failures to distinguish transport collapse (L1/L4) from HTTP rejection (L3) and validation failure (L6).",
+    "frozen_candidate_population_source": "reports/pc0_sample_manifest.json (SHA-256: 394c628d842bdcf967b6dd82ab695fb4b17a88602c7c79c0b17561a3d931bb0e) derived from pm5_stage_table.csv (SHA-256: 30e93b59ac689f00fab182583fb25883322e429be42b4ba14e13a1011b916dc9)",
+    "population_inclusion_rule": "The 10 pre-frozen observations in reports/pc0_sample_manifest.json: 5 target observations from strictly zero-download fiscal years (FY2010, 2014, 2016, 2021, 2022) with discovered=True and downloaded=False; and 5 control observations from non-zero download fiscal years (FY2012, 2013, 2017, 2018, 2024) with downloaded=True.",
+    "sampling_rule": "100% census of the frozen 10-observation manifest. No sampling, no replacement, no substitution, no adaptive exclusion.",
+    "sample_size": 10,
+    "independent_variable": "Temporal observation window: Probing across 3 pre-scheduled temporal windows separated by 30 minutes (T+0, T+30, T+60 minutes).",
+    "controlled_variables": [
+      "Client configuration: Standard unseeded httpx.Client (proven invariant in P-C0R).",
+      "Request ordering: Fixed deterministic sequence (Observations 1 through 10).",
+      "Pacing: HostLimiter with 2.0s minimum delay between requests.",
+      "Retry policy: Frozen production policy (retries=3, timeout=120s, backoff 5*(attempt+1)^2).",
+      "Telemetry sink: Active local JSONL sink using arpipe.telemetry.TelemetryWriter (--telemetry-path)."
+    ],
+    "measurements": [
+      "Acquisition outcome per observation (StoredDoc vs None vs exception)",
+      "Per-attempt R1 JSONL telemetry records (attempt_number, terminal_state, retry_exhausted, error_type, status_code, first_failure_layer, exception_class, bytes_received, elapsed_ms, url_sha256)"
+    ],
+    "attempt_schedule": "3 observation windows: Window 1 (T+0 min), Window 2 (T+30 min), Window 3 (T+60 min). 10 observations per window, up to 3 retries each.",
+    "stop_conditions": [
+      "Immediate halt if remote host issues IP-ban / block signature.",
+      "Immediate halt if telemetry writer fails to write to disk.",
+      "Normal completion after Window 3."
+    ],
+    "what_it_cannot_prove": [
+      "Cannot prove historical cause of the 318 losses on 2026-09-11.",
+      "Cannot prove behavior of unsampled zero-download FYs (2019, 2020, 2023) or unsampled companies.",
+      "Cannot prove response of server to full 512-request burst."
+    ]
+  },
+  "production_change_decision": {
+    "decision": "INSUFFICIENT EVIDENCE",
+    "rationale": "Historical root cause remains unknown. Live failure layer distribution has not yet been observed. P-C0R proved 100% success under standard client configurations during open windows and ruled out header asymmetry. Changing retries, backoffs, headers, or session parameters before observing live telemetry would constitute blind speculation."
+  }
+}
