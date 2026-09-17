@@ -1,0 +1,24 @@
+{
+  "python_version": "3.14.3 (tags/v3.14.3:323c59a, Feb  3 2026, 16:04:56) [MSC v.1944 64 bit (AMD64)]",
+  "httpx_version": "0.28.1",
+  "httpcore_version": "1.0.9",
+  "pymupdf_version": "1.28.2",
+  "pydantic_version": "2.13.5",
+  "pytest_version": "9.1.1",
+  "platform": "win32",
+  "os_version": "Windows-11-10.0.26200-SP0",
+  "git_head": "56497721cb68c4831e6f225074b6bd7ea17bffb0",
+  "git_branch": "pr1x-execution",
+  "execution_start_utc": "2026-09-17 19:56:26 UTC",
+  "runtime_utc_clock_info": {
+    "time": "namespace(implementation='GetSystemTimePreciseAsFileTime()', monotonic=False, adjustable=True, resolution=1e-07)",
+    "monotonic": "namespace(implementation='QueryPerformanceCounter()', monotonic=True, adjustable=False, resolution=1e-07)"
+  },
+  "pc0_sample_manifest_path": "reports/pc0_sample_manifest.json",
+  "pc0_sample_manifest_sha256": "394c628d842bdcf967b6dd82ab695fb4b17a88602c7c79c0b17561a3d931bb0e",
+  "additional_packages": {
+    "certifi": "2026.07.22",
+    "h11": "0.16.0",
+    "anyio": null
+  }
+}
