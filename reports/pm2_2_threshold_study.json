@@ -1,0 +1,2930 @@
+{
+  "metadata": {
+    "task": "P-M2.2 — EXPLORATORY orphan_start_frac THRESHOLD SENSITIVITY STUDY",
+    "p_m2_1_source_commit": "158a9eac48a3374a9506af8281acb93f49a37a0d",
+    "corpus_identity": "194-document authoritative cohort (cohort_companies.csv)",
+    "config_version": "default.yaml",
+    "preflight_protected_hashes": {
+      "arpipe/segment.py": "e90c67b7d334fe896029a2960dc49b1782f1a1b9f692f0be9feec73890de96ba",
+      "arpipe/patterns.py": "0166ed14baa4ed46fc55e8726c3449be29eda200ed6ade06846e8b7a14e507b5",
+      "arpipe/verify.py": "29dd0a415d58874a53e01d52c8b802ad2f9fb550eb2c2a50efa9525f780f4b63",
+      "arpipe/pipeline.py": "66ecf6cfa0d8a7ea46c928fbf646fbb06c4f5687a33e46555438e976bf76060d",
+      "arpipe/triage.py": "17e5a4ad79e0442e5978a9981a9fca2474740a0d07371fae1dfc6df39d4134bd",
+      "arpipe/textlayer.py": "ee5e60fcee63e3e6534ab9182e81b42a5f9140094b976732d7071653d80e798a",
+      "arpipe/ocr.py": "5b6c4092549f59155e50a9170503899558701e8695d6e91eb5f07ee1558aea13",
+      "arpipe/models.py": "7d8dbc4a1196cab812374d287a918f7dc60bd24359c89a4d82bb98c3cc37d2cd"
+    },
+    "snapshot_hashes": {
+      "json_sha256": "b8e1739ef1944f9612e7bdaf3321ba66aafa3a27d94f8c57b1c3600d99dd025a",
+      "csv_sha256": "62583344c7758ba86e45e20460c00e3aa13b766363f887edd64fc992da48bcd5"
+    },
+    "candidate_hashes": {
+      "candidates_json_sha256": "1193351f8344cd967f947f6d2a09a6f9eccee6c296d18b29090a9f283985bd2d",
+      "candidates_csv_sha256": "c70aee6705c7e61a832bd4570db30ce4c61a1b416e57a194dab51367ea86ef89"
+    },
+    "plot_paths": {
+      "sensitivity_png": "reports\\pm2_2_sensitivity.png",
+      "document_sensitivity_png": "reports\\pm2_2_document_sensitivity.png",
+      "hidden_pages_png": "reports\\pm2_2_hidden_pages.png",
+      "page_distributions_png": "reports\\pm2_2_page_distributions.png"
+    },
+    "production_invariants": {
+      "production_threshold_changed": false,
+      "orphan_start_frac_max": 0.03,
+      "production_grading_changed": false,
+      "production_verification_changed": false,
+      "production_routing_changed": false
+    }
+  },
+  "population_accounting": {
+    "total_documents": 194,
+    "located_documents": 182,
+    "unlocated_documents": 12,
+    "total_mda_physical_pages": 2734,
+    "measured_pages": 2547,
+    "null_unmeasured_pages": 187,
+    "native_pages_measured": 2412,
+    "ocr_pages_measured": 134,
+    "unknown_pages_measured": 1,
+    "reconciliation_formula": "2,734 (total) = 2,412 (native) + 134 (ocr) + 1 (unknown) + 187 (null)",
+    "reconciliation_verified": true
+  },
+  "independence_structure": {
+    "pure_native_documents": 160,
+    "pure_ocr_documents": 5,
+    "mixed_documents": 16,
+    "total_ocr_containing_documents": 21
+  },
+  "frozen_candidate_set": [
+    {
+      "threshold": 0.02,
+      "source": "predeclared sensitivity grid",
+      "status": "exploratory",
+      "reason": "lower-band sensitivity"
+    },
+    {
+      "threshold": 0.025,
+      "source": "predeclared sensitivity grid",
+      "status": "exploratory",
+      "reason": "lower-band sensitivity"
+    },
+    {
+      "threshold": 0.03,
+      "source": "existing ARPipe methodology",
+      "status": "inherited",
+      "reason": "current production diagnostic"
+    },
+    {
+      "threshold": 0.035,
+      "source": "predeclared sensitivity grid",
+      "status": "exploratory",
+      "reason": "near-current upper sensitivity"
+    },
+    {
+      "threshold": 0.04,
+      "source": "predeclared sensitivity grid",
+      "status": "exploratory",
+      "reason": "upper-band sensitivity"
+    },
+    {
+      "threshold": 0.05,
+      "source": "predeclared sensitivity grid",
+      "status": "exploratory",
+      "reason": "wider upper-band sensitivity"
+    },
+    {
+      "threshold": 0.06,
+      "source": "predeclared sensitivity grid",
+      "status": "exploratory",
+      "reason": "wider upper-band sensitivity"
+    }
+  ],
+  "page_level_distribution": {
+    "native": {
+      "min": 0.0,
+      "p25": 0.0,
+      "median": 0.0,
+      "p75": 0.0303,
+      "p90": 0.0833,
+      "p95": 0.12205499999999965,
+      "max": 0.6471
+    },
+    "ocr": {
+      "min": 0.0,
+      "p25": 0.0,
+      "median": 0.0,
+      "p75": 0.062025,
+      "p90": 0.125,
+      "p95": 0.1667,
+      "max": 0.4286
+    }
+  },
+  "page_threshold_metrics": {
+    "0.02": {
+      "native": {
+        "threshold": 0.02,
+        "n_measured": 2412,
+        "n_below": 1719,
+        "n_at": 4,
+        "n_above": 689,
+        "fraction_above": 0.28565505804311775,
+        "max_le": 0.02,
+        "min_gt": 0.0204,
+        "gap": 0.00040000000000000105,
+        "near_threshold_count": 17
+      },
+      "ocr": {
+        "threshold": 0.02,
+        "n_measured": 134,
+        "n_below": 71,
+        "n_at": 0,
+        "n_above": 63,
+        "fraction_above": 0.4701492537313433,
+        "max_le": 0.0189,
+        "min_gt": 0.025,
+        "gap": 0.006100000000000001,
+        "near_threshold_count": 0
+      },
+      "mixed_native": {
+        "threshold": 0.02,
+        "n_measured": 364,
+        "n_below": 266,
+        "n_at": 1,
+        "n_above": 97,
+        "fraction_above": 0.2664835164835165,
+        "max_le": 0.02,
+        "min_gt": 0.0238,
+        "gap": 0.0038000000000000013,
+        "near_threshold_count": 2
+      },
+      "mixed_ocr": {
+        "threshold": 0.02,
+        "n_measured": 49,
+        "n_below": 34,
+        "n_at": 0,
+        "n_above": 15,
+        "fraction_above": 0.30612244897959184,
+        "max_le": 0.0,
+        "min_gt": 0.0294,
+        "gap": 0.0294,
+        "near_threshold_count": 0
+      }
+    },
+    "0.025": {
+      "native": {
+        "threshold": 0.025,
+        "n_measured": 2412,
+        "n_below": 1757,
+        "n_at": 4,
+        "n_above": 651,
+        "fraction_above": 0.26990049751243783,
+        "max_le": 0.025,
+        "min_gt": 0.0256,
+        "gap": 0.0005999999999999998,
+        "near_threshold_count": 10
+      },
+      "ocr": {
+        "threshold": 0.025,
+        "n_measured": 134,
+        "n_below": 71,
+        "n_at": 1,
+        "n_above": 62,
+        "fraction_above": 0.4626865671641791,
+        "max_le": 0.025,
+        "min_gt": 0.0274,
+        "gap": 0.0023999999999999994,
+        "near_threshold_count": 1
+      },
+      "mixed_native": {
+        "threshold": 0.025,
+        "n_measured": 364,
+        "n_below": 268,
+        "n_at": 0,
+        "n_above": 96,
+        "fraction_above": 0.26373626373626374,
+        "max_le": 0.0238,
+        "min_gt": 0.0263,
+        "gap": 0.0024999999999999988,
+        "near_threshold_count": 0
+      },
+      "mixed_ocr": {
+        "threshold": 0.025,
+        "n_measured": 49,
+        "n_below": 34,
+        "n_at": 0,
+        "n_above": 15,
+        "fraction_above": 0.30612244897959184,
+        "max_le": 0.0,
+        "min_gt": 0.0294,
+        "gap": 0.0294,
+        "near_threshold_count": 0
+      }
+    },
+    "0.03": {
+      "native": {
+        "threshold": 0.03,
+        "n_measured": 2412,
+        "n_below": 1805,
+        "n_at": 0,
+        "n_above": 607,
+        "fraction_above": 0.25165837479270314,
+        "max_le": 0.0294,
+        "min_gt": 0.0303,
+        "gap": 0.0009000000000000015,
+        "near_threshold_count": 19
+      },
+      "ocr": {
+        "threshold": 0.03,
+        "n_measured": 134,
+        "n_below": 78,
+        "n_at": 0,
+        "n_above": 56,
+        "fraction_above": 0.417910447761194,
+        "max_le": 0.0294,
+        "min_gt": 0.0323,
+        "gap": 0.0029000000000000033,
+        "near_threshold_count": 1
+      },
+      "mixed_native": {
+        "threshold": 0.03,
+        "n_measured": 364,
+        "n_below": 271,
+        "n_at": 0,
+        "n_above": 93,
+        "fraction_above": 0.2554945054945055,
+        "max_le": 0.0278,
+        "min_gt": 0.0303,
+        "gap": 0.0025000000000000022,
+        "near_threshold_count": 1
+      },
+      "mixed_ocr": {
+        "threshold": 0.03,
+        "n_measured": 49,
+        "n_below": 35,
+        "n_at": 0,
+        "n_above": 14,
+        "fraction_above": 0.2857142857142857,
+        "max_le": 0.0294,
+        "min_gt": 0.0333,
+        "gap": 0.003900000000000004,
+        "near_threshold_count": 1
+      }
+    },
+    "0.035": {
+      "native": {
+        "threshold": 0.035,
+        "n_measured": 2412,
+        "n_below": 1858,
+        "n_at": 0,
+        "n_above": 554,
+        "fraction_above": 0.2296849087893864,
+        "max_le": 0.0345,
+        "min_gt": 0.0351,
+        "gap": 0.0005999999999999964,
+        "near_threshold_count": 15
+      },
+      "ocr": {
+        "threshold": 0.035,
+        "n_measured": 134,
+        "n_below": 85,
+        "n_at": 0,
+        "n_above": 49,
+        "fraction_above": 0.3656716417910448,
+        "max_le": 0.0345,
+        "min_gt": 0.0357,
+        "gap": 0.0011999999999999997,
+        "near_threshold_count": 6
+      },
+      "mixed_native": {
+        "threshold": 0.035,
+        "n_measured": 364,
+        "n_below": 280,
+        "n_at": 0,
+        "n_above": 84,
+        "fraction_above": 0.23076923076923078,
+        "max_le": 0.0345,
+        "min_gt": 0.0351,
+        "gap": 0.0005999999999999964,
+        "near_threshold_count": 3
+      },
+      "mixed_ocr": {
+        "threshold": 0.035,
+        "n_measured": 49,
+        "n_below": 36,
+        "n_at": 0,
+        "n_above": 13,
+        "fraction_above": 0.2653061224489796,
+        "max_le": 0.0333,
+        "min_gt": 0.0417,
+        "gap": 0.008399999999999998,
+        "near_threshold_count": 0
+      }
+    },
+    "0.04": {
+      "native": {
+        "threshold": 0.04,
+        "n_measured": 2412,
+        "n_below": 1885,
+        "n_at": 9,
+        "n_above": 518,
+        "fraction_above": 0.21475953565505804,
+        "max_le": 0.04,
+        "min_gt": 0.0417,
+        "gap": 0.0017000000000000001,
+        "near_threshold_count": 10
+      },
+      "ocr": {
+        "threshold": 0.04,
+        "n_measured": 134,
+        "n_below": 90,
+        "n_at": 2,
+        "n_above": 42,
+        "fraction_above": 0.31343283582089554,
+        "max_le": 0.04,
+        "min_gt": 0.0417,
+        "gap": 0.0017000000000000001,
+        "near_threshold_count": 2
+      },
+      "mixed_native": {
+        "threshold": 0.04,
+        "n_measured": 364,
+        "n_below": 285,
+        "n_at": 2,
+        "n_above": 77,
+        "fraction_above": 0.21153846153846154,
+        "max_le": 0.04,
+        "min_gt": 0.0417,
+        "gap": 0.0017000000000000001,
+        "near_threshold_count": 2
+      },
+      "mixed_ocr": {
+        "threshold": 0.04,
+        "n_measured": 49,
+        "n_below": 36,
+        "n_at": 0,
+        "n_above": 13,
+        "fraction_above": 0.2653061224489796,
+        "max_le": 0.0333,
+        "min_gt": 0.0417,
+        "gap": 0.008399999999999998,
+        "near_threshold_count": 0
+      }
+    },
+    "0.05": {
+      "native": {
+        "threshold": 0.05,
+        "n_measured": 2412,
+        "n_below": 1956,
+        "n_at": 11,
+        "n_above": 445,
+        "fraction_above": 0.18449419568822553,
+        "max_le": 0.05,
+        "min_gt": 0.0508,
+        "gap": 0.0007999999999999952,
+        "near_threshold_count": 14
+      },
+      "ocr": {
+        "threshold": 0.05,
+        "n_measured": 134,
+        "n_below": 95,
+        "n_at": 1,
+        "n_above": 38,
+        "fraction_above": 0.2835820895522388,
+        "max_le": 0.05,
+        "min_gt": 0.0526,
+        "gap": 0.002599999999999998,
+        "near_threshold_count": 1
+      },
+      "mixed_native": {
+        "threshold": 0.05,
+        "n_measured": 364,
+        "n_below": 296,
+        "n_at": 2,
+        "n_above": 66,
+        "fraction_above": 0.1813186813186813,
+        "max_le": 0.05,
+        "min_gt": 0.0517,
+        "gap": 0.0017000000000000001,
+        "near_threshold_count": 2
+      },
+      "mixed_ocr": {
+        "threshold": 0.05,
+        "n_measured": 49,
+        "n_below": 37,
+        "n_at": 1,
+        "n_above": 11,
+        "fraction_above": 0.22448979591836735,
+        "max_le": 0.05,
+        "min_gt": 0.0625,
+        "gap": 0.012499999999999997,
+        "near_threshold_count": 1
+      }
+    },
+    "0.06": {
+      "native": {
+        "threshold": 0.06,
+        "n_measured": 2412,
+        "n_below": 2026,
+        "n_at": 1,
+        "n_above": 385,
+        "fraction_above": 0.15961857379767827,
+        "max_le": 0.06,
+        "min_gt": 0.0606,
+        "gap": 0.0006000000000000033,
+        "near_threshold_count": 3
+      },
+      "ocr": {
+        "threshold": 0.06,
+        "n_measured": 134,
+        "n_below": 99,
+        "n_at": 0,
+        "n_above": 35,
+        "fraction_above": 0.26119402985074625,
+        "max_le": 0.0588,
+        "min_gt": 0.0606,
+        "gap": 0.001800000000000003,
+        "near_threshold_count": 1
+      },
+      "mixed_native": {
+        "threshold": 0.06,
+        "n_measured": 364,
+        "n_below": 304,
+        "n_at": 0,
+        "n_above": 60,
+        "fraction_above": 0.16483516483516483,
+        "max_le": 0.0588,
+        "min_gt": 0.0606,
+        "gap": 0.001800000000000003,
+        "near_threshold_count": 1
+      },
+      "mixed_ocr": {
+        "threshold": 0.06,
+        "n_measured": 49,
+        "n_below": 38,
+        "n_at": 0,
+        "n_above": 11,
+        "fraction_above": 0.22448979591836735,
+        "max_le": 0.05,
+        "min_gt": 0.0625,
+        "gap": 0.012499999999999997,
+        "near_threshold_count": 0
+      }
+    }
+  },
+  "document_threshold_metrics": {
+    "0.02": {
+      "all_measurable": {
+        "threshold": 0.02,
+        "n_measurable_docs": 173,
+        "docs_any_gt_T": 129,
+        "frac_any_gt_T": 0.7456647398843931,
+        "docs_ge_5pct": 128,
+        "frac_ge_5pct": 0.7398843930635838,
+        "docs_ge_10pct": 124,
+        "frac_ge_10pct": 0.7167630057803468,
+        "docs_ge_25pct": 88,
+        "frac_ge_25pct": 0.5086705202312138,
+        "docs_ge_50pct": 33,
+        "frac_ge_50pct": 0.1907514450867052
+      },
+      "pure_native": {
+        "threshold": 0.02,
+        "n_measurable_docs": 152,
+        "docs_any_gt_T": 108,
+        "frac_any_gt_T": 0.7105263157894737,
+        "docs_ge_5pct": 108,
+        "frac_ge_5pct": 0.7105263157894737,
+        "docs_ge_10pct": 104,
+        "frac_ge_10pct": 0.6842105263157895,
+        "docs_ge_25pct": 73,
+        "frac_ge_25pct": 0.48026315789473684,
+        "docs_ge_50pct": 26,
+        "frac_ge_50pct": 0.17105263157894737
+      },
+      "pure_ocr": {
+        "threshold": 0.02,
+        "n_measurable_docs": 4,
+        "docs_any_gt_T": 4,
+        "frac_any_gt_T": 1.0,
+        "docs_ge_5pct": 4,
+        "frac_ge_5pct": 1.0,
+        "docs_ge_10pct": 4,
+        "frac_ge_10pct": 1.0,
+        "docs_ge_25pct": 4,
+        "frac_ge_25pct": 1.0,
+        "docs_ge_50pct": 3,
+        "frac_ge_50pct": 0.75
+      },
+      "mixed": {
+        "threshold": 0.02,
+        "n_measurable_docs": 16,
+        "docs_any_gt_T": 16,
+        "frac_any_gt_T": 1.0,
+        "docs_ge_5pct": 15,
+        "frac_ge_5pct": 0.9375,
+        "docs_ge_10pct": 15,
+        "frac_ge_10pct": 0.9375,
+        "docs_ge_25pct": 10,
+        "frac_ge_25pct": 0.625,
+        "docs_ge_50pct": 4,
+        "frac_ge_50pct": 0.25
+      }
+    },
+    "0.025": {
+      "all_measurable": {
+        "threshold": 0.025,
+        "n_measurable_docs": 173,
+        "docs_any_gt_T": 128,
+        "frac_any_gt_T": 0.7398843930635838,
+        "docs_ge_5pct": 127,
+        "frac_ge_5pct": 0.7341040462427746,
+        "docs_ge_10pct": 122,
+        "frac_ge_10pct": 0.7052023121387283,
+        "docs_ge_25pct": 82,
+        "frac_ge_25pct": 0.47398843930635837,
+        "docs_ge_50pct": 30,
+        "frac_ge_50pct": 0.17341040462427745
+      },
+      "pure_native": {
+        "threshold": 0.025,
+        "n_measurable_docs": 152,
+        "docs_any_gt_T": 107,
+        "frac_any_gt_T": 0.7039473684210527,
+        "docs_ge_5pct": 107,
+        "frac_ge_5pct": 0.7039473684210527,
+        "docs_ge_10pct": 102,
+        "frac_ge_10pct": 0.6710526315789473,
+        "docs_ge_25pct": 67,
+        "frac_ge_25pct": 0.4407894736842105,
+        "docs_ge_50pct": 24,
+        "frac_ge_50pct": 0.15789473684210525
+      },
+      "pure_ocr": {
+        "threshold": 0.025,
+        "n_measurable_docs": 4,
+        "docs_any_gt_T": 4,
+        "frac_any_gt_T": 1.0,
+        "docs_ge_5pct": 4,
+        "frac_ge_5pct": 1.0,
+        "docs_ge_10pct": 4,
+        "frac_ge_10pct": 1.0,
+        "docs_ge_25pct": 4,
+        "frac_ge_25pct": 1.0,
+        "docs_ge_50pct": 3,
+        "frac_ge_50pct": 0.75
+      },
+      "mixed": {
+        "threshold": 0.025,
+        "n_measurable_docs": 16,
+        "docs_any_gt_T": 16,
+        "frac_any_gt_T": 1.0,
+        "docs_ge_5pct": 15,
+        "frac_ge_5pct": 0.9375,
+        "docs_ge_10pct": 15,
+        "frac_ge_10pct": 0.9375,
+        "docs_ge_25pct": 10,
+        "frac_ge_25pct": 0.625,
+        "docs_ge_50pct": 3,
+        "frac_ge_50pct": 0.1875
+      }
+    },
+    "0.03": {
+      "all_measurable": {
+        "threshold": 0.03,
+        "n_measurable_docs": 173,
+        "docs_any_gt_T": 124,
+        "frac_any_gt_T": 0.7167630057803468,
+        "docs_ge_5pct": 122,
+        "frac_ge_5pct": 0.7052023121387283,
+        "docs_ge_10pct": 114,
+        "frac_ge_10pct": 0.6589595375722543,
+        "docs_ge_25pct": 75,
+        "frac_ge_25pct": 0.43352601156069365,
+        "docs_ge_50pct": 23,
+        "frac_ge_50pct": 0.1329479768786127
+      },
+      "pure_native": {
+        "threshold": 0.03,
+        "n_measurable_docs": 152,
+        "docs_any_gt_T": 103,
+        "frac_any_gt_T": 0.6776315789473685,
+        "docs_ge_5pct": 102,
+        "frac_ge_5pct": 0.6710526315789473,
+        "docs_ge_10pct": 94,
+        "frac_ge_10pct": 0.618421052631579,
+        "docs_ge_25pct": 60,
+        "frac_ge_25pct": 0.39473684210526316,
+        "docs_ge_50pct": 18,
+        "frac_ge_50pct": 0.11842105263157894
+      },
+      "pure_ocr": {
+        "threshold": 0.03,
+        "n_measurable_docs": 4,
+        "docs_any_gt_T": 4,
+        "frac_any_gt_T": 1.0,
+        "docs_ge_5pct": 4,
+        "frac_ge_5pct": 1.0,
+        "docs_ge_10pct": 4,
+        "frac_ge_10pct": 1.0,
+        "docs_ge_25pct": 4,
+        "frac_ge_25pct": 1.0,
+        "docs_ge_50pct": 2,
+        "frac_ge_50pct": 0.5
+      },
+      "mixed": {
+        "threshold": 0.03,
+        "n_measurable_docs": 16,
+        "docs_any_gt_T": 16,
+        "frac_any_gt_T": 1.0,
+        "docs_ge_5pct": 15,
+        "frac_ge_5pct": 0.9375,
+        "docs_ge_10pct": 15,
+        "frac_ge_10pct": 0.9375,
+        "docs_ge_25pct": 10,
+        "frac_ge_25pct": 0.625,
+        "docs_ge_50pct": 3,
+        "frac_ge_50pct": 0.1875
+      }
+    },
+    "0.035": {
+      "all_measurable": {
+        "threshold": 0.035,
+        "n_measurable_docs": 173,
+        "docs_any_gt_T": 120,
+        "frac_any_gt_T": 0.6936416184971098,
+        "docs_ge_5pct": 117,
+        "frac_ge_5pct": 0.6763005780346821,
+        "docs_ge_10pct": 107,
+        "frac_ge_10pct": 0.6184971098265896,
+        "docs_ge_25pct": 65,
+        "frac_ge_25pct": 0.37572254335260113,
+        "docs_ge_50pct": 14,
+        "frac_ge_50pct": 0.08092485549132948
+      },
+      "pure_native": {
+        "threshold": 0.035,
+        "n_measurable_docs": 152,
+        "docs_any_gt_T": 100,
+        "frac_any_gt_T": 0.6578947368421053,
+        "docs_ge_5pct": 98,
+        "frac_ge_5pct": 0.6447368421052632,
+        "docs_ge_10pct": 89,
+        "frac_ge_10pct": 0.5855263157894737,
+        "docs_ge_25pct": 53,
+        "frac_ge_25pct": 0.34868421052631576,
+        "docs_ge_50pct": 12,
+        "frac_ge_50pct": 0.07894736842105263
+      },
+      "pure_ocr": {
+        "threshold": 0.035,
+        "n_measurable_docs": 4,
+        "docs_any_gt_T": 3,
+        "frac_any_gt_T": 0.75,
+        "docs_ge_5pct": 3,
+        "frac_ge_5pct": 0.75,
+        "docs_ge_10pct": 3,
+        "frac_ge_10pct": 0.75,
+        "docs_ge_25pct": 3,
+        "frac_ge_25pct": 0.75,
+        "docs_ge_50pct": 1,
+        "frac_ge_50pct": 0.25
+      },
+      "mixed": {
+        "threshold": 0.035,
+        "n_measurable_docs": 16,
+        "docs_any_gt_T": 16,
+        "frac_any_gt_T": 1.0,
+        "docs_ge_5pct": 15,
+        "frac_ge_5pct": 0.9375,
+        "docs_ge_10pct": 14,
+        "frac_ge_10pct": 0.875,
+        "docs_ge_25pct": 8,
+        "frac_ge_25pct": 0.5,
+        "docs_ge_50pct": 1,
+        "frac_ge_50pct": 0.0625
+      }
+    },
+    "0.04": {
+      "all_measurable": {
+        "threshold": 0.04,
+        "n_measurable_docs": 173,
+        "docs_any_gt_T": 117,
+        "frac_any_gt_T": 0.6763005780346821,
+        "docs_ge_5pct": 114,
+        "frac_ge_5pct": 0.6589595375722543,
+        "docs_ge_10pct": 105,
+        "frac_ge_10pct": 0.6069364161849711,
+        "docs_ge_25pct": 59,
+        "frac_ge_25pct": 0.34104046242774566,
+        "docs_ge_50pct": 13,
+        "frac_ge_50pct": 0.07514450867052024
+      },
+      "pure_native": {
+        "threshold": 0.04,
+        "n_measurable_docs": 152,
+        "docs_any_gt_T": 97,
+        "frac_any_gt_T": 0.6381578947368421,
+        "docs_ge_5pct": 95,
+        "frac_ge_5pct": 0.625,
+        "docs_ge_10pct": 87,
+        "frac_ge_10pct": 0.5723684210526315,
+        "docs_ge_25pct": 47,
+        "frac_ge_25pct": 0.3092105263157895,
+        "docs_ge_50pct": 11,
+        "frac_ge_50pct": 0.07236842105263158
+      },
+      "pure_ocr": {
+        "threshold": 0.04,
+        "n_measurable_docs": 4,
+        "docs_any_gt_T": 3,
+        "frac_any_gt_T": 0.75,
+        "docs_ge_5pct": 3,
+        "frac_ge_5pct": 0.75,
+        "docs_ge_10pct": 3,
+        "frac_ge_10pct": 0.75,
+        "docs_ge_25pct": 3,
+        "frac_ge_25pct": 0.75,
+        "docs_ge_50pct": 1,
+        "frac_ge_50pct": 0.25
+      },
+      "mixed": {
+        "threshold": 0.04,
+        "n_measurable_docs": 16,
+        "docs_any_gt_T": 16,
+        "frac_any_gt_T": 1.0,
+        "docs_ge_5pct": 15,
+        "frac_ge_5pct": 0.9375,
+        "docs_ge_10pct": 14,
+        "frac_ge_10pct": 0.875,
+        "docs_ge_25pct": 8,
+        "frac_ge_25pct": 0.5,
+        "docs_ge_50pct": 1,
+        "frac_ge_50pct": 0.0625
+      }
+    },
+    "0.05": {
+      "all_measurable": {
+        "threshold": 0.05,
+        "n_measurable_docs": 173,
+        "docs_any_gt_T": 107,
+        "frac_any_gt_T": 0.6184971098265896,
+        "docs_ge_5pct": 103,
+        "frac_ge_5pct": 0.5953757225433526,
+        "docs_ge_10pct": 93,
+        "frac_ge_10pct": 0.5375722543352601,
+        "docs_ge_25pct": 47,
+        "frac_ge_25pct": 0.27167630057803466,
+        "docs_ge_50pct": 11,
+        "frac_ge_50pct": 0.06358381502890173
+      },
+      "pure_native": {
+        "threshold": 0.05,
+        "n_measurable_docs": 152,
+        "docs_any_gt_T": 87,
+        "frac_any_gt_T": 0.5723684210526315,
+        "docs_ge_5pct": 84,
+        "frac_ge_5pct": 0.5526315789473685,
+        "docs_ge_10pct": 76,
+        "frac_ge_10pct": 0.5,
+        "docs_ge_25pct": 38,
+        "frac_ge_25pct": 0.25,
+        "docs_ge_50pct": 10,
+        "frac_ge_50pct": 0.06578947368421052
+      },
+      "pure_ocr": {
+        "threshold": 0.05,
+        "n_measurable_docs": 4,
+        "docs_any_gt_T": 3,
+        "frac_any_gt_T": 0.75,
+        "docs_ge_5pct": 3,
+        "frac_ge_5pct": 0.75,
+        "docs_ge_10pct": 3,
+        "frac_ge_10pct": 0.75,
+        "docs_ge_25pct": 3,
+        "frac_ge_25pct": 0.75,
+        "docs_ge_50pct": 0,
+        "frac_ge_50pct": 0.0
+      },
+      "mixed": {
+        "threshold": 0.05,
+        "n_measurable_docs": 16,
+        "docs_any_gt_T": 16,
+        "frac_any_gt_T": 1.0,
+        "docs_ge_5pct": 15,
+        "frac_ge_5pct": 0.9375,
+        "docs_ge_10pct": 13,
+        "frac_ge_10pct": 0.8125,
+        "docs_ge_25pct": 6,
+        "frac_ge_25pct": 0.375,
+        "docs_ge_50pct": 1,
+        "frac_ge_50pct": 0.0625
+      }
+    },
+    "0.06": {
+      "all_measurable": {
+        "threshold": 0.06,
+        "n_measurable_docs": 173,
+        "docs_any_gt_T": 104,
+        "frac_any_gt_T": 0.6011560693641619,
+        "docs_ge_5pct": 99,
+        "frac_ge_5pct": 0.5722543352601156,
+        "docs_ge_10pct": 82,
+        "frac_ge_10pct": 0.47398843930635837,
+        "docs_ge_25pct": 40,
+        "frac_ge_25pct": 0.23121387283236994,
+        "docs_ge_50pct": 11,
+        "frac_ge_50pct": 0.06358381502890173
+      },
+      "pure_native": {
+        "threshold": 0.06,
+        "n_measurable_docs": 152,
+        "docs_any_gt_T": 84,
+        "frac_any_gt_T": 0.5526315789473685,
+        "docs_ge_5pct": 81,
+        "frac_ge_5pct": 0.5328947368421053,
+        "docs_ge_10pct": 67,
+        "frac_ge_10pct": 0.4407894736842105,
+        "docs_ge_25pct": 31,
+        "frac_ge_25pct": 0.20394736842105263,
+        "docs_ge_50pct": 10,
+        "frac_ge_50pct": 0.06578947368421052
+      },
+      "pure_ocr": {
+        "threshold": 0.06,
+        "n_measurable_docs": 4,
+        "docs_any_gt_T": 3,
+        "frac_any_gt_T": 0.75,
+        "docs_ge_5pct": 3,
+        "frac_ge_5pct": 0.75,
+        "docs_ge_10pct": 3,
+        "frac_ge_10pct": 0.75,
+        "docs_ge_25pct": 3,
+        "frac_ge_25pct": 0.75,
+        "docs_ge_50pct": 0,
+        "frac_ge_50pct": 0.0
+      },
+      "mixed": {
+        "threshold": 0.06,
+        "n_measurable_docs": 16,
+        "docs_any_gt_T": 16,
+        "frac_any_gt_T": 1.0,
+        "docs_ge_5pct": 14,
+        "frac_ge_5pct": 0.875,
+        "docs_ge_10pct": 11,
+        "frac_ge_10pct": 0.6875,
+        "docs_ge_25pct": 6,
+        "frac_ge_25pct": 0.375,
+        "docs_ge_50pct": 1,
+        "frac_ge_50pct": 0.0625
+      }
+    }
+  },
+  "hidden_document_analysis": {
+    "0.02": {
+      "threshold": 0.02,
+      "total_measurable_docs": 173,
+      "hidden_docs_count": 58,
+      "hidden_docs_fraction": 0.3352601156069364,
+      "hidden_doc_ids": [
+        "INE154A01025/2012",
+        "INE154A01025/2013",
+        "INE081A01020/2012",
+        "INE151A01013/2013",
+        "INE044A01036/2012",
+        "INE151A01013/2012",
+        "INE171A01029/2013",
+        "INE119A01028/2012",
+        "INE192B01031/2013",
+        "INE009A01021/2017",
+        "INE002A01018/2017",
+        "INE044A01036/2018",
+        "INE044A01036/2017",
+        "INE001B01026/2017",
+        "INE004C01028/2018",
+        "INE004E01016/2017",
+        "INE002E01010/2018",
+        "INE151A01013/2018",
+        "INE226A01021/2017",
+        "INE761H01022/2018",
+        "INE171A01029/2018",
+        "INE171A01029/2017",
+        "INE797F01020/2017",
+        "INE797F01020/2018",
+        "INE191H01014/2018",
+        "INE008A01015/2018",
+        "INE008A01015/2017",
+        "INE482A01020/2018",
+        "INE009A01021/2025",
+        "INE009A01021/2024",
+        "INE044A01036/2025",
+        "INE044A01036/2024",
+        "INE192B01031/2018",
+        "INE040A01034/2024",
+        "INE081A01020/2025",
+        "INE154A01025/2025",
+        "INE008A01015/2012",
+        "INE004C01028/2025",
+        "INE081A01020/2024",
+        "INE004E01016/2025",
+        "INE154A01025/2024",
+        "INE001B01026/2025",
+        "INE006I01046/2025",
+        "INE006I01046/2024",
+        "INE007A01025/2024",
+        "INE007A01025/2025",
+        "INE171A01029/2025",
+        "INE171A01029/2024",
+        "INE226A01021/2025",
+        "INE761H01022/2024",
+        "INE761H01022/2025",
+        "INE482A01020/2025",
+        "INE192B01031/2025",
+        "INE00E101023/2025",
+        "INE192B01031/2024",
+        "INE00E101023/2024",
+        "INE00FF01025/2024",
+        "INE00WC01027/2025"
+      ]
+    },
+    "0.025": {
+      "threshold": 0.025,
+      "total_measurable_docs": 173,
+      "hidden_docs_count": 73,
+      "hidden_docs_fraction": 0.42196531791907516,
+      "hidden_doc_ids": [
+        "INE002A01018/2013",
+        "INE154A01025/2012",
+        "INE154A01025/2013",
+        "INE081A01020/2012",
+        "INE005E01013/2012",
+        "INE005E01013/2013",
+        "INE001B01026/2013",
+        "INE151A01013/2013",
+        "INE044A01036/2012",
+        "INE151A01013/2012",
+        "INE171A01029/2013",
+        "INE191H01014/2013",
+        "INE119A01028/2012",
+        "INE192B01031/2013",
+        "INE482A01020/2012",
+        "INE009A01021/2017",
+        "INE002A01018/2017",
+        "INE044A01036/2018",
+        "INE044A01036/2017",
+        "INE154A01025/2017",
+        "INE001B01026/2017",
+        "INE004C01028/2018",
+        "INE002E01010/2018",
+        "INE007A01025/2018",
+        "INE151A01013/2017",
+        "INE151A01013/2018",
+        "INE226A01021/2017",
+        "INE761H01022/2018",
+        "INE171A01029/2018",
+        "INE171A01029/2017",
+        "INE797F01020/2017",
+        "INE797F01020/2018",
+        "INE191H01014/2018",
+        "INE008A01015/2018",
+        "INE008A01015/2017",
+        "INE482A01020/2017",
+        "INE482A01020/2018",
+        "INE002A01018/2025",
+        "INE009A01021/2025",
+        "INE009A01021/2024",
+        "INE044A01036/2025",
+        "INE044A01036/2024",
+        "INE192B01031/2018",
+        "INE040A01034/2025",
+        "INE040A01034/2024",
+        "INE081A01020/2025",
+        "INE154A01025/2025",
+        "INE008A01015/2012",
+        "INE004C01028/2025",
+        "INE081A01020/2024",
+        "INE004E01016/2025",
+        "INE154A01025/2024",
+        "INE001B01026/2025",
+        "INE006I01046/2025",
+        "INE006I01046/2024",
+        "INE007A01025/2024",
+        "INE007A01025/2025",
+        "INE171A01029/2025",
+        "INE171A01029/2024",
+        "INE226A01021/2025",
+        "INE761H01022/2024",
+        "INE797F01020/2024",
+        "INE004C01028/2024",
+        "INE761H01022/2025",
+        "INE191H01014/2024",
+        "INE482A01020/2025",
+        "INE192B01031/2025",
+        "INE00E101023/2025",
+        "INE192B01031/2024",
+        "INE00E101023/2024",
+        "INE00FF01025/2024",
+        "INE00LO01017/2025",
+        "INE00WC01027/2025"
+      ]
+    },
+    "0.03": {
+      "threshold": 0.03,
+      "total_measurable_docs": 173,
+      "hidden_docs_count": 78,
+      "hidden_docs_fraction": 0.4508670520231214,
+      "hidden_doc_ids": [
+        "INE002A01018/2013",
+        "INE154A01025/2012",
+        "INE154A01025/2013",
+        "INE081A01020/2012",
+        "INE005E01013/2012",
+        "INE005E01013/2013",
+        "INE001B01026/2013",
+        "INE151A01013/2013",
+        "INE044A01036/2012",
+        "INE151A01013/2012",
+        "INE171A01029/2013",
+        "INE191H01014/2013",
+        "INE192B01031/2013",
+        "INE482A01020/2012",
+        "INE009A01021/2017",
+        "INE002A01018/2017",
+        "INE044A01036/2018",
+        "INE044A01036/2017",
+        "INE154A01025/2017",
+        "INE001B01026/2017",
+        "INE004C01028/2018",
+        "INE154A01025/2018",
+        "INE007A01025/2018",
+        "INE151A01013/2017",
+        "INE151A01013/2018",
+        "INE226A01021/2017",
+        "INE761H01022/2018",
+        "INE171A01029/2018",
+        "INE761H01022/2017",
+        "INE226A01021/2018",
+        "INE171A01029/2017",
+        "INE797F01020/2017",
+        "INE797F01020/2018",
+        "INE119A01028/2017",
+        "INE191H01014/2018",
+        "INE008A01015/2018",
+        "INE008A01015/2017",
+        "INE482A01020/2017",
+        "INE482A01020/2018",
+        "INE002A01018/2025",
+        "INE009A01021/2025",
+        "INE009A01021/2024",
+        "INE044A01036/2025",
+        "INE044A01036/2024",
+        "INE192B01031/2018",
+        "INE040A01034/2025",
+        "INE040A01034/2024",
+        "INE081A01020/2025",
+        "INE154A01025/2025",
+        "INE008A01015/2012",
+        "INE004C01028/2025",
+        "INE081A01020/2024",
+        "INE004E01016/2025",
+        "INE001B01026/2025",
+        "INE006I01046/2025",
+        "INE006I01046/2024",
+        "INE007A01025/2024",
+        "INE151A01013/2025",
+        "INE007A01025/2025",
+        "INE171A01029/2025",
+        "INE171A01029/2024",
+        "INE226A01021/2025",
+        "INE761H01022/2024",
+        "INE797F01020/2024",
+        "INE002S01010/2024",
+        "INE004C01028/2024",
+        "INE761H01022/2025",
+        "INE191H01014/2024",
+        "INE482A01020/2025",
+        "INE192B01031/2025",
+        "INE00E101023/2025",
+        "INE192B01031/2024",
+        "INE482A01020/2024",
+        "INE00E101023/2024",
+        "INE00FF01025/2024",
+        "INE00LO01017/2025",
+        "INE00WC01027/2025",
+        "INE00LO01017/2024"
+      ]
+    },
+    "0.035": {
+      "threshold": 0.035,
+      "total_measurable_docs": 173,
+      "hidden_docs_count": 85,
+      "hidden_docs_fraction": 0.4913294797687861,
+      "hidden_doc_ids": [
+        "INE002A01018/2013",
+        "INE154A01025/2012",
+        "INE154A01025/2013",
+        "INE081A01020/2012",
+        "INE005E01013/2012",
+        "INE005E01013/2013",
+        "INE001B01026/2013",
+        "INE151A01013/2013",
+        "INE044A01036/2012",
+        "INE151A01013/2012",
+        "INE171A01029/2013",
+        "INE761H01022/2013",
+        "INE191H01014/2013",
+        "INE192B01031/2013",
+        "INE482A01020/2012",
+        "INE119A01028/2013",
+        "INE009A01021/2017",
+        "INE002A01018/2017",
+        "INE044A01036/2018",
+        "INE044A01036/2017",
+        "INE154A01025/2017",
+        "INE001B01026/2018",
+        "INE001B01026/2017",
+        "INE154A01025/2018",
+        "INE002E01010/2017",
+        "INE007A01025/2017",
+        "INE007A01025/2018",
+        "INE151A01013/2017",
+        "INE151A01013/2018",
+        "INE226A01021/2017",
+        "INE761H01022/2018",
+        "INE171A01029/2018",
+        "INE761H01022/2017",
+        "INE226A01021/2018",
+        "INE171A01029/2017",
+        "INE797F01020/2017",
+        "INE797F01020/2018",
+        "INE119A01028/2017",
+        "INE191H01014/2018",
+        "INE008A01015/2018",
+        "INE192B01031/2017",
+        "INE008A01015/2017",
+        "INE482A01020/2017",
+        "INE482A01020/2018",
+        "INE002A01018/2025",
+        "INE009A01021/2025",
+        "INE009A01021/2024",
+        "INE044A01036/2025",
+        "INE044A01036/2024",
+        "INE192B01031/2018",
+        "INE040A01034/2025",
+        "INE040A01034/2024",
+        "INE081A01020/2025",
+        "INE154A01025/2025",
+        "INE008A01015/2012",
+        "INE081A01020/2024",
+        "INE004E01016/2025",
+        "INE001B01026/2025",
+        "INE006I01046/2025",
+        "INE006I01046/2024",
+        "INE007A01025/2024",
+        "INE151A01013/2025",
+        "INE007A01025/2025",
+        "INE151A01013/2024",
+        "INE171A01029/2025",
+        "INE171A01029/2024",
+        "INE226A01021/2025",
+        "INE761H01022/2024",
+        "INE797F01020/2024",
+        "INE002S01010/2024",
+        "INE004C01028/2024",
+        "INE797F01020/2025",
+        "INE119A01028/2025",
+        "INE002S01010/2025",
+        "INE761H01022/2025",
+        "INE191H01014/2024",
+        "INE482A01020/2025",
+        "INE192B01031/2025",
+        "INE00E101023/2025",
+        "INE192B01031/2024",
+        "INE482A01020/2024",
+        "INE00E101023/2024",
+        "INE00FF01025/2024",
+        "INE00LO01017/2025",
+        "INE00WC01027/2025"
+      ]
+    },
+    "0.04": {
+      "threshold": 0.04,
+      "total_measurable_docs": 173,
+      "hidden_docs_count": 87,
+      "hidden_docs_fraction": 0.5028901734104047,
+      "hidden_doc_ids": [
+        "INE002A01018/2013",
+        "INE154A01025/2012",
+        "INE154A01025/2013",
+        "INE081A01020/2012",
+        "INE001B01026/2012",
+        "INE081A01020/2013",
+        "INE005E01013/2012",
+        "INE005E01013/2013",
+        "INE001B01026/2013",
+        "INE151A01013/2013",
+        "INE044A01036/2012",
+        "INE151A01013/2012",
+        "INE171A01029/2013",
+        "INE226A01021/2013",
+        "INE761H01022/2013",
+        "INE191H01014/2013",
+        "INE192B01031/2013",
+        "INE482A01020/2012",
+        "INE119A01028/2013",
+        "INE009A01021/2017",
+        "INE002A01018/2017",
+        "INE044A01036/2018",
+        "INE044A01036/2017",
+        "INE154A01025/2017",
+        "INE001B01026/2018",
+        "INE001B01026/2017",
+        "INE154A01025/2018",
+        "INE004C01028/2017",
+        "INE002E01010/2017",
+        "INE007A01025/2017",
+        "INE007A01025/2018",
+        "INE151A01013/2017",
+        "INE151A01013/2018",
+        "INE226A01021/2017",
+        "INE761H01022/2018",
+        "INE171A01029/2018",
+        "INE761H01022/2017",
+        "INE226A01021/2018",
+        "INE171A01029/2017",
+        "INE797F01020/2017",
+        "INE797F01020/2018",
+        "INE119A01028/2017",
+        "INE191H01014/2018",
+        "INE008A01015/2018",
+        "INE192B01031/2017",
+        "INE008A01015/2017",
+        "INE482A01020/2017",
+        "INE482A01020/2018",
+        "INE002A01018/2025",
+        "INE009A01021/2024",
+        "INE044A01036/2025",
+        "INE044A01036/2024",
+        "INE192B01031/2018",
+        "INE040A01034/2025",
+        "INE040A01034/2024",
+        "INE154A01025/2025",
+        "INE008A01015/2012",
+        "INE081A01020/2024",
+        "INE004E01016/2025",
+        "INE001B01026/2025",
+        "INE006I01046/2025",
+        "INE006I01046/2024",
+        "INE007A01025/2024",
+        "INE151A01013/2025",
+        "INE007A01025/2025",
+        "INE151A01013/2024",
+        "INE171A01029/2025",
+        "INE171A01029/2024",
+        "INE226A01021/2025",
+        "INE761H01022/2024",
+        "INE797F01020/2024",
+        "INE002S01010/2024",
+        "INE004C01028/2024",
+        "INE797F01020/2025",
+        "INE119A01028/2025",
+        "INE002S01010/2025",
+        "INE761H01022/2025",
+        "INE191H01014/2024",
+        "INE192B01031/2025",
+        "INE00E101023/2025",
+        "INE192B01031/2024",
+        "INE482A01020/2024",
+        "INE00E101023/2024",
+        "INE00FF01025/2024",
+        "INE00LO01017/2025",
+        "INE00WC01027/2025",
+        "INE002A01018/2018"
+      ]
+    },
+    "0.05": {
+      "threshold": 0.05,
+      "total_measurable_docs": 173,
+      "hidden_docs_count": 88,
+      "hidden_docs_fraction": 0.5086705202312138,
+      "hidden_doc_ids": [
+        "INE002A01018/2013",
+        "INE154A01025/2012",
+        "INE154A01025/2013",
+        "INE081A01020/2012",
+        "INE001B01026/2012",
+        "INE081A01020/2013",
+        "INE005E01013/2012",
+        "INE005E01013/2013",
+        "INE001B01026/2013",
+        "INE151A01013/2013",
+        "INE044A01036/2012",
+        "INE226A01021/2013",
+        "INE761H01022/2013",
+        "INE191H01014/2013",
+        "INE191H01014/2012",
+        "INE192B01031/2013",
+        "INE482A01020/2012",
+        "INE119A01028/2013",
+        "INE009A01021/2017",
+        "INE002A01018/2017",
+        "INE044A01036/2017",
+        "INE154A01025/2017",
+        "INE001B01026/2018",
+        "INE001B01026/2017",
+        "INE006C01015/2018",
+        "INE154A01025/2018",
+        "INE004C01028/2017",
+        "INE001O01029/2018",
+        "INE002E01010/2017",
+        "INE007A01025/2017",
+        "INE007A01025/2018",
+        "INE151A01013/2017",
+        "INE151A01013/2018",
+        "INE226A01021/2017",
+        "INE761H01022/2018",
+        "INE171A01029/2018",
+        "INE761H01022/2017",
+        "INE226A01021/2018",
+        "INE171A01029/2017",
+        "INE002S01010/2018",
+        "INE797F01020/2017",
+        "INE797F01020/2018",
+        "INE119A01028/2017",
+        "INE191H01014/2018",
+        "INE191H01014/2017",
+        "INE008A01015/2018",
+        "INE192B01031/2017",
+        "INE482A01020/2017",
+        "INE482A01020/2018",
+        "INE002A01018/2025",
+        "INE002A01018/2024",
+        "INE044A01036/2025",
+        "INE044A01036/2024",
+        "INE192B01031/2018",
+        "INE040A01034/2025",
+        "INE040A01034/2024",
+        "INE008A01015/2012",
+        "INE081A01020/2024",
+        "INE004E01016/2025",
+        "INE001B01026/2025",
+        "INE004Z01011/2025",
+        "INE004Z01011/2024",
+        "INE001O01029/2024",
+        "INE006I01046/2024",
+        "INE007A01025/2024",
+        "INE007A01025/2025",
+        "INE151A01013/2024",
+        "INE171A01029/2025",
+        "INE171A01029/2024",
+        "INE226A01021/2025",
+        "INE761H01022/2024",
+        "INE002S01010/2024",
+        "INE004C01028/2024",
+        "INE797F01020/2025",
+        "INE119A01028/2025",
+        "INE002S01010/2025",
+        "INE119A01028/2024",
+        "INE761H01022/2025",
+        "INE191H01014/2024",
+        "INE192B01031/2025",
+        "INE192B01031/2024",
+        "INE482A01020/2024",
+        "INE00E101023/2024",
+        "INE00FF01025/2024",
+        "INE00FF01025/2025",
+        "INE00LO01017/2025",
+        "INE00WC01027/2025",
+        "INE002A01018/2018"
+      ]
+    },
+    "0.06": {
+      "threshold": 0.06,
+      "total_measurable_docs": 173,
+      "hidden_docs_count": 92,
+      "hidden_docs_fraction": 0.5317919075144508,
+      "hidden_doc_ids": [
+        "INE002A01018/2013",
+        "INE154A01025/2012",
+        "INE154A01025/2013",
+        "INE081A01020/2012",
+        "INE001B01026/2012",
+        "INE081A01020/2013",
+        "INE005E01013/2012",
+        "INE005E01013/2013",
+        "INE001B01026/2013",
+        "INE151A01013/2013",
+        "INE044A01036/2012",
+        "INE226A01021/2013",
+        "INE761H01022/2013",
+        "INE191H01014/2013",
+        "INE191H01014/2012",
+        "INE192B01031/2013",
+        "INE482A01020/2012",
+        "INE119A01028/2013",
+        "INE192B01031/2012",
+        "INE009A01021/2017",
+        "INE002A01018/2017",
+        "INE044A01036/2017",
+        "INE081A01020/2017",
+        "INE040A01034/2018",
+        "INE154A01025/2017",
+        "INE001B01026/2018",
+        "INE001B01026/2017",
+        "INE002L01015/2012",
+        "INE006C01015/2018",
+        "INE154A01025/2018",
+        "INE004C01028/2017",
+        "INE001O01029/2018",
+        "INE001O01029/2017",
+        "INE002E01010/2017",
+        "INE007A01025/2017",
+        "INE007A01025/2018",
+        "INE151A01013/2017",
+        "INE151A01013/2018",
+        "INE226A01021/2017",
+        "INE761H01022/2018",
+        "INE171A01029/2018",
+        "INE761H01022/2017",
+        "INE226A01021/2018",
+        "INE171A01029/2017",
+        "INE002S01010/2018",
+        "INE797F01020/2017",
+        "INE119A01028/2017",
+        "INE191H01014/2018",
+        "INE191H01014/2017",
+        "INE008A01015/2018",
+        "INE192B01031/2017",
+        "INE482A01020/2017",
+        "INE482A01020/2018",
+        "INE002A01018/2025",
+        "INE002A01018/2024",
+        "INE044A01036/2025",
+        "INE044A01036/2024",
+        "INE192B01031/2018",
+        "INE040A01034/2025",
+        "INE040A01034/2024",
+        "INE008A01015/2012",
+        "INE003B01014/2024",
+        "INE004E01016/2025",
+        "INE004Z01011/2025",
+        "INE004Z01011/2024",
+        "INE001O01029/2024",
+        "INE006I01046/2024",
+        "INE007A01025/2024",
+        "INE007A01025/2025",
+        "INE151A01013/2024",
+        "INE171A01029/2025",
+        "INE171A01029/2024",
+        "INE226A01021/2025",
+        "INE761H01022/2024",
+        "INE002S01010/2024",
+        "INE004C01028/2024",
+        "INE797F01020/2025",
+        "INE119A01028/2025",
+        "INE002S01010/2025",
+        "INE119A01028/2024",
+        "INE761H01022/2025",
+        "INE008A01015/2025",
+        "INE191H01014/2024",
+        "INE192B01031/2025",
+        "INE192B01031/2024",
+        "INE482A01020/2024",
+        "INE00E101023/2024",
+        "INE00FF01025/2024",
+        "INE00FF01025/2025",
+        "INE00LO01017/2025",
+        "INE00WC01027/2025",
+        "INE002A01018/2018"
+      ]
+    }
+  },
+  "leave_one_pure_ocr_out": [
+    {
+      "threshold": 0.02,
+      "removed_pure_ocr_doc": "INE002A01018/2018",
+      "before_flagged_count": 4,
+      "before_fraction": 0.8,
+      "after_flagged_count": 3,
+      "after_fraction": 0.75,
+      "change": -0.050000000000000044,
+      "stable": true,
+      "qualitative_conclusion": "Removing INE002A01018/2018 moves flagged fraction from 0.80 (5 docs) to 0.75 (4 docs), delta -0.05."
+    },
+    {
+      "threshold": 0.02,
+      "removed_pure_ocr_doc": "INE002L01015/2012",
+      "before_flagged_count": 4,
+      "before_fraction": 0.8,
+      "after_flagged_count": 3,
+      "after_fraction": 0.75,
+      "change": -0.050000000000000044,
+      "stable": true,
+      "qualitative_conclusion": "Removing INE002L01015/2012 moves flagged fraction from 0.80 (5 docs) to 0.75 (4 docs), delta -0.05."
+    },
+    {
+      "threshold": 0.02,
+      "removed_pure_ocr_doc": "INE003B01014/2011",
+      "before_flagged_count": 4,
+      "before_fraction": 0.8,
+      "after_flagged_count": 4,
+      "after_fraction": 1.0,
+      "change": 0.19999999999999996,
+      "stable": false,
+      "qualitative_conclusion": "Removing INE003B01014/2011 moves flagged fraction from 0.80 (5 docs) to 1.00 (4 docs), delta +0.20."
+    },
+    {
+      "threshold": 0.02,
+      "removed_pure_ocr_doc": "INE004C01028/2024",
+      "before_flagged_count": 4,
+      "before_fraction": 0.8,
+      "after_flagged_count": 3,
+      "after_fraction": 0.75,
+      "change": -0.050000000000000044,
+      "stable": true,
+      "qualitative_conclusion": "Removing INE004C01028/2024 moves flagged fraction from 0.80 (5 docs) to 0.75 (4 docs), delta -0.05."
+    },
+    {
+      "threshold": 0.02,
+      "removed_pure_ocr_doc": "INE009A01021/2013",
+      "before_flagged_count": 4,
+      "before_fraction": 0.8,
+      "after_flagged_count": 3,
+      "after_fraction": 0.75,
+      "change": -0.050000000000000044,
+      "stable": true,
+      "qualitative_conclusion": "Removing INE009A01021/2013 moves flagged fraction from 0.80 (5 docs) to 0.75 (4 docs), delta -0.05."
+    },
+    {
+      "threshold": 0.025,
+      "removed_pure_ocr_doc": "INE002A01018/2018",
+      "before_flagged_count": 4,
+      "before_fraction": 0.8,
+      "after_flagged_count": 3,
+      "after_fraction": 0.75,
+      "change": -0.050000000000000044,
+      "stable": true,
+      "qualitative_conclusion": "Removing INE002A01018/2018 moves flagged fraction from 0.80 (5 docs) to 0.75 (4 docs), delta -0.05."
+    },
+    {
+      "threshold": 0.025,
+      "removed_pure_ocr_doc": "INE002L01015/2012",
+      "before_flagged_count": 4,
+      "before_fraction": 0.8,
+      "after_flagged_count": 3,
+      "after_fraction": 0.75,
+      "change": -0.050000000000000044,
+      "stable": true,
+      "qualitative_conclusion": "Removing INE002L01015/2012 moves flagged fraction from 0.80 (5 docs) to 0.75 (4 docs), delta -0.05."
+    },
+    {
+      "threshold": 0.025,
+      "removed_pure_ocr_doc": "INE003B01014/2011",
+      "before_flagged_count": 4,
+      "before_fraction": 0.8,
+      "after_flagged_count": 4,
+      "after_fraction": 1.0,
+      "change": 0.19999999999999996,
+      "stable": false,
+      "qualitative_conclusion": "Removing INE003B01014/2011 moves flagged fraction from 0.80 (5 docs) to 1.00 (4 docs), delta +0.20."
+    },
+    {
+      "threshold": 0.025,
+      "removed_pure_ocr_doc": "INE004C01028/2024",
+      "before_flagged_count": 4,
+      "before_fraction": 0.8,
+      "after_flagged_count": 3,
+      "after_fraction": 0.75,
+      "change": -0.050000000000000044,
+      "stable": true,
+      "qualitative_conclusion": "Removing INE004C01028/2024 moves flagged fraction from 0.80 (5 docs) to 0.75 (4 docs), delta -0.05."
+    },
+    {
+      "threshold": 0.025,
+      "removed_pure_ocr_doc": "INE009A01021/2013",
+      "before_flagged_count": 4,
+      "before_fraction": 0.8,
+      "after_flagged_count": 3,
+      "after_fraction": 0.75,
+      "change": -0.050000000000000044,
+      "stable": true,
+      "qualitative_conclusion": "Removing INE009A01021/2013 moves flagged fraction from 0.80 (5 docs) to 0.75 (4 docs), delta -0.05."
+    },
+    {
+      "threshold": 0.03,
+      "removed_pure_ocr_doc": "INE002A01018/2018",
+      "before_flagged_count": 4,
+      "before_fraction": 0.8,
+      "after_flagged_count": 3,
+      "after_fraction": 0.75,
+      "change": -0.050000000000000044,
+      "stable": true,
+      "qualitative_conclusion": "Removing INE002A01018/2018 moves flagged fraction from 0.80 (5 docs) to 0.75 (4 docs), delta -0.05."
+    },
+    {
+      "threshold": 0.03,
+      "removed_pure_ocr_doc": "INE002L01015/2012",
+      "before_flagged_count": 4,
+      "before_fraction": 0.8,
+      "after_flagged_count": 3,
+      "after_fraction": 0.75,
+      "change": -0.050000000000000044,
+      "stable": true,
+      "qualitative_conclusion": "Removing INE002L01015/2012 moves flagged fraction from 0.80 (5 docs) to 0.75 (4 docs), delta -0.05."
+    },
+    {
+      "threshold": 0.03,
+      "removed_pure_ocr_doc": "INE003B01014/2011",
+      "before_flagged_count": 4,
+      "before_fraction": 0.8,
+      "after_flagged_count": 4,
+      "after_fraction": 1.0,
+      "change": 0.19999999999999996,
+      "stable": false,
+      "qualitative_conclusion": "Removing INE003B01014/2011 moves flagged fraction from 0.80 (5 docs) to 1.00 (4 docs), delta +0.20."
+    },
+    {
+      "threshold": 0.03,
+      "removed_pure_ocr_doc": "INE004C01028/2024",
+      "before_flagged_count": 4,
+      "before_fraction": 0.8,
+      "after_flagged_count": 3,
+      "after_fraction": 0.75,
+      "change": -0.050000000000000044,
+      "stable": true,
+      "qualitative_conclusion": "Removing INE004C01028/2024 moves flagged fraction from 0.80 (5 docs) to 0.75 (4 docs), delta -0.05."
+    },
+    {
+      "threshold": 0.03,
+      "removed_pure_ocr_doc": "INE009A01021/2013",
+      "before_flagged_count": 4,
+      "before_fraction": 0.8,
+      "after_flagged_count": 3,
+      "after_fraction": 0.75,
+      "change": -0.050000000000000044,
+      "stable": true,
+      "qualitative_conclusion": "Removing INE009A01021/2013 moves flagged fraction from 0.80 (5 docs) to 0.75 (4 docs), delta -0.05."
+    },
+    {
+      "threshold": 0.035,
+      "removed_pure_ocr_doc": "INE002A01018/2018",
+      "before_flagged_count": 3,
+      "before_fraction": 0.6,
+      "after_flagged_count": 2,
+      "after_fraction": 0.5,
+      "change": -0.09999999999999998,
+      "stable": true,
+      "qualitative_conclusion": "Removing INE002A01018/2018 moves flagged fraction from 0.60 (5 docs) to 0.50 (4 docs), delta -0.10."
+    },
+    {
+      "threshold": 0.035,
+      "removed_pure_ocr_doc": "INE002L01015/2012",
+      "before_flagged_count": 3,
+      "before_fraction": 0.6,
+      "after_flagged_count": 2,
+      "after_fraction": 0.5,
+      "change": -0.09999999999999998,
+      "stable": true,
+      "qualitative_conclusion": "Removing INE002L01015/2012 moves flagged fraction from 0.60 (5 docs) to 0.50 (4 docs), delta -0.10."
+    },
+    {
+      "threshold": 0.035,
+      "removed_pure_ocr_doc": "INE003B01014/2011",
+      "before_flagged_count": 3,
+      "before_fraction": 0.6,
+      "after_flagged_count": 3,
+      "after_fraction": 0.75,
+      "change": 0.15000000000000002,
+      "stable": false,
+      "qualitative_conclusion": "Removing INE003B01014/2011 moves flagged fraction from 0.60 (5 docs) to 0.75 (4 docs), delta +0.15."
+    },
+    {
+      "threshold": 0.035,
+      "removed_pure_ocr_doc": "INE004C01028/2024",
+      "before_flagged_count": 3,
+      "before_fraction": 0.6,
+      "after_flagged_count": 2,
+      "after_fraction": 0.5,
+      "change": -0.09999999999999998,
+      "stable": true,
+      "qualitative_conclusion": "Removing INE004C01028/2024 moves flagged fraction from 0.60 (5 docs) to 0.50 (4 docs), delta -0.10."
+    },
+    {
+      "threshold": 0.035,
+      "removed_pure_ocr_doc": "INE009A01021/2013",
+      "before_flagged_count": 3,
+      "before_fraction": 0.6,
+      "after_flagged_count": 3,
+      "after_fraction": 0.75,
+      "change": 0.15000000000000002,
+      "stable": false,
+      "qualitative_conclusion": "Removing INE009A01021/2013 moves flagged fraction from 0.60 (5 docs) to 0.75 (4 docs), delta +0.15."
+    },
+    {
+      "threshold": 0.04,
+      "removed_pure_ocr_doc": "INE002A01018/2018",
+      "before_flagged_count": 3,
+      "before_fraction": 0.6,
+      "after_flagged_count": 2,
+      "after_fraction": 0.5,
+      "change": -0.09999999999999998,
+      "stable": true,
+      "qualitative_conclusion": "Removing INE002A01018/2018 moves flagged fraction from 0.60 (5 docs) to 0.50 (4 docs), delta -0.10."
+    },
+    {
+      "threshold": 0.04,
+      "removed_pure_ocr_doc": "INE002L01015/2012",
+      "before_flagged_count": 3,
+      "before_fraction": 0.6,
+      "after_flagged_count": 2,
+      "after_fraction": 0.5,
+      "change": -0.09999999999999998,
+      "stable": true,
+      "qualitative_conclusion": "Removing INE002L01015/2012 moves flagged fraction from 0.60 (5 docs) to 0.50 (4 docs), delta -0.10."
+    },
+    {
+      "threshold": 0.04,
+      "removed_pure_ocr_doc": "INE003B01014/2011",
+      "before_flagged_count": 3,
+      "before_fraction": 0.6,
+      "after_flagged_count": 3,
+      "after_fraction": 0.75,
+      "change": 0.15000000000000002,
+      "stable": false,
+      "qualitative_conclusion": "Removing INE003B01014/2011 moves flagged fraction from 0.60 (5 docs) to 0.75 (4 docs), delta +0.15."
+    },
+    {
+      "threshold": 0.04,
+      "removed_pure_ocr_doc": "INE004C01028/2024",
+      "before_flagged_count": 3,
+      "before_fraction": 0.6,
+      "after_flagged_count": 2,
+      "after_fraction": 0.5,
+      "change": -0.09999999999999998,
+      "stable": true,
+      "qualitative_conclusion": "Removing INE004C01028/2024 moves flagged fraction from 0.60 (5 docs) to 0.50 (4 docs), delta -0.10."
+    },
+    {
+      "threshold": 0.04,
+      "removed_pure_ocr_doc": "INE009A01021/2013",
+      "before_flagged_count": 3,
+      "before_fraction": 0.6,
+      "after_flagged_count": 3,
+      "after_fraction": 0.75,
+      "change": 0.15000000000000002,
+      "stable": false,
+      "qualitative_conclusion": "Removing INE009A01021/2013 moves flagged fraction from 0.60 (5 docs) to 0.75 (4 docs), delta +0.15."
+    },
+    {
+      "threshold": 0.05,
+      "removed_pure_ocr_doc": "INE002A01018/2018",
+      "before_flagged_count": 3,
+      "before_fraction": 0.6,
+      "after_flagged_count": 2,
+      "after_fraction": 0.5,
+      "change": -0.09999999999999998,
+      "stable": true,
+      "qualitative_conclusion": "Removing INE002A01018/2018 moves flagged fraction from 0.60 (5 docs) to 0.50 (4 docs), delta -0.10."
+    },
+    {
+      "threshold": 0.05,
+      "removed_pure_ocr_doc": "INE002L01015/2012",
+      "before_flagged_count": 3,
+      "before_fraction": 0.6,
+      "after_flagged_count": 2,
+      "after_fraction": 0.5,
+      "change": -0.09999999999999998,
+      "stable": true,
+      "qualitative_conclusion": "Removing INE002L01015/2012 moves flagged fraction from 0.60 (5 docs) to 0.50 (4 docs), delta -0.10."
+    },
+    {
+      "threshold": 0.05,
+      "removed_pure_ocr_doc": "INE003B01014/2011",
+      "before_flagged_count": 3,
+      "before_fraction": 0.6,
+      "after_flagged_count": 3,
+      "after_fraction": 0.75,
+      "change": 0.15000000000000002,
+      "stable": false,
+      "qualitative_conclusion": "Removing INE003B01014/2011 moves flagged fraction from 0.60 (5 docs) to 0.75 (4 docs), delta +0.15."
+    },
+    {
+      "threshold": 0.05,
+      "removed_pure_ocr_doc": "INE004C01028/2024",
+      "before_flagged_count": 3,
+      "before_fraction": 0.6,
+      "after_flagged_count": 2,
+      "after_fraction": 0.5,
+      "change": -0.09999999999999998,
+      "stable": true,
+      "qualitative_conclusion": "Removing INE004C01028/2024 moves flagged fraction from 0.60 (5 docs) to 0.50 (4 docs), delta -0.10."
+    },
+    {
+      "threshold": 0.05,
+      "removed_pure_ocr_doc": "INE009A01021/2013",
+      "before_flagged_count": 3,
+      "before_fraction": 0.6,
+      "after_flagged_count": 3,
+      "after_fraction": 0.75,
+      "change": 0.15000000000000002,
+      "stable": false,
+      "qualitative_conclusion": "Removing INE009A01021/2013 moves flagged fraction from 0.60 (5 docs) to 0.75 (4 docs), delta +0.15."
+    },
+    {
+      "threshold": 0.06,
+      "removed_pure_ocr_doc": "INE002A01018/2018",
+      "before_flagged_count": 3,
+      "before_fraction": 0.6,
+      "after_flagged_count": 2,
+      "after_fraction": 0.5,
+      "change": -0.09999999999999998,
+      "stable": true,
+      "qualitative_conclusion": "Removing INE002A01018/2018 moves flagged fraction from 0.60 (5 docs) to 0.50 (4 docs), delta -0.10."
+    },
+    {
+      "threshold": 0.06,
+      "removed_pure_ocr_doc": "INE002L01015/2012",
+      "before_flagged_count": 3,
+      "before_fraction": 0.6,
+      "after_flagged_count": 2,
+      "after_fraction": 0.5,
+      "change": -0.09999999999999998,
+      "stable": true,
+      "qualitative_conclusion": "Removing INE002L01015/2012 moves flagged fraction from 0.60 (5 docs) to 0.50 (4 docs), delta -0.10."
+    },
+    {
+      "threshold": 0.06,
+      "removed_pure_ocr_doc": "INE003B01014/2011",
+      "before_flagged_count": 3,
+      "before_fraction": 0.6,
+      "after_flagged_count": 3,
+      "after_fraction": 0.75,
+      "change": 0.15000000000000002,
+      "stable": false,
+      "qualitative_conclusion": "Removing INE003B01014/2011 moves flagged fraction from 0.60 (5 docs) to 0.75 (4 docs), delta +0.15."
+    },
+    {
+      "threshold": 0.06,
+      "removed_pure_ocr_doc": "INE004C01028/2024",
+      "before_flagged_count": 3,
+      "before_fraction": 0.6,
+      "after_flagged_count": 2,
+      "after_fraction": 0.5,
+      "change": -0.09999999999999998,
+      "stable": true,
+      "qualitative_conclusion": "Removing INE004C01028/2024 moves flagged fraction from 0.60 (5 docs) to 0.50 (4 docs), delta -0.10."
+    },
+    {
+      "threshold": 0.06,
+      "removed_pure_ocr_doc": "INE009A01021/2013",
+      "before_flagged_count": 3,
+      "before_fraction": 0.6,
+      "after_flagged_count": 3,
+      "after_fraction": 0.75,
+      "change": 0.15000000000000002,
+      "stable": false,
+      "qualitative_conclusion": "Removing INE009A01021/2013 moves flagged fraction from 0.60 (5 docs) to 0.75 (4 docs), delta +0.15."
+    }
+  ],
+  "mixed_within_document_analysis": [
+    {
+      "document_id": "INE001B01026/2013",
+      "company": "INE001B01026",
+      "FY": 2013,
+      "native_page_count": 11,
+      "native_measured_count": 10,
+      "ocr_page_count": 5,
+      "ocr_measured_count": 4,
+      "native_median": 0.0,
+      "ocr_median": 0.03125,
+      "threshold_comparisons": {
+        "0.02": {
+          "native_frac_gt_T": 0.2,
+          "ocr_frac_gt_T": 0.5
+        },
+        "0.025": {
+          "native_frac_gt_T": 0.2,
+          "ocr_frac_gt_T": 0.5
+        },
+        "0.03": {
+          "native_frac_gt_T": 0.2,
+          "ocr_frac_gt_T": 0.5
+        },
+        "0.035": {
+          "native_frac_gt_T": 0.1,
+          "ocr_frac_gt_T": 0.5
+        },
+        "0.04": {
+          "native_frac_gt_T": 0.1,
+          "ocr_frac_gt_T": 0.5
+        },
+        "0.05": {
+          "native_frac_gt_T": 0.1,
+          "ocr_frac_gt_T": 0.5
+        },
+        "0.06": {
+          "native_frac_gt_T": 0.1,
+          "ocr_frac_gt_T": 0.5
+        }
+      }
+    },
+    {
+      "document_id": "INE001B01026/2017",
+      "company": "INE001B01026",
+      "FY": 2017,
+      "native_page_count": 34,
+      "native_measured_count": 32,
+      "ocr_page_count": 3,
+      "ocr_measured_count": 3,
+      "native_median": 0.0,
+      "ocr_median": 0.0,
+      "threshold_comparisons": {
+        "0.02": {
+          "native_frac_gt_T": 0.1875,
+          "ocr_frac_gt_T": 0.0
+        },
+        "0.025": {
+          "native_frac_gt_T": 0.1875,
+          "ocr_frac_gt_T": 0.0
+        },
+        "0.03": {
+          "native_frac_gt_T": 0.1875,
+          "ocr_frac_gt_T": 0.0
+        },
+        "0.035": {
+          "native_frac_gt_T": 0.1875,
+          "ocr_frac_gt_T": 0.0
+        },
+        "0.04": {
+          "native_frac_gt_T": 0.1875,
+          "ocr_frac_gt_T": 0.0
+        },
+        "0.05": {
+          "native_frac_gt_T": 0.15625,
+          "ocr_frac_gt_T": 0.0
+        },
+        "0.06": {
+          "native_frac_gt_T": 0.15625,
+          "ocr_frac_gt_T": 0.0
+        }
+      }
+    },
+    {
+      "document_id": "INE004C01028/2017",
+      "company": "INE004C01028",
+      "FY": 2017,
+      "native_page_count": 11,
+      "native_measured_count": 10,
+      "ocr_page_count": 4,
+      "ocr_measured_count": 4,
+      "native_median": 0.035750000000000004,
+      "ocr_median": 0.0,
+      "threshold_comparisons": {
+        "0.02": {
+          "native_frac_gt_T": 0.6,
+          "ocr_frac_gt_T": 0.25
+        },
+        "0.025": {
+          "native_frac_gt_T": 0.6,
+          "ocr_frac_gt_T": 0.25
+        },
+        "0.03": {
+          "native_frac_gt_T": 0.6,
+          "ocr_frac_gt_T": 0.25
+        },
+        "0.035": {
+          "native_frac_gt_T": 0.5,
+          "ocr_frac_gt_T": 0.25
+        },
+        "0.04": {
+          "native_frac_gt_T": 0.4,
+          "ocr_frac_gt_T": 0.25
+        },
+        "0.05": {
+          "native_frac_gt_T": 0.3,
+          "ocr_frac_gt_T": 0.25
+        },
+        "0.06": {
+          "native_frac_gt_T": 0.3,
+          "ocr_frac_gt_T": 0.25
+        }
+      }
+    },
+    {
+      "document_id": "INE040A01034/2017",
+      "company": "INE040A01034",
+      "FY": 2017,
+      "native_page_count": 14,
+      "native_measured_count": 13,
+      "ocr_page_count": 1,
+      "ocr_measured_count": 1,
+      "native_median": 0.0,
+      "ocr_median": 0.2188,
+      "threshold_comparisons": {
+        "0.02": {
+          "native_frac_gt_T": 0.38461538461538464,
+          "ocr_frac_gt_T": 1.0
+        },
+        "0.025": {
+          "native_frac_gt_T": 0.38461538461538464,
+          "ocr_frac_gt_T": 1.0
+        },
+        "0.03": {
+          "native_frac_gt_T": 0.38461538461538464,
+          "ocr_frac_gt_T": 1.0
+        },
+        "0.035": {
+          "native_frac_gt_T": 0.38461538461538464,
+          "ocr_frac_gt_T": 1.0
+        },
+        "0.04": {
+          "native_frac_gt_T": 0.38461538461538464,
+          "ocr_frac_gt_T": 1.0
+        },
+        "0.05": {
+          "native_frac_gt_T": 0.3076923076923077,
+          "ocr_frac_gt_T": 1.0
+        },
+        "0.06": {
+          "native_frac_gt_T": 0.3076923076923077,
+          "ocr_frac_gt_T": 1.0
+        }
+      }
+    },
+    {
+      "document_id": "INE040A01034/2018",
+      "company": "INE040A01034",
+      "FY": 2018,
+      "native_page_count": 17,
+      "native_measured_count": 17,
+      "ocr_page_count": 4,
+      "ocr_measured_count": 3,
+      "native_median": 0.0,
+      "ocr_median": 0.0,
+      "threshold_comparisons": {
+        "0.02": {
+          "native_frac_gt_T": 0.29411764705882354,
+          "ocr_frac_gt_T": 0.3333333333333333
+        },
+        "0.025": {
+          "native_frac_gt_T": 0.29411764705882354,
+          "ocr_frac_gt_T": 0.3333333333333333
+        },
+        "0.03": {
+          "native_frac_gt_T": 0.29411764705882354,
+          "ocr_frac_gt_T": 0.3333333333333333
+        },
+        "0.035": {
+          "native_frac_gt_T": 0.29411764705882354,
+          "ocr_frac_gt_T": 0.3333333333333333
+        },
+        "0.04": {
+          "native_frac_gt_T": 0.23529411764705882,
+          "ocr_frac_gt_T": 0.3333333333333333
+        },
+        "0.05": {
+          "native_frac_gt_T": 0.17647058823529413,
+          "ocr_frac_gt_T": 0.3333333333333333
+        },
+        "0.06": {
+          "native_frac_gt_T": 0.17647058823529413,
+          "ocr_frac_gt_T": 0.3333333333333333
+        }
+      }
+    },
+    {
+      "document_id": "INE044A01036/2012",
+      "company": "INE044A01036",
+      "FY": 2012,
+      "native_page_count": 4,
+      "native_measured_count": 3,
+      "ocr_page_count": 17,
+      "ocr_measured_count": 17,
+      "native_median": 0.0625,
+      "ocr_median": 0.0,
+      "threshold_comparisons": {
+        "0.02": {
+          "native_frac_gt_T": 0.6666666666666666,
+          "ocr_frac_gt_T": 0.17647058823529413
+        },
+        "0.025": {
+          "native_frac_gt_T": 0.6666666666666666,
+          "ocr_frac_gt_T": 0.17647058823529413
+        },
+        "0.03": {
+          "native_frac_gt_T": 0.6666666666666666,
+          "ocr_frac_gt_T": 0.17647058823529413
+        },
+        "0.035": {
+          "native_frac_gt_T": 0.6666666666666666,
+          "ocr_frac_gt_T": 0.17647058823529413
+        },
+        "0.04": {
+          "native_frac_gt_T": 0.6666666666666666,
+          "ocr_frac_gt_T": 0.17647058823529413
+        },
+        "0.05": {
+          "native_frac_gt_T": 0.6666666666666666,
+          "ocr_frac_gt_T": 0.058823529411764705
+        },
+        "0.06": {
+          "native_frac_gt_T": 0.6666666666666666,
+          "ocr_frac_gt_T": 0.058823529411764705
+        }
+      }
+    },
+    {
+      "document_id": "INE044A01036/2017",
+      "company": "INE044A01036",
+      "FY": 2017,
+      "native_page_count": 23,
+      "native_measured_count": 22,
+      "ocr_page_count": 1,
+      "ocr_measured_count": 1,
+      "native_median": 0.0,
+      "ocr_median": 0.0,
+      "threshold_comparisons": {
+        "0.02": {
+          "native_frac_gt_T": 0.13636363636363635,
+          "ocr_frac_gt_T": 0.0
+        },
+        "0.025": {
+          "native_frac_gt_T": 0.13636363636363635,
+          "ocr_frac_gt_T": 0.0
+        },
+        "0.03": {
+          "native_frac_gt_T": 0.13636363636363635,
+          "ocr_frac_gt_T": 0.0
+        },
+        "0.035": {
+          "native_frac_gt_T": 0.09090909090909091,
+          "ocr_frac_gt_T": 0.0
+        },
+        "0.04": {
+          "native_frac_gt_T": 0.09090909090909091,
+          "ocr_frac_gt_T": 0.0
+        },
+        "0.05": {
+          "native_frac_gt_T": 0.09090909090909091,
+          "ocr_frac_gt_T": 0.0
+        },
+        "0.06": {
+          "native_frac_gt_T": 0.045454545454545456,
+          "ocr_frac_gt_T": 0.0
+        }
+      }
+    },
+    {
+      "document_id": "INE081A01020/2013",
+      "company": "INE081A01020",
+      "FY": 2013,
+      "native_page_count": 43,
+      "native_measured_count": 42,
+      "ocr_page_count": 2,
+      "ocr_measured_count": 2,
+      "native_median": 0.014799999999999999,
+      "ocr_median": 0.061349999999999995,
+      "threshold_comparisons": {
+        "0.02": {
+          "native_frac_gt_T": 0.47619047619047616,
+          "ocr_frac_gt_T": 1.0
+        },
+        "0.025": {
+          "native_frac_gt_T": 0.4523809523809524,
+          "ocr_frac_gt_T": 1.0
+        },
+        "0.03": {
+          "native_frac_gt_T": 0.40476190476190477,
+          "ocr_frac_gt_T": 0.5
+        },
+        "0.035": {
+          "native_frac_gt_T": 0.3333333333333333,
+          "ocr_frac_gt_T": 0.5
+        },
+        "0.04": {
+          "native_frac_gt_T": 0.2857142857142857,
+          "ocr_frac_gt_T": 0.5
+        },
+        "0.05": {
+          "native_frac_gt_T": 0.2857142857142857,
+          "ocr_frac_gt_T": 0.5
+        },
+        "0.06": {
+          "native_frac_gt_T": 0.2619047619047619,
+          "ocr_frac_gt_T": 0.5
+        }
+      }
+    },
+    {
+      "document_id": "INE119A01028/2013",
+      "company": "INE119A01028",
+      "FY": 2013,
+      "native_page_count": 8,
+      "native_measured_count": 7,
+      "ocr_page_count": 2,
+      "ocr_measured_count": 2,
+      "native_median": 0.0,
+      "ocr_median": 0.23095,
+      "threshold_comparisons": {
+        "0.02": {
+          "native_frac_gt_T": 0.42857142857142855,
+          "ocr_frac_gt_T": 1.0
+        },
+        "0.025": {
+          "native_frac_gt_T": 0.42857142857142855,
+          "ocr_frac_gt_T": 1.0
+        },
+        "0.03": {
+          "native_frac_gt_T": 0.42857142857142855,
+          "ocr_frac_gt_T": 1.0
+        },
+        "0.035": {
+          "native_frac_gt_T": 0.42857142857142855,
+          "ocr_frac_gt_T": 0.5
+        },
+        "0.04": {
+          "native_frac_gt_T": 0.42857142857142855,
+          "ocr_frac_gt_T": 0.5
+        },
+        "0.05": {
+          "native_frac_gt_T": 0.42857142857142855,
+          "ocr_frac_gt_T": 0.5
+        },
+        "0.06": {
+          "native_frac_gt_T": 0.42857142857142855,
+          "ocr_frac_gt_T": 0.5
+        }
+      }
+    },
+    {
+      "document_id": "INE171A01029/2017",
+      "company": "INE171A01029",
+      "FY": 2017,
+      "native_page_count": 42,
+      "native_measured_count": 41,
+      "ocr_page_count": 1,
+      "ocr_measured_count": 1,
+      "native_median": 0.0,
+      "ocr_median": 0.0,
+      "threshold_comparisons": {
+        "0.02": {
+          "native_frac_gt_T": 0.1951219512195122,
+          "ocr_frac_gt_T": 0.0
+        },
+        "0.025": {
+          "native_frac_gt_T": 0.1951219512195122,
+          "ocr_frac_gt_T": 0.0
+        },
+        "0.03": {
+          "native_frac_gt_T": 0.1951219512195122,
+          "ocr_frac_gt_T": 0.0
+        },
+        "0.035": {
+          "native_frac_gt_T": 0.14634146341463414,
+          "ocr_frac_gt_T": 0.0
+        },
+        "0.04": {
+          "native_frac_gt_T": 0.14634146341463414,
+          "ocr_frac_gt_T": 0.0
+        },
+        "0.05": {
+          "native_frac_gt_T": 0.12195121951219512,
+          "ocr_frac_gt_T": 0.0
+        },
+        "0.06": {
+          "native_frac_gt_T": 0.12195121951219512,
+          "ocr_frac_gt_T": 0.0
+        }
+      }
+    },
+    {
+      "document_id": "INE171A01029/2018",
+      "company": "INE171A01029",
+      "FY": 2018,
+      "native_page_count": 42,
+      "native_measured_count": 41,
+      "ocr_page_count": 1,
+      "ocr_measured_count": 1,
+      "native_median": 0.0,
+      "ocr_median": 0.0,
+      "threshold_comparisons": {
+        "0.02": {
+          "native_frac_gt_T": 0.2926829268292683,
+          "ocr_frac_gt_T": 0.0
+        },
+        "0.025": {
+          "native_frac_gt_T": 0.2926829268292683,
+          "ocr_frac_gt_T": 0.0
+        },
+        "0.03": {
+          "native_frac_gt_T": 0.2682926829268293,
+          "ocr_frac_gt_T": 0.0
+        },
+        "0.035": {
+          "native_frac_gt_T": 0.24390243902439024,
+          "ocr_frac_gt_T": 0.0
+        },
+        "0.04": {
+          "native_frac_gt_T": 0.1951219512195122,
+          "ocr_frac_gt_T": 0.0
+        },
+        "0.05": {
+          "native_frac_gt_T": 0.14634146341463414,
+          "ocr_frac_gt_T": 0.0
+        },
+        "0.06": {
+          "native_frac_gt_T": 0.07317073170731707,
+          "ocr_frac_gt_T": 0.0
+        }
+      }
+    },
+    {
+      "document_id": "INE191H01014/2025",
+      "company": "INE191H01014",
+      "FY": 2025,
+      "native_page_count": 26,
+      "native_measured_count": 25,
+      "ocr_page_count": 4,
+      "ocr_measured_count": 4,
+      "native_median": 0.087,
+      "ocr_median": 0.04165,
+      "threshold_comparisons": {
+        "0.02": {
+          "native_frac_gt_T": 0.64,
+          "ocr_frac_gt_T": 0.5
+        },
+        "0.025": {
+          "native_frac_gt_T": 0.64,
+          "ocr_frac_gt_T": 0.5
+        },
+        "0.03": {
+          "native_frac_gt_T": 0.64,
+          "ocr_frac_gt_T": 0.5
+        },
+        "0.035": {
+          "native_frac_gt_T": 0.64,
+          "ocr_frac_gt_T": 0.5
+        },
+        "0.04": {
+          "native_frac_gt_T": 0.6,
+          "ocr_frac_gt_T": 0.5
+        },
+        "0.05": {
+          "native_frac_gt_T": 0.52,
+          "ocr_frac_gt_T": 0.5
+        },
+        "0.06": {
+          "native_frac_gt_T": 0.52,
+          "ocr_frac_gt_T": 0.5
+        }
+      }
+    },
+    {
+      "document_id": "INE192B01031/2024",
+      "company": "INE192B01031",
+      "FY": 2024,
+      "native_page_count": 26,
+      "native_measured_count": 25,
+      "ocr_page_count": 2,
+      "ocr_measured_count": 2,
+      "native_median": 0.0,
+      "ocr_median": 0.0,
+      "threshold_comparisons": {
+        "0.02": {
+          "native_frac_gt_T": 0.04,
+          "ocr_frac_gt_T": 0.0
+        },
+        "0.025": {
+          "native_frac_gt_T": 0.04,
+          "ocr_frac_gt_T": 0.0
+        },
+        "0.03": {
+          "native_frac_gt_T": 0.04,
+          "ocr_frac_gt_T": 0.0
+        },
+        "0.035": {
+          "native_frac_gt_T": 0.04,
+          "ocr_frac_gt_T": 0.0
+        },
+        "0.04": {
+          "native_frac_gt_T": 0.04,
+          "ocr_frac_gt_T": 0.0
+        },
+        "0.05": {
+          "native_frac_gt_T": 0.04,
+          "ocr_frac_gt_T": 0.0
+        },
+        "0.06": {
+          "native_frac_gt_T": 0.04,
+          "ocr_frac_gt_T": 0.0
+        }
+      }
+    },
+    {
+      "document_id": "INE192B01031/2025",
+      "company": "INE192B01031",
+      "FY": 2025,
+      "native_page_count": 36,
+      "native_measured_count": 35,
+      "ocr_page_count": 2,
+      "ocr_measured_count": 2,
+      "native_median": 0.0,
+      "ocr_median": 0.05555,
+      "threshold_comparisons": {
+        "0.02": {
+          "native_frac_gt_T": 0.08571428571428572,
+          "ocr_frac_gt_T": 0.5
+        },
+        "0.025": {
+          "native_frac_gt_T": 0.08571428571428572,
+          "ocr_frac_gt_T": 0.5
+        },
+        "0.03": {
+          "native_frac_gt_T": 0.08571428571428572,
+          "ocr_frac_gt_T": 0.5
+        },
+        "0.035": {
+          "native_frac_gt_T": 0.08571428571428572,
+          "ocr_frac_gt_T": 0.5
+        },
+        "0.04": {
+          "native_frac_gt_T": 0.08571428571428572,
+          "ocr_frac_gt_T": 0.5
+        },
+        "0.05": {
+          "native_frac_gt_T": 0.08571428571428572,
+          "ocr_frac_gt_T": 0.5
+        },
+        "0.06": {
+          "native_frac_gt_T": 0.05714285714285714,
+          "ocr_frac_gt_T": 0.5
+        }
+      }
+    },
+    {
+      "document_id": "INE482A01020/2018",
+      "company": "INE482A01020",
+      "FY": 2018,
+      "native_page_count": 39,
+      "native_measured_count": 38,
+      "ocr_page_count": 1,
+      "ocr_measured_count": 1,
+      "native_median": 0.0,
+      "ocr_median": 0.0,
+      "threshold_comparisons": {
+        "0.02": {
+          "native_frac_gt_T": 0.10526315789473684,
+          "ocr_frac_gt_T": 0.0
+        },
+        "0.025": {
+          "native_frac_gt_T": 0.10526315789473684,
+          "ocr_frac_gt_T": 0.0
+        },
+        "0.03": {
+          "native_frac_gt_T": 0.10526315789473684,
+          "ocr_frac_gt_T": 0.0
+        },
+        "0.035": {
+          "native_frac_gt_T": 0.10526315789473684,
+          "ocr_frac_gt_T": 0.0
+        },
+        "0.04": {
+          "native_frac_gt_T": 0.10526315789473684,
+          "ocr_frac_gt_T": 0.0
+        },
+        "0.05": {
+          "native_frac_gt_T": 0.05263157894736842,
+          "ocr_frac_gt_T": 0.0
+        },
+        "0.06": {
+          "native_frac_gt_T": 0.05263157894736842,
+          "ocr_frac_gt_T": 0.0
+        }
+      }
+    },
+    {
+      "document_id": "INE761H01022/2013",
+      "company": "INE761H01022",
+      "FY": 2013,
+      "native_page_count": 4,
+      "native_measured_count": 3,
+      "ocr_page_count": 1,
+      "ocr_measured_count": 1,
+      "native_median": 0.0,
+      "ocr_median": 0.0,
+      "threshold_comparisons": {
+        "0.02": {
+          "native_frac_gt_T": 0.3333333333333333,
+          "ocr_frac_gt_T": 0.0
+        },
+        "0.025": {
+          "native_frac_gt_T": 0.3333333333333333,
+          "ocr_frac_gt_T": 0.0
+        },
+        "0.03": {
+          "native_frac_gt_T": 0.3333333333333333,
+          "ocr_frac_gt_T": 0.0
+        },
+        "0.035": {
+          "native_frac_gt_T": 0.3333333333333333,
+          "ocr_frac_gt_T": 0.0
+        },
+        "0.04": {
+          "native_frac_gt_T": 0.3333333333333333,
+          "ocr_frac_gt_T": 0.0
+        },
+        "0.05": {
+          "native_frac_gt_T": 0.3333333333333333,
+          "ocr_frac_gt_T": 0.0
+        },
+        "0.06": {
+          "native_frac_gt_T": 0.3333333333333333,
+          "ocr_frac_gt_T": 0.0
+        }
+      }
+    }
+  ],
+  "subgroup_stability": {
+    "eras": {
+      "pre_2015": {
+        "n_pages": 634,
+        "n_documents": 48,
+        "by_threshold": {
+          "0.02": {
+            "n_above": 184,
+            "frac_above": 0.2902208201892745
+          },
+          "0.025": {
+            "n_above": 178,
+            "frac_above": 0.2807570977917981
+          },
+          "0.03": {
+            "n_above": 165,
+            "frac_above": 0.26025236593059936
+          },
+          "0.035": {
+            "n_above": 149,
+            "frac_above": 0.23501577287066247
+          },
+          "0.04": {
+            "n_above": 142,
+            "frac_above": 0.22397476340694006
+          },
+          "0.05": {
+            "n_above": 126,
+            "frac_above": 0.19873817034700317
+          },
+          "0.06": {
+            "n_above": 105,
+            "frac_above": 0.16561514195583596
+          }
+        }
+      },
+      "post_2015": {
+        "n_pages": 1913,
+        "n_documents": 125,
+        "by_threshold": {
+          "0.02": {
+            "n_above": 568,
+            "frac_above": 0.29691583899634083
+          },
+          "0.025": {
+            "n_above": 535,
+            "frac_above": 0.279665446941976
+          },
+          "0.03": {
+            "n_above": 498,
+            "frac_above": 0.2603240982749608
+          },
+          "0.035": {
+            "n_above": 454,
+            "frac_above": 0.23732357553580763
+          },
+          "0.04": {
+            "n_above": 418,
+            "frac_above": 0.21850496602195504
+          },
+          "0.05": {
+            "n_above": 357,
+            "frac_above": 0.18661787767903815
+          },
+          "0.06": {
+            "n_above": 315,
+            "frac_above": 0.16466283324621014
+          }
+        }
+      }
+    },
+    "classes": {
+      "pure_native": {
+        "n_pages": 2009,
+        "n_documents": 152,
+        "by_threshold": {
+          "0.02": {
+            "n_above": 582,
+            "frac_above": 0.2896963663514186
+          },
+          "0.025": {
+            "n_above": 545,
+            "frac_above": 0.27127924340467896
+          },
+          "0.03": {
+            "n_above": 504,
+            "frac_above": 0.2508710801393728
+          },
+          "0.035": {
+            "n_above": 461,
+            "frac_above": 0.22946739671478347
+          },
+          "0.04": {
+            "n_above": 432,
+            "frac_above": 0.2150323544051767
+          },
+          "0.05": {
+            "n_above": 372,
+            "frac_above": 0.18516674962667995
+          },
+          "0.06": {
+            "n_above": 318,
+            "frac_above": 0.15828770532603284
+          }
+        }
+      },
+      "pure_ocr": {
+        "n_pages": 81,
+        "n_documents": 4,
+        "by_threshold": {
+          "0.02": {
+            "n_above": 46,
+            "frac_above": 0.5679012345679012
+          },
+          "0.025": {
+            "n_above": 45,
+            "frac_above": 0.5555555555555556
+          },
+          "0.03": {
+            "n_above": 40,
+            "frac_above": 0.49382716049382713
+          },
+          "0.035": {
+            "n_above": 34,
+            "frac_above": 0.41975308641975306
+          },
+          "0.04": {
+            "n_above": 27,
+            "frac_above": 0.3333333333333333
+          },
+          "0.05": {
+            "n_above": 25,
+            "frac_above": 0.30864197530864196
+          },
+          "0.06": {
+            "n_above": 22,
+            "frac_above": 0.2716049382716049
+          }
+        }
+      },
+      "mixed": {
+        "n_pages": 413,
+        "n_documents": 16,
+        "by_threshold": {
+          "0.02": {
+            "n_above": 112,
+            "frac_above": 0.2711864406779661
+          },
+          "0.025": {
+            "n_above": 111,
+            "frac_above": 0.2687651331719128
+          },
+          "0.03": {
+            "n_above": 107,
+            "frac_above": 0.25907990314769974
+          },
+          "0.035": {
+            "n_above": 97,
+            "frac_above": 0.23486682808716708
+          },
+          "0.04": {
+            "n_above": 90,
+            "frac_above": 0.2179176755447942
+          },
+          "0.05": {
+            "n_above": 77,
+            "frac_above": 0.1864406779661017
+          },
+          "0.06": {
+            "n_above": 71,
+            "frac_above": 0.17191283292978207
+          }
+        }
+      }
+    },
+    "reasons": {
+      "with_source_shredded": {
+        "n_pages": 824,
+        "n_documents": 62,
+        "by_threshold": {
+          "0.02": {
+            "n_above": 352,
+            "frac_above": 0.42718446601941745
+          },
+          "0.025": {
+            "n_above": 340,
+            "frac_above": 0.41262135922330095
+          },
+          "0.03": {
+            "n_above": 322,
+            "frac_above": 0.3907766990291262
+          },
+          "0.035": {
+            "n_above": 295,
+            "frac_above": 0.3580097087378641
+          },
+          "0.04": {
+            "n_above": 273,
+            "frac_above": 0.3313106796116505
+          },
+          "0.05": {
+            "n_above": 249,
+            "frac_above": 0.30218446601941745
+          },
+          "0.06": {
+            "n_above": 228,
+            "frac_above": 0.2766990291262136
+          }
+        }
+      },
+      "with_order_scrambled": {
+        "n_pages": 77,
+        "n_documents": 3,
+        "by_threshold": {
+          "0.02": {
+            "n_above": 47,
+            "frac_above": 0.6103896103896104
+          },
+          "0.025": {
+            "n_above": 47,
+            "frac_above": 0.6103896103896104
+          },
+          "0.03": {
+            "n_above": 47,
+            "frac_above": 0.6103896103896104
+          },
+          "0.035": {
+            "n_above": 43,
+            "frac_above": 0.5584415584415584
+          },
+          "0.04": {
+            "n_above": 42,
+            "frac_above": 0.5454545454545454
+          },
+          "0.05": {
+            "n_above": 38,
+            "frac_above": 0.4935064935064935
+          },
+          "0.06": {
+            "n_above": 32,
+            "frac_above": 0.4155844155844156
+          }
+        }
+      }
+    }
+  },
+  "cross_checks": {
+    "0.02": {
+      "native": {
+        "bad_pages": 689,
+        "with_source_shredded": 296,
+        "with_order_scrambled": 46,
+        "full_width_true": 396,
+        "full_width_false": 211,
+        "full_width_unavail": 82
+      },
+      "ocr": {
+        "bad_pages": 63,
+        "with_source_shredded": 56,
+        "with_order_scrambled": 1,
+        "full_width_true": 43,
+        "full_width_false": 7,
+        "full_width_unavail": 13
+      }
+    },
+    "0.025": {
+      "native": {
+        "bad_pages": 651,
+        "with_source_shredded": 285,
+        "with_order_scrambled": 46,
+        "full_width_true": 396,
+        "full_width_false": 211,
+        "full_width_unavail": 44
+      },
+      "ocr": {
+        "bad_pages": 62,
+        "with_source_shredded": 55,
+        "with_order_scrambled": 1,
+        "full_width_true": 43,
+        "full_width_false": 7,
+        "full_width_unavail": 12
+      }
+    },
+    "0.03": {
+      "native": {
+        "bad_pages": 607,
+        "with_source_shredded": 273,
+        "with_order_scrambled": 46,
+        "full_width_true": 396,
+        "full_width_false": 211,
+        "full_width_unavail": 0
+      },
+      "ocr": {
+        "bad_pages": 56,
+        "with_source_shredded": 49,
+        "with_order_scrambled": 1,
+        "full_width_true": 43,
+        "full_width_false": 7,
+        "full_width_unavail": 6
+      }
+    },
+    "0.035": {
+      "native": {
+        "bad_pages": 554,
+        "with_source_shredded": 253,
+        "with_order_scrambled": 42,
+        "full_width_true": 361,
+        "full_width_false": 193,
+        "full_width_unavail": 0
+      },
+      "ocr": {
+        "bad_pages": 49,
+        "with_source_shredded": 42,
+        "with_order_scrambled": 1,
+        "full_width_true": 37,
+        "full_width_false": 7,
+        "full_width_unavail": 5
+      }
+    },
+    "0.04": {
+      "native": {
+        "bad_pages": 518,
+        "with_source_shredded": 238,
+        "with_order_scrambled": 41,
+        "full_width_true": 335,
+        "full_width_false": 183,
+        "full_width_unavail": 0
+      },
+      "ocr": {
+        "bad_pages": 42,
+        "with_source_shredded": 35,
+        "with_order_scrambled": 1,
+        "full_width_true": 30,
+        "full_width_false": 7,
+        "full_width_unavail": 5
+      }
+    },
+    "0.05": {
+      "native": {
+        "bad_pages": 445,
+        "with_source_shredded": 216,
+        "with_order_scrambled": 37,
+        "full_width_true": 285,
+        "full_width_false": 160,
+        "full_width_unavail": 0
+      },
+      "ocr": {
+        "bad_pages": 38,
+        "with_source_shredded": 33,
+        "with_order_scrambled": 1,
+        "full_width_true": 28,
+        "full_width_false": 6,
+        "full_width_unavail": 4
+      }
+    },
+    "0.06": {
+      "native": {
+        "bad_pages": 385,
+        "with_source_shredded": 198,
+        "with_order_scrambled": 31,
+        "full_width_true": 251,
+        "full_width_false": 134,
+        "full_width_unavail": 0
+      },
+      "ocr": {
+        "bad_pages": 35,
+        "with_source_shredded": 30,
+        "with_order_scrambled": 1,
+        "full_width_true": 25,
+        "full_width_false": 6,
+        "full_width_unavail": 4
+      }
+    }
+  },
+  "decision": {
+    "verdict": "SEPARATE OCR THRESHOLD HYPOTHESIS — NOT IMPLEMENTED",
+    "proposed_ocr_hypothesis": 0.04,
+    "status": "EXPLORATORY / NOT IMPLEMENTED",
+    "independent_pure_ocr_doc_N": 5,
+    "ocr_containing_doc_N": 21,
+    "ocr_page_N": 134,
+    "stability_under_leave_one_out": "MODERATE (2/5 flagged at 0.040 vs 4/5 at 0.030; single-document removal shifts flagged fraction between 25% and 50%)",
+    "reason": "At the current 0.030 threshold, OCR pages exhibit an elevated failure rate (41.79%) compared to Native (25.17%). An exploratory threshold of T=0.040 brings the OCR page failure rate to 23.88%, aligning with the native 0.030 operating point. However, because independent pure-OCR documents are limited to N=5 (where 2/5 docs remain flagged), this value is an exploratory hypothesis for a future pre-registered formal study, not a production change. Production threshold remains strictly ORPHAN_START_FRAC_MAX = 0.03."
+  }
+}
