@@ -1,0 +1,8 @@
+threshold,source,status,reason
+0.02,predeclared sensitivity grid,exploratory,lower-band sensitivity
+0.025,predeclared sensitivity grid,exploratory,lower-band sensitivity
+0.03,existing ARPipe methodology,inherited,current production diagnostic
+0.035,predeclared sensitivity grid,exploratory,near-current upper sensitivity
+0.04,predeclared sensitivity grid,exploratory,upper-band sensitivity
+0.05,predeclared sensitivity grid,exploratory,wider upper-band sensitivity
+0.06,predeclared sensitivity grid,exploratory,wider upper-band sensitivity

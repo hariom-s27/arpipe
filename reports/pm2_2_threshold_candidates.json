@@ -1,0 +1,44 @@
+[
+  {
+    "threshold": 0.02,
+    "source": "predeclared sensitivity grid",
+    "status": "exploratory",
+    "reason": "lower-band sensitivity"
+  },
+  {
+    "threshold": 0.025,
+    "source": "predeclared sensitivity grid",
+    "status": "exploratory",
+    "reason": "lower-band sensitivity"
+  },
+  {
+    "threshold": 0.03,
+    "source": "existing ARPipe methodology",
+    "status": "inherited",
+    "reason": "current production diagnostic"
+  },
+  {
+    "threshold": 0.035,
+    "source": "predeclared sensitivity grid",
+    "status": "exploratory",
+    "reason": "near-current upper sensitivity"
+  },
+  {
+    "threshold": 0.04,
+    "source": "predeclared sensitivity grid",
+    "status": "exploratory",
+    "reason": "upper-band sensitivity"
+  },
+  {
+    "threshold": 0.05,
+    "source": "predeclared sensitivity grid",
+    "status": "exploratory",
+    "reason": "wider upper-band sensitivity"
+  },
+  {
+    "threshold": 0.06,
+    "source": "predeclared sensitivity grid",
+    "status": "exploratory",
+    "reason": "wider upper-band sensitivity"
+  }
+]
