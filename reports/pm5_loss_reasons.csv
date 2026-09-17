@@ -1,0 +1,11 @@
+first_failed_stage,first_failed_reason_code,N,pct_of_all_losses,pct_of_stage_losses
+DOWNLOAD,REASON_CODE_MISSING,318,70.82,100.0
+DISCOVERY,REASON_CODE_MISSING,64,14.25,100.0
+ACCEPTANCE,source_shredded,27,6.01,62.79
+IDENTITY,mda_not_located,12,2.67,50.0
+IDENTITY,year_unproven,6,1.34,25.0
+ACCEPTANCE,span_truncated,6,1.34,13.95
+IDENTITY,identity_unproven,6,1.34,25.0
+ACCEPTANCE,section_leak,4,0.89,9.3
+ACCEPTANCE,REASON_CODE_MISSING,4,0.89,9.3
+ACCEPTANCE,year_unproven,2,0.45,4.65

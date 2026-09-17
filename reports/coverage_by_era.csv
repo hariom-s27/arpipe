@@ -1,0 +1,7 @@
+era,expected,discovered,downloaded,identity_verified,mda_located,accepted,coverage,loss_rate_expected_to_discovered_pct,loss_rate_discovered_to_downloaded_pct,loss_rate_downloaded_to_identity_verified_pct,loss_rate_identity_verified_to_mda_located_pct,loss_rate_mda_located_to_accepted_pct
+E1_pre2013_FY2010-2012,108,85,29,24,27,17,0.1574,21.3,65.88,17.24,-12.5,37.04
+E2_BRreport_FY2013-2014,72,59,29,23,28,17,0.2361,18.06,50.85,20.69,-21.74,39.29
+E3_CompaniesAct2013_FY2015,36,33,2,0,0,0,0.0,8.33,93.94,100.0,,
+E4_IndAS_FY2016-2019,144,125,62,54,57,40,0.2778,13.19,50.4,12.9,-5.56,29.82
+E5_MandatedRatios_FY2020-2022,108,102,0,0,0,0,0.0,5.56,100.0,,,
+E6_BRSR_FY2023-2025,108,108,72,69,70,53,0.4907,0.0,33.33,4.17,-1.45,24.29

@@ -1,0 +1,226 @@
+{
+  "analysis_date": "2026-09-17T10:35:19.636212+00:00",
+  "data_cutoff_timestamp": "2026-09-17T10:25:19Z",
+  "N_expected": 576,
+  "N_discovered": 512,
+  "N_downloaded": 194,
+  "N_identity_verified": 170,
+  "N_mda_located": 182,
+  "N_accepted": 127,
+  "accounting_residual": 0,
+  "monotonicity_checks": {
+    "discovered<=expected": true,
+    "downloaded<=discovered": true,
+    "identity_verified<=downloaded": true,
+    "mda_located<=identity_verified": false,
+    "accepted<=mda_located": true
+  },
+  "monotonicity_ok": false,
+  "monotonicity_violations": [
+    [
+      "INE007A01025::FY2012",
+      "mda_located_without_identity_verified"
+    ],
+    [
+      "INE007A01025::FY2013",
+      "mda_located_without_identity_verified"
+    ],
+    [
+      "INE007A01025::FY2017",
+      "mda_located_without_identity_verified"
+    ],
+    [
+      "INE007A01025::FY2018",
+      "mda_located_without_identity_verified"
+    ],
+    [
+      "INE007A01025::FY2025",
+      "mda_located_without_identity_verified"
+    ],
+    [
+      "INE008A01015::FY2013",
+      "mda_located_without_identity_verified"
+    ],
+    [
+      "INE008A01015::FY2018",
+      "mda_located_without_identity_verified"
+    ],
+    [
+      "INE192B01031::FY2012",
+      "mda_located_without_identity_verified"
+    ],
+    [
+      "INE192B01031::FY2013",
+      "mda_located_without_identity_verified"
+    ],
+    [
+      "INE001F01019::FY2013",
+      "mda_located_without_identity_verified"
+    ],
+    [
+      "INE004E01016::FY2012",
+      "mda_located_without_identity_verified"
+    ],
+    [
+      "INE004E01016::FY2013",
+      "mda_located_without_identity_verified"
+    ]
+  ],
+  "n_monotonicity_violations": 12,
+  "terminal_states": {
+    "FIRST_FAILURE_AT_DOWNLOAD": 318,
+    "ACCEPTED": 127,
+    "FIRST_FAILURE_AT_ACCEPTANCE": 43,
+    "FIRST_FAILURE_AT_IDENTITY": 24,
+    "FIRST_FAILURE_AT_DISCOVERY": 64
+  },
+  "overall_funnel": [
+    {
+      "stage": "EXPECTED",
+      "N": 576,
+      "pct_of_expected": 100.0,
+      "loss_from_previous_stage": null,
+      "transition_loss_rate_pct": null,
+      "cumulative_survival_pct": 100.0
+    },
+    {
+      "stage": "DISCOVERED",
+      "N": 512,
+      "pct_of_expected": 88.89,
+      "loss_from_previous_stage": 64,
+      "transition_loss_rate_pct": 11.11,
+      "cumulative_survival_pct": 88.89
+    },
+    {
+      "stage": "DOWNLOADED",
+      "N": 194,
+      "pct_of_expected": 33.68,
+      "loss_from_previous_stage": 318,
+      "transition_loss_rate_pct": 62.11,
+      "cumulative_survival_pct": 33.68
+    },
+    {
+      "stage": "IDENTITY_VERIFIED",
+      "N": 170,
+      "pct_of_expected": 29.51,
+      "loss_from_previous_stage": 24,
+      "transition_loss_rate_pct": 12.37,
+      "cumulative_survival_pct": 29.51
+    },
+    {
+      "stage": "MDA_LOCATED",
+      "N": 182,
+      "pct_of_expected": 31.6,
+      "loss_from_previous_stage": -12,
+      "transition_loss_rate_pct": -7.06,
+      "cumulative_survival_pct": 31.6
+    },
+    {
+      "stage": "ACCEPTED",
+      "N": 127,
+      "pct_of_expected": 22.05,
+      "loss_from_previous_stage": 55,
+      "transition_loss_rate_pct": 30.22,
+      "cumulative_survival_pct": 22.05
+    }
+  ],
+  "total_losses": 449,
+  "n_companies_with_loss": 36,
+  "top5_share_pct": 16.93,
+  "top10_share_pct": 32.52,
+  "reason_coverage_overall_pct": 14.03,
+  "screen_rows_gt10pp": [
+    {
+      "dimension": "cap_band",
+      "transition": "expected_to_discovered",
+      "max_group": "small",
+      "max_group_loss_rate_pct": 30.62,
+      "min_group": "large",
+      "min_group_loss_rate_pct": 0.0,
+      "difference_pp": 30.62,
+      "screen_status": ">10 PP DIFFERENCE \u2014 SPARSE / DESCRIPTIVE ONLY (no project-defined sample-size convention)"
+    },
+    {
+      "dimension": "cap_band",
+      "transition": "downloaded_to_identity_verified",
+      "max_group": "micro",
+      "max_group_loss_rate_pct": 18.18,
+      "min_group": "large",
+      "min_group_loss_rate_pct": 0.0,
+      "difference_pp": 18.18,
+      "screen_status": ">10 PP DIFFERENCE \u2014 SPARSE / DESCRIPTIVE ONLY (no project-defined sample-size convention)"
+    },
+    {
+      "dimension": "cap_band",
+      "transition": "identity_verified_to_mda_located",
+      "max_group": "large",
+      "max_group_loss_rate_pct": 0.0,
+      "min_group": "mid",
+      "min_group_loss_rate_pct": -11.9,
+      "difference_pp": 11.9,
+      "screen_status": ">10 PP DIFFERENCE \u2014 SPARSE / DESCRIPTIVE ONLY (no project-defined sample-size convention)"
+    },
+    {
+      "dimension": "cap_band",
+      "transition": "mda_located_to_accepted",
+      "max_group": "micro",
+      "max_group_loss_rate_pct": 38.6,
+      "min_group": "large",
+      "min_group_loss_rate_pct": 11.11,
+      "difference_pp": 27.49,
+      "screen_status": ">10 PP DIFFERENCE \u2014 SPARSE / DESCRIPTIVE ONLY (no project-defined sample-size convention)"
+    },
+    {
+      "dimension": "era",
+      "transition": "expected_to_discovered",
+      "max_group": "E1_pre2013_FY2010-2012",
+      "max_group_loss_rate_pct": 21.3,
+      "min_group": "E6_BRSR_FY2023-2025",
+      "min_group_loss_rate_pct": 0.0,
+      "difference_pp": 21.3,
+      "screen_status": ">10 PP DIFFERENCE \u2014 SPARSE / DESCRIPTIVE ONLY (no project-defined sample-size convention)"
+    },
+    {
+      "dimension": "era",
+      "transition": "discovered_to_downloaded",
+      "max_group": "E5_MandatedRatios_FY2020-2022",
+      "max_group_loss_rate_pct": 100.0,
+      "min_group": "E6_BRSR_FY2023-2025",
+      "min_group_loss_rate_pct": 33.33,
+      "difference_pp": 66.67,
+      "screen_status": ">10 PP DIFFERENCE \u2014 SPARSE / DESCRIPTIVE ONLY (no project-defined sample-size convention)"
+    },
+    {
+      "dimension": "era",
+      "transition": "downloaded_to_identity_verified",
+      "max_group": "E3_CompaniesAct2013_FY2015",
+      "max_group_loss_rate_pct": 100.0,
+      "min_group": "E6_BRSR_FY2023-2025",
+      "min_group_loss_rate_pct": 4.17,
+      "difference_pp": 95.83,
+      "screen_status": ">10 PP DIFFERENCE \u2014 SPARSE / DESCRIPTIVE ONLY (no project-defined sample-size convention)"
+    },
+    {
+      "dimension": "era",
+      "transition": "identity_verified_to_mda_located",
+      "max_group": "E6_BRSR_FY2023-2025",
+      "max_group_loss_rate_pct": -1.45,
+      "min_group": "E2_BRreport_FY2013-2014",
+      "min_group_loss_rate_pct": -21.74,
+      "difference_pp": 20.29,
+      "screen_status": ">10 PP DIFFERENCE \u2014 SPARSE / DESCRIPTIVE ONLY (no project-defined sample-size convention)"
+    },
+    {
+      "dimension": "era",
+      "transition": "mda_located_to_accepted",
+      "max_group": "E2_BRreport_FY2013-2014",
+      "max_group_loss_rate_pct": 39.29,
+      "min_group": "E6_BRSR_FY2023-2025",
+      "min_group_loss_rate_pct": 24.29,
+      "difference_pp": 15.0,
+      "screen_status": ">10 PP DIFFERENCE \u2014 SPARSE / DESCRIPTIVE ONLY (no project-defined sample-size convention)"
+    }
+  ],
+  "stage_csv_sha256": "30e93b59ac689f00fab182583fb25883322e429be42b4ba14e13a1011b916dc9",
+  "expected_csv_sha256": "b287a82d0fa2b15098882c328be6afc2c1672c9255f64103e4aaeabd94ccebe5"
+}
