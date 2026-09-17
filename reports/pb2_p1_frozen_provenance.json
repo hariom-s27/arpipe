@@ -1,0 +1,187 @@
+{
+  "task": "P-B2-P1-Recovery",
+  "status": "PARTIALLY_RECOVERED",
+  "original_base_sha": "0fb8cbf6d932f4190bdfe3b2a1fecf62170cca14",
+  "frozen_commit_sha": null,
+  "corpus_identity": "8607cd29d9e660fee1b18ce9d980e0a39c217275201d72114e4ce0a9fe89a625",
+  "config_version": "230222f37ad4ecab63989b99d66e701b6b3399ae08ff72fe8342b6c7e1d2ee62",
+  "population_manifest": "live_store/documents.jsonl",
+  "population_sha256": "3a7c7bf15f554298e1c7f4a62b90ea6328a9e1e1e4ecde4840aee7ce42abab31",
+  "companies_file": "cohort_companies.csv",
+  "companies_sha256": "5f2d8078b9367c23aaf0cdd096f1cd0c819c321d4e3eb648a10019deaa2eb71b",
+  "files": [
+    {
+      "path": "arpipe/models.py",
+      "expected_sha256": "e40faa0b467c74bdc405f5d7de898633b07a3f2b5da425e8f3c1b05c6c2b2217",
+      "recovered_sha256": "e40faa0b467c74bdc405f5d7de898633b07a3f2b5da425e8f3c1b05c6c2b2217",
+      "match": true,
+      "recovery_source": "arpipe-0.1.0/arpipe/models.py"
+    },
+    {
+      "path": "arpipe/segment.py",
+      "expected_sha256": "6b1122cefdb63ce5d4fdaac0e8a1383b6213cb4d57c3a5d5cdd3c232bffb3837",
+      "recovered_sha256": "6b1122cefdb63ce5d4fdaac0e8a1383b6213cb4d57c3a5d5cdd3c232bffb3837",
+      "match": true,
+      "recovery_source": "arpipe-0.1.0/arpipe/segment.py"
+    },
+    {
+      "path": "arpipe/config.py",
+      "expected_sha256": "93aba31b53d4173bde3ad322bd5625416eca29e86b89887461f5bc2c7d760c7c",
+      "recovered_sha256": "93aba31b53d4173bde3ad322bd5625416eca29e86b89887461f5bc2c7d760c7c",
+      "match": true,
+      "recovery_source": "arpipe-0.1.0/arpipe/config.py (git blob 6dfb8912)"
+    },
+    {
+      "path": "arpipe/ocr.py",
+      "expected_sha256": "affec70f25339e20b5619afe7c7462cc2eb8700d19b4c34e155341e7c0f4b684",
+      "recovered_sha256": "affec70f25339e20b5619afe7c7462cc2eb8700d19b4c34e155341e7c0f4b684",
+      "match": true,
+      "recovery_source": "arpipe-0.1.0/arpipe/ocr.py"
+    },
+    {
+      "path": "arpipe/patterns.py",
+      "expected_sha256": "950400cdbe31d4b4548538f5750f32a97add41f958f7db3da75ded46beb6e83b",
+      "recovered_sha256": "950400cdbe31d4b4548538f5750f32a97add41f958f7db3da75ded46beb6e83b",
+      "match": true,
+      "recovery_source": "arpipe-0.1.0/arpipe/patterns.py"
+    },
+    {
+      "path": "arpipe/store.py",
+      "expected_sha256": "9f5a1b8ee3f979306bff6f4cd876083eadcdbe4bd7d1631a0f7f709167cd5bcd",
+      "recovered_sha256": "9f5a1b8ee3f979306bff6f4cd876083eadcdbe4bd7d1631a0f7f709167cd5bcd",
+      "match": true,
+      "recovery_source": "arpipe-0.1.0/arpipe/store.py"
+    },
+    {
+      "path": "arpipe/triage.py",
+      "expected_sha256": "351a4aac1efcee4899999b7c76899856a963d1687442fea4a75dcab9cc754892",
+      "recovered_sha256": "351a4aac1efcee4899999b7c76899856a963d1687442fea4a75dcab9cc754892",
+      "match": true,
+      "recovery_source": "arpipe-0.1.0/arpipe/triage.py"
+    },
+    {
+      "path": "arpipe/configs/default.yaml",
+      "expected_sha256": "fe7534793407a8f51fc89bab2371ee952acac55db6eb9353892b45a0c1a72d1a",
+      "recovered_sha256": "fe7534793407a8f51fc89bab2371ee952acac55db6eb9353892b45a0c1a72d1a",
+      "match": true,
+      "recovery_source": "arpipe-0.1.0/arpipe/configs/default.yaml"
+    },
+    {
+      "path": "arpipe/textlayer.py (baseline)",
+      "expected_sha256": "09c23e5c76d581924200f69396c6d9720d5cde3917400fb14fabaa4943556a85",
+      "recovered_sha256": "09c23e5c76d581924200f69396c6d9720d5cde3917400fb14fabaa4943556a85",
+      "match": true,
+      "recovery_source": "git blob 731e4bf8b6d3cc2fdffc303890b65cfcce21b6ac (commit 0fb8cbf6)"
+    },
+    {
+      "path": "arpipe/textlayer.py (after-run)",
+      "expected_sha256": "6117552014bcc60f16e3884dcebb3c4e086acbe8a22066fed134aa2dc65c1c16",
+      "recovered_sha256": "02e868e011aa4d957f83d3b3d93ad16739f5b7d426dd18011de17786aac06f77",
+      "match": false,
+      "recovery_source": "UNVERIFIED (overwritten by concurrent task)"
+    },
+    {
+      "path": "arpipe/cli.py",
+      "expected_sha256": "68c4ba0d8ccf383af718e5acb16e5c0d2717b6f99f30c5de585eeef949c45350",
+      "recovered_sha256": "69c9d4519b7f3ba42c316f5395a9a2e21eb77053718458376ff32e6b7cbb48bb",
+      "match": false,
+      "recovery_source": "UNVERIFIED (overwritten by concurrent task)"
+    },
+    {
+      "path": "arpipe/pipeline.py",
+      "expected_sha256": "93c62172f2b9aae0b92091352edabb389092baae9461f76cb1959b88b71f1bad",
+      "recovered_sha256": "66ecf6cfa0d8a7ea46c928fbf646fbb06c4f5687a33e46555438e976bf76060d",
+      "match": false,
+      "recovery_source": "UNVERIFIED (overwritten by concurrent task)"
+    },
+    {
+      "path": "arpipe/verify.py",
+      "expected_sha256": "88b7e69f3382059bb26eeeebbc8670bd29680d1850582165e78946b5482d733a",
+      "recovered_sha256": "29dd0a415d58874a53e01d52c8b802ad2f9fb550eb2c2a50efa9525f780f4b63",
+      "match": false,
+      "recovery_source": "UNVERIFIED (overwritten by concurrent task)"
+    },
+    {
+      "path": "arpipe/tests/test_pb2_candidate_body_script.py",
+      "expected_sha256": "b750e983a15dc9068601920ed2d0722e57f734e80753f704afbf60d09b7564e5",
+      "recovered_sha256": "b750e983a15dc9068601920ed2d0722e57f734e80753f704afbf60d09b7564e5",
+      "match": true,
+      "recovery_source": "arpipe-0.1.0/arpipe/tests/test_pb2_candidate_body_script.py"
+    },
+    {
+      "path": "tools/pb2_phase1_baseline.py",
+      "expected_sha256": "2e312db0f5dc6a3ce4f989d6b2b1891f87f4c29680257a0a99db7367205f414b",
+      "recovered_sha256": "2e312db0f5dc6a3ce4f989d6b2b1891f87f4c29680257a0a99db7367205f414b",
+      "match": true,
+      "recovery_source": "arpipe-0.1.0/tools/pb2_phase1_baseline.py"
+    },
+    {
+      "path": "tools/pb2_phase1_diagnostic.py",
+      "expected_sha256": "fa7834564b3fb7fe84346cf73e4e44e695ad7ea86770b71e825c385ab9161b8e",
+      "recovered_sha256": "fa7834564b3fb7fe84346cf73e4e44e695ad7ea86770b71e825c385ab9161b8e",
+      "match": true,
+      "recovery_source": "arpipe-0.1.0/tools/pb2_phase1_diagnostic.py"
+    },
+    {
+      "path": "scratch/pb2_phase1/pre_b2_sources/models.py",
+      "expected_sha256": "4f4c45bde8bc4e6ac558698606224a66dc9bdf9887fc6363afcd310b130586fc",
+      "recovered_sha256": "4f4c45bde8bc4e6ac558698606224a66dc9bdf9887fc6363afcd310b130586fc",
+      "match": true,
+      "recovery_source": "arpipe-0.1.0/scratch/pb2_phase1/pre_b2_sources/models.py"
+    },
+    {
+      "path": "scratch/pb2_phase1/pre_b2_sources/segment.py",
+      "expected_sha256": "e90c67b7d334fe896029a2960dc49b1782f1a1b9f692f0be9feec73890de96ba",
+      "recovered_sha256": "e90c67b7d334fe896029a2960dc49b1782f1a1b9f692f0be9feec73890de96ba",
+      "match": true,
+      "recovery_source": "arpipe-0.1.0/scratch/pb2_phase1/pre_b2_sources/segment.py (git blob f2e74bb2)"
+    }
+  ],
+  "phase1_artifacts": [
+    {
+      "path": "reports/pb2_phase1_baseline.json",
+      "sha256": "6e4ae93727ef1be2f746ddf2f3d0b924139dff6836f232e84aaf481ff8247f6f",
+      "expected_sha256": "6e4ae93727ef1be2f746ddf2f3d0b924139dff6836f232e84aaf481ff8247f6f",
+      "match": true
+    },
+    {
+      "path": "reports/pb2_phase1_candidate_body_script.csv",
+      "sha256": "57d227ee108a8b83cd06c3c38f1056c08dbf351a4012afa8cd6fa985e48cbba3",
+      "expected_sha256": "57d227ee108a8b83cd06c3c38f1056c08dbf351a4012afa8cd6fa985e48cbba3",
+      "match": true
+    },
+    {
+      "path": "reports/pb2_phase1_candidate_body_script.md",
+      "sha256": "46fc067a10cd698e2460ef323cb80d403b176fa3c773d6496be2029abc4ba37d",
+      "expected_sha256": "46fc067a10cd698e2460ef323cb80d403b176fa3c773d6496be2029abc4ba37d",
+      "match": true
+    }
+  ],
+  "unverified_files": [
+    {
+      "path": "arpipe/cli.py",
+      "expected_sha256": "68c4ba0d8ccf383af718e5acb16e5c0d2717b6f99f30c5de585eeef949c45350",
+      "recovered_sha256": "69c9d4519b7f3ba42c316f5395a9a2e21eb77053718458376ff32e6b7cbb48bb",
+      "reason": "Overwritten by concurrent task in shared uncommitted worktree; baseline bytes not present in Git or on disk."
+    },
+    {
+      "path": "arpipe/pipeline.py",
+      "expected_sha256": "93c62172f2b9aae0b92091352edabb389092baae9461f76cb1959b88b71f1bad",
+      "recovered_sha256": "66ecf6cfa0d8a7ea46c928fbf646fbb06c4f5687a33e46555438e976bf76060d",
+      "reason": "Overwritten by concurrent task in shared uncommitted worktree; baseline bytes not present in Git or on disk."
+    },
+    {
+      "path": "arpipe/verify.py",
+      "expected_sha256": "88b7e69f3382059bb26eeeebbc8670bd29680d1850582165e78946b5482d733a",
+      "recovered_sha256": "29dd0a415d58874a53e01d52c8b802ad2f9fb550eb2c2a50efa9525f780f4b63",
+      "reason": "Overwritten by concurrent task in shared uncommitted worktree; baseline bytes not present in Git or on disk."
+    },
+    {
+      "path": "arpipe/textlayer.py (after-run snapshot)",
+      "expected_sha256": "6117552014bcc60f16e3884dcebb3c4e086acbe8a22066fed134aa2dc65c1c16",
+      "recovered_sha256": "02e868e011aa4d957f83d3b3d93ad16739f5b7d426dd18011de17786aac06f77",
+      "reason": "Overwritten by concurrent task in shared uncommitted worktree; intermediate after-run bytes not present in Git or on disk (baseline copy 09c23e5c... is preserved in git blob 731e4bf8)."
+    }
+  ],
+  "provenance_conclusion": "P-B2 PHASE 1 SOURCE PARTIALLY RECOVERED. The P-B2 additions (models.py, segment.py, test_pb2_candidate_body_script.py, tools, baseline artifacts) and 7 base configuration/source files match exactly. However, 3 required production modules (cli.py, pipeline.py, verify.py) that executed during Phase 1 suffered concurrent drift in the uncommitted shared worktree and cannot be recovered byte-for-byte. In accordance with strict provenance requirements, execution halts before freezing a git commit, and Phase 2R must NOT proceed."
+}
