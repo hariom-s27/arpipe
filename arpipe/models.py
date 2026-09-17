@@ -63,7 +63,7 @@ class ReportRef:
     fy_end: int                      # 2015 means FY2014-15 (year ended 31-Mar-2015)
     source: str                      # nse | bse | screener | ir_site | manual
     url: str
-    discovered_at: str = dc.field(default_factory=lambda: dt.datetime.now(dt.UTC).isoformat())
+    discovered_at: str = dc.field(default_factory=lambda: dt.datetime.now(dt.timezone.utc).isoformat())
     declared_name: str | None = None
     declared_fy: str | None = None   # "2014-2015" as the source stated it
     content_type: str | None = None
@@ -87,7 +87,7 @@ class StoredDoc:
     url: str
     pdf_producer: str | None = None
     is_encrypted: bool = False
-    fetched_at: str = dc.field(default_factory=lambda: dt.datetime.now(dt.UTC).isoformat())
+    fetched_at: str = dc.field(default_factory=lambda: dt.datetime.now(dt.timezone.utc).isoformat())
     # How the human-facing tree got its copy of the blob, filled by store.write_year.
     # "hardlink" (free) | "symlink" (needs privilege on Windows) | "copy" (costs disk).
     link_mode: str | None = None
@@ -177,7 +177,7 @@ class ExtractionResult:
     mda_page_count: int = 0      # P7: page count in MD&A span
     words_per_page: float = 0.0  # P7: n_words / mda_page_count
     terminator_match: dict[str, Any] | None = None  # P5: top-level mirror of span.terminator_match
-    toc_offset: dict[str, Any] = dc.field(default_factory=lambda: {"solved": None, "confidence": 0.0, "samples_used": 0, "modal_agreement": 0.0, "method": "not_run"})  # P6: folio offset diagnostics
+    toc_offset: dict[str, Any] | None = dc.field(default_factory=lambda: {"solved": None, "confidence": 0.0, "samples_used": 0, "modal_agreement": 0.0, "method": "not_run"})  # P6: folio offset diagnostics
     qc: dict[str, Any] = dc.field(default_factory=dict)
     # Why this row is not `high`. Machine-readable codes (see verify.build_reasons):
     # source_shredded, order_scrambled, span_truncated, identity_unproven,
