@@ -1,0 +1,827 @@
+{
+  "gate_info": {
+    "base_commit": "158a9eac48a3374a9506af8281acb93f49a37a0d",
+    "branch": "pm4-annexure-audit",
+    "worktree": "D:\\sem_iitk\\sem9\\thesis\\sep_week1\\arpipe-pm4-annexure-audit",
+    "analysis_date": "2026-09-17",
+    "protocol_version": "12 September 2026 (seed: 20260912)",
+    "holdout_labels_inspected": "NO",
+    "holdout_outcomes_inspected": "NO",
+    "holdout_membership_unchanged": "YES"
+  },
+  "population_counts": {
+    "all_fit_labelled": 20,
+    "fit_queue_unlabelled": 92,
+    "total_fit_pool": 112,
+    "eligible_documents": 18,
+    "excluded_documents": 2,
+    "strict_read_pdf_eligible": 4,
+    "strict_read_pdf_excluded": 16
+  },
+  "table_a": [
+    {
+      "heading_form": "standalone_heading",
+      "N": 12,
+      "denominator": 18,
+      "percentage": 66.67
+    },
+    {
+      "heading_form": "annexure_labelled",
+      "N": 3,
+      "denominator": 18,
+      "percentage": 16.67
+    },
+    {
+      "heading_form": "combined_with_directors_report",
+      "N": 1,
+      "denominator": 18,
+      "percentage": 5.56
+    },
+    {
+      "heading_form": "other",
+      "N": 2,
+      "denominator": 18,
+      "percentage": 11.11
+    }
+  ],
+  "table_b": [
+    {
+      "cap_band": "large",
+      "N": 8,
+      "standalone_heading": {
+        "count": 6,
+        "percentage": 75.0
+      },
+      "annexure_labelled": {
+        "count": 1,
+        "percentage": 12.5
+      },
+      "combined_with_directors_report": {
+        "count": 1,
+        "percentage": 12.5
+      },
+      "other": {
+        "count": 0,
+        "percentage": 0.0
+      },
+      "ambiguous": {
+        "count": 0,
+        "percentage": 0.0
+      }
+    },
+    {
+      "cap_band": "mid",
+      "N": 2,
+      "standalone_heading": {
+        "count": 1,
+        "percentage": 50.0
+      },
+      "annexure_labelled": {
+        "count": 1,
+        "percentage": 50.0
+      },
+      "combined_with_directors_report": {
+        "count": 0,
+        "percentage": 0.0
+      },
+      "other": {
+        "count": 0,
+        "percentage": 0.0
+      },
+      "ambiguous": {
+        "count": 0,
+        "percentage": 0.0
+      }
+    },
+    {
+      "cap_band": "small",
+      "N": 0,
+      "standalone_heading": {
+        "count": 0,
+        "percentage": 0.0
+      },
+      "annexure_labelled": {
+        "count": 0,
+        "percentage": 0.0
+      },
+      "combined_with_directors_report": {
+        "count": 0,
+        "percentage": 0.0
+      },
+      "other": {
+        "count": 0,
+        "percentage": 0.0
+      },
+      "ambiguous": {
+        "count": 0,
+        "percentage": 0.0
+      }
+    },
+    {
+      "cap_band": "micro",
+      "N": 8,
+      "standalone_heading": {
+        "count": 5,
+        "percentage": 62.5
+      },
+      "annexure_labelled": {
+        "count": 1,
+        "percentage": 12.5
+      },
+      "combined_with_directors_report": {
+        "count": 0,
+        "percentage": 0.0
+      },
+      "other": {
+        "count": 2,
+        "percentage": 25.0
+      },
+      "ambiguous": {
+        "count": 1,
+        "percentage": 12.5
+      }
+    }
+  ],
+  "table_c": [
+    {
+      "era": "2010-2013",
+      "N": 13,
+      "standalone_heading": {
+        "count": 10,
+        "percentage": 76.92
+      },
+      "annexure_labelled": {
+        "count": 2,
+        "percentage": 15.38
+      },
+      "combined_with_directors_report": {
+        "count": 0,
+        "percentage": 0.0
+      },
+      "other": {
+        "count": 1,
+        "percentage": 7.69
+      },
+      "ambiguous": {
+        "count": 1,
+        "percentage": 7.69
+      }
+    },
+    {
+      "era": "2014-2018",
+      "N": 5,
+      "standalone_heading": {
+        "count": 2,
+        "percentage": 40.0
+      },
+      "annexure_labelled": {
+        "count": 1,
+        "percentage": 20.0
+      },
+      "combined_with_directors_report": {
+        "count": 1,
+        "percentage": 20.0
+      },
+      "other": {
+        "count": 1,
+        "percentage": 20.0
+      },
+      "ambiguous": {
+        "count": 0,
+        "percentage": 0.0
+      }
+    },
+    {
+      "era": "2019-2025",
+      "N": 0,
+      "standalone_heading": {
+        "count": 0,
+        "percentage": 0.0
+      },
+      "annexure_labelled": {
+        "count": 0,
+        "percentage": 0.0
+      },
+      "combined_with_directors_report": {
+        "count": 0,
+        "percentage": 0.0
+      },
+      "other": {
+        "count": 0,
+        "percentage": 0.0
+      },
+      "ambiguous": {
+        "count": 0,
+        "percentage": 0.0
+      }
+    }
+  ],
+  "joint_table": [
+    {
+      "era": "2010-2013",
+      "cap_band": "large",
+      "N": 6,
+      "annexure_N": 0,
+      "annexure_pct": 0.0,
+      "is_descriptive_only": false
+    },
+    {
+      "era": "2010-2013",
+      "cap_band": "mid",
+      "N": 2,
+      "annexure_N": 1,
+      "annexure_pct": 50.0,
+      "is_descriptive_only": true
+    },
+    {
+      "era": "2010-2013",
+      "cap_band": "small",
+      "N": 0,
+      "annexure_N": 0,
+      "annexure_pct": 0.0,
+      "is_descriptive_only": true
+    },
+    {
+      "era": "2010-2013",
+      "cap_band": "micro",
+      "N": 5,
+      "annexure_N": 1,
+      "annexure_pct": 20.0,
+      "is_descriptive_only": false
+    },
+    {
+      "era": "2014-2018",
+      "cap_band": "large",
+      "N": 2,
+      "annexure_N": 1,
+      "annexure_pct": 50.0,
+      "is_descriptive_only": true
+    },
+    {
+      "era": "2014-2018",
+      "cap_band": "mid",
+      "N": 0,
+      "annexure_N": 0,
+      "annexure_pct": 0.0,
+      "is_descriptive_only": true
+    },
+    {
+      "era": "2014-2018",
+      "cap_band": "small",
+      "N": 0,
+      "annexure_N": 0,
+      "annexure_pct": 0.0,
+      "is_descriptive_only": true
+    },
+    {
+      "era": "2014-2018",
+      "cap_band": "micro",
+      "N": 3,
+      "annexure_N": 0,
+      "annexure_pct": 0.0,
+      "is_descriptive_only": true
+    },
+    {
+      "era": "2019-2025",
+      "cap_band": "large",
+      "N": 0,
+      "annexure_N": 0,
+      "annexure_pct": 0.0,
+      "is_descriptive_only": true
+    },
+    {
+      "era": "2019-2025",
+      "cap_band": "mid",
+      "N": 0,
+      "annexure_N": 0,
+      "annexure_pct": 0.0,
+      "is_descriptive_only": true
+    },
+    {
+      "era": "2019-2025",
+      "cap_band": "small",
+      "N": 0,
+      "annexure_N": 0,
+      "annexure_pct": 0.0,
+      "is_descriptive_only": true
+    },
+    {
+      "era": "2019-2025",
+      "cap_band": "micro",
+      "N": 0,
+      "annexure_N": 0,
+      "annexure_pct": 0.0,
+      "is_descriptive_only": true
+    }
+  ],
+  "table_d": {
+    "rows": [
+      {
+        "cap_band": "large",
+        "eligible_N": 8,
+        "annexure_N": 1,
+        "annexure_pct": 12.5
+      },
+      {
+        "cap_band": "mid",
+        "eligible_N": 2,
+        "annexure_N": 1,
+        "annexure_pct": 50.0
+      },
+      {
+        "cap_band": "micro",
+        "eligible_N": 8,
+        "annexure_N": 1,
+        "annexure_pct": 12.5
+      }
+    ],
+    "max_cap_band_annexure_fraction": 50.0,
+    "min_cap_band_annexure_fraction": 12.5,
+    "absolute_difference_pp": 37.5,
+    "screen_threshold_pp": 10.0,
+    "screen_flag": true,
+    "verdict": "PROMINENT SYSTEMATIC-BIAS SIGNAL \u2014 ANNEXURE FRACTION DIFFERS BY MORE THAN 10 PP ACROSS CAP BANDS"
+  },
+  "table_e": [
+    {
+      "heading_form": "standalone_heading",
+      "N": 12,
+      "exact_start_correct": 11,
+      "exact_start_accuracy": 91.67,
+      "within_1_correct": 11,
+      "within_1_accuracy": 91.67,
+      "descriptive_only": false
+    },
+    {
+      "heading_form": "annexure_labelled",
+      "N": 3,
+      "exact_start_correct": 2,
+      "exact_start_accuracy": 66.67,
+      "within_1_correct": 2,
+      "within_1_accuracy": 66.67,
+      "descriptive_only": true
+    },
+    {
+      "heading_form": "combined_with_directors_report",
+      "N": 1,
+      "exact_start_correct": 1,
+      "exact_start_accuracy": 100.0,
+      "within_1_correct": 1,
+      "within_1_accuracy": 100.0,
+      "descriptive_only": true
+    },
+    {
+      "heading_form": "other",
+      "N": 2,
+      "exact_start_correct": 2,
+      "exact_start_accuracy": 100.0,
+      "within_1_correct": 2,
+      "within_1_accuracy": 100.0,
+      "descriptive_only": true
+    }
+  ],
+  "table_f": [
+    {
+      "reason": "no verified true start",
+      "N": 2
+    },
+    {
+      "reason": "unlabelled queue candidates",
+      "N": 92
+    },
+    {
+      "reason": "ambiguous",
+      "N": 1
+    },
+    {
+      "reason": "unreadable",
+      "N": 0
+    },
+    {
+      "reason": "insufficient context",
+      "N": 2
+    }
+  ],
+  "records": [
+    {
+      "document_id": "INE114A01011",
+      "sha256": "08c7f73f5bc4e6a9b8ae5429e12fa18abfba25ff95ea5d5d1849482ed75e9e70",
+      "company": "Steel Authority of India Ltd",
+      "FY": 2011,
+      "era": "2010-2013",
+      "cap_band": "mid",
+      "doc_kind": "digital",
+      "verified_by": "read_pdf",
+      "true_start_page": 29,
+      "proposed_start_page": 29,
+      "heading_form": "standalone_heading",
+      "heading_text": "Management Discussion and Analysis Report",
+      "heading_page": 29,
+      "annexure_identifier": "",
+      "classification_status": "clear",
+      "classification_reason": "Top-of-page standalone heading; no annexure designation; distinct from Directors' Report.",
+      "exact_start_correct": true,
+      "within_1_correct": true,
+      "is_eligible": true
+    },
+    {
+      "document_id": "INE257A01026",
+      "sha256": "b5a2f02942595027f7e3c07ab96ce3aa2385cad97a0e0024d91275b603a8ae9d",
+      "company": "Bharat Heavy Electricals Ltd",
+      "FY": 2012,
+      "era": "2010-2013",
+      "cap_band": "mid",
+      "doc_kind": "mixed",
+      "verified_by": "unknown",
+      "true_start_page": 28,
+      "proposed_start_page": 28,
+      "heading_form": "annexure_labelled",
+      "heading_text": "ANNEXURE \u2013 I TO THE DIRECTORS\u2019 REPORT / Management Discussion and Analysis",
+      "heading_page": 28,
+      "annexure_identifier": "I",
+      "classification_status": "clear",
+      "classification_reason": "Explicitly labelled as Annexure I to the Directors' Report.",
+      "exact_start_correct": true,
+      "within_1_correct": true,
+      "is_eligible": true
+    },
+    {
+      "document_id": "INE733E01010",
+      "sha256": "b237251a6a35622748dd3512b6e23d8a992669781cd2debc6b3287a394f4275b",
+      "company": "NTPC Limited",
+      "FY": 2014,
+      "era": "2014-2018",
+      "cap_band": "large",
+      "doc_kind": "digital",
+      "verified_by": "unknown",
+      "true_start_page": 43,
+      "proposed_start_page": 43,
+      "heading_form": "annexure_labelled",
+      "heading_text": "Annexure-I to Directors\u2019 Report / MANAGEMENT DISCUSSION AND ANALYSIS",
+      "heading_page": 43,
+      "annexure_identifier": "I",
+      "classification_status": "clear",
+      "classification_reason": "Explicitly labelled as Annexure-I to Directors' Report.",
+      "exact_start_correct": true,
+      "within_1_correct": true,
+      "is_eligible": true
+    },
+    {
+      "document_id": "INE213A01029",
+      "sha256": "b80d764cd5c41c8fbc377fd7541d0cdfd3e53130482317f2e84bd49271552c76",
+      "company": "Oil & Natural Gas Corp Ltd",
+      "FY": 2013,
+      "era": "2010-2013",
+      "cap_band": "large",
+      "doc_kind": "mixed",
+      "verified_by": "unknown",
+      "true_start_page": 42,
+      "proposed_start_page": 42,
+      "heading_form": "standalone_heading",
+      "heading_text": "MANAGEMENT DISCUSSION & ANALYSIS REPORT (divider p.41) / 1. The Economy (p.42)",
+      "heading_page": 42,
+      "annexure_identifier": "",
+      "classification_status": "clear",
+      "classification_reason": "Standalone section introduced by dedicated section divider card; no annexure designation.",
+      "exact_start_correct": true,
+      "within_1_correct": true,
+      "is_eligible": true
+    },
+    {
+      "document_id": "INE522F01014",
+      "sha256": "c9f69c2dd47a384f3ac694e295c2f25a91e95f37de96c82a344831ba6ff0666c",
+      "company": "Coal India Limited",
+      "FY": 2012,
+      "era": "2010-2013",
+      "cap_band": "large",
+      "doc_kind": "scanned",
+      "verified_by": "copied_from_run",
+      "true_start_page": 120,
+      "proposed_start_page": "",
+      "heading_form": "standalone_heading",
+      "heading_text": "Coal India Limited. A Maharatna Company / MANAGEMENT DISCUSSION AND ANALYSIS",
+      "heading_page": 120,
+      "annexure_identifier": "",
+      "classification_status": "clear",
+      "classification_reason": "Standalone section header; no annexure designation.",
+      "exact_start_correct": false,
+      "within_1_correct": false,
+      "is_eligible": true
+    },
+    {
+      "document_id": "INE002A01018",
+      "sha256": "39f0bf74cb5ae371b4d4613b016c854bb19b63ff7f4fb44084f4ecd9fbf23cdd",
+      "company": "Reliance Industries Ltd",
+      "FY": 2013,
+      "era": "2010-2013",
+      "cap_band": "large",
+      "doc_kind": "digital",
+      "verified_by": "unknown",
+      "true_start_page": 20,
+      "proposed_start_page": 20,
+      "heading_form": "standalone_heading",
+      "heading_text": "Reliance Industries Limited / Management\u2019s Discussion And Analysis",
+      "heading_page": 20,
+      "annexure_identifier": "",
+      "classification_status": "clear",
+      "classification_reason": "Standalone section heading; no annexure designation.",
+      "exact_start_correct": true,
+      "within_1_correct": true,
+      "is_eligible": true
+    },
+    {
+      "document_id": "INE154A01025",
+      "sha256": "d7685d1ac37ba440d468d6180b99e12120d96cb8ffe84104faed7ca787fac555",
+      "company": "ITC Limited",
+      "FY": 2014,
+      "era": "2014-2018",
+      "cap_band": "large",
+      "doc_kind": "mixed",
+      "verified_by": "unknown",
+      "true_start_page": 63,
+      "proposed_start_page": 63,
+      "heading_form": "combined_with_directors_report",
+      "heading_text": "Report of the Directors & Management Discussion and Analysis",
+      "heading_page": 63,
+      "annexure_identifier": "",
+      "classification_status": "clear",
+      "classification_reason": "Combined Directors' Report & MD&A heading construction introducing joint report.",
+      "exact_start_correct": true,
+      "within_1_correct": true,
+      "is_eligible": true
+    },
+    {
+      "document_id": "INE009A01021",
+      "sha256": "6311804bbf48c551eb0ccba89ca372a8cbd10ff6f2f54862b529a8a2552245e9",
+      "company": "Infosys Limited",
+      "FY": 2011,
+      "era": "2010-2013",
+      "cap_band": "large",
+      "doc_kind": "digital",
+      "verified_by": "unknown",
+      "true_start_page": 39,
+      "proposed_start_page": 39,
+      "heading_form": "standalone_heading",
+      "heading_text": "Management\u2019s discussion and analysis | 19",
+      "heading_page": 39,
+      "annexure_identifier": "",
+      "classification_status": "clear",
+      "classification_reason": "Standalone section heading in top banner; no annexure designation.",
+      "exact_start_correct": true,
+      "within_1_correct": true,
+      "is_eligible": true
+    },
+    {
+      "document_id": "INE081A01020",
+      "sha256": "dc0e15483617c2e785a26c800be32b6cfd74339495025866b9b31573a40229a4",
+      "company": "Tata Steel Limited",
+      "FY": 2012,
+      "era": "2010-2013",
+      "cap_band": "large",
+      "doc_kind": "digital",
+      "verified_by": "unknown",
+      "true_start_page": 88,
+      "proposed_start_page": 88,
+      "heading_form": "standalone_heading",
+      "heading_text": "Management Discussion and Analysis 2011-12",
+      "heading_page": 88,
+      "annexure_identifier": "",
+      "classification_status": "clear",
+      "classification_reason": "Standalone section heading; no annexure designation.",
+      "exact_start_correct": true,
+      "within_1_correct": true,
+      "is_eligible": true
+    },
+    {
+      "document_id": "INE714B01016",
+      "sha256": "b261b2932470e172246c535803ce1586dd99a4442f16a3aaf1f62bdfc3e4316d",
+      "company": "Andhra Petrochemicals Ltd",
+      "FY": 2014,
+      "era": "2014-2018",
+      "cap_band": "micro",
+      "doc_kind": "mixed",
+      "verified_by": "unknown",
+      "true_start_page": 7,
+      "proposed_start_page": 7,
+      "heading_form": "standalone_heading",
+      "heading_text": "The Andhra Petrochemicals Limited / MANAGEMENT DISCUSSION AND ANALYSIS:",
+      "heading_page": 7,
+      "annexure_identifier": "",
+      "classification_status": "clear",
+      "classification_reason": "Standalone section heading at top of page 7; subsequent Annexure A is unrelated.",
+      "exact_start_correct": true,
+      "within_1_correct": true,
+      "is_eligible": true
+    },
+    {
+      "document_id": "INE467B01029",
+      "sha256": "80ccfbc21011deedd4aefaece72db7f1f18df2ddca8232ca9603da0cd630fc0d",
+      "company": "Tata Consultancy Services Ltd",
+      "FY": 2010,
+      "era": "2010-2013",
+      "cap_band": "large",
+      "doc_kind": "mixed",
+      "verified_by": "unknown",
+      "true_start_page": 37,
+      "proposed_start_page": 37,
+      "heading_form": "standalone_heading",
+      "heading_text": "Annual Report 2009-10 / Management Discussion and Analysis",
+      "heading_page": 37,
+      "annexure_identifier": "",
+      "classification_status": "clear",
+      "classification_reason": "Standalone section heading; no annexure designation.",
+      "exact_start_correct": true,
+      "within_1_correct": true,
+      "is_eligible": true
+    },
+    {
+      "document_id": "INE001F01019",
+      "sha256": "b43ffd8429742abbb63df738c25524448013c04f24a16ab8ce7a841307d1dd06",
+      "company": "Modern Steels Limited",
+      "FY": 2013,
+      "era": "2010-2013",
+      "cap_band": "micro",
+      "doc_kind": "digital",
+      "verified_by": "read_pdf",
+      "true_start_page": 9,
+      "proposed_start_page": 9,
+      "heading_form": "standalone_heading",
+      "heading_text": "MANAGEMENT DISCUSSIONS AND ANALYSIS",
+      "heading_page": 9,
+      "annexure_identifier": "",
+      "classification_status": "clear",
+      "classification_reason": "Standalone section heading beginning on p.9 after Directors' Report signature block.",
+      "exact_start_correct": true,
+      "within_1_correct": true,
+      "is_eligible": true
+    },
+    {
+      "document_id": "INE003F01015",
+      "sha256": "51f9884c026445d0f7687d41414d9193ea16fe637c3b74617fa7d8477f94dbe4",
+      "company": "Muller & Phipps (India) Ltd",
+      "FY": 2012,
+      "era": "2010-2013",
+      "cap_band": "micro",
+      "doc_kind": "digital",
+      "verified_by": "read_pdf",
+      "true_start_page": "",
+      "proposed_start_page": "",
+      "heading_form": "excluded",
+      "heading_text": "",
+      "heading_page": "",
+      "annexure_identifier": "",
+      "classification_status": "insufficient_context",
+      "classification_reason": "NO_VERIFIED_TRUE_START (no MD&A present in annual report).",
+      "exact_start_correct": null,
+      "within_1_correct": null,
+      "is_eligible": false
+    },
+    {
+      "document_id": "INE003B01014",
+      "sha256": "edc9a15f53d68ac648fad9db5afc2d47906021f98b7a5e3085f8858450075a66",
+      "company": "Inter State Oil Carrier Ltd",
+      "FY": 2011,
+      "era": "2010-2013",
+      "cap_band": "micro",
+      "doc_kind": "scanned",
+      "verified_by": "read_pdf",
+      "true_start_page": 15,
+      "proposed_start_page": "",
+      "heading_form": "annexure_labelled",
+      "heading_text": "Annexure - B / MANAGEMENT DISCUSSION & ANALYSIS",
+      "heading_page": 15,
+      "annexure_identifier": "B",
+      "classification_status": "clear",
+      "classification_reason": "Explicit structural annexure designation (Annexure - B).",
+      "exact_start_correct": false,
+      "within_1_correct": false,
+      "is_eligible": true
+    },
+    {
+      "document_id": "INE004E01016",
+      "sha256": "36d04a8c986ba4e1d1df3bb63d855238a4fdba2923b17829880dfc01c9a25b5e",
+      "company": "Span Divergent Limited",
+      "FY": 2010,
+      "era": "2010-2013",
+      "cap_band": "micro",
+      "doc_kind": "digital",
+      "verified_by": "unknown",
+      "true_start_page": 4,
+      "proposed_start_page": 4,
+      "heading_form": "other",
+      "heading_text": "MANAGEMENT DISCUSSION AND ANALYSIS REPORT",
+      "heading_page": 4,
+      "annexure_identifier": "",
+      "classification_status": "ambiguous",
+      "classification_reason": "Ambiguous construction: heading is embedded mid-page inside Directors' Report body rather than standalone or combined title.",
+      "exact_start_correct": true,
+      "within_1_correct": true,
+      "is_eligible": true
+    },
+    {
+      "document_id": "INE005E01013",
+      "sha256": "f934459f048686d3c2169322c6b2bc731a83e4ac182dbffa878257222736e386",
+      "company": "Ekansh Concepts Limited",
+      "FY": 2013,
+      "era": "2010-2013",
+      "cap_band": "micro",
+      "doc_kind": "mixed",
+      "verified_by": "unknown",
+      "true_start_page": 19,
+      "proposed_start_page": 19,
+      "heading_form": "standalone_heading",
+      "heading_text": "MANAGEMENT DISCUSSION AND ANALYSIS",
+      "heading_page": 19,
+      "annexure_identifier": "",
+      "classification_status": "clear",
+      "classification_reason": "Standalone section heading; no annexure designation.",
+      "exact_start_correct": true,
+      "within_1_correct": true,
+      "is_eligible": true
+    },
+    {
+      "document_id": "INE001B01026",
+      "sha256": "fc3571e80cc578381676fdf3626f518a3f5138e1d28cd77482dc4e235911a8d0",
+      "company": "KRBL Limited",
+      "FY": 2014,
+      "era": "2014-2018",
+      "cap_band": "micro",
+      "doc_kind": "mixed",
+      "verified_by": "read_pdf",
+      "true_start_page": 8,
+      "proposed_start_page": 8,
+      "heading_form": "other",
+      "heading_text": "INDIAN RICE OVERVIEW",
+      "heading_page": 8,
+      "annexure_identifier": "",
+      "classification_status": "clear",
+      "classification_reason": "At true start page 8, heading is subsection title 'INDIAN RICE OVERVIEW' without structural MD&A heading (divider title on p.5).",
+      "exact_start_correct": true,
+      "within_1_correct": true,
+      "is_eligible": true
+    },
+    {
+      "document_id": "INE004C01028",
+      "sha256": "a04c6b953a65534c863be31c88a387cb75ad7d7810baa0040e3a7c26aea9e028",
+      "company": "Gujarat Cotex Ltd",
+      "FY": 2014,
+      "era": "2014-2018",
+      "cap_band": "micro",
+      "doc_kind": "digital",
+      "verified_by": "copied_from_run",
+      "true_start_page": 13,
+      "proposed_start_page": 13,
+      "heading_form": "standalone_heading",
+      "heading_text": "MANAGEMENT DISCUSSION AND ANALYSIS REPORT",
+      "heading_page": 13,
+      "annexure_identifier": "",
+      "classification_status": "clear",
+      "classification_reason": "Standalone section heading; no annexure designation.",
+      "exact_start_correct": true,
+      "within_1_correct": true,
+      "is_eligible": true
+    },
+    {
+      "document_id": "INE175A01038",
+      "sha256": "86326cd1589be403ed993e45ca699c92b945d81887261a1aac7c718c2990da36",
+      "company": "Jain Irrigation Systems Ltd",
+      "FY": 2011,
+      "era": "2010-2013",
+      "cap_band": "micro",
+      "doc_kind": "mixed",
+      "verified_by": "unknown",
+      "true_start_page": 47,
+      "proposed_start_page": 47,
+      "heading_form": "standalone_heading",
+      "heading_text": "MANAGEMENT DISCUSSION AND ANALYSIS",
+      "heading_page": 47,
+      "annexure_identifier": "",
+      "classification_status": "clear",
+      "classification_reason": "Standalone section heading; no annexure designation.",
+      "exact_start_correct": true,
+      "within_1_correct": true,
+      "is_eligible": true
+    },
+    {
+      "document_id": "INE006C01015",
+      "sha256": "c1bc59575b9407e17e8d266464ec2e92c7eee600744abd5494089f4dcc4207c8",
+      "company": "K.Z. Leasing & Finance Ltd",
+      "FY": 2010,
+      "era": "2010-2013",
+      "cap_band": "micro",
+      "doc_kind": "digital",
+      "verified_by": "read_pdf",
+      "true_start_page": "",
+      "proposed_start_page": 7,
+      "heading_form": "excluded",
+      "heading_text": "",
+      "heading_page": "",
+      "annexure_identifier": "",
+      "classification_status": "insufficient_context",
+      "classification_reason": "NO_VERIFIED_TRUE_START (MD&A section not found in report).",
+      "exact_start_correct": null,
+      "within_1_correct": null,
+      "is_eligible": false
+    }
+  ]
+}

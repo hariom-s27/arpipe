@@ -1,0 +1,5 @@
+cap_band,eligible_N,standalone_N,standalone_pct,annexure_N,annexure_pct,combined_N,combined_pct,other_N,other_pct,ambiguous_N,ambiguous_pct
+large,8,6,75.0,1,12.5,1,12.5,0,0.0,0,0.0
+mid,2,1,50.0,1,50.0,0,0.0,0,0.0,0,0.0
+small,0,0,0.0,0,0.0,0,0.0,0,0.0,0,0.0
+micro,8,5,62.5,1,12.5,0,0.0,2,25.0,1,12.5
