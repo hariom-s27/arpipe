@@ -1,0 +1,675 @@
+{
+  "metadata": {
+    "task": "P-M2.1 — NATIVE vs OCR orphan_start_frac AT TRUE PAGE GRAIN",
+    "canonical_pm1_commit": "c9d71bb127fcc46d690a8fbd9e5088b7049b6c05",
+    "threshold_gate": 0.03,
+    "production_threshold_changed": false,
+    "production_ocr_routing_changed": false,
+    "production_segmentation_changed": false,
+    "production_grading_changed": false,
+    "production_verification_changed": false
+  },
+  "population": {
+    "total_corpus_documents": 194,
+    "located_documents": 182,
+    "unlocated_documents": 12,
+    "total_mda_physical_pages": 2734,
+    "measured_page_scores": 2547,
+    "native_pages_total": 2592,
+    "native_pages_measured": 2412,
+    "ocr_pages_total": 141,
+    "ocr_pages_measured": 134,
+    "unknown_provenance_pages_total": 1,
+    "unknown_provenance_pages_measured": 1,
+    "null_unmeasured_pages": 187,
+    "null_unmeasured_reasons": {
+      "fewer_than_min_paragraphs": 187
+    },
+    "accounting_reconciled": true,
+    "reconciliation_formula": "2734 (total) = 2412 (native) + 134 (ocr) + 1 (unknown) + 187 (null)"
+  },
+  "document_level_context": {
+    "counts": {
+      "native": 160,
+      "mixed": 16,
+      "ocr": 5,
+      "unknown": 1
+    },
+    "pure_native_documents": 160,
+    "pure_ocr_documents": 5,
+    "mixed_documents": 16,
+    "unknown_documents": 1
+  },
+  "page_level_distribution": {
+    "percentile_method": "linear (numpy.percentile method='linear' or exact pure-Python equivalent)",
+    "native": {
+      "n_pages": 2412,
+      "n_documents": 169,
+      "min": 0.0,
+      "p25": 0.0,
+      "median": 0.0,
+      "p75": 0.0303,
+      "p90": 0.0833,
+      "p95": 0.12205499999999965,
+      "max": 0.6471
+    },
+    "ocr": {
+      "n_pages": 134,
+      "n_documents": 21,
+      "min": 0.0,
+      "p25": 0.0,
+      "median": 0.0,
+      "p75": 0.062025,
+      "p90": 0.125,
+      "p95": 0.1667,
+      "max": 0.4286
+    }
+  },
+  "threshold_diagnostics": {
+    "native": {
+      "gate": 0.03,
+      "n": 2412,
+      "n_below": 1805,
+      "n_at": 0,
+      "n_above": 607,
+      "frac_above": 0.25165837479270314,
+      "max_le_gate": 0.0294,
+      "min_gt_gate": 0.0303,
+      "gap": 0.0009000000000000015,
+      "near_gate_count": 19
+    },
+    "ocr": {
+      "gate": 0.03,
+      "n": 134,
+      "n_below": 78,
+      "n_at": 0,
+      "n_above": 56,
+      "frac_above": 0.417910447761194,
+      "max_le_gate": 0.0294,
+      "min_gt_gate": 0.0323,
+      "gap": 0.0029000000000000033,
+      "near_gate_count": 1
+    }
+  },
+  "native_vs_ocr_comparison": {
+    "native_median": 0.0,
+    "ocr_median": 0.0,
+    "median_delta": 0.0,
+    "native_p95": 0.12205499999999965,
+    "ocr_p95": 0.1667,
+    "p95_delta": 0.04464500000000034,
+    "native_max": 0.6471,
+    "ocr_max": 0.4286,
+    "max_delta": -0.21850000000000003,
+    "native_fraction_gt_003": 0.25165837479270314,
+    "ocr_fraction_gt_003": 0.417910447761194,
+    "fraction_gt_003_delta": 0.16625207296849087
+  },
+  "production_reason_crosscheck": {
+    "native": {
+      "total_bad_pages": 607,
+      "with_source_shredded": 273,
+      "with_order_scrambled": 46,
+      "with_either_reason": 319,
+      "with_neither_reason": 288
+    },
+    "ocr": {
+      "total_bad_pages": 56,
+      "with_source_shredded": 49,
+      "with_order_scrambled": 1,
+      "with_either_reason": 50,
+      "with_neither_reason": 6
+    }
+  },
+  "full_width_block_crosscheck": {
+    "native": {
+      "bad_pages_total": 607,
+      "full_width_true": 396,
+      "full_width_false": 211,
+      "full_width_unavailable": 0
+    },
+    "ocr": {
+      "bad_pages_total": 56,
+      "full_width_true": 43,
+      "full_width_false": 7,
+      "full_width_unavailable": 6
+    }
+  },
+  "highest_scoring_pages": {
+    "ocr": [
+      {
+        "company_id": "INE119A01028",
+        "fiscal_year": 2013,
+        "physical_page": 68,
+        "orphan_start_frac": 0.4286,
+        "provenance": "ocr",
+        "provenance_source": "ocr_stats:words=726",
+        "doc_grade": "low",
+        "doc_reasons": [
+          "source_shredded",
+          "span_truncated"
+        ]
+      },
+      {
+        "company_id": "INE002A01018",
+        "fiscal_year": 2018,
+        "physical_page": 88,
+        "orphan_start_frac": 0.25,
+        "provenance": "ocr",
+        "provenance_source": "ocr_stats:words=463",
+        "doc_grade": "low",
+        "doc_reasons": [
+          "source_shredded",
+          "span_truncated"
+        ]
+      },
+      {
+        "company_id": "INE040A01034",
+        "fiscal_year": 2017,
+        "physical_page": 25,
+        "orphan_start_frac": 0.2188,
+        "provenance": "ocr",
+        "provenance_source": "ocr_stats:words=613",
+        "doc_grade": "low",
+        "doc_reasons": [
+          "source_shredded",
+          "span_truncated"
+        ]
+      },
+      {
+        "company_id": "INE002A01018",
+        "fiscal_year": 2018,
+        "physical_page": 100,
+        "orphan_start_frac": 0.2105,
+        "provenance": "ocr",
+        "provenance_source": "ocr_stats:words=462",
+        "doc_grade": "low",
+        "doc_reasons": [
+          "source_shredded",
+          "span_truncated"
+        ]
+      },
+      {
+        "company_id": "INE191H01014",
+        "fiscal_year": 2025,
+        "physical_page": 93,
+        "orphan_start_frac": 0.1818,
+        "provenance": "ocr",
+        "provenance_source": "ocr_stats:words=88",
+        "doc_grade": "low",
+        "doc_reasons": [
+          "source_shredded",
+          "span_truncated"
+        ]
+      },
+      {
+        "company_id": "INE002A01018",
+        "fiscal_year": 2018,
+        "physical_page": 103,
+        "orphan_start_frac": 0.1786,
+        "provenance": "ocr",
+        "provenance_source": "ocr_stats:words=179",
+        "doc_grade": "low",
+        "doc_reasons": [
+          "source_shredded",
+          "span_truncated"
+        ]
+      },
+      {
+        "company_id": "INE002A01018",
+        "fiscal_year": 2018,
+        "physical_page": 68,
+        "orphan_start_frac": 0.1667,
+        "provenance": "ocr",
+        "provenance_source": "ocr_stats:words=277",
+        "doc_grade": "low",
+        "doc_reasons": [
+          "source_shredded",
+          "span_truncated"
+        ]
+      },
+      {
+        "company_id": "INE002A01018",
+        "fiscal_year": 2018,
+        "physical_page": 104,
+        "orphan_start_frac": 0.1667,
+        "provenance": "ocr",
+        "provenance_source": "ocr_stats:words=382",
+        "doc_grade": "low",
+        "doc_reasons": [
+          "source_shredded",
+          "span_truncated"
+        ]
+      },
+      {
+        "company_id": "INE040A01034",
+        "fiscal_year": 2018,
+        "physical_page": 40,
+        "orphan_start_frac": 0.1538,
+        "provenance": "ocr",
+        "provenance_source": "ocr_stats:words=795",
+        "doc_grade": "medium",
+        "doc_reasons": [
+          "source_shredded",
+          "span_truncated"
+        ]
+      },
+      {
+        "company_id": "INE002A01018",
+        "fiscal_year": 2018,
+        "physical_page": 87,
+        "orphan_start_frac": 0.15,
+        "provenance": "ocr",
+        "provenance_source": "ocr_stats:words=87",
+        "doc_grade": "low",
+        "doc_reasons": [
+          "source_shredded",
+          "span_truncated"
+        ]
+      },
+      {
+        "company_id": "INE004C01028",
+        "fiscal_year": 2017,
+        "physical_page": 39,
+        "orphan_start_frac": 0.1429,
+        "provenance": "ocr",
+        "provenance_source": "ocr_stats:words=329",
+        "doc_grade": "low",
+        "doc_reasons": [
+          "year_unproven",
+          "order_scrambled",
+          "span_truncated"
+        ]
+      },
+      {
+        "company_id": "INE002A01018",
+        "fiscal_year": 2018,
+        "physical_page": 95,
+        "orphan_start_frac": 0.1333,
+        "provenance": "ocr",
+        "provenance_source": "ocr_stats:words=198",
+        "doc_grade": "low",
+        "doc_reasons": [
+          "source_shredded",
+          "span_truncated"
+        ]
+      },
+      {
+        "company_id": "INE002A01018",
+        "fiscal_year": 2018,
+        "physical_page": 99,
+        "orphan_start_frac": 0.1333,
+        "provenance": "ocr",
+        "provenance_source": "ocr_stats:words=205",
+        "doc_grade": "low",
+        "doc_reasons": [
+          "source_shredded",
+          "span_truncated"
+        ]
+      },
+      {
+        "company_id": "INE001B01026",
+        "fiscal_year": 2018,
+        "physical_page": 48,
+        "orphan_start_frac": 0.125,
+        "provenance": "ocr",
+        "provenance_source": "ocr_stats:words=11",
+        "doc_grade": "low",
+        "doc_reasons": [
+          "source_shredded",
+          "span_truncated"
+        ]
+      },
+      {
+        "company_id": "INE002A01018",
+        "fiscal_year": 2018,
+        "physical_page": 81,
+        "orphan_start_frac": 0.125,
+        "provenance": "ocr",
+        "provenance_source": "ocr_stats:words=542",
+        "doc_grade": "low",
+        "doc_reasons": [
+          "source_shredded",
+          "span_truncated"
+        ]
+      },
+      {
+        "company_id": "INE192B01031",
+        "fiscal_year": 2025,
+        "physical_page": 159,
+        "orphan_start_frac": 0.1111,
+        "provenance": "ocr",
+        "provenance_source": "ocr_stats:words=52",
+        "doc_grade": "high",
+        "doc_reasons": [
+          "span_truncated"
+        ]
+      },
+      {
+        "company_id": "INE002A01018",
+        "fiscal_year": 2018,
+        "physical_page": 86,
+        "orphan_start_frac": 0.1081,
+        "provenance": "ocr",
+        "provenance_source": "ocr_stats:words=533",
+        "doc_grade": "low",
+        "doc_reasons": [
+          "source_shredded",
+          "span_truncated"
+        ]
+      },
+      {
+        "company_id": "INE002A01018",
+        "fiscal_year": 2018,
+        "physical_page": 70,
+        "orphan_start_frac": 0.1,
+        "provenance": "ocr",
+        "provenance_source": "ocr_stats:words=529",
+        "doc_grade": "low",
+        "doc_reasons": [
+          "source_shredded",
+          "span_truncated"
+        ]
+      },
+      {
+        "company_id": "INE044A01036",
+        "fiscal_year": 2012,
+        "physical_page": 21,
+        "orphan_start_frac": 0.0952,
+        "provenance": "ocr",
+        "provenance_source": "ocr_stats:words=134",
+        "doc_grade": "medium",
+        "doc_reasons": [
+          "span_truncated"
+        ]
+      },
+      {
+        "company_id": "INE081A01020",
+        "fiscal_year": 2013,
+        "physical_page": 65,
+        "orphan_start_frac": 0.0933,
+        "provenance": "ocr",
+        "provenance_source": "ocr_stats:words=588",
+        "doc_grade": "medium",
+        "doc_reasons": [
+          "source_shredded",
+          "span_truncated"
+        ]
+      }
+    ],
+    "native": [
+      {
+        "company_id": "INE002S01010",
+        "fiscal_year": 2017,
+        "physical_page": 45,
+        "orphan_start_frac": 0.6471,
+        "provenance": "native",
+        "provenance_source": "page_kind:digital",
+        "doc_grade": "low",
+        "doc_reasons": [
+          "source_shredded"
+        ]
+      },
+      {
+        "company_id": "INE002L01015",
+        "fiscal_year": 2024,
+        "physical_page": 40,
+        "orphan_start_frac": 0.5,
+        "provenance": "native",
+        "provenance_source": "page_kind:digital",
+        "doc_grade": "low",
+        "doc_reasons": [
+          "source_shredded",
+          "span_truncated"
+        ]
+      },
+      {
+        "company_id": "INE044A01036",
+        "fiscal_year": 2013,
+        "physical_page": 16,
+        "orphan_start_frac": 0.4359,
+        "provenance": "native",
+        "provenance_source": "page_kind:digital",
+        "doc_grade": "low",
+        "doc_reasons": [
+          "source_shredded",
+          "span_truncated"
+        ]
+      },
+      {
+        "company_id": "INE008A01015",
+        "fiscal_year": 2025,
+        "physical_page": 146,
+        "orphan_start_frac": 0.4167,
+        "provenance": "native",
+        "provenance_source": "page_kind:digital",
+        "doc_grade": "quarantine",
+        "doc_reasons": [
+          "source_shredded",
+          "span_truncated",
+          "WRONG_LANGUAGE_RISK"
+        ]
+      },
+      {
+        "company_id": "INE040A01034",
+        "fiscal_year": 2018,
+        "physical_page": 35,
+        "orphan_start_frac": 0.4118,
+        "provenance": "native",
+        "provenance_source": "page_kind:digital",
+        "doc_grade": "medium",
+        "doc_reasons": [
+          "source_shredded",
+          "span_truncated"
+        ]
+      },
+      {
+        "company_id": "INE171A01029",
+        "fiscal_year": 2012,
+        "physical_page": 34,
+        "orphan_start_frac": 0.375,
+        "provenance": "native",
+        "provenance_source": "page_kind:digital",
+        "doc_grade": "low",
+        "doc_reasons": [
+          "section_leak",
+          "order_scrambled",
+          "span_truncated"
+        ]
+      },
+      {
+        "company_id": "INE797F01020",
+        "fiscal_year": 2012,
+        "physical_page": 29,
+        "orphan_start_frac": 0.3729,
+        "provenance": "native",
+        "provenance_source": "page_kind:digital",
+        "doc_grade": "low",
+        "doc_reasons": [
+          "source_shredded",
+          "span_truncated"
+        ]
+      },
+      {
+        "company_id": "INE171A01029",
+        "fiscal_year": 2012,
+        "physical_page": 42,
+        "orphan_start_frac": 0.3548,
+        "provenance": "native",
+        "provenance_source": "page_kind:digital",
+        "doc_grade": "low",
+        "doc_reasons": [
+          "section_leak",
+          "order_scrambled",
+          "span_truncated"
+        ]
+      },
+      {
+        "company_id": "INE171A01029",
+        "fiscal_year": 2012,
+        "physical_page": 41,
+        "orphan_start_frac": 0.3529,
+        "provenance": "native",
+        "provenance_source": "page_kind:digital",
+        "doc_grade": "low",
+        "doc_reasons": [
+          "section_leak",
+          "order_scrambled",
+          "span_truncated"
+        ]
+      },
+      {
+        "company_id": "INE040A01034",
+        "fiscal_year": 2025,
+        "physical_page": 232,
+        "orphan_start_frac": 0.3478,
+        "provenance": "native",
+        "provenance_source": "page_kind:digital",
+        "doc_grade": "medium",
+        "doc_reasons": [
+          "section_leak",
+          "span_truncated"
+        ]
+      },
+      {
+        "company_id": "INE008A01015",
+        "fiscal_year": 2024,
+        "physical_page": 108,
+        "orphan_start_frac": 0.3214,
+        "provenance": "native",
+        "provenance_source": "page_kind:digital",
+        "doc_grade": "quarantine",
+        "doc_reasons": [
+          "source_shredded",
+          "span_truncated",
+          "WRONG_LANGUAGE_RISK"
+        ]
+      },
+      {
+        "company_id": "INE002L01015",
+        "fiscal_year": 2025,
+        "physical_page": 46,
+        "orphan_start_frac": 0.3093,
+        "provenance": "native",
+        "provenance_source": "page_kind:digital",
+        "doc_grade": "low",
+        "doc_reasons": [
+          "source_shredded",
+          "span_truncated"
+        ]
+      },
+      {
+        "company_id": "INE191H01014",
+        "fiscal_year": 2025,
+        "physical_page": 99,
+        "orphan_start_frac": 0.3077,
+        "provenance": "native",
+        "provenance_source": "page_kind:digital",
+        "doc_grade": "low",
+        "doc_reasons": [
+          "source_shredded",
+          "span_truncated"
+        ]
+      },
+      {
+        "company_id": "INE008A01015",
+        "fiscal_year": 2024,
+        "physical_page": 143,
+        "orphan_start_frac": 0.3077,
+        "provenance": "native",
+        "provenance_source": "page_kind:digital",
+        "doc_grade": "quarantine",
+        "doc_reasons": [
+          "source_shredded",
+          "span_truncated",
+          "WRONG_LANGUAGE_RISK"
+        ]
+      },
+      {
+        "company_id": "INE192B01031",
+        "fiscal_year": 2012,
+        "physical_page": 53,
+        "orphan_start_frac": 0.303,
+        "provenance": "native",
+        "provenance_source": "page_kind:digital",
+        "doc_grade": "low",
+        "doc_reasons": [
+          "identity_unproven",
+          "year_unproven",
+          "source_shredded",
+          "span_truncated"
+        ]
+      },
+      {
+        "company_id": "INE004Z01011",
+        "fiscal_year": 2024,
+        "physical_page": 47,
+        "orphan_start_frac": 0.3,
+        "provenance": "native",
+        "provenance_source": "page_kind:digital",
+        "doc_grade": "medium",
+        "doc_reasons": [
+          "source_shredded",
+          "span_truncated"
+        ]
+      },
+      {
+        "company_id": "INE191H01014",
+        "fiscal_year": 2025,
+        "physical_page": 96,
+        "orphan_start_frac": 0.2917,
+        "provenance": "native",
+        "provenance_source": "page_kind:digital",
+        "doc_grade": "low",
+        "doc_reasons": [
+          "source_shredded",
+          "span_truncated"
+        ]
+      },
+      {
+        "company_id": "INE191H01014",
+        "fiscal_year": 2025,
+        "physical_page": 95,
+        "orphan_start_frac": 0.2857,
+        "provenance": "native",
+        "provenance_source": "page_kind:digital",
+        "doc_grade": "low",
+        "doc_reasons": [
+          "source_shredded",
+          "span_truncated"
+        ]
+      },
+      {
+        "company_id": "INE008A01015",
+        "fiscal_year": 2024,
+        "physical_page": 134,
+        "orphan_start_frac": 0.2857,
+        "provenance": "native",
+        "provenance_source": "page_kind:digital",
+        "doc_grade": "quarantine",
+        "doc_reasons": [
+          "source_shredded",
+          "span_truncated",
+          "WRONG_LANGUAGE_RISK"
+        ]
+      },
+      {
+        "company_id": "INE002L01015",
+        "fiscal_year": 2025,
+        "physical_page": 48,
+        "orphan_start_frac": 0.2791,
+        "provenance": "native",
+        "provenance_source": "page_kind:digital",
+        "doc_grade": "low",
+        "doc_reasons": [
+          "source_shredded",
+          "span_truncated"
+        ]
+      }
+    ]
+  },
+  "decision": {
+    "final_verdict": "SEPARATE OCR THRESHOLD STUDY JUSTIFIED — NOT IMPLEMENTED",
+    "rationale": "The observed OCR page-level distribution differs materially from native (fraction > 0.03 delta: +0.1663, median delta: +0.0000), justifying a future pre-registered threshold-fitting study. Production threshold remains 0.03."
+  }
+}
