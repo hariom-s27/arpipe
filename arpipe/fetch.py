@@ -31,6 +31,7 @@ import httpx
 import pymupdf
 
 from .models import ReportRef, StoredDoc
+from .telemetry import TelemetryWriter, classify_error, emit_failure_telemetry
 
 
 @dataclass(slots=True)
@@ -111,14 +112,43 @@ def _repair(path: str) -> bool:
 
 def fetch_one(ref: ReportRef, root: str, client: httpx.Client,
               limiter: HostLimiter, max_bytes: int = 400 << 20,
-              retries: int = 3) -> StoredDoc | None:
+              retries: int = 3,
+              telemetry_sink: TelemetryWriter | None = None,
+              run_id: str | None = None) -> StoredDoc | None:
     last_err: Exception | None = None
     for attempt in range(retries):
+        attempt_num = attempt + 1
+        is_last_attempt = (attempt_num >= retries)
         limiter.wait(ref.url)
+        t0 = time.monotonic()
+        data = b""
+        bytes_recvd = 0
+        ctype = None
         try:
             with client.stream("GET", ref.url, follow_redirects=True,
                                timeout=120.0) as r:
+                ctype = r.headers.get("content-type")
                 if r.status_code in (403, 429, 503):
+                    elapsed = (time.monotonic() - t0) * 1000.0
+                    emit_failure_telemetry(
+                        telemetry_sink,
+                        company_id=ref.company_id,
+                        fy_end=ref.fy_end,
+                        source=ref.source,
+                        url=ref.url,
+                        attempt_number=attempt_num,
+                        terminal_state=is_last_attempt,
+                        retry_exhausted=is_last_attempt,
+                        error_type="HTTP_FAILURE",
+                        status_code=r.status_code,
+                        error_message=f"HTTP status {r.status_code}",
+                        exception_class=None,
+                        first_failure_layer="L3_HTTP",
+                        response_content_type=ctype,
+                        bytes_received=0,
+                        elapsed_ms=elapsed,
+                        run_id=run_id,
+                    )
                     time.sleep(5 * (attempt + 1) ** 2)
                     continue
                 r.raise_for_status()
@@ -128,9 +158,31 @@ def fetch_one(ref: ReportRef, root: str, client: httpx.Client,
                     if buf.tell() > max_bytes:
                         raise RuntimeError(f"oversize>{max_bytes}")
                 data = buf.getvalue()
-                ctype = r.headers.get("content-type", "")
+                bytes_recvd = len(data)
         except Exception as exc:                        # noqa: BLE001
+            elapsed = (time.monotonic() - t0) * 1000.0
             last_err = exc
+            status = getattr(getattr(exc, "response", None), "status_code", None)
+            err_type, layer = classify_error(exc, status)
+            emit_failure_telemetry(
+                telemetry_sink,
+                company_id=ref.company_id,
+                fy_end=ref.fy_end,
+                source=ref.source,
+                url=ref.url,
+                attempt_number=attempt_num,
+                terminal_state=is_last_attempt,
+                retry_exhausted=is_last_attempt,
+                error_type=err_type,
+                status_code=status,
+                error_message=str(exc),
+                exception_class=f"{type(exc).__module__}.{type(exc).__name__}",
+                first_failure_layer=layer,
+                response_content_type=ctype,
+                bytes_received=bytes_recvd,
+                elapsed_ms=elapsed,
+                run_id=run_id,
+            )
             time.sleep(2 * (attempt + 1))
             continue
 
@@ -143,6 +195,26 @@ def fetch_one(ref: ReportRef, root: str, client: httpx.Client,
                 was_zip = True
                 got, extra = _extract_pdf_from_zip(data, td)
                 if not got:
+                    elapsed = (time.monotonic() - t0) * 1000.0
+                    emit_failure_telemetry(
+                        telemetry_sink,
+                        company_id=ref.company_id,
+                        fy_end=ref.fy_end,
+                        source=ref.source,
+                        url=ref.url,
+                        attempt_number=attempt_num,
+                        terminal_state=True,
+                        retry_exhausted=False,
+                        error_type="VALIDATION_FAILURE",
+                        status_code=200,
+                        error_message="BadZipFile or no PDF found inside ZIP",
+                        exception_class="zipfile.BadZipFile",
+                        first_failure_layer="L6_VALIDATION",
+                        response_content_type=ctype,
+                        bytes_received=bytes_recvd,
+                        elapsed_ms=elapsed,
+                        run_id=run_id,
+                    )
                     return None
                 path = got
                 print(f"[FETCH] Extracted PDF from ZIP for {ref.company_id} FY{ref.fy_end} (extras: {len(extra)})")
@@ -166,6 +238,26 @@ def fetch_one(ref: ReportRef, root: str, client: httpx.Client,
                 was_repaired = True
                 if not _repair(path):
                     print(f"[FETCH] qpdf repair failed for {ref.company_id} FY{ref.fy_end}")
+                    elapsed = (time.monotonic() - t0) * 1000.0
+                    emit_failure_telemetry(
+                        telemetry_sink,
+                        company_id=ref.company_id,
+                        fy_end=ref.fy_end,
+                        source=ref.source,
+                        url=ref.url,
+                        attempt_number=attempt_num,
+                        terminal_state=True,
+                        retry_exhausted=False,
+                        error_type="VALIDATION_FAILURE",
+                        status_code=200,
+                        error_message="Corrupted PDF and qpdf repair failed",
+                        exception_class=None,
+                        first_failure_layer="L6_VALIDATION",
+                        response_content_type=ctype,
+                        bytes_received=bytes_recvd,
+                        elapsed_ms=elapsed,
+                        run_id=run_id,
+                    )
                     return None
                 print(f"[FETCH] Repaired PDF with qpdf for {ref.company_id} FY{ref.fy_end}")
                 doc = pymupdf.open(path)

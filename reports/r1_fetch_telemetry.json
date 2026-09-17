@@ -1,0 +1,202 @@
+{
+  "task": "ARPipe R1: Acquisition Failure Telemetry-Only Repair",
+  "status": "COMPLETED",
+  "final_verdict": "FAILURE TELEMETRY REPAIR COMPLETE — BEHAVIOR UNCHANGED",
+  "git": {
+    "base_commit": "0fb8cbf6d932f4190bdfe3b2a1fecf62170cca14",
+    "worktree": "D:\\sem_iitk\\sem9\\thesis\\sep_week1\\arpipe-r1-fetch-telemetry",
+    "branch": "r1-fetch-telemetry",
+    "changed_production_files": [
+      "arpipe/cli.py",
+      "arpipe/fetch.py",
+      "arpipe/telemetry.py"
+    ],
+    "unrelated_files_modified": 0,
+    "patterns_py_diff": 0
+  },
+  "schema": {
+    "version": "r1-v1",
+    "writer_mode": "local_jsonl_non_blocking",
+    "required_fields": [
+      "telemetry_schema_version",
+      "run_id",
+      "request_sequence_id",
+      "timestamp_utc",
+      "company_id",
+      "fy_end",
+      "source",
+      "url_redacted",
+      "url_sha256",
+      "attempt_number",
+      "terminal_state",
+      "retry_exhausted",
+      "error_type",
+      "status_code",
+      "error_message"
+    ],
+    "optional_fields": [
+      "exception_class",
+      "first_failure_layer",
+      "response_content_type",
+      "bytes_received",
+      "elapsed_ms"
+    ]
+  },
+  "attempt_semantics": {
+    "granularity": "per_actual_http_network_attempt",
+    "multi_attempt_handling": "one_record_per_attempt_no_collapsing",
+    "attempt_numbering": "1_based_sequential",
+    "retry_exhausted_definition": "true_only_when_existing_retry_policy_exhausted",
+    "terminal_state_definition": "true_only_when_attempt_ends_fetch_operation"
+  },
+  "url_redaction": {
+    "rule": "preserve scheme, hostname, path; redact sensitive query parameters (token, auth, key, secret, signature, pwd, session, credential)",
+    "hash_algorithm": "SHA-256 over url_redacted",
+    "raw_tokens_or_secrets_persisted": false
+  },
+  "behavioral_immutability": {
+    "behavior_changed": false,
+    "return_values_identical": true,
+    "exception_classes_identical": true,
+    "http_request_counts_identical": true,
+    "retry_counts_and_ordering_identical": true,
+    "retry_timing_configuration_identical": true,
+    "terminal_fallthrough_behavior": "Identical silent return None preserved for exhausted 403/429/503"
+  },
+  "telemetry_writer_failure_guarantee": {
+    "is_non_blocking": true,
+    "swallows_writer_exceptions": true,
+    "tested_writer_failure_types": [
+      "PermissionError",
+      "OSError_disk_full",
+      "RuntimeError_unexpected"
+    ],
+    "acquisition_affected_by_writer_failure": false
+  },
+  "test_matrix_summary": [
+    {
+      "fixture": "200 PDF",
+      "pre_r1_behavior": "StoredDoc",
+      "post_r1_behavior": "StoredDoc",
+      "behavior_matched": true,
+      "telemetry_records": 0
+    },
+    {
+      "fixture": "200 ZIP",
+      "pre_r1_behavior": "StoredDoc",
+      "post_r1_behavior": "StoredDoc",
+      "behavior_matched": true,
+      "telemetry_records": 0
+    },
+    {
+      "fixture": "403 Forbidden",
+      "pre_r1_behavior": "None (silent fall-through)",
+      "post_r1_behavior": "None (silent fall-through)",
+      "behavior_matched": true,
+      "telemetry_records": 3,
+      "attempt_states": [
+        {"attempt": 1, "terminal": false, "exhausted": false, "status": 403},
+        {"attempt": 2, "terminal": false, "exhausted": false, "status": 403},
+        {"attempt": 3, "terminal": true, "exhausted": true, "status": 403}
+      ]
+    },
+    {
+      "fixture": "429 Too Many Requests",
+      "pre_r1_behavior": "None (silent fall-through)",
+      "post_r1_behavior": "None (silent fall-through)",
+      "behavior_matched": true,
+      "telemetry_records": 3,
+      "attempt_states": [
+        {"attempt": 1, "terminal": false, "exhausted": false, "status": 429},
+        {"attempt": 2, "terminal": false, "exhausted": false, "status": 429},
+        {"attempt": 3, "terminal": true, "exhausted": true, "status": 429}
+      ]
+    },
+    {
+      "fixture": "503 Service Unavailable",
+      "pre_r1_behavior": "None (silent fall-through)",
+      "post_r1_behavior": "None (silent fall-through)",
+      "behavior_matched": true,
+      "telemetry_records": 3,
+      "attempt_states": [
+        {"attempt": 1, "terminal": false, "exhausted": false, "status": 503},
+        {"attempt": 2, "terminal": false, "exhausted": false, "status": 503},
+        {"attempt": 3, "terminal": true, "exhausted": true, "status": 503}
+      ]
+    },
+    {
+      "fixture": "Timeout",
+      "pre_r1_behavior": "httpx.ReadTimeout",
+      "post_r1_behavior": "httpx.ReadTimeout",
+      "behavior_matched": true,
+      "telemetry_records": 3,
+      "attempt_states": [
+        {"attempt": 1, "terminal": false, "exhausted": false, "error_type": "TIMEOUT"},
+        {"attempt": 2, "terminal": false, "exhausted": false, "error_type": "TIMEOUT"},
+        {"attempt": 3, "terminal": true, "exhausted": true, "error_type": "TIMEOUT"}
+      ]
+    },
+    {
+      "fixture": "Connection Error",
+      "pre_r1_behavior": "httpx.ConnectError",
+      "post_r1_behavior": "httpx.ConnectError",
+      "behavior_matched": true,
+      "telemetry_records": 3,
+      "attempt_states": [
+        {"attempt": 1, "terminal": false, "exhausted": false, "error_type": "NETWORK_FAILURE"},
+        {"attempt": 2, "terminal": false, "exhausted": false, "error_type": "NETWORK_FAILURE"},
+        {"attempt": 3, "terminal": true, "exhausted": true, "error_type": "NETWORK_FAILURE"}
+      ]
+    },
+    {
+      "fixture": "Malformed Response (Bad Zip)",
+      "pre_r1_behavior": "None (validation failure abort)",
+      "post_r1_behavior": "None (validation failure abort)",
+      "behavior_matched": true,
+      "telemetry_records": 1,
+      "attempt_states": [
+        {"attempt": 1, "terminal": true, "exhausted": false, "error_type": "VALIDATION_FAILURE", "status": 200}
+      ]
+    },
+    {
+      "fixture": "Malformed Response (Corrupt PDF)",
+      "pre_r1_behavior": "None (qpdf repair failed abort)",
+      "post_r1_behavior": "None (qpdf repair failed abort)",
+      "behavior_matched": true,
+      "telemetry_records": 1,
+      "attempt_states": [
+        {"attempt": 1, "terminal": true, "exhausted": false, "error_type": "VALIDATION_FAILURE", "status": 200}
+      ]
+    },
+    {
+      "fixture": "Telemetry Writer Failure",
+      "pre_r1_behavior": "N/A",
+      "post_r1_behavior": "Identical acquisition behavior across 200, 403, and timeout cases; writer error absorbed",
+      "behavior_matched": true,
+      "telemetry_records": 0
+    }
+  ],
+  "regression_results": {
+    "test_p33_is_given_below_not_pointer": {
+      "command": "python -m pytest -p no:cacheprovider arpipe/tests/test_pipeline.py -k test_p33_is_given_below_not_pointer",
+      "passed": 1,
+      "failed": 0,
+      "duration_sec": 0.31
+    },
+    "full_regression_suite": {
+      "command": "python -m pytest -v -p no:cacheprovider --basetemp=scratch/pytest_tmp arpipe/tests/test_discover.py arpipe/tests/test_config.py arpipe/tests/test_r1_fetch_telemetry.py",
+      "total": 31,
+      "passed": 31,
+      "failed": 0,
+      "skipped": 0,
+      "duration_sec": 0.78
+    }
+  },
+  "remaining_acquisition_uncertainties": [
+    "Cause of historical 2026-09-11 318 losses remains unproven (no historical per-attempt telemetry existed).",
+    "Whether NSE CDN transient throttling or other network conditions caused 2026-09-11 losses remains an inference.",
+    "Optimal retry/backoff policy for NSE endpoints is not addressed by R1 (observation-only scope).",
+    "Terminal fall-through on 403/429/503 is made observable by R1 but deliberately not modified."
+  ]
+}
+
