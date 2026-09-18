@@ -29,16 +29,18 @@
     "target_artifact": "dataset/corpus_gap_audit/gap_audit_document.csv",
     "field": "total_pages",
     "threshold": 2,
+    "rule_description": "total_pages <= 2 -> STUB; total_pages > 2 -> STANDARD",
     "stub_flag": "STUB",
     "standard_flag": "STANDARD",
     "inclusion_policy": "Stubs remain in corpus and are included in all distribution statistics"
   },
   "interaction_dependency_rules": {
     "ocr_layer_candidate__scanned_or_mixed": {
-      "tautology_flag": "TAUTOLOGICAL",
+      "tautology_flag": "KNOWN_DEPENDENCY",
       "dependency_source_artifact": "tools/audit_corpus_gaps.py",
-      "dependency_source_function": "check_cond / doc_rows generation",
-      "dependency_source_rule": "MIXED representation is assigned if ocr_page_count > 0; scanned_or_mixed checks representation in (SCANNED, MIXED)"
+      "dependency_source_function": "generate_audit_artifacts",
+      "dependency_source_rule": "MIXED representation is assigned if ocr_page_count > 0, entailing scanned_or_mixed whenever ocr_layer_candidate is positive; converse does not hold definitionally",
+      "condition_heuristic_status": "ocr_layer_candidate is an auxiliary heuristic proxy, not a validated OCR detector"
     },
     "default_rule": {
       "tautology_flag": "NOT_ASSESSED",
@@ -350,3 +352,4 @@
     }
   }
 }
+

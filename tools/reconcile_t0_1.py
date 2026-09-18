@@ -448,6 +448,7 @@ def reconcile_corpus(
             "missing_historical_records": total_missing_count,
             "total_physical_pages": total_physical_pages,
             "distinct_issuers": distinct_issuer_count,
+            "stub_classification_rule": "total_pages <= 2 -> STUB, total_pages > 2 -> STANDARD",
             "stub_documents_count": stub_count,
             "page_count_distribution": {
                 "min": page_min,
@@ -796,7 +797,7 @@ def reconcile_corpus(
             "decision_basis": "Extensive CID/PUA codepoint samples across 24 corporate issuers",
             "acquisition_status": "NO_ACQUISITION",
             "minimum_useful_addition": "0",
-            "reason": "Existing corpus provides adequate font repair and re-encoding challenges",
+            "reason": "Existing corpus provides font repair and re-encoding challenges for evaluation",
             "source_claim_ids": "CLAIM:C030;CLAIM:C031;CLAIM:C056"
         },
         {
@@ -2066,8 +2067,8 @@ def reconcile_corpus(
             "review_expectation_value": "98",
             "review_expectation_status": "MATCH",
             "status": "SUPPORTED_WITH_QUALIFICATION",
-            "corrected_claim": "OCR Layer x Mixed Representation is observed in 98 documents; this intersection is tautological because MIXED representation is assigned whenever ocr_page_count > 0",
-            "reason": "Historical detector logic in tools/audit_corpus_gaps.py lines 909-910 defines MIXED if ocr_page_count > 0"
+            "corrected_claim": "OCR Layer Candidate (heuristic proxy) x Scanned or Mixed Representation is observed in 98 documents; this intersection represents a KNOWN_DEPENDENCY because ocr_page_count > 0 definitionally entails scanned_or_mixed representation in the historical implementation, though strict two-way tautology is not established",
+            "reason": "Established known dependency in tools/audit_corpus_gaps.py (function generate_audit_artifacts) where ocr_page_count > 0 entails document_representation in ('SCANNED', 'MIXED')"
         },
         {
             "claim_id": "CLAIM:C049",
@@ -2262,12 +2263,12 @@ def reconcile_corpus(
             "evidence_location": "acquisition_decision.csv core thesis rows",
             "source_claim_ids": "CLAIM:C001;CLAIM:C005;CLAIM:C007;CLAIM:C009;CLAIM:C011;CLAIM:C013;CLAIM:C015;CLAIM:C019;CLAIM:C038",
             "decision_rule_id": "DEC_RULE_01",
-            "decision_basis": "Core thesis requirements are fully covered by 194 executable PDFs across 36 issuers",
+            "decision_basis": "No additional acquisition justified for core thesis under predefined claim scope and available evidence",
             "review_expectation_value": "NO_ACQUISITION",
             "review_expectation_status": "MATCH",
             "status": "SUPPORTED",
-            "corrected_claim": "ZERO additional PDF acquisition is required for the Core ARPipe Thesis; existing 194 PDFs provide full diversity for prose, multi-column layouts, tables, furniture, and long reports",
-            "reason": "Supported by exhaustive corpus coverage across 36 corporate issuers and 8 fiscal years"
+            "corrected_claim": "No additional acquisition is currently justified for the core thesis under the predefined claim scope and available evidence. Targeted acquisition may remain an optional robustness extension for explicitly defined edge-case claims.",
+            "reason": "No additional acquisition justified for core thesis under predefined claim scope and available evidence"
         },
         {
             "claim_id": "CLAIM:C057",
@@ -2464,10 +2465,11 @@ def reconcile_corpus(
         "",
         "In `interaction_gap_matrix_reconciled.csv`, the column previously labeled `page_count` has been renamed to `total_pages_in_docs_meeting_both` [CLAIM:C047] [CLAIM:C048].",
         "This metric represents the sum of all physical pages across documents satisfying both document-level conditions; it is not a page-level intersection.",
-        "Furthermore, code inspection of `tools/audit_corpus_gaps.py` lines 905-911 and 1144-1145 confirms that the interaction `ocr_layer_candidate x scanned_or_mixed` (98 docs, 23,877 pages) is **TAUTOLOGICAL** because `MIXED` representation was defined partly from `ocr_page_count > 0` [CLAIM:C048].",
+        "Furthermore, inspection of the frozen historical implementation in `tools/audit_corpus_gaps.py` (function `generate_audit_artifacts`) confirms that the interaction `ocr_layer_candidate x scanned_or_mixed` (98 docs, 23,877 pages) represents a **KNOWN_DEPENDENCY** (rather than an unassessed co-occurrence or a strict two-way tautology): `ocr_layer_candidate` (an auxiliary heuristic proxy, not a validated OCR detector) with `ocr_page_count > 0` definitionally entails `scanned_or_mixed` representation under the document classification rules, though the converse does not hold definitionally [CLAIM:C048].",
         "",
         "# Stub/hygiene limitations",
         "",
+        f"Under the frozen T0.1R reconciliation rules, documents with `total_pages <= 2` are classified as `STUB`, while documents with `total_pages > 2` are classified as `STANDARD`.",
         f"Exactly {stub_count} stub filings exist in the corpus (`INE00FF01025_2015` [1 page] and `INE00LO01017_2015` [2 pages]) [CLAIM:C058].",
         "These documents represent historical filing stubs or cover notices. In accordance with strict immutability, they are preserved as full members of the frozen T0 corpus and flagged as `corpus_hygiene_flag = STUB` in `gap_audit_document_reconciled.csv`.",
         f"All summary statistics and percentile distributions reported herein include these stub documents, yielding an authentic minimum page count of {page_min} [CLAIM:C038].",
@@ -2484,12 +2486,13 @@ def reconcile_corpus(
         "",
         "**DECISION: NO ACQUISITION JUSTIFIED FOR CORE ARPIPE THESIS [CLAIM:C056].**",
         "The scientific goal of ARPipe is the robust boundary localization and clean text extraction of English-language MD&A sections from Indian corporate filings.",
+        "No additional acquisition is currently justified for the core thesis under the predefined claim scope and available evidence. Targeted acquisition may remain an optional robustness extension for explicitly defined edge-case claims.",
         "The current corpus provides:",
         "- 191 documents containing native digital prose across 36 diverse issuers and 8 fiscal years [CLAIM:C001] [CLAIM:C002] [CLAIM:C005].",
         "- 191 multi-column layout documents challenging reading order reconstruction [CLAIM:C009].",
         "- 190 table candidate documents challenging tabular quarantine [CLAIM:C011].",
         "- 48 documents exceeding 250 pages (max 661 pages) challenging memory and document scaling [CLAIM:C045] [CLAIM:C046].",
-        "Every core thesis pipeline stage can be fully benchmarked and verified using the existing frozen 194-PDF corpus. Acquiring additional PDFs for core pipeline development is scientifically unjustified.",
+        "No additional acquisition is currently justified for the core thesis under the predefined claim scope and available evidence. Targeted acquisition may remain an optional robustness extension for explicitly defined edge-case claims.",
         "",
         "# Optional robustness acquisition decision",
         "",
@@ -2538,8 +2541,10 @@ def reconcile_corpus(
         "- **Model-Review Provenance**: Reclassified auto-relabelled records to `NOT_REVIEWED` with issue `AUTO_RELABELLED_WITHOUT_MODEL_INSPECTION`.",
         "- **Fully Scanned Documents**: Reconciled from canonical `gap_audit_document.csv` confirming exactly 2 fully scanned documents (91 pages).",
         "- **Mixed Representation**: Reconciled to canonical count of 132 documents (30,132 pages).",
-        "- **Candidate Proxy vs Ground Truth**: Explicitly distinguished heuristic signals (tables, annexures, running furniture, TOC offsets) from verified semantic ground truth.",
-        "- **Interaction Semantics**: Renamed metric to `total_pages_in_docs_meeting_both` and flagged code-grounded tautologies.",
+        "- **Corpus Hygiene and Stub Classification**: Documents with `total_pages <= 2` are classified as `STUB`; documents with `total_pages > 2` are classified as `STANDARD`. Stubs remain part of the frozen corpus.",
+        "- **Candidate Proxy vs Ground Truth**: Explicitly distinguished heuristic signals (tables, annexures, running furniture, TOC offsets, OCR proxy) from verified semantic ground truth.",
+        "- **Interaction Dependencies**: Renamed metric to `total_pages_in_docs_meeting_both`. Classified interaction dependencies into `TAUTOLOGICAL` (strict equivalence), `KNOWN_DEPENDENCY` (definitional implication without two-way equivalence, e.g. OCR proxy implying mixed/scanned representation in `tools/audit_corpus_gaps.py`), or `NOT_ASSESSED`, with code function provenance without line numbers.",
+        "- **Core vs Robustness Acquisition Boundary**: Narrowed core acquisition finding to: No additional acquisition is currently justified for the core thesis under the predefined claim scope and available evidence. Targeted acquisition may remain an optional robustness extension for explicitly defined edge-case claims.",
         "- **Claim-Register-Driven Validation**: Every quantitative and scientific statement is indexed in `claim_audit.csv` with machine-executable calculation IDs and semantic anchors."
     ]
     _write_file_binary(os.path.join(output_dir, "methodology_reconciled.md"), ("\n".join(methodology_lines) + "\n").encode("utf-8"))

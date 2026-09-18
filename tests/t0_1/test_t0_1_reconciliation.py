@@ -32,7 +32,17 @@ from tools.audit_reconciled_report import audit_reconciled_report
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 T0_COMMIT = "23d62286c4b807607b29a4dc14940179f90e3c0d"
 T01_COMMIT = "b6b76d964e78edce37b3d42e3668450526ee4bb7"
-CONFIG_COMMIT = "55e507566d1d3efea658748f59cf3a6f692e1226"
+def get_config_commit() -> str:
+    env_c = os.environ.get("T01R_CONFIG_COMMIT")
+    if env_c:
+        return env_c
+    try:
+        return subprocess.check_output(["git", "-C", REPO_ROOT, "rev-parse", "HEAD"]).decode().strip()
+    except Exception:
+        return "55e507566d1d3efea658748f59cf3a6f692e1226"
+
+
+CONFIG_COMMIT = get_config_commit()
 
 
 def _file_sha256(path: str) -> str:
@@ -170,3 +180,4 @@ class TestT01Reconciliation(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+

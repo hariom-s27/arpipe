@@ -16,6 +16,7 @@ import csv
 import hashlib
 import json
 import os
+import re
 import sys
 from typing import Any, Dict, List
 
@@ -113,13 +114,41 @@ def audit_reconciliation(repo_root: str, reconciled_dir: str) -> bool:
             if "total_pages_in_docs_meeting_both" not in r:
                 errors.append("interaction_gap_matrix_reconciled.csv missing 'total_pages_in_docs_meeting_both'")
             if r["condition_a"] == "ocr_layer_candidate" and r["condition_b"] == "scanned_or_mixed":
-                if r["tautology_flag"] != "TAUTOLOGICAL":
-                    errors.append("ocr_layer_candidate x scanned_or_mixed must be flagged TAUTOLOGICAL")
+                if r["tautology_flag"] != "KNOWN_DEPENDENCY":
+                    errors.append(f"ocr_layer_candidate x scanned_or_mixed must be flagged KNOWN_DEPENDENCY, found {r['tautology_flag']}")
                 if "audit_corpus_gaps.py" not in r["dependency_source_artifact"]:
                     errors.append("ocr_layer_candidate x scanned_or_mixed missing dependency_source_artifact")
+                if r.get("dependency_source_function") != "generate_audit_artifacts":
+                    errors.append("ocr_layer_candidate x scanned_or_mixed missing or invalid dependency_source_function")
+                rule_text = r.get("dependency_source_rule", "")
+                if not rule_text or rule_text == "NONE":
+                    errors.append("ocr_layer_candidate x scanned_or_mixed missing dependency_source_rule")
+                if re.search(r"lines?\s+\d+", rule_text, re.IGNORECASE):
+                    errors.append("dependency_source_rule must not use source-code line numbers as provenance basis")
                 found_tautology = True
         if not found_tautology:
             errors.append("Missing ocr_layer_candidate x scanned_or_mixed pair in interaction matrix")
+
+        # Verify stub rule in gap_audit_document_reconciled.csv
+        doc_path = os.path.join(reconciled_dir, "gap_audit_document_reconciled.csv")
+        if os.path.isfile(doc_path):
+            with open(doc_path, "r", encoding="utf-8") as f:
+                doc_rows = list(csv.DictReader(f))
+            for r in doc_rows:
+                pgs = int(r["total_pages"])
+                flag = r.get("corpus_hygiene_flag")
+                if pgs <= 2 and flag != "STUB":
+                    errors.append(f"Doc {r['document_id']} with {pgs} pages must have corpus_hygiene_flag == STUB")
+                elif pgs > 2 and flag != "STANDARD":
+                    errors.append(f"Doc {r['document_id']} with {pgs} pages must have corpus_hygiene_flag == STANDARD")
+
+        # Verify stub rule in gap_audit_summary_reconciled.json
+        sum_json_path = os.path.join(reconciled_dir, "gap_audit_summary_reconciled.json")
+        if os.path.isfile(sum_json_path):
+            with open(sum_json_path, "r", encoding="utf-8") as f:
+                s_data = json.load(f)
+            if s_data.get("corpus_inventory", {}).get("stub_classification_rule") != "total_pages <= 2 -> STUB, total_pages > 2 -> STANDARD":
+                errors.append("gap_audit_summary_reconciled.json missing or incorrect stub_classification_rule")
 
     # 6. Verify claim_audit.csv schema and statuses
     claim_path = os.path.join(reconciled_dir, "claim_audit.csv")
@@ -188,3 +217,4 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+
