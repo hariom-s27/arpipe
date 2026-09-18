@@ -1,0 +1,99 @@
+{
+  "audit_name": "T0.1 Corpus Gap Audit",
+  "seed": 20260918,
+  "corpus_inventory": {
+    "total_records": 208,
+    "executable_pdfs": 194,
+    "missing_historical_records": 14,
+    "total_physical_pages": 37917,
+    "distinct_issuers": 36,
+    "page_count_distribution": {
+      "min": 1,
+      "max": 661,
+      "mean": 195.45,
+      "median": 165.0,
+      "q1": 92.75,
+      "q3": 249.25,
+      "p75": 249.25,
+      "p90": 387.3000000000002,
+      "p95": 460.35
+    }
+  },
+  "splits": {
+    "fit_docs": 92,
+    "val_docs": 48,
+    "hold_docs": 54,
+    "dev_docs": 60,
+    "challenge_docs": 45
+  },
+  "conditions_summary": {
+    "native": {
+      "document_count": 191,
+      "issuer_count": 36
+    },
+    "scanned": {
+      "document_count": 63,
+      "issuer_count": 30
+    },
+    "ocr_layer_candidate": {
+      "document_count": 98,
+      "issuer_count": 31
+    },
+    "legacy_font_candidate": {
+      "document_count": 56,
+      "issuer_count": 24
+    },
+    "hidden_text_candidate": {
+      "document_count": 3,
+      "issuer_count": 3
+    },
+    "duplicate_text_candidate": {
+      "document_count": 35,
+      "issuer_count": 18
+    },
+    "devanagari_candidate": {
+      "document_count": 2,
+      "issuer_count": 1
+    },
+    "bilingual_candidate": {
+      "document_count": 2,
+      "issuer_count": 1
+    },
+    "two_column": {
+      "document_count": 184,
+      "issuer_count": 36
+    },
+    "multi_column": {
+      "document_count": 191,
+      "issuer_count": 36
+    },
+    "table_candidate": {
+      "document_count": 190,
+      "issuer_count": 36
+    },
+    "header_candidate": {
+      "document_count": 84,
+      "issuer_count": 32
+    },
+    "footer_candidate": {
+      "document_count": 90,
+      "issuer_count": 28
+    },
+    "toc_candidate": {
+      "document_count": 174,
+      "issuer_count": 36
+    },
+    "deep_hierarchy_candidate": {
+      "document_count": 28,
+      "issuer_count": 15
+    },
+    "annexure_candidate": {
+      "document_count": 188,
+      "issuer_count": 36
+    },
+    "combined_mdna_candidate": {
+      "document_count": 44,
+      "issuer_count": 22
+    }
+  }
+}
