@@ -15,6 +15,7 @@
       "q3": 249.25,
       "quantile_method": "linear"
     },
+    "stub_classification_rule": "total_pages <= 2 -> STUB, total_pages > 2 -> STANDARD",
     "stub_documents_count": 2,
     "total_physical_pages": 37917,
     "total_records": 208

@@ -126,10 +126,11 @@ Devanagari is completely absent from FIT, VALIDATION, and the Development set [C
 
 In `interaction_gap_matrix_reconciled.csv`, the column previously labeled `page_count` has been renamed to `total_pages_in_docs_meeting_both` [CLAIM:C047] [CLAIM:C048].
 This metric represents the sum of all physical pages across documents satisfying both document-level conditions; it is not a page-level intersection.
-Furthermore, code inspection of `tools/audit_corpus_gaps.py` lines 905-911 and 1144-1145 confirms that the interaction `ocr_layer_candidate x scanned_or_mixed` (98 docs, 23,877 pages) is **TAUTOLOGICAL** because `MIXED` representation was defined partly from `ocr_page_count > 0` [CLAIM:C048].
+Furthermore, inspection of the frozen historical implementation in `tools/audit_corpus_gaps.py` (function `generate_audit_artifacts`) confirms that the interaction `ocr_layer_candidate x scanned_or_mixed` (98 docs, 23,877 pages) represents a **KNOWN_DEPENDENCY** (rather than an unassessed co-occurrence or a strict two-way tautology): `ocr_layer_candidate` (an auxiliary heuristic proxy, not a validated OCR detector) with `ocr_page_count > 0` definitionally entails `scanned_or_mixed` representation under the document classification rules, though the converse does not hold definitionally [CLAIM:C048].
 
 # Stub/hygiene limitations
 
+Under the frozen T0.1R reconciliation rules, documents with `total_pages <= 2` are classified as `STUB`, while documents with `total_pages > 2` are classified as `STANDARD`.
 Exactly 2 stub filings exist in the corpus (`INE00FF01025_2015` [1 page] and `INE00LO01017_2015` [2 pages]) [CLAIM:C058].
 These documents represent historical filing stubs or cover notices. In accordance with strict immutability, they are preserved as full members of the frozen T0 corpus and flagged as `corpus_hygiene_flag = STUB` in `gap_audit_document_reconciled.csv`.
 All summary statistics and percentile distributions reported herein include these stub documents, yielding an authentic minimum page count of 1 [CLAIM:C038].
@@ -146,12 +147,13 @@ All summary statistics and percentile distributions reported herein include thes
 
 **DECISION: NO ACQUISITION JUSTIFIED FOR CORE ARPIPE THESIS [CLAIM:C056].**
 The scientific goal of ARPipe is the robust boundary localization and clean text extraction of English-language MD&A sections from Indian corporate filings.
+No additional acquisition is currently justified for the core thesis under the predefined claim scope and available evidence. Targeted acquisition may remain an optional robustness extension for explicitly defined edge-case claims.
 The current corpus provides:
 - 191 documents containing native digital prose across 36 diverse issuers and 8 fiscal years [CLAIM:C001] [CLAIM:C002] [CLAIM:C005].
 - 191 multi-column layout documents challenging reading order reconstruction [CLAIM:C009].
 - 190 table candidate documents challenging tabular quarantine [CLAIM:C011].
 - 48 documents exceeding 250 pages (max 661 pages) challenging memory and document scaling [CLAIM:C045] [CLAIM:C046].
-Every core thesis pipeline stage can be fully benchmarked and verified using the existing frozen 194-PDF corpus. Acquiring additional PDFs for core pipeline development is scientifically unjustified.
+No additional acquisition is currently justified for the core thesis under the predefined claim scope and available evidence. Targeted acquisition may remain an optional robustness extension for explicitly defined edge-case claims.
 
 # Optional robustness acquisition decision
 

@@ -1,12 +1,12 @@
 {
-  "config_commit": "55e507566d1d3efea658748f59cf3a6f692e1226",
+  "config_commit": "5089a0b441e460cc279432e9cbc15fc0a060e33a",
   "inputs": [
     {
       "artifact_path": "configs/t0_1r/input_allowlist.json",
       "artifact_type": "T01R_CONFIG_JSON",
       "semantic_purpose": "Master allowlist of immutable input artifacts and verification rules",
-      "sha256": "88cba1b3af0de19bb4c764edf026edbe2d4e82391e493017bc3be28e501b7f31",
-      "source_commit": "55e507566d1d3efea658748f59cf3a6f692e1226",
+      "sha256": "65a10ae8c30237e8a3e9debedd6eae13328965e1cef0584c0a2506687889caf0",
+      "source_commit": "5089a0b441e460cc279432e9cbc15fc0a060e33a",
       "source_type": "T01R_CONFIG",
       "used_by_reconciliation": true
     },
@@ -14,8 +14,8 @@
       "artifact_path": "configs/t0_1r/reconciliation_rules.json",
       "artifact_type": "T01R_CONFIG_JSON",
       "semantic_purpose": "Formal reconciliation rules, calculation mappings, and statistical conventions",
-      "sha256": "742902da5607a381334a8e3249201f489253e4f3682817f48948b73d24ea8727",
-      "source_commit": "55e507566d1d3efea658748f59cf3a6f692e1226",
+      "sha256": "9dbbec3e8d5565a3d29114e1bcb46b613c187a8017832b00f2ff9d984ae4cdd9",
+      "source_commit": "5089a0b441e460cc279432e9cbc15fc0a060e33a",
       "source_type": "T01R_CONFIG",
       "used_by_reconciliation": true
     },
@@ -24,7 +24,7 @@
       "artifact_type": "T01R_CONFIG_JSON",
       "semantic_purpose": "External independent review hypotheses recorded strictly as non-authoritative metadata",
       "sha256": "c1286cde18df7efb3e68b78c9bcaf41a6888d5718d1136bbbe2944e124b03b26",
-      "source_commit": "55e507566d1d3efea658748f59cf3a6f692e1226",
+      "source_commit": "5089a0b441e460cc279432e9cbc15fc0a060e33a",
       "source_type": "T01R_CONFIG",
       "used_by_reconciliation": true
     },

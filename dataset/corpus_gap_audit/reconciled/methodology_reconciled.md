@@ -21,6 +21,8 @@ This document defines the post-audit reconciliation methodology applied to the c
 - **Model-Review Provenance**: Reclassified auto-relabelled records to `NOT_REVIEWED` with issue `AUTO_RELABELLED_WITHOUT_MODEL_INSPECTION`.
 - **Fully Scanned Documents**: Reconciled from canonical `gap_audit_document.csv` confirming exactly 2 fully scanned documents (91 pages).
 - **Mixed Representation**: Reconciled to canonical count of 132 documents (30,132 pages).
-- **Candidate Proxy vs Ground Truth**: Explicitly distinguished heuristic signals (tables, annexures, running furniture, TOC offsets) from verified semantic ground truth.
-- **Interaction Semantics**: Renamed metric to `total_pages_in_docs_meeting_both` and flagged code-grounded tautologies.
+- **Corpus Hygiene and Stub Classification**: Documents with `total_pages <= 2` are classified as `STUB`; documents with `total_pages > 2` are classified as `STANDARD`. Stubs remain part of the frozen corpus.
+- **Candidate Proxy vs Ground Truth**: Explicitly distinguished heuristic signals (tables, annexures, running furniture, TOC offsets, OCR proxy) from verified semantic ground truth.
+- **Interaction Dependencies**: Renamed metric to `total_pages_in_docs_meeting_both`. Classified interaction dependencies into `TAUTOLOGICAL` (strict equivalence), `KNOWN_DEPENDENCY` (definitional implication without two-way equivalence, e.g. OCR proxy implying mixed/scanned representation in `tools/audit_corpus_gaps.py`), or `NOT_ASSESSED`, with code function provenance without line numbers.
+- **Core vs Robustness Acquisition Boundary**: Narrowed core acquisition finding to: No additional acquisition is currently justified for the core thesis under the predefined claim scope and available evidence. Targeted acquisition may remain an optional robustness extension for explicitly defined edge-case claims.
 - **Claim-Register-Driven Validation**: Every quantitative and scientific statement is indexed in `claim_audit.csv` with machine-executable calculation IDs and semantic anchors.
