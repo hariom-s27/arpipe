@@ -1,0 +1,31 @@
+{
+  "artifact_type": "DERIVED_RECONCILIATION",
+  "config_files": {
+    "input_allowlist.json": "88cba1b3af0de19bb4c764edf026edbe2d4e82391e493017bc3be28e501b7f31",
+    "reconciliation_rules.json": "742902da5607a381334a8e3249201f489253e4f3682817f48948b73d24ea8727",
+    "reviewer_expectations.json": "c1286cde18df7efb3e68b78c9bcaf41a6888d5718d1136bbbe2944e124b03b26"
+  },
+  "derived_output_hashes": {
+    "acquisition_decision.csv": "fb642ae68775ebee16aa95700325d6ecfb8f64635db788306c27b64f68158ced",
+    "claim_audit.csv": "2c0dc893c8c0880fd84741d6404d1de180f3e2eefb96d6141e47e7b925d64610",
+    "condition_document_map_reconciled.csv": "755d94cc7b7748359477cd31128373d0111d9fe1d11c6dede8a688d32644ae1c",
+    "condition_page_map_reconciled.csv": "325c58127386d0c4877e177db43b13cb5c1b179bb61992dc7a9e7a61fee970fa",
+    "gap_audit_document_reconciled.csv": "990f91e422e4f3992fb1ed3ebfeb8249ac8d666b0813391a7def18c3f28c98c0",
+    "gap_audit_report_reconciled.md": "3f1aae2a22e409673d6bae49e9795178d70379da21d601d11e366cd529f07a4f",
+    "gap_audit_summary_reconciled.json": "d810616d572c26a0b4148952d1742e21f8d89e37d471da1657dac10aaa91305f",
+    "gap_summary_reconciled.csv": "1562982d65846cf4ea89eaf35aa4a2bf4524a16fddd2cfd76c85a042dbc4113a",
+    "interaction_gap_matrix_reconciled.csv": "4949fc83bd69933b330e9f06ccd13966e5902404d7e21aab2718e9a52a7334c3",
+    "manual_review_results_reconciled.csv": "bbd230b99f132ce788182d1baa718d89584dd2eeea26a048dc2a0911040be23f",
+    "methodology_reconciled.md": "8d2bf36b2976a91b906c495d12cd16669e2d48edb4fcf1b3780d2389046aa098",
+    "raw_input_manifest.json": "6bf69cbfc007acb2fd5a828160751dce86ccb181c059e3e00d67514af5629996",
+    "t0_t01_reconciliation.csv": "9b66e89d27091fe779a8b70521d81d0d0c36f5491c047770d5b4eb1dc0b67449"
+  },
+  "manifest_name": "T0.1R Reconciliation Manifest",
+  "self_hash_policy": "EXCLUDED_FROM_OWN_HASH_SET",
+  "source_commits": {
+    "config_commit": "55e507566d1d3efea658748f59cf3a6f692e1226",
+    "engine_commit": "80420420253c65d13b4e20fe816e4e25a7275459",
+    "t01_raw_commit": "b6b76d964e78edce37b3d42e3668450526ee4bb7",
+    "t0_commit": "23d62286c4b807607b29a4dc14940179f90e3c0d"
+  }
+}

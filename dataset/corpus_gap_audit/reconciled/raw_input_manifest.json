@@ -1,0 +1,270 @@
+{
+  "config_commit": "55e507566d1d3efea658748f59cf3a6f692e1226",
+  "inputs": [
+    {
+      "artifact_path": "configs/t0_1r/input_allowlist.json",
+      "artifact_type": "T01R_CONFIG_JSON",
+      "semantic_purpose": "Master allowlist of immutable input artifacts and verification rules",
+      "sha256": "88cba1b3af0de19bb4c764edf026edbe2d4e82391e493017bc3be28e501b7f31",
+      "source_commit": "55e507566d1d3efea658748f59cf3a6f692e1226",
+      "source_type": "T01R_CONFIG",
+      "used_by_reconciliation": true
+    },
+    {
+      "artifact_path": "configs/t0_1r/reconciliation_rules.json",
+      "artifact_type": "T01R_CONFIG_JSON",
+      "semantic_purpose": "Formal reconciliation rules, calculation mappings, and statistical conventions",
+      "sha256": "742902da5607a381334a8e3249201f489253e4f3682817f48948b73d24ea8727",
+      "source_commit": "55e507566d1d3efea658748f59cf3a6f692e1226",
+      "source_type": "T01R_CONFIG",
+      "used_by_reconciliation": true
+    },
+    {
+      "artifact_path": "configs/t0_1r/reviewer_expectations.json",
+      "artifact_type": "T01R_CONFIG_JSON",
+      "semantic_purpose": "External independent review hypotheses recorded strictly as non-authoritative metadata",
+      "sha256": "c1286cde18df7efb3e68b78c9bcaf41a6888d5718d1136bbbe2944e124b03b26",
+      "source_commit": "55e507566d1d3efea658748f59cf3a6f692e1226",
+      "source_type": "T01R_CONFIG",
+      "used_by_reconciliation": true
+    },
+    {
+      "artifact_path": "dataset/corpus_freeze/corpus_inventory.csv",
+      "artifact_type": "T0_FROZEN_CSV",
+      "semantic_purpose": "Corpus executable enumeration, page counts, issuer mappings, and frozen split assignments",
+      "sha256": "93135febc51638ff3c6d2820e9198ed4eff3f647c68ec494b17213152b2bb2f7",
+      "source_commit": "23d62286c4b807607b29a4dc14940179f90e3c0d",
+      "source_type": "T0_FROZEN",
+      "used_by_reconciliation": true
+    },
+    {
+      "artifact_path": "dataset/corpus_freeze/diversity_matrix.csv",
+      "artifact_type": "T0_FROZEN_CSV",
+      "semantic_purpose": "Historical T0 condition counts and definition baselines for cross-phase comparison",
+      "sha256": "236440f9b78ede9d46a02f179e4a2467f2fa85a21f3d699c91b32b69ee726c36",
+      "source_commit": "23d62286c4b807607b29a4dc14940179f90e3c0d",
+      "source_type": "T0_FROZEN",
+      "used_by_reconciliation": true
+    },
+    {
+      "artifact_path": "dataset/corpus_freeze/freeze_summary.json",
+      "artifact_type": "T0_FROZEN_JSON",
+      "semantic_purpose": "Frozen T0 corpus baseline totals and verification parameters",
+      "sha256": "08677d7818511b5fbc49111bef5cb96f25eeac0dc5e6a04bf62b95f6b6a96cd1",
+      "source_commit": "23d62286c4b807607b29a4dc14940179f90e3c0d",
+      "source_type": "T0_FROZEN",
+      "used_by_reconciliation": true
+    },
+    {
+      "artifact_path": "dataset/corpus_freeze/issuer_split.csv",
+      "artifact_type": "T0_FROZEN_CSV",
+      "semantic_purpose": "Disjoint issuer partitioning across FIT, VALIDATION, and HOLDOUT",
+      "sha256": "016e720245577833e8313bb2ec4905b1fb47ba77d15916706b702df4ed1bcc2a",
+      "source_commit": "23d62286c4b807607b29a4dc14940179f90e3c0d",
+      "source_type": "T0_FROZEN",
+      "used_by_reconciliation": true
+    },
+    {
+      "artifact_path": "dataset/corpus_gap_audit/audit_config.json",
+      "artifact_type": "T01_RAW_JSON",
+      "semantic_purpose": "Original T0.1 detector threshold configurations",
+      "sha256": "65ed1a7e189b2d564ca01fe63246652e7b6a2c94d9e23083eabbe4e5da08bc77",
+      "source_commit": "b6b76d964e78edce37b3d42e3668450526ee4bb7",
+      "source_type": "T01_RAW",
+      "used_by_reconciliation": true
+    },
+    {
+      "artifact_path": "dataset/corpus_gap_audit/condition_document_map.csv",
+      "artifact_type": "T01_RAW_CSV",
+      "semantic_purpose": "Document-level candidate condition mappings and original detector verification statuses",
+      "sha256": "6738d428b476d22b17ccb025dca601c0748e6fb54c0417bdb23acb0dffa76d74",
+      "source_commit": "b6b76d964e78edce37b3d42e3668450526ee4bb7",
+      "source_type": "T01_RAW",
+      "used_by_reconciliation": true
+    },
+    {
+      "artifact_path": "dataset/corpus_gap_audit/condition_page_map.csv",
+      "artifact_type": "T01_RAW_CSV",
+      "semantic_purpose": "Page-level condition candidate detections, detector names, and evidence scores",
+      "sha256": "651bafe46c4c139edd39399ef45b89a100114ae04c69d0c278cc11822ddd572b",
+      "source_commit": "b6b76d964e78edce37b3d42e3668450526ee4bb7",
+      "source_type": "T01_RAW",
+      "used_by_reconciliation": true
+    },
+    {
+      "artifact_path": "dataset/corpus_gap_audit/duplicate_text_candidates.csv",
+      "artifact_type": "T01_RAW_CSV",
+      "semantic_purpose": "Bounding-box overlap candidate pages (IoU >= 0.40) and snippets",
+      "sha256": "f59a76833181df876f5f25cf262e079399892b485852d34a25669e47df56aaa5",
+      "source_commit": "b6b76d964e78edce37b3d42e3668450526ee4bb7",
+      "source_type": "T01_RAW",
+      "used_by_reconciliation": true
+    },
+    {
+      "artifact_path": "dataset/corpus_gap_audit/environment.json",
+      "artifact_type": "T01_RAW_JSON",
+      "semantic_purpose": "Original T0.1 execution environment parameters",
+      "sha256": "7f9d6939faaafc7d141bc73b51d4fdafc455c092be55b7c76ea87b9b95017ef3",
+      "source_commit": "b6b76d964e78edce37b3d42e3668450526ee4bb7",
+      "source_type": "T01_RAW",
+      "used_by_reconciliation": true
+    },
+    {
+      "artifact_path": "dataset/corpus_gap_audit/gap_audit_document.csv",
+      "artifact_type": "T01_RAW_CSV",
+      "semantic_purpose": "Per-document page-grain condition counts, representation assignments, and long report categories",
+      "sha256": "f6d426819daea219f551fc610646d836a702ef771e3d513a36b33941c71ddd5d",
+      "source_commit": "b6b76d964e78edce37b3d42e3668450526ee4bb7",
+      "source_type": "T01_RAW",
+      "used_by_reconciliation": true
+    },
+    {
+      "artifact_path": "dataset/corpus_gap_audit/gap_audit_report.md",
+      "artifact_type": "T01_RAW_MD",
+      "semantic_purpose": "Original T0.1 report text containing claims audited in claim_audit.csv",
+      "sha256": "e947eb7f90babe8182f44e13fca104d788fee17525cc19b4f11b20b8b79af8bc",
+      "source_commit": "b6b76d964e78edce37b3d42e3668450526ee4bb7",
+      "source_type": "T01_RAW",
+      "used_by_reconciliation": true
+    },
+    {
+      "artifact_path": "dataset/corpus_gap_audit/gap_audit_summary.json",
+      "artifact_type": "T01_RAW_JSON",
+      "semantic_purpose": "Raw T0.1 corpus inventory distribution percentiles and summary metrics",
+      "sha256": "fc402a63fa947a5aaf0bf6ef52e56aacc8c409962edabb895f53ec5241532dfe",
+      "source_commit": "b6b76d964e78edce37b3d42e3668450526ee4bb7",
+      "source_type": "T01_RAW",
+      "used_by_reconciliation": true
+    },
+    {
+      "artifact_path": "dataset/corpus_gap_audit/gap_summary.csv",
+      "artifact_type": "T01_RAW_CSV",
+      "semantic_purpose": "Raw T0.1 condition aggregations across documents, issuers, and splits",
+      "sha256": "408a2cd32f7badbabe437d196736ce665ae85dd975f6c380262f008f8cbcdc61",
+      "source_commit": "b6b76d964e78edce37b3d42e3668450526ee4bb7",
+      "source_type": "T01_RAW",
+      "used_by_reconciliation": true
+    },
+    {
+      "artifact_path": "dataset/corpus_gap_audit/header_footer_candidates.csv",
+      "artifact_type": "T01_RAW_CSV",
+      "semantic_purpose": "Repetitive running header and footer layout coordinate detections",
+      "sha256": "17966d00311f6e354301b0b001209151c55d7ad8ea36761989d6ad455637773f",
+      "source_commit": "b6b76d964e78edce37b3d42e3668450526ee4bb7",
+      "source_type": "T01_RAW",
+      "used_by_reconciliation": true
+    },
+    {
+      "artifact_path": "dataset/corpus_gap_audit/input_hashes.json",
+      "artifact_type": "T01_RAW_JSON",
+      "semantic_purpose": "Original T0 input hashes recorded at T0.1 execution",
+      "sha256": "aa561b527e0a0d088476cc50bb9b5c238a82696ff5889f44d758321b8ecd768c",
+      "source_commit": "b6b76d964e78edce37b3d42e3668450526ee4bb7",
+      "source_type": "T01_RAW",
+      "used_by_reconciliation": true
+    },
+    {
+      "artifact_path": "dataset/corpus_gap_audit/interaction_gap_matrix.csv",
+      "artifact_type": "T01_RAW_CSV",
+      "semantic_purpose": "Raw cross-condition pairwise document counts and aggregated document page sums",
+      "sha256": "d7fd7bab38f7065342f43ada1c75e1554eb22c29ca247258665cddddbe20ce9f",
+      "source_commit": "b6b76d964e78edce37b3d42e3668450526ee4bb7",
+      "source_type": "T01_RAW",
+      "used_by_reconciliation": true
+    },
+    {
+      "artifact_path": "dataset/corpus_gap_audit/language_candidates.csv",
+      "artifact_type": "T01_RAW_CSV",
+      "semantic_purpose": "Page-level Devanagari and Latin character counts establishing letterhead vs prose presence",
+      "sha256": "f326c73a3001799b2f8cbeeca25e031da5bdad2e0b4aa6bcfba70295386eec76",
+      "source_commit": "b6b76d964e78edce37b3d42e3668450526ee4bb7",
+      "source_type": "T01_RAW",
+      "used_by_reconciliation": true
+    },
+    {
+      "artifact_path": "dataset/corpus_gap_audit/manual_review_manifest.csv",
+      "artifact_type": "T01_RAW_CSV",
+      "semantic_purpose": "Pre-review manifest of sampled candidate conditions prior to apply_model_review.py execution",
+      "sha256": "d97a450a1bc336aeddc1789339ffce4fc391d19cb1da8bec5f9f53a4229e4989",
+      "source_commit": "b6b76d964e78edce37b3d42e3668450526ee4bb7",
+      "source_type": "T01_RAW",
+      "used_by_reconciliation": true
+    },
+    {
+      "artifact_path": "dataset/corpus_gap_audit/manual_review_results.csv",
+      "artifact_type": "T01_RAW_CSV",
+      "semantic_purpose": "Historical review records containing auto-relabelled MODEL_REVIEWED status requiring provenance correction",
+      "sha256": "7d479a5a6fd7c465766733db8693afc25f3e423d3d76faefa31ba4291c2dcd32",
+      "source_commit": "b6b76d964e78edce37b3d42e3668450526ee4bb7",
+      "source_type": "T01_RAW",
+      "used_by_reconciliation": true
+    },
+    {
+      "artifact_path": "dataset/corpus_gap_audit/mdna_candidate_complexity.csv",
+      "artifact_type": "T01_RAW_CSV",
+      "semantic_purpose": "Combined MD&A outline and heading candidates",
+      "sha256": "0e07c926b1eb053aa85d7bf824ca3b6b77465050c4e86882ad3a36cec52eb826",
+      "source_commit": "b6b76d964e78edce37b3d42e3668450526ee4bb7",
+      "source_type": "T01_RAW",
+      "used_by_reconciliation": true
+    },
+    {
+      "artifact_path": "dataset/corpus_gap_audit/methodology.md",
+      "artifact_type": "T01_RAW_MD",
+      "semantic_purpose": "Original T0.1 methodology documentation audited in methodology_reconciled.md",
+      "sha256": "71d632f5177dab0e882bf8c4e261af156140cf1e96528ba7edbfc6c44c3122ec",
+      "source_commit": "b6b76d964e78edce37b3d42e3668450526ee4bb7",
+      "source_type": "T01_RAW",
+      "used_by_reconciliation": true
+    },
+    {
+      "artifact_path": "dataset/corpus_gap_audit/structure_candidates.csv",
+      "artifact_type": "T01_RAW_CSV",
+      "semantic_purpose": "Multi-column layout, annexure keyword, and heading pattern candidates",
+      "sha256": "6b028c323cdfe7733ace0b01b522d917d9ba1bdc2bccba8db90f95f1f59b4272",
+      "source_commit": "b6b76d964e78edce37b3d42e3668450526ee4bb7",
+      "source_type": "T01_RAW",
+      "used_by_reconciliation": true
+    },
+    {
+      "artifact_path": "dataset/corpus_gap_audit/table_candidates.csv",
+      "artifact_type": "T01_RAW_CSV",
+      "semantic_purpose": "Vector grid and aligned numeric line heuristic candidate page detections",
+      "sha256": "8402dbf5a1d06bcde5801d635c398341ef2a77774f3c92a286df09602b502a3c",
+      "source_commit": "b6b76d964e78edce37b3d42e3668450526ee4bb7",
+      "source_type": "T01_RAW",
+      "used_by_reconciliation": true
+    },
+    {
+      "artifact_path": "dataset/corpus_gap_audit/toc_offset_candidates.csv",
+      "artifact_type": "T01_RAW_CSV",
+      "semantic_purpose": "TOC printed folio vs physical page offset matches, support counts, and detector statuses",
+      "sha256": "aa5252e21b899227c84fec088998b4192d781752a6975b6938652ec1bbaaedb8",
+      "source_commit": "b6b76d964e78edce37b3d42e3668450526ee4bb7",
+      "source_type": "T01_RAW",
+      "used_by_reconciliation": true
+    },
+    {
+      "artifact_path": "tools/apply_model_review.py",
+      "artifact_type": "T01_PYTHON_SCRIPT",
+      "semantic_purpose": "Source code establishing the automatic relabeling defect for review provenance correction",
+      "sha256": "6e0dc3fb479ef1a5e82792787bc597cdf512a990ae271e8734e53efe25c65e6b",
+      "source_commit": "b6b76d964e78edce37b3d42e3668450526ee4bb7",
+      "source_type": "T01_SCRIPT",
+      "used_by_reconciliation": true
+    },
+    {
+      "artifact_path": "tools/audit_corpus_gaps.py",
+      "artifact_type": "T01_PYTHON_SCRIPT",
+      "semantic_purpose": "Source code establishing exact historical detector logic, thresholds, and interaction definitions",
+      "sha256": "1174dca349e9b26c201d79ca99074fa98a2915532a1c0c52dab8f68bdfb5f398",
+      "source_commit": "b6b76d964e78edce37b3d42e3668450526ee4bb7",
+      "source_type": "T01_SCRIPT",
+      "used_by_reconciliation": true
+    }
+  ],
+  "manifest_name": "T0.1R Raw Input Manifest",
+  "policy": "FAIL_CLOSED_ON_UNLISTED_OR_MODIFIED",
+  "reconciliation_phase": "T0.1R",
+  "verified_input_count": 29
+}

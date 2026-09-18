@@ -1,0 +1,54 @@
+{
+  "audit_name": "ARPipe T0.1R Post-Audit Reconciliation",
+  "corpus_inventory": {
+    "distinct_issuers": 36,
+    "executable_pdfs": 194,
+    "missing_historical_records": 14,
+    "page_count_distribution": {
+      "max": 661,
+      "mean": 195.45,
+      "median": 165.0,
+      "min": 1,
+      "p90": 387.3,
+      "p95": 460.35,
+      "q1": 92.75,
+      "q3": 249.25,
+      "quantile_method": "linear"
+    },
+    "stub_documents_count": 2,
+    "total_physical_pages": 37917,
+    "total_records": 208
+  },
+  "derived_at_provenance": "DERIVED_RECONCILIATION",
+  "document_representation_summary": {
+    "fully_scanned": {
+      "document_count": 2,
+      "issuers": 2,
+      "total_pages": 91
+    },
+    "mixed_representation": {
+      "document_count": 132,
+      "issuers": 34,
+      "total_pages": 30132
+    },
+    "native_representation": {
+      "document_count": 60,
+      "issuers": 29,
+      "total_pages": 7694
+    }
+  },
+  "review_provenance_summary": {
+    "auto_relabelled_defect_count": 72,
+    "human_confirmed_count": 0,
+    "human_false_positive_count": "N/A",
+    "human_reviewed_count": 0,
+    "human_uncertain_count": "N/A"
+  },
+  "splits": {
+    "challenge_docs": 45,
+    "dev_docs": 60,
+    "fit_docs": 92,
+    "hold_docs": 54,
+    "val_docs": 48
+  }
+}
