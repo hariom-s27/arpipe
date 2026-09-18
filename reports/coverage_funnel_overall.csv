@@ -1,0 +1,7 @@
+stage,N,pct_of_expected,loss_from_previous_stage,transition_loss_rate_pct,cumulative_survival_pct
+EXPECTED,576,100.0,,,100.0
+DISCOVERED,512,88.89,64,11.11,88.89
+DOWNLOADED,194,33.68,318,62.11,33.68
+IDENTITY_VERIFIED,170,29.51,24,12.37,29.51
+MDA_LOCATED,182,31.6,-12,-7.06,31.6
+ACCEPTED,127,22.05,55,30.22,22.05

@@ -1,0 +1,7 @@
+stage,failed_N,reason_present_N,reason_missing_N,reason_coverage_pct
+DISCOVERY,64,0,64,0.0
+DOWNLOAD,318,0,318,0.0
+IDENTITY,24,24,0,100.0
+MDA_LOCATION,0,0,0,
+ACCEPTANCE,43,39,4,90.7
+OVERALL,449,63,386,14.03

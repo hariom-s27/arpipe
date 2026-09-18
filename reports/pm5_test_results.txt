@@ -1,0 +1,42 @@
+PASS  exact_base_commit_resolved  -- HEAD=158a9eac48a3374a9506af8281acb93f49a37a0d, matches 158a9ea prefix
+PASS  dedicated_worktree  -- worktree dir = arpipe-pm5-coverage
+PASS  point_in_time_cutoff_reproducible  -- pin file: D:\sem_iitk\sem9\thesis\sep_week1\arpipe-pm5-coverage\reports\pm5_source_snapshots\PIN_TIMESTAMP_UTC.txt
+PASS  single_data_cutoff_timestamp  -- {'2026-09-17T10:25:19Z'}
+PASS  expected_universe_row_count_576  -- n=576
+PASS  observation_id_unique
+PASS  company_fy_unique
+PASS  stage_table_row_count_matches_expected
+PASS  stage_table_ids_equal_expected_ids
+PASS  stage_table_observation_id_unique
+PASS  mono_discovered_le_expected  -- 512 <= 576
+PASS  mono_downloaded_le_discovered  -- 194 <= 512
+PASS  mono_identity_le_downloaded  -- 170 <= 194
+FAIL  mono_mda_le_identity (KNOWN VIOLATION — see coverage.md)  -- 182 <= 170 -> VIOLATED (expected, documented)
+PASS  mono_accepted_le_mda  -- 127 <= 182
+PASS  no_dup_company_fy_in_documents_jsonl
+PASS  no_dup_company_fy_in_manifest_jsonl
+PASS  authoritative_artifact_lineage_consistent  -- mismatches=[]
+PASS  exchange_values_in_allowed_set
+PASS  cap_band_values_in_allowed_set
+PASS  era_values_in_allowed_set
+PASS  no_missing_cap_band
+PASS  no_missing_exchange
+PASS  first_failed_stage_follows_fixed_order
+PASS  terminal_state_in_allowed_set
+PASS  exactly_one_terminal_state_per_obs
+PASS  reason_code_completeness_matches_recompute  -- 386 vs 386
+PASS  accounting_residual_zero_overall  -- 0
+PASS  fy_funnel_accounting_ok
+PASS  era_funnel_accounting_ok
+PASS  cap_band_funnel_accounting_ok
+PASS  exchange_funnel_accounting_ok
+PASS  screen_10pp_file_nonempty
+PASS  screen_10pp_all_flagged_sparse
+PASS  era_cap_band_uniformly_sparse_labeled
+PASS  holdout_disjoint_from_analysis  -- labels_holdout.csv has 0 data rows (0 expected in this snapshot); P-M5 does not filter its denominator by any eval split regardless (Section 39)
+PASS  reproducibility_stage_table_identical
+PASS  reproducibility_expected_universe_identical
+PASS  reproducibility_coverage_json_identical_modulo_timestamp
+PASS  production_files_unchanged  -- 15 files checked
+
+39/40 passed

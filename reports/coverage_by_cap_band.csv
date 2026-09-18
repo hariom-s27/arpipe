@@ -1,0 +1,5 @@
+cap_band,expected,discovered,downloaded,identity_verified,mda_located,accepted,coverage,loss_rate_expected_to_discovered_pct,loss_rate_discovered_to_downloaded_pct,loss_rate_downloaded_to_identity_verified_pct,loss_rate_identity_verified_to_mda_located_pct,loss_rate_mda_located_to_accepted_pct
+large,96,96,36,36,36,32,0.3333,0.0,62.5,0.0,0.0,11.11
+micro,192,177,66,54,57,35,0.1823,7.81,62.71,18.18,-5.56,38.6
+mid,128,128,48,42,47,33,0.2578,0.0,62.5,12.5,-11.9,29.79
+small,160,111,44,38,42,27,0.1688,30.62,60.36,13.64,-10.53,35.71

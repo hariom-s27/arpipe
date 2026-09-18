@@ -1,0 +1,3 @@
+exchange,expected,discovered,downloaded,identity_verified,mda_located,accepted,coverage
+both,400,351,134,122,131,97,0.2425
+bse,176,161,60,48,51,30,0.1705

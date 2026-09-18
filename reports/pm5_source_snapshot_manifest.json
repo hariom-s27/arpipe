@@ -1,0 +1,28 @@
+{
+  "data_cutoff_timestamp_utc": "2026-09-17T10:25:19Z",
+  "discovery_snapshot_date": "2026-09-11T15:57:27.614052+05:30",
+  "download_snapshot_date": "2026-09-11T16:03:08.086001+05:30",
+  "manifest_snapshot_date": "2026-09-17T01:22:38.585102+05:30",
+  "files": {
+    "cohort_reports.jsonl (DISCOVERED source)": {
+      "sha256": "c24f148ae5971dca545168921caa207aa6cfd84021958fcf969bd812a4a04b67",
+      "row_count": 1164,
+      "pinned_from": "arpipe-0.1.0/cohort_reports.jsonl (gitignored, read-only copy)"
+    },
+    "live_store/documents.jsonl (DOWNLOADED source)": {
+      "sha256": "3a7c7bf15f554298e1c7f4a62b90ea6328a9e1e1e4ecde4840aee7ce42abab31",
+      "row_count": 194,
+      "pinned_from": "arpipe-0.1.0/live_store/documents.jsonl (gitignored, read-only copy)"
+    },
+    "live_dataset/manifest.jsonl (IDENTITY/MDA/ACCEPTED source)": {
+      "sha256": "8607cd29d9e660fee1b18ce9d980e0a39c217275201d72114e4ce0a9fe89a625",
+      "row_count": 194,
+      "pinned_from": "arpipe-0.1.0/live_dataset/manifest.jsonl (gitignored, read-only copy)"
+    },
+    "cohort_companies.csv (EXPECTED source, git-tracked)": {
+      "sha256": "5f2d8078b9367c23aaf0cdd096f1cd0c819c321d4e3eb648a10019deaa2eb71b",
+      "row_count": 36,
+      "pinned_from": "git-tracked at 158a9eac48a3374a9506af8281acb93f49a37a0d"
+    }
+  }
+}

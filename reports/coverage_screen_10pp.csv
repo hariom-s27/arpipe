@@ -1,0 +1,11 @@
+dimension,transition,max_group,max_group_loss_rate_pct,min_group,min_group_loss_rate_pct,difference_pp,screen_status
+cap_band,expected_to_discovered,small,30.62,large,0.0,30.62,>10 PP DIFFERENCE — SPARSE / DESCRIPTIVE ONLY (no project-defined sample-size convention)
+cap_band,discovered_to_downloaded,micro,62.71,small,60.36,2.35,"<=10pp, no screening signal"
+cap_band,downloaded_to_identity_verified,micro,18.18,large,0.0,18.18,>10 PP DIFFERENCE — SPARSE / DESCRIPTIVE ONLY (no project-defined sample-size convention)
+cap_band,identity_verified_to_mda_located,large,0.0,mid,-11.9,11.9,>10 PP DIFFERENCE — SPARSE / DESCRIPTIVE ONLY (no project-defined sample-size convention)
+cap_band,mda_located_to_accepted,micro,38.6,large,11.11,27.49,>10 PP DIFFERENCE — SPARSE / DESCRIPTIVE ONLY (no project-defined sample-size convention)
+era,expected_to_discovered,E1_pre2013_FY2010-2012,21.3,E6_BRSR_FY2023-2025,0.0,21.3,>10 PP DIFFERENCE — SPARSE / DESCRIPTIVE ONLY (no project-defined sample-size convention)
+era,discovered_to_downloaded,E5_MandatedRatios_FY2020-2022,100.0,E6_BRSR_FY2023-2025,33.33,66.67,>10 PP DIFFERENCE — SPARSE / DESCRIPTIVE ONLY (no project-defined sample-size convention)
+era,downloaded_to_identity_verified,E3_CompaniesAct2013_FY2015,100.0,E6_BRSR_FY2023-2025,4.17,95.83,>10 PP DIFFERENCE — SPARSE / DESCRIPTIVE ONLY (no project-defined sample-size convention)
+era,identity_verified_to_mda_located,E6_BRSR_FY2023-2025,-1.45,E2_BRreport_FY2013-2014,-21.74,20.29,>10 PP DIFFERENCE — SPARSE / DESCRIPTIVE ONLY (no project-defined sample-size convention)
+era,mda_located_to_accepted,E2_BRreport_FY2013-2014,39.29,E6_BRSR_FY2023-2025,24.29,15.0,>10 PP DIFFERENCE — SPARSE / DESCRIPTIVE ONLY (no project-defined sample-size convention)
