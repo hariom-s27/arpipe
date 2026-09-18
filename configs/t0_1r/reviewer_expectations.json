@@ -1,0 +1,120 @@
+{
+  "source": "independent_methodology_review",
+  "provenance_note": "External review hypotheses from independent methodology review; used strictly as metadata for comparison and never as authoritative input to reconciliation.",
+  "expectations": [
+    {
+      "item": "fully_scanned_documents",
+      "expected_value": 2,
+      "status": "REVIEW_HYPOTHESIS",
+      "basis": "Documents with document_representation == 'SCANNED' in gap_audit_document.csv"
+    },
+    {
+      "item": "mixed_representation_documents",
+      "expected_value": 132,
+      "status": "REVIEW_HYPOTHESIS",
+      "basis": "Documents with document_representation == 'MIXED' in gap_audit_document.csv"
+    },
+    {
+      "item": "native_representation_documents",
+      "expected_value": 60,
+      "status": "REVIEW_HYPOTHESIS",
+      "basis": "Documents with document_representation == 'NATIVE' in gap_audit_document.csv"
+    },
+    {
+      "item": "long_report_p90",
+      "expected_value": 387.3,
+      "status": "REVIEW_HYPOTHESIS",
+      "basis": "p90 in gap_audit_summary.json"
+    },
+    {
+      "item": "long_report_p95",
+      "expected_value": 460.35,
+      "status": "REVIEW_HYPOTHESIS",
+      "basis": "p95 in gap_audit_summary.json"
+    },
+    {
+      "item": "long_report_min",
+      "expected_value": 1,
+      "status": "REVIEW_HYPOTHESIS",
+      "basis": "Minimum page count in corpus including stub documents"
+    },
+    {
+      "item": "stub_documents_count",
+      "expected_value": 2,
+      "status": "REVIEW_HYPOTHESIS",
+      "basis": "Documents with total_pages <= 2"
+    },
+    {
+      "item": "strong_candidate_toc_offsets_count",
+      "expected_value": 2,
+      "status": "REVIEW_HYPOTHESIS",
+      "basis": "Documents with detector_status == 'STRONG_CANDIDATE' in toc_offset_candidates.csv"
+    },
+    {
+      "item": "candidate_toc_offsets_count",
+      "expected_value": 22,
+      "status": "REVIEW_HYPOTHESIS",
+      "basis": "Documents with detector_status == 'CANDIDATE' in toc_offset_candidates.csv"
+    },
+    {
+      "item": "unresolved_toc_offsets_count",
+      "expected_value": 4,
+      "status": "REVIEW_HYPOTHESIS",
+      "basis": "Documents with detector_status == 'UNRESOLVED' in toc_offset_candidates.csv"
+    },
+    {
+      "item": "no_toc_candidates_count",
+      "expected_value": 17,
+      "status": "REVIEW_HYPOTHESIS",
+      "basis": "Documents with detector_status == 'NOT_OBSERVED' in toc_offset_candidates.csv"
+    },
+    {
+      "item": "hindi_devanagari_documents_count",
+      "expected_value": 2,
+      "status": "REVIEW_HYPOTHESIS",
+      "basis": "Documents with devanagari_page_count > 0"
+    },
+    {
+      "item": "bilingual_documents_count",
+      "expected_value": 2,
+      "status": "REVIEW_HYPOTHESIS",
+      "basis": "Documents with bilingual_candidate_page_count > 0"
+    },
+    {
+      "item": "model_review_auto_relabelled_count",
+      "expected_value": 72,
+      "status": "REVIEW_HYPOTHESIS",
+      "basis": "Records auto-relabelled by apply_model_review.py without inspection"
+    },
+    {
+      "item": "human_reviewed_count",
+      "expected_value": 0,
+      "status": "REVIEW_HYPOTHESIS",
+      "basis": "Zero human reviews performed in T0.1"
+    },
+    {
+      "item": "table_candidate_documents_count",
+      "expected_value": 190,
+      "status": "REVIEW_HYPOTHESIS",
+      "basis": "Documents with table_candidate_page_count > 0"
+    },
+    {
+      "item": "annexure_candidate_documents_count",
+      "expected_value": 188,
+      "status": "REVIEW_HYPOTHESIS",
+      "basis": "Documents with annexure_candidate == 'True'"
+    },
+    {
+      "item": "docs_gt_250_pages_count",
+      "expected_value": 48,
+      "status": "REVIEW_HYPOTHESIS",
+      "basis": "Documents with total_pages > 250 in gap_audit_document.csv"
+    },
+    {
+      "item": "issuers_gt_250_pages_count",
+      "expected_value": 20,
+      "status": "REVIEW_HYPOTHESIS",
+      "basis": "Distinct issuers with total_pages > 250 in gap_audit_document.csv"
+    }
+  ]
+}

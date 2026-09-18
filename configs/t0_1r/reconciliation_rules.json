@@ -1,0 +1,352 @@
+{
+  "rule_set_version": "1.0.0",
+  "statistical_conventions": {
+    "quantile_method": "linear",
+    "float_precision": 6,
+    "rounding": "half_even"
+  },
+  "provenance_transformation_rules": {
+    "target_artifact": "dataset/corpus_gap_audit/manual_review_results.csv",
+    "auto_relabel_defect_criteria": {
+      "original_verification_status": "MODEL_REVIEWED",
+      "original_reviewer_type": "gemini_assistant_model",
+      "defect_source_script": "tools/apply_model_review.py"
+    },
+    "reconciliation_action": {
+      "reconciled_verification_status": "NOT_REVIEWED",
+      "reconciled_reviewer_type": "NONE",
+      "reconciled_reviewer_name": "NONE",
+      "review_provenance_issue": "AUTO_RELABELLED_WITHOUT_MODEL_INSPECTION"
+    },
+    "human_review_metrics": {
+      "human_reviewed_count_definition": "count of records reviewed by human",
+      "human_confirmed_count_definition": "count of records confirmed by human",
+      "human_false_positive_count_definition": "N/A when human_reviewed_count == 0",
+      "human_uncertain_count_definition": "N/A when human_reviewed_count == 0"
+    }
+  },
+  "stub_classification_rule": {
+    "target_artifact": "dataset/corpus_gap_audit/gap_audit_document.csv",
+    "field": "total_pages",
+    "threshold": 2,
+    "stub_flag": "STUB",
+    "standard_flag": "STANDARD",
+    "inclusion_policy": "Stubs remain in corpus and are included in all distribution statistics"
+  },
+  "interaction_dependency_rules": {
+    "ocr_layer_candidate__scanned_or_mixed": {
+      "tautology_flag": "TAUTOLOGICAL",
+      "dependency_source_artifact": "tools/audit_corpus_gaps.py",
+      "dependency_source_function": "check_cond / doc_rows generation",
+      "dependency_source_rule": "MIXED representation is assigned if ocr_page_count > 0; scanned_or_mixed checks representation in (SCANNED, MIXED)"
+    },
+    "default_rule": {
+      "tautology_flag": "NOT_ASSESSED",
+      "dependency_source_artifact": "NONE",
+      "dependency_source_function": "NONE",
+      "dependency_source_rule": "NONE"
+    }
+  },
+  "claim_calculation_rules": {
+    "CALC_COUNT_EXECUTABLE_DOCS": {
+      "description": "Count rows in corpus_inventory.csv where openable == 'True'",
+      "operation": "count_filter",
+      "target_field": "openable",
+      "target_value": "True"
+    },
+    "CALC_COUNT_MISSING_HISTORICAL_DOCS": {
+      "description": "Count rows in corpus_inventory.csv where openable != 'True'",
+      "operation": "count_filter",
+      "target_field": "openable",
+      "target_value": "False"
+    },
+    "CALC_SUM_PHYSICAL_PAGES": {
+      "description": "Sum page_count of openable rows in corpus_inventory.csv",
+      "operation": "sum_filter",
+      "filter_field": "openable",
+      "filter_value": "True",
+      "sum_field": "page_count"
+    },
+    "CALC_COUNT_DISTINCT_ISSUERS": {
+      "description": "Count distinct issuer values in openable rows in corpus_inventory.csv",
+      "operation": "distinct_count_filter",
+      "filter_field": "openable",
+      "filter_value": "True",
+      "target_field": "issuer"
+    },
+    "CALC_MIN_PAGES": {
+      "description": "Minimum page_count across openable rows in corpus_inventory.csv",
+      "operation": "min_filter",
+      "filter_field": "openable",
+      "filter_value": "True",
+      "target_field": "page_count"
+    },
+    "CALC_MAX_PAGES": {
+      "description": "Maximum page_count across openable rows in corpus_inventory.csv",
+      "operation": "max_filter",
+      "filter_field": "openable",
+      "filter_value": "True",
+      "target_field": "page_count"
+    },
+    "CALC_MEAN_PAGES": {
+      "description": "Arithmetic mean of page_count across openable rows in corpus_inventory.csv",
+      "operation": "mean_filter",
+      "filter_field": "openable",
+      "filter_value": "True",
+      "target_field": "page_count"
+    },
+    "CALC_MEDIAN_PAGES": {
+      "description": "50th percentile (median) of page_count across openable rows in corpus_inventory.csv",
+      "operation": "quantile_filter",
+      "filter_field": "openable",
+      "filter_value": "True",
+      "target_field": "page_count",
+      "percentile": 0.50
+    },
+    "CALC_Q1_PAGES": {
+      "description": "25th percentile (Q1) of page_count across openable rows in corpus_inventory.csv",
+      "operation": "quantile_filter",
+      "filter_field": "openable",
+      "filter_value": "True",
+      "target_field": "page_count",
+      "percentile": 0.25
+    },
+    "CALC_Q3_PAGES": {
+      "description": "75th percentile (Q3) of page_count across openable rows in corpus_inventory.csv",
+      "operation": "quantile_filter",
+      "filter_field": "openable",
+      "filter_value": "True",
+      "target_field": "page_count",
+      "percentile": 0.75
+    },
+    "CALC_P90_PAGES": {
+      "description": "90th percentile of page_count across openable rows in corpus_inventory.csv",
+      "operation": "quantile_filter",
+      "filter_field": "openable",
+      "filter_value": "True",
+      "target_field": "page_count",
+      "percentile": 0.90
+    },
+    "CALC_P95_PAGES": {
+      "description": "95th percentile of page_count across openable rows in corpus_inventory.csv",
+      "operation": "quantile_filter",
+      "filter_field": "openable",
+      "filter_value": "True",
+      "target_field": "page_count",
+      "percentile": 0.95
+    },
+    "CALC_COUNT_FULLY_SCANNED_DOCS": {
+      "description": "Count rows in gap_audit_document.csv where document_representation == 'SCANNED'",
+      "operation": "count_filter",
+      "target_field": "document_representation",
+      "target_value": "SCANNED"
+    },
+    "CALC_SUM_PAGES_FULLY_SCANNED_DOCS": {
+      "description": "Sum total_pages in gap_audit_document.csv where document_representation == 'SCANNED'",
+      "operation": "sum_filter",
+      "filter_field": "document_representation",
+      "filter_value": "SCANNED",
+      "sum_field": "total_pages"
+    },
+    "CALC_COUNT_MIXED_REP_DOCS": {
+      "description": "Count rows in gap_audit_document.csv where document_representation == 'MIXED'",
+      "operation": "count_filter",
+      "target_field": "document_representation",
+      "target_value": "MIXED"
+    },
+    "CALC_SUM_PAGES_MIXED_REP_DOCS": {
+      "description": "Sum total_pages in gap_audit_document.csv where document_representation == 'MIXED'",
+      "operation": "sum_filter",
+      "filter_field": "document_representation",
+      "filter_value": "MIXED",
+      "sum_field": "total_pages"
+    },
+    "CALC_COUNT_NATIVE_REP_DOCS": {
+      "description": "Count rows in gap_audit_document.csv where document_representation == 'NATIVE'",
+      "operation": "count_filter",
+      "target_field": "document_representation",
+      "target_value": "NATIVE"
+    },
+    "CALC_SUM_PAGES_NATIVE_REP_DOCS": {
+      "description": "Sum total_pages in gap_audit_document.csv where document_representation == 'NATIVE'",
+      "operation": "sum_filter",
+      "filter_field": "document_representation",
+      "filter_value": "NATIVE",
+      "sum_field": "total_pages"
+    },
+    "CALC_COUNT_DOCS_WITH_SCANNED_PAGES": {
+      "description": "Count rows in gap_audit_document.csv where scanned_page_count > 0",
+      "operation": "count_greater_than",
+      "target_field": "scanned_page_count",
+      "threshold": 0
+    },
+    "CALC_SUM_SCANNED_PAGES": {
+      "description": "Sum scanned_page_count across rows in gap_audit_document.csv",
+      "operation": "sum_field",
+      "target_field": "scanned_page_count"
+    },
+    "CALC_COUNT_DOCS_WITH_OCR_PAGES": {
+      "description": "Count rows in gap_audit_document.csv where ocr_page_count > 0",
+      "operation": "count_greater_than",
+      "target_field": "ocr_page_count",
+      "threshold": 0
+    },
+    "CALC_SUM_OCR_PAGES": {
+      "description": "Sum ocr_page_count across rows in gap_audit_document.csv",
+      "operation": "sum_field",
+      "target_field": "ocr_page_count"
+    },
+    "CALC_COUNT_DOCS_WITH_LEGACY_PAGES": {
+      "description": "Count rows in gap_audit_document.csv where legacy_candidate_page_count > 0",
+      "operation": "count_greater_than",
+      "target_field": "legacy_candidate_page_count",
+      "threshold": 0
+    },
+    "CALC_SUM_LEGACY_PAGES": {
+      "description": "Sum legacy_candidate_page_count across rows in gap_audit_document.csv",
+      "operation": "sum_field",
+      "target_field": "legacy_candidate_page_count"
+    },
+    "CALC_COUNT_DOCS_TABLE_CANDIDATE": {
+      "description": "Count rows in gap_audit_document.csv where table_candidate_page_count > 0",
+      "operation": "count_greater_than",
+      "target_field": "table_candidate_page_count",
+      "threshold": 0
+    },
+    "CALC_SUM_TABLE_CANDIDATE_PAGES": {
+      "description": "Sum table_candidate_page_count across rows in gap_audit_document.csv",
+      "operation": "sum_field",
+      "target_field": "table_candidate_page_count"
+    },
+    "CALC_COUNT_DOCS_HEADER_CANDIDATE": {
+      "description": "Count rows in gap_audit_document.csv where header_candidate_page_count > 0",
+      "operation": "count_greater_than",
+      "target_field": "header_candidate_page_count",
+      "threshold": 0
+    },
+    "CALC_SUM_HEADER_CANDIDATE_PAGES": {
+      "description": "Sum header_candidate_page_count across rows in gap_audit_document.csv",
+      "operation": "sum_field",
+      "target_field": "header_candidate_page_count"
+    },
+    "CALC_COUNT_DOCS_FOOTER_CANDIDATE": {
+      "description": "Count rows in gap_audit_document.csv where footer_candidate_page_count > 0",
+      "operation": "count_greater_than",
+      "target_field": "footer_candidate_page_count",
+      "threshold": 0
+    },
+    "CALC_SUM_FOOTER_CANDIDATE_PAGES": {
+      "description": "Sum footer_candidate_page_count across rows in gap_audit_document.csv",
+      "operation": "sum_field",
+      "target_field": "footer_candidate_page_count"
+    },
+    "CALC_COUNT_DOCS_TOC_CANDIDATE": {
+      "description": "Count rows in gap_audit_document.csv where toc_candidate == 'True'",
+      "operation": "count_filter",
+      "target_field": "toc_candidate",
+      "target_value": "True"
+    },
+    "CALC_COUNT_DOCS_ANNEXURE_CANDIDATE": {
+      "description": "Count rows in gap_audit_document.csv where annexure_candidate == 'True'",
+      "operation": "count_filter",
+      "target_field": "annexure_candidate",
+      "target_value": "True"
+    },
+    "CALC_COUNT_DOCS_COMBINED_MDNA_CANDIDATE": {
+      "description": "Count rows in gap_audit_document.csv where combined_mdna_candidate == 'True'",
+      "operation": "count_filter",
+      "target_field": "combined_mdna_candidate",
+      "target_value": "True"
+    },
+    "CALC_COUNT_DOCS_DEVANAGARI_CANDIDATE": {
+      "description": "Count rows in gap_audit_document.csv where devanagari_page_count > 0",
+      "operation": "count_greater_than",
+      "target_field": "devanagari_page_count",
+      "threshold": 0
+    },
+    "CALC_COUNT_DOCS_BILINGUAL_CANDIDATE": {
+      "description": "Count rows in gap_audit_document.csv where bilingual_candidate_page_count > 0",
+      "operation": "count_greater_than",
+      "target_field": "bilingual_candidate_page_count",
+      "threshold": 0
+    },
+    "CALC_COUNT_DOCS_STRONG_TOC_OFFSET": {
+      "description": "Count rows in toc_offset_candidates.csv where detector_status == 'STRONG_CANDIDATE'",
+      "operation": "count_filter",
+      "target_field": "detector_status",
+      "target_value": "STRONG_CANDIDATE"
+    },
+    "CALC_COUNT_DOCS_CANDIDATE_TOC_OFFSET": {
+      "description": "Count rows in toc_offset_candidates.csv where detector_status == 'CANDIDATE'",
+      "operation": "count_filter",
+      "target_field": "detector_status",
+      "target_value": "CANDIDATE"
+    },
+    "CALC_COUNT_DOCS_UNRESOLVED_TOC_OFFSET": {
+      "description": "Count rows in toc_offset_candidates.csv where detector_status == 'UNRESOLVED'",
+      "operation": "count_filter",
+      "target_field": "detector_status",
+      "target_value": "UNRESOLVED"
+    },
+    "CALC_COUNT_DOCS_NO_TOC_CANDIDATE": {
+      "description": "Count rows in toc_offset_candidates.csv where detector_status == 'NOT_OBSERVED'",
+      "operation": "count_filter",
+      "target_field": "detector_status",
+      "target_value": "NOT_OBSERVED"
+    },
+    "CALC_COUNT_STUB_DOCS": {
+      "description": "Count rows in gap_audit_document.csv where total_pages <= 2",
+      "operation": "count_less_equal",
+      "target_field": "total_pages",
+      "threshold": 2
+    },
+    "CALC_DOCS_GT_250_PAGES": {
+      "description": "Count rows in gap_audit_document.csv with total_pages > 250",
+      "operation": "count_greater_than",
+      "target_field": "total_pages",
+      "threshold": 250
+    },
+    "CALC_ISSUERS_GT_250_PAGES": {
+      "description": "Count distinct issuers in gap_audit_document.csv with total_pages > 250",
+      "operation": "distinct_count_greater_than",
+      "filter_field": "total_pages",
+      "threshold": 250,
+      "target_field": "issuer"
+    },
+    "CALC_COUNT_HUMAN_REVIEWED": {
+      "description": "Count of records reviewed by humans in manual_review_results.csv",
+      "operation": "count_human_reviewed",
+      "target_field": "reviewer_type"
+    },
+    "CALC_COUNT_MODEL_REVIEW_AUTO_RELABELLED": {
+      "description": "Count of records auto-relabelled without model inspection in manual_review_results.csv",
+      "operation": "count_auto_relabelled",
+      "target_field": "verification_status",
+      "target_value": "MODEL_REVIEWED"
+    },
+    "CALC_INTERACTION_OCR_SCANNED_MIXED_DOCS": {
+      "description": "Document count for ocr_layer_candidate x scanned_or_mixed in interaction_gap_matrix.csv",
+      "operation": "matrix_lookup_doc_count",
+      "condition_a": "ocr_layer_candidate",
+      "condition_b": "scanned_or_mixed"
+    },
+    "CALC_INTERACTION_OCR_SCANNED_MIXED_PAGES": {
+      "description": "Total pages in documents meeting both ocr_layer_candidate x scanned_or_mixed in interaction_gap_matrix.csv",
+      "operation": "matrix_lookup_page_count",
+      "condition_a": "ocr_layer_candidate",
+      "condition_b": "scanned_or_mixed"
+    }
+  },
+  "decision_rules": {
+    "DECISION_RULE_CORE_THESIS": {
+      "id": "DEC_RULE_01",
+      "basis": "Condition is necessary for baseline English MD&A extraction AND existing corpus lacks coverage to develop or verify pipeline",
+      "default_status": "NO_ACQUISITION"
+    },
+    "DECISION_RULE_ROBUSTNESS": {
+      "id": "DEC_RULE_02",
+      "basis": "Condition is non-core for English prose but represents an optional pipeline extension; requires pre-specified hypothesis test and formal gap audit before acquisition",
+      "default_status": "ADDITIONAL_AUDIT_REQUIRED"
+    }
+  }
+}
