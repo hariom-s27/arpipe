@@ -1,0 +1,179 @@
+{
+  "adjudication_meta": {
+    "adjudication_timestamp_utc": "2026-09-18T08:55:00Z",
+    "adjudication_phase": "PHASE_A",
+    "adjudicator": "ARPipe Forensic Adjudication Agent",
+    "governing_rules": [
+      "P-R1X v1.2 Protocol",
+      "P-R1X Runbook Section 10 (Unexpected Interruption / Crash Rule)"
+    ]
+  },
+  "provenance": {
+    "protocol_version": "P-R1X v1.2",
+    "engineering_base_sha": "56497721cb68c4831e6f225074b6bd7ea17bffb0",
+    "execution_commit": "0b1d595407eacb13b115811cdb610b3e1f56a767",
+    "execution_worktree": "D:\\sem_iitk\\sem9\\thesis\\sep_week1\\arpipe-pr1x-execution",
+    "adjudication_worktree": "D:\\sem_iitk\\sem9\\thesis\\sep_week1\\arpipe-pr1x-adjudication",
+    "adjudication_branch": "pr1x-adjudication",
+    "run_id": "5e675cbec11647819858e673b9a95ab6",
+    "manifest_path": "reports/pc0_sample_manifest.json",
+    "manifest_sha256": "394c628d842bdcf967b6dd82ab695fb4b17a88602c7c79c0b17561a3d931bb0e"
+  },
+  "experimental_classification": {
+    "overall_status": "INCOMPLETE AS A THREE-WINDOW TEMPORAL EXPERIMENT",
+    "components": {
+      "primary_temporal_subset": "VALID_TWO_WINDOW_TEMPORAL_PILOT",
+      "supplemental_data": "POST_INTERRUPTION_SUPPLEMENTAL_OBSERVATIONS"
+    },
+    "governing_interruption_verdict": "Under P-R1X v1.2 Section 10, delayed execution after unexpected process suspension/host sleep invalidates Window 3 as a scheduled temporal window. Window 3 cannot be counted toward primary temporal analysis."
+  },
+  "window_adjudications": {
+    "WINDOW_1": {
+      "classification": "VALID",
+      "primary_analysis_eligible": true,
+      "scheduled_start_utc": "2026-09-17 20:05:00 UTC",
+      "actual_start_utc": "2026-09-17T20:05:00.001357+00:00",
+      "actual_end_utc": "2026-09-17T20:05:16.462782+00:00",
+      "start_delay_seconds": 0.001357,
+      "count": 10,
+      "success_count": 10,
+      "failure_count": 0,
+      "retries_count": 0,
+      "observation_order_preserved": true,
+      "concurrency": "strictly_sequential_1_worker"
+    },
+    "WINDOW_2": {
+      "classification": "VALID",
+      "primary_analysis_eligible": true,
+      "scheduled_start_utc": "2026-09-17 21:35:00 UTC",
+      "actual_start_utc": "2026-09-17T21:35:00.002051+00:00",
+      "actual_end_utc": "2026-09-17T21:35:17.593142+00:00",
+      "start_delay_seconds": 0.002051,
+      "count": 10,
+      "success_count": 10,
+      "failure_count": 0,
+      "retries_count": 0,
+      "observation_order_preserved": true,
+      "concurrency": "strictly_sequential_1_worker"
+    },
+    "WINDOW_3": {
+      "classification": "POST_INTERRUPTION_SUPPLEMENTAL",
+      "primary_analysis_eligible": false,
+      "scheduled_start_utc": "2026-09-17 23:05:00 UTC",
+      "actual_start_utc": "2026-09-18T08:17:46.015193+00:00",
+      "actual_end_utc": "2026-09-18T08:18:19.806417+00:00",
+      "start_delay_seconds": 33166.015193,
+      "start_delay_human": "9 hours, 12 minutes, 46.015 seconds",
+      "interruption_mechanism": "Process suspension / host sleep during nominal inter-window waiting loop; delayed resumption at 08:17:46 UTC on 2026-09-18",
+      "count": 10,
+      "success_count": 10,
+      "failure_count": 0,
+      "retries_count": 0,
+      "observation_order_preserved": true,
+      "concurrency": "strictly_sequential_1_worker",
+      "admissibility": "Excluded from primary temporal comparison. Retained as supplemental evidence of current endpoint viability."
+    }
+  },
+  "primary_temporal_analysis": {
+    "valid_windows_included": [
+      "WINDOW_1",
+      "WINDOW_2"
+    ],
+    "excluded_windows": [
+      "WINDOW_3"
+    ],
+    "sample_size": 20,
+    "target_group": {
+      "description": "5 historical DOWNLOAD_ZERO_FY targets observed across 2 valid windows",
+      "scheduled_observations": 10,
+      "successful_acquisitions": 10,
+      "success_rate": 1.0,
+      "http_status_codes": {
+        "200": 10
+      },
+      "retries_triggered": 0
+    },
+    "control_group": {
+      "description": "5 historical DOWNLOAD_NONZERO_FY_CONTROL controls observed across 2 valid windows",
+      "scheduled_observations": 10,
+      "successful_acquisitions": 10,
+      "success_rate": 1.0,
+      "http_status_codes": {
+        "200": 10
+      },
+      "retries_triggered": 0
+    },
+    "target_vs_control_difference": 0.0,
+    "temporal_outcome_variance_across_valid_windows": 0.0,
+    "bitwise_reproducibility": "10/10 observations produced bitwise-identical SHA-256 document payloads across Windows 1 and 2"
+  },
+  "supplemental_analysis": {
+    "source": "WINDOW_3 (executed post-interruption at 2026-09-18 08:17:46 UTC)",
+    "sample_size": 10,
+    "target_acquisitions": "5/5 successful",
+    "control_acquisitions": "5/5 successful",
+    "bitwise_reproducibility": "10/10 bitwise identical to Windows 1 and 2",
+    "role_in_project": "Descriptive current-access corroboration only; not part of scheduled temporal baseline"
+  },
+  "corrected_overclaims": [
+    {
+      "original_claim": "Across all three temporal windows, 30 out of 30 scheduled acquisitions succeeded on attempt 1",
+      "adjudication_correction": "Window 3 missed its scheduled timestamp by >9 hours due to execution suspension; only 20 observations were scheduled temporal acquisitions across Windows 1 and 2. Primary temporal set is 20 observations, with 10 supplemental observations."
+    },
+    {
+      "original_claim": "COMPLETED \u2014 ALL 3 WINDOWS EXECUTED / Outcome Variance Across Windows: Zero variance",
+      "adjudication_correction": "The experiment is INCOMPLETE as a three-window temporal experiment. It produced a valid two-window primary subset and post-interruption supplemental data. Zero variance is established only across the two valid windows (W1 and W2)."
+    },
+    {
+      "original_claim": "Target Observations (Zero-Download FYs): 15/15 successful downloads (100% success across 3 windows)",
+      "adjudication_correction": "Target success in primary analysis is 10/10 across the two valid windows. The additional 5 target observations belong to post-interruption supplemental data."
+    },
+    {
+      "original_claim": "Control Observations (Non-Zero FYs): 15/15 successful downloads (100% success across 3 windows)",
+      "adjudication_correction": "Control success in primary analysis is 10/10 across the two valid windows. The additional 5 control observations belong to post-interruption supplemental data."
+    },
+    {
+      "original_claim": "Future repair experiment justified by P-R1X evidence: NO",
+      "adjudication_correction": "Adjudicated decision is INSUFFICIENT EVIDENCE. Declaring 'NO' overclaims that the acquisition problem is solved or that no repair will ever be needed. Current pilot only established that historical failure was not reproduced under single-worker, off-peak pilot conditions."
+    }
+  ],
+  "evidence_state": {
+    "currently_reproduced": [
+      "Current endpoint viability: All 10 URLs (5 target, 5 control) are live and serving complete files from nsearchives.nseindia.com",
+      "Client compatibility: Unadorned httpx.Client (Linux Chrome UA, no session cookies/headers) succeeds on current requests",
+      "Pacing tolerance: HostLimiter 1.5s interval is accepted without rate limits or IP bans",
+      "Single-worker pilot success: 20/20 acquisitions succeeded in primary valid windows, 10/10 in supplemental run"
+    ],
+    "historically_established": [
+      "318 document losses occurred on 2026-09-11 (discovered=True, downloaded=False) in P-M5 dataset",
+      "Target group companies had 0 downloaded documents for the sampled FYs in the historical dataset"
+    ],
+    "unknown_not_established": [
+      "Root cause of historical 2026-09-11 acquisition losses",
+      "Whether historical losses were caused by origin outage, WAF blocking, rate limiting, CDN failure, or network disruption",
+      "Whether origin applies time-of-day or market-hours restrictions",
+      "How origin behaves under multi-worker high concurrency or full 576-observation workload"
+    ]
+  },
+  "future_repair_experiment_decision": {
+    "decision": "INSUFFICIENT EVIDENCE",
+    "basis": [
+      "Direct evidence: Baseline R1 acquisition succeeded completely (20/20 in valid windows) on the pilot sample without modifications.",
+      "Absence of failure signal: The historical failure mode was NOT reproduced under current test conditions; there is no active failure trace to repair.",
+      "Historical cause unknown: Without knowing what failed historically, designing an acquisition intervention would be unguided speculation.",
+      "Experimental limitations: The three-window temporal protocol was interrupted (only 2 windows valid), and concurrency/scale remain untested.",
+      "Scope caveat: This decision does NOT mean the acquisition problem is solved; it means P-R1X evidence alone cannot justify or guide a specific repair."
+    ]
+  },
+  "unresolved_confounders": [
+    "Time-of-day / market-hours origin policy: Valid windows ran in off-market hours (20:05 and 21:35 UTC); daytime/market-hours behavior was not tested in scheduled windows.",
+    "Concurrency and connection load: Single sequential worker does not test multi-worker concurrency or origin connection pooling pressure.",
+    "IP and client network environment: Current host network environment and IP address may differ from historical acquisition environment.",
+    "Origin content volatility: Current availability of historical archives does not guarantee identical origin infrastructure or CDN policies as 2026-09-11."
+  ],
+  "methodological_limitations": [
+    "Sample size: N=10 observations (census of pilot sample, small subset of 576-observation universe).",
+    "Temporal interruption: Nominal Window 3 suffered process suspension / host sleep, truncating scheduled temporal coverage to 2 windows (90-minute delta).",
+    "No failure reproduction: Diagnostic pilot tested baseline behavior only; failure conditions remain unobserved."
+  ]
+}

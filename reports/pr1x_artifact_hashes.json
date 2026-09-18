@@ -1,0 +1,62 @@
+{
+  "metadata": {
+    "experiment": "P-R1X",
+    "adjudication_phase": "PHASE_A",
+    "timestamp_utc": "2026-09-18T08:58:00Z",
+    "hash_algorithm": "SHA-256"
+  },
+  "original_execution_artifacts": {
+    "reports/pc0_sample_manifest.json": {
+      "sha256": "394c628d842bdcf967b6dd82ab695fb4b17a88602c7c79c0b17561a3d931bb0e",
+      "bytes": 11752,
+      "path": "reports/pc0_sample_manifest.json"
+    },
+    "reports/pr1x_execution_runbook.md": {
+      "sha256": "4d6f9b320dcb612b4ab9eb3eb0ffd9530589c692a8b19d29c826e18506e39de9",
+      "bytes": 7768,
+      "path": "reports/pr1x_execution_runbook.md"
+    },
+    "reports/pr1x_environment.json": {
+      "sha256": "cc8f9ed239e27b2dbda896545cd691e6eeb12bab6477ecedd726719f419a79bd",
+      "bytes": 1047,
+      "path": "reports/pr1x_environment.json"
+    },
+    "reports/pr1x_live_telemetry.jsonl": {
+      "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "bytes": 1,
+      "path": "reports/pr1x_live_telemetry.jsonl"
+    },
+    "reports/pr1x_observation_results.json": {
+      "sha256": "6fc3c5af586e4d2c185e01184e76065a1f72dc16a52a2e1c9e498988dab2e987",
+      "bytes": 35376,
+      "path": "reports/pr1x_observation_results.json"
+    },
+    "reports/pr1x_execution_summary.md": {
+      "sha256": "6dbcf74005f9e1c9bceaf30fbf8641b67f91a7d6490c49c8071396e056bca298",
+      "bytes": 8744,
+      "path": "reports/pr1x_execution_summary.md"
+    }
+  },
+  "adjudication_artifacts": {
+    "reports/pr1x_temporal_validity.json": {
+      "sha256": "d8d9d5e9035b6242b18e2ddd83971127bfe64c01dfdaccbed05c88acc5cd34a4",
+      "bytes": 3614,
+      "path": "reports/pr1x_temporal_validity.json"
+    },
+    "reports/pr1x_adjudication.json": {
+      "sha256": "001148507475598114c03fdf7e9d8c9d055467f1ad4e3e470f57230d01d70eed",
+      "bytes": 9921,
+      "path": "reports/pr1x_adjudication.json"
+    },
+    "reports/pr1x_adjudication.md": {
+      "sha256": "1bc89188f047ec8a63d452e813fa056651a240179a42bf6c7152ce121f273f81",
+      "bytes": 15034,
+      "path": "reports/pr1x_adjudication.md"
+    },
+    "reports/pr1x_memory_update_notes.md": {
+      "sha256": "abd93f39b551d152ed610eeace61ea71c0118650da2fdcb6d683bee54f6cbe0e",
+      "bytes": 3785,
+      "path": "reports/pr1x_memory_update_notes.md"
+    }
+  }
+}
