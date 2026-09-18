@@ -1,0 +1,210 @@
+{
+  "audit_metadata": {
+    "title": "ARPipe \u2014 Historical Acquisition-Cause Evidence Audit",
+    "task_identifier": "HISTORICAL-AUDIT",
+    "audit_date_utc": "2026-09-18T10:00:54.230112+00:00",
+    "target_historical_date": "2026-09-11",
+    "governing_worktree": "D:\\sem_iitk\\sem9\\thesis\\sep_week1\\arpipe-pr1x-historical-audit",
+    "governing_branch": "pr1x-historical-audit",
+    "base_commit": "ca92b8e8d043cccb9556a6fc591927b3bbf1cf32",
+    "operating_mode": "LOCAL_OFFLINE_FORENSIC_AUDIT"
+  },
+  "population_identity_integrity": {
+    "expected_universe_size": 576,
+    "discovered_candidates_size": 512,
+    "downloaded_documents_size": 194,
+    "expected_discovered_to_downloaded_loss_population": 318,
+    "reconstructed_identities": 318,
+    "duplicates": 0,
+    "missing_identities": 0,
+    "invented_identities": 0,
+    "unresolved_identity_conflicts": 0,
+    "exact_reconstruction": true
+  },
+  "loss_population_breakdown": {
+    "total_losses": 318,
+    "directly_classified_losses": 0,
+    "indirectly_supported_losses": 318,
+    "unclassified_physical_mechanisms": 318,
+    "zero_download_fys_losses": {
+      "FY2010": 28,
+      "FY2014": 30,
+      "FY2016": 31,
+      "FY2019": 32,
+      "FY2020": 33,
+      "FY2021": 34,
+      "FY2022": 35,
+      "FY2023": 36,
+      "subtotal_zero_fys": 259
+    },
+    "nonzero_download_fys_losses": {
+      "FY2011": 28,
+      "FY2015": 31,
+      "subtotal_partial_fys": 59
+    },
+    "candidate_source_distribution": {
+      "top_candidate_nse": 212,
+      "top_candidate_bse": 106
+    },
+    "top_candidate_extension_distribution": {
+      "zip": 211,
+      "pdf": 107
+    }
+  },
+  "historical_telemetry_audit": {
+    "attempt_level_telemetry_persisted": "NONE_OF_318 (0.0%)",
+    "request_id_persisted": "NONE_OF_318",
+    "attempt_number_persisted": "NONE_OF_318",
+    "http_status_persisted": "NONE_OF_318",
+    "exception_class_persisted": "NONE_OF_318",
+    "first_failure_layer_persisted": "NONE_OF_318",
+    "request_timestamp_persisted": "NONE_OF_318",
+    "response_timestamp_persisted": "NONE_OF_318",
+    "terminal_state_persisted": "NONE_OF_318 (all 318 coded REASON_CODE_MISSING in stage table)",
+    "retry_exhaustion_persisted": "NONE_OF_318"
+  },
+  "request_invocation_state_audit": {
+    "classification": "REQUEST_NOT_CONFIRMED",
+    "governing_epistemic_rule": "NO_REQUEST_EVIDENCE != REQUEST_DID_NOT_OCCUR",
+    "requests_confirmed": 0,
+    "requests_not_confirmed": 318,
+    "requests_confirmed_not_completed": 0,
+    "requests_status_unknown": 0,
+    "requests_did_not_occur": 0,
+    "rationale": "Discovery output (cohort_reports.jsonl) confirms candidate URLs were found. Download output (live_store/documents.jsonl) confirms 194 were downloaded. For the remaining 318, no invocation logs, attempt records, or stdout/stderr dumps survive. cohort_fetch_manifest.jsonl omitted all 318. Whether requests were dispatched and silently dropped, or never dispatched by the fetch runner, cannot be proven."
+  },
+  "historical_configuration_snapshot": {
+    "http_library": "httpx (httpx.Client)",
+    "user_agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36",
+    "headers": {
+      "User-Agent": "discover.UA"
+    },
+    "cookies_session": "None (unseeded, empty cookie jar in cmd_fetch; session cookies restricted to cmd_discover)",
+    "timeout": 120.0,
+    "retries": 3,
+    "retry_delays": "5 * (attempt + 1) ** 2 for HTTP 403/429/503 (5s, 20s, 45s); 2 * (attempt + 1) for exceptions (2s, 4s, 6s)",
+    "pacing": "fetch.HostLimiter(min_interval=1.5) per netloc host",
+    "concurrency": "ThreadPoolExecutor(a.workers=4) (CLI default in cmd_fetch)",
+    "client_reuse": "Single httpx.Client shared across all worker threads within cmd_fetch invocation",
+    "redirect_behavior": "follow_redirects=True (httpx default max_redirects=20)",
+    "max_payload_bytes": "400 << 20 (400 MB)",
+    "stream_chunk_bytes": "1 << 18 (256 KB)",
+    "format_validation": "Magic byte sniff (b'PK' -> ZIP extraction of largest PDF; else assume PDF -> pymupdf.open -> fallback qpdf repair)",
+    "silent_drop_path": "fetch_one returns None without exception or error log if 3 attempts all return 403, 429, or 503",
+    "source_commit": "84318d37040338dca315b3f9c104b3f161eee433 / 9cf5192a353f2dc5c1ba34389a27cd335208f95a / 0fb8cbf6d932f4190bdfe3b2a1fecf62170cca14",
+    "source_artifacts": [
+      "arpipe/fetch.py",
+      "arpipe/cli.py",
+      "arpipe/discover.py",
+      "arpipe/configs/default.yaml"
+    ],
+    "confidence": "HIGH for committed code implementation; PARTIALLY ESTABLISHED for runtime invocation parameters",
+    "evidence_ids": [
+      "EV-HIST-06"
+    ]
+  },
+  "historical_runtime_audit": {
+    "cli_workers_flag": "NOT_RECORDED (defaulted to 4 in code)",
+    "cli_min_interval_flag": "NOT_RECORDED (defaulted to 1.5 in code)",
+    "cli_manifest_flag": "NOT_RECORDED (defaulted to 'reports.jsonl'; contemporaneous files exist: 'cohort_reports.jsonl' and 'cohort_fetch_manifest.jsonl')",
+    "cli_root_flag": "NOT_RECORDED (defaulted to 'store'; actual output directory on 2026-09-11 was 'live_store')",
+    "shell_environment": "NOT_RECORDED (Windows PowerShell presumed from arpipe.ps1 and ConsoleHost_history.txt)",
+    "network_egress": "IIT Kanpur campus network / Indian ISP"
+  },
+  "historical_timing_audit": {
+    "discovery_window_utc": "2026-09-11T10:23:09Z \u2013 2026-09-11T10:27:27Z (duration: 4m 18s)",
+    "download_window_utc": "2026-09-11T10:28:44.383654Z \u2013 2026-09-11T10:33:08.086001Z (duration: 4m 23.7s)",
+    "download_clusters_utc": [
+      {
+        "cluster": "Burst 1",
+        "fys": "{2012, 2013, 2011(part)}",
+        "time_utc": "10:28:44 \u2013 10:29:58",
+        "successes": 58
+      },
+      {
+        "cluster": "Burst 2",
+        "fys": "{2017, 2018, 2015(part)}",
+        "time_utc": "10:30:04 \u2013 10:31:26",
+        "successes": 64
+      },
+      {
+        "cluster": "Burst 3",
+        "fys": "{2024, 2025}",
+        "time_utc": "10:31:29 \u2013 10:33:08",
+        "successes": 72
+      }
+    ],
+    "loss_timestamps_surviving": "0 of 318 (0.0%)"
+  },
+  "analytical_questions_answers": {
+    "Q1_exact_reconstruction": "YES (exactly 318 unique historical loss identities reconciled)",
+    "Q2_directly_documented_reasons": "0 of 318 (0.0%; all recorded as REASON_CODE_MISSING)",
+    "Q3_indirect_evidence_count": "318 of 318 (candidate URLs, FY clustering, and absence from fetch manifest)",
+    "Q4_unclassified_losses": "318 of 318 (physical failure layer remains UNKNOWN_AFTER_REVIEW)",
+    "Q5_direct_evidence_http_403": "NO (0 records)",
+    "Q6_direct_evidence_http_429": "NO (0 records)",
+    "Q7_direct_evidence_http_503": "NO (0 records)",
+    "Q8_direct_evidence_transport_failure": "NO (0 records)",
+    "Q9_direct_evidence_downloader_invoked": "NO (REQUEST_NOT_CONFIRMED under NO_REQUEST_EVIDENCE != REQUEST_DID_NOT_OCCUR)",
+    "Q10_direct_evidence_retry_exhaustion": "NO (0 records)",
+    "Q11_direct_evidence_receipt_validation_failure": "NO (0 records)",
+    "Q12_historical_configuration_established": "PARTIALLY ESTABLISHED (codebase fully proven at commit 84318d3; runtime CLI flags NOT_RECORDED)",
+    "Q13_historical_concurrency_established": "PARTIALLY ESTABLISHED (code defaulted to ThreadPoolExecutor(workers=4) with HostLimiter(1.5s); runtime flags NOT_RECORDED)",
+    "Q14_historical_timing_established": "PARTIALLY ESTABLISHED (overall run timestamps 10:23\u201310:33 UTC proven; 0 timestamps survive for the 318 losses)",
+    "Q15_hypotheses_ruled_out": [
+      "Validation failure / payload corruption on sample",
+      "URL syntax / formatting defect",
+      "Client configuration asymmetry as absolute technical barrier",
+      "cohort_fetch_manifest as independent predictive filter"
+    ],
+    "Q16_hypotheses_plausible_unproven": [
+      "Upstream time-varying rate limiting / connection resets",
+      "Acquisition invocation gap / staged manifest execution",
+      "Silent drop on repeated 403/429/503",
+      "Concurrency burst triggering edge anti-bot defenses",
+      "Retry exhaustion"
+    ],
+    "Q17_unknowns_due_to_missing_evidence": [
+      "Whether requests were dispatched for the 318",
+      "What status codes or socket exceptions occurred",
+      "Exact CLI arguments and shell invocation command used on 2026-09-11",
+      "Why cohort_fetch_manifest contained only 194 pairs"
+    ]
+  },
+  "hypothesis_matrix_summary": {
+    "historically_established": [
+      "318 company-years lost at DISCOVERED -> DOWNLOADED transition",
+      "Reason-code completeness was 0.0% (0/318)",
+      "All 194 successful downloads occurred inside a single 4.5-min burst (10:28:44\u201310:33:08 UTC)",
+      "Committed fetch engine at commit 84318d3 had 0 attempt-level logging on disk"
+    ],
+    "currently_reproduced": [
+      "Endpoint reachability and client viability under single-worker polite pacing (P-R1X: 20/20 valid, 10/10 supplemental success)",
+      "Sub-hour endpoint volatility (P-C0: 0/9 failures followed by 10/10 successes within 50 minutes)",
+      "Client configuration symmetry (P-C0R: 10/10 paired success between seeded and unseeded clients)"
+    ],
+    "plausible_but_unproven": [
+      "Upstream origin / CDN rate limiting or connection resets on 2026-09-11",
+      "Workflow invocation gap / staged manifest execution (cohort_fetch_manifest.jsonl)",
+      "Silent return None on exhausted 403/429/503",
+      "Concurrency burst tripping Akamai anti-bot thresholds",
+      "Retry exhaustion"
+    ],
+    "ruled_out": [
+      "Payload / format corruption of target annual reports (disproven on tested sample)",
+      "URL malformation or invalid URL syntax",
+      "Client header / cookie asymmetry as general cause (disproven by P-C0R and P-R1X)",
+      "Predictive pre-fetch filter hypothesis (disproven: cohort_fetch_manifest matches post-fetch success set)"
+    ],
+    "unknown": [
+      "Physical failure mechanism responsible for the 318 historical losses on 2026-09-11",
+      "Whether requests for the 318 were actually invoked on 2026-09-11"
+    ]
+  },
+  "next_experiment_decision": {
+    "verdict": "INSUFFICIENT HISTORICAL EVIDENCE FOR TARGETED EXPERIMENT",
+    "decision_rule": "Section 33: A targeted experiment is justified only if a specific historical mechanism is sufficiently evidenced. Surviving records contain 0.0% reason codes, 0 attempt logs, and cannot prove whether requests were invoked.",
+    "next_task": "INFORMATION-GAP / OBSERVABILITY TASK",
+    "next_task_identifier": "Task 2 (Evidence-Driven Acquisition Strategy: Classify Recoverable vs. Excluded vs. Unrecoverable)"
+  }
+}
