@@ -1,0 +1,24 @@
+{
+  "acquisitions_currently_justified_count": 0,
+  "audit_decision_counts": {
+    "AUDIT_REQUIRED_BEFORE_ACQUISITION": 1,
+    "NO_ACQUISITION_NEEDED": 2
+  },
+  "base_commit": "879762a2f236b3aaa6df33b7ddacc60c01d633c1",
+  "core_decision_invariant_status": "PRESERVED",
+  "derived_conditions": [
+    "duplicate_overlapping_text",
+    "toc_offset_discrepancy",
+    "fully_scanned_documents"
+  ],
+  "frozen_core_decision": "NO_ACQUISITION",
+  "new_measurements_created": false,
+  "pdf_acquisitions_executed": 0,
+  "pdf_inspections_performed": false,
+  "total_additional_audit_required_conditions": 3,
+  "triggers_defined_count": 1,
+  "triggers_executed_count": 0,
+  "unresolved_questions": [
+    "Does an empirical OCR benchmark on existing scanned pages (INE002L01015_2012, INE003B01014_2011, and 63 mixed files) reveal triage or heading extraction failure rates that exceed future pre-registered tolerance?"
+  ]
+}
