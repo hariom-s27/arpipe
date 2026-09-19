@@ -20,4 +20,13 @@ The manifest's `input_image_hash` remains `NOT_YET_RENDERED` by design. Do not r
 
 Runtime output must validate against the common, raw-output, efficiency, and future-results schemas. Preserve raw engine output separately. Never put timestamps, hostnames, UUIDs, absolute paths, model output, or telemetry into deterministic setup/gold artifacts.
 
+## Final closure audit (T0.4-CLOSE)
+
+```powershell
+python tools/audit_t0_4_final_closure.py            # audit HEAD and write artifacts/t0_4/final_closure_audit.json
+python tools/audit_t0_4_final_closure.py --check    # recompute and compare with the recorded audit
+```
+
+The audit reads git objects of the audited commit only, so the working tree, timestamps, hostnames, UUIDs, and absolute paths cannot influence it. `final_commit_after_audit` is the audited commit; the record files (JSON, report, record test) are committed afterwards, because a file cannot embed the hash of the commit that contains it.
+
 The following are prohibited here: opening/rendering corpus PDFs, probing or installing engines, OCR execution, cloud/API calls, external acquisition, benchmark-result creation, HOLDOUT tuning, and production-pipeline edits.

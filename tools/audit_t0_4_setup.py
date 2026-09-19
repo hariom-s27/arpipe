@@ -30,6 +30,7 @@ from tools.t0_4.core import (
 ALLOWED_ARTIFACTS = {
     "benchmark_manifest.json",
     "config_hashes.json",
+    "final_closure_audit.json",
     "setup_audit.json",
 }
 
