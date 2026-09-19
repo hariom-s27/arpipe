@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "arpipe://t0.4/raw-output-provenance/1.0.0",
+  "title": "Immutable future raw engine output provenance",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "document_id",
+    "page_number",
+    "input_image_hash",
+    "engine_id",
+    "engine_version",
+    "configuration_hash",
+    "runtime_environment",
+    "raw_output",
+    "raw_output_hash",
+    "common_adapter_output",
+    "adapter_version",
+    "execution_status",
+    "runtime_metrics",
+    "failure"
+  ],
+  "properties": {
+    "document_id": {"type": "string"},
+    "page_number": {"type": "integer", "minimum": 0},
+    "input_image_hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "engine_id": {"type": "string"},
+    "engine_version": {"type": "string", "minLength": 1},
+    "configuration_hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "runtime_environment": {"type": "object"},
+    "raw_output": {},
+    "raw_output_hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "common_adapter_output": {"type": "object"},
+    "adapter_version": {"type": "string"},
+    "execution_status": {"enum": ["SUCCESS", "FAILED", "TIMEOUT", "EMPTY_OUTPUT", "NOT_EXECUTED"]},
+    "runtime_metrics": {"type": "object"},
+    "failure": {"oneOf": [{"type": "null"}, {"type": "object"}]},
+    "cloud_provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "provider": {"type": "string"},
+        "model_version": {"type": "string"},
+        "api_version": {"type": "string"},
+        "request_parameters": {"type": "object"},
+        "temperature": {"type": ["number", "string"]},
+        "seed": {"type": ["integer", "string"]},
+        "region": {"type": "string"},
+        "request_timestamp": {"type": "string"},
+        "response_hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+      }
+    }
+  },
+  "$comment": "Raw output is immutable and separate from common adapter output. Existing cloud output must be replayed from this preserved record rather than regenerated."
+}

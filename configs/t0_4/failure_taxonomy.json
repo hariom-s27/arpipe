@@ -1,0 +1,27 @@
+{
+  "schema_version": "1.0.0",
+  "failure_types": [
+    {"code": "INPUT_FAILURE", "stage": "input"},
+    {"code": "ENGINE_LOAD_FAILURE", "stage": "engine_load"},
+    {"code": "MODEL_LOAD_FAILURE", "stage": "model_load"},
+    {"code": "TIMEOUT", "stage": "recovery"},
+    {"code": "API_ERROR", "stage": "recovery"},
+    {"code": "RATE_LIMIT", "stage": "recovery"},
+    {"code": "EMPTY_OUTPUT", "stage": "recovery"},
+    {"code": "MALFORMED_OUTPUT", "stage": "adapter"},
+    {"code": "OCR_GARBLED", "stage": "recovery_quality"},
+    {"code": "READING_ORDER_FAILURE", "stage": "reading_order"},
+    {"code": "HEADING_FAILURE", "stage": "heading_inventory"},
+    {"code": "CANDIDATE_MISS", "stage": "candidate_generation"},
+    {"code": "SPAN_BOUNDARY_FAILURE", "stage": "span_resolution"},
+    {"code": "VERIFIER_FALSE_ACCEPT", "stage": "verification"},
+    {"code": "VERIFIER_FALSE_REJECT", "stage": "verification"}
+  ],
+  "required_result_dimensions": [
+    "stage",
+    "failure_type",
+    "document_id",
+    "sampling_stratum"
+  ],
+  "generic_ocr_failure_policy": "OCR_FAILURE is prohibited when a more specific evidence-supported code applies."
+}

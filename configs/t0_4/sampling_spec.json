@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.0.0",
+  "source_corpus": "dataset/corpus_freeze",
+  "corpus_policy": "NO_ACQUISITION",
+  "unit_uniqueness": {
+    "track_a": [
+      "document_id",
+      "page_number"
+    ],
+    "track_b": [
+      "document_id"
+    ]
+  },
+  "partition_source": "dataset/corpus_freeze/issuer_split.csv",
+  "partition_policy": "PRESERVE_FIT_VALIDATION_HOLDOUT_BY_ISSUER",
+  "holdout_role": "FINAL_ONLY_LOCKED",
+  "sampling_seed": "t0.4-coverage-v1",
+  "sample_size_rule": {
+    "type": "DETERMINISTIC_COVERAGE_CELL",
+    "rationale": "P-X1's fixed 20-pages-per-stratum quota was not justified and allowed document overlap. T0.4 derives sample size from observed frozen-corpus coverage rather than choosing a post hoc integer.",
+    "coverage_cell": [
+      "issuer_id",
+      "sampling_stratum",
+      "era",
+      "representation_class",
+      "length_category"
+    ],
+    "selection": "Choose the lexicographically smallest SHA-256 rank of sampling_seed, document_id, and page_number in every observed coverage cell.",
+    "shortfall_policy": "An unobserved cell is reported as unavailable and is never fabricated or duplicated."
+  },
+  "sampling_stratum_priority": [
+    "devanagari_candidate",
+    "legacy_font_candidate",
+    "vector_text",
+    "broken_text",
+    "scanned",
+    "ocr_layer_proxy",
+    "table_candidate",
+    "multi_column",
+    "pre_2015",
+    "native_clean_control",
+    "other"
+  ],
+  "condition_labels": {
+    "overlap_allowed": true,
+    "evidence_levels": [
+      "VALIDATED_METADATA",
+      "CANDIDATE_PROXY",
+      "NOT_YET_ANNOTATED"
+    ],
+    "proxy_rule": "Existing detector candidates remain CANDIDATE_PROXY unless human verification already exists; selection never upgrades their evidence level."
+  },
+  "manifest_sources": [
+    "dataset/corpus_freeze/corpus_inventory.csv",
+    "dataset/corpus_freeze/issuer_split.csv",
+    "dataset/corpus_freeze/page_profile.csv",
+    "dataset/corpus_gap_audit/condition_page_map.csv",
+    "dataset/corpus_gap_audit/table_candidates.csv",
+    "dataset/corpus_gap_audit/language_candidates.csv"
+  ],
+  "track_b_document_rule": "Predeclare every frozen historical record. Records without profiled/local PDF bytes remain explicit INPUT_UNAVAILABLE units and are not silently omitted."
+}

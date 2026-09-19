@@ -1,0 +1,126 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "arpipe://t0.4/gold-schema/1.0.0",
+  "title": "T0.4 separate human gold records",
+  "description": "Gold is human annotation only. Engine output, telemetry, and reviewer expectations are prohibited.",
+  "$defs": {
+    "annotation_status": {
+      "enum": [
+        "ANNOTATED",
+        "NOT_YET_ANNOTATED"
+      ]
+    },
+    "bbox": {
+      "type": "array",
+      "prefixItems": [
+        {"type": "number"},
+        {"type": "number"},
+        {"type": "number"},
+        {"type": "number"}
+      ],
+      "items": false,
+      "minItems": 4,
+      "maxItems": 4
+    },
+    "page_gold": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "gold_level",
+        "document_id",
+        "page_number",
+        "annotation_status",
+        "reference_text",
+        "lines",
+        "headings",
+        "reading_order_pairs",
+        "factual_fields",
+        "regions",
+        "annotation_provenance"
+      ],
+      "properties": {
+        "gold_level": {"const": "PAGE"},
+        "document_id": {"type": "string", "minLength": 1},
+        "page_number": {"type": "integer", "minimum": 0},
+        "annotation_status": {"$ref": "#/$defs/annotation_status"},
+        "reference_text": {"type": ["string", "null"]},
+        "lines": {"type": "array", "items": {"type": "object"}},
+        "headings": {"type": "array", "items": {"type": "object"}},
+        "reading_order_pairs": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "prefixItems": [{"type": "string"}, {"type": "string"}],
+            "items": false,
+            "minItems": 2,
+            "maxItems": 2
+          }
+        },
+        "factual_fields": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["field_type", "value", "page", "bbox", "annotation_status"],
+            "properties": {
+              "field_type": {"enum": ["number", "money", "currency_unit", "percentage", "date", "entity"]},
+              "value": {},
+              "currency": {"type": ["string", "null"]},
+              "unit": {"type": ["string", "null"]},
+              "period": {"type": ["string", "null"]},
+              "entity": {"type": ["string", "null"]},
+              "page": {"type": "integer", "minimum": 0},
+              "bbox": {"oneOf": [{"$ref": "#/$defs/bbox"}, {"const": "NOT_YET_ANNOTATED"}]},
+              "annotation_status": {"$ref": "#/$defs/annotation_status"}
+            }
+          }
+        },
+        "regions": {"type": "array", "items": {"type": "object"}},
+        "annotation_provenance": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["annotator_id", "protocol_version", "adjudication_status"],
+          "properties": {
+            "annotator_id": {"type": ["string", "null"]},
+            "protocol_version": {"type": "string"},
+            "adjudication_status": {"enum": ["NOT_REQUIRED", "PENDING", "ADJUDICATED", "NOT_YET_ANNOTATED"]}
+          }
+        }
+      }
+    },
+    "document_gold": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "gold_level",
+        "document_id",
+        "annotation_status",
+        "mda_present",
+        "mda_start_page",
+        "mda_end_page",
+        "start_heading",
+        "start_level",
+        "boundary_ambiguity",
+        "excluded_neighbor_sections",
+        "annotation_provenance"
+      ],
+      "properties": {
+        "gold_level": {"const": "DOCUMENT"},
+        "document_id": {"type": "string", "minLength": 1},
+        "annotation_status": {"$ref": "#/$defs/annotation_status"},
+        "mda_present": {"oneOf": [{"type": "boolean"}, {"const": "NOT_YET_ANNOTATED"}]},
+        "mda_start_page": {"oneOf": [{"type": "integer", "minimum": 0}, {"type": "null"}, {"const": "NOT_YET_ANNOTATED"}]},
+        "mda_end_page": {"oneOf": [{"type": "integer", "minimum": 0}, {"type": "null"}, {"const": "NOT_YET_ANNOTATED"}]},
+        "start_heading": {"type": ["string", "null"]},
+        "start_level": {"oneOf": [{"type": "integer", "minimum": 1}, {"type": "null"}, {"const": "NOT_YET_ANNOTATED"}]},
+        "boundary_ambiguity": {"oneOf": [{"type": "string"}, {"const": "NOT_YET_ANNOTATED"}]},
+        "excluded_neighbor_sections": {"type": "array", "items": {"type": "string"}},
+        "annotation_provenance": {"type": "object"}
+      }
+    }
+  },
+  "oneOf": [
+    {"$ref": "#/$defs/page_gold"},
+    {"$ref": "#/$defs/document_gold"}
+  ]
+}
