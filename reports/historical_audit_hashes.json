@@ -1,0 +1,268 @@
+{
+  "audit_timestamp_utc": "2026-09-18T10:00:54.233308+00:00",
+  "verification_status": "ALL_SOURCE_HASHES_PRESERVED_UNCOMPROMISED",
+  "sources_count": 29,
+  "sources": [
+    {
+      "source_path": "D:\\sem_iitk\\sem9\\thesis\\sep_week1\\arpipe-pm5-coverage\\reports\\pm5_stage_table.csv",
+      "pre_analysis_sha256": "30e93b59ac689f00fab182583fb25883322e429be42b4ba14e13a1011b916dc9",
+      "post_analysis_sha256": "30e93b59ac689f00fab182583fb25883322e429be42b4ba14e13a1011b916dc9",
+      "size_bytes": 195046,
+      "unchanged": true,
+      "copied_path": null,
+      "copied_sha256": null
+    },
+    {
+      "source_path": "D:\\sem_iitk\\sem9\\thesis\\sep_week1\\arpipe-pm5-coverage\\reports\\pm5_source_snapshots\\cohort_reports.jsonl",
+      "pre_analysis_sha256": "c24f148ae5971dca545168921caa207aa6cfd84021958fcf969bd812a4a04b67",
+      "post_analysis_sha256": "c24f148ae5971dca545168921caa207aa6cfd84021958fcf969bd812a4a04b67",
+      "size_bytes": 445419,
+      "unchanged": true,
+      "copied_path": null,
+      "copied_sha256": null
+    },
+    {
+      "source_path": "D:\\sem_iitk\\sem9\\thesis\\sep_week1\\arpipe-pm5-coverage\\reports\\pm5_source_snapshots\\live_store_documents.jsonl",
+      "pre_analysis_sha256": "3a7c7bf15f554298e1c7f4a62b90ea6328a9e1e1e4ecde4840aee7ce42abab31",
+      "post_analysis_sha256": "3a7c7bf15f554298e1c7f4a62b90ea6328a9e1e1e4ecde4840aee7ce42abab31",
+      "size_bytes": 98527,
+      "unchanged": true,
+      "copied_path": null,
+      "copied_sha256": null
+    },
+    {
+      "source_path": "D:\\sem_iitk\\sem9\\thesis\\sep_week1\\arpipe-pm5-coverage\\reports\\pm5_source_snapshots\\live_dataset_manifest.jsonl",
+      "pre_analysis_sha256": "8607cd29d9e660fee1b18ce9d980e0a39c217275201d72114e4ce0a9fe89a625",
+      "post_analysis_sha256": "8607cd29d9e660fee1b18ce9d980e0a39c217275201d72114e4ce0a9fe89a625",
+      "size_bytes": 1316862,
+      "unchanged": true,
+      "copied_path": null,
+      "copied_sha256": null
+    },
+    {
+      "source_path": "D:\\sem_iitk\\sem9\\thesis\\sep_week1\\arpipe-pm5-coverage\\reports\\pm5_source_snapshots\\all_reports.jsonl",
+      "pre_analysis_sha256": "4769cc6aaad40bc791ce63480aa40e3a5acbdaa9f85920c3d2af4b62f923d5c8",
+      "post_analysis_sha256": "4769cc6aaad40bc791ce63480aa40e3a5acbdaa9f85920c3d2af4b62f923d5c8",
+      "size_bytes": 658507,
+      "unchanged": true,
+      "copied_path": null,
+      "copied_sha256": null
+    },
+    {
+      "source_path": "D:\\sem_iitk\\sem9\\thesis\\sep_week1\\arpipe-pm5-coverage\\reports\\pm5_source_snapshots\\PIN_TIMESTAMP_UTC.txt",
+      "pre_analysis_sha256": "838c94d9e0e1453052d11199ac731b2c7cd2147a9cbced6e89adc81e55009a7a",
+      "post_analysis_sha256": "838c94d9e0e1453052d11199ac731b2c7cd2147a9cbced6e89adc81e55009a7a",
+      "size_bytes": 21,
+      "unchanged": true,
+      "copied_path": null,
+      "copied_sha256": null
+    },
+    {
+      "source_path": "D:\\sem_iitk\\sem9\\thesis\\sep_week1\\arpipe-pm5-coverage\\reports\\pm5_source_snapshot_manifest.json",
+      "pre_analysis_sha256": "827406a1d2fce8a084e65583c5adea172a330c2233c025c0e02b858c0ce1adfb",
+      "post_analysis_sha256": "827406a1d2fce8a084e65583c5adea172a330c2233c025c0e02b858c0ce1adfb",
+      "size_bytes": 1339,
+      "unchanged": true,
+      "copied_path": null,
+      "copied_sha256": null
+    },
+    {
+      "source_path": "D:\\sem_iitk\\sem9\\thesis\\sep_week1\\arpipe-pm5-coverage\\reports\\pm5_expected_universe_snapshot.csv",
+      "pre_analysis_sha256": "b287a82d0fa2b15098882c328be6afc2c1672c9255f64103e4aaeabd94ccebe5",
+      "post_analysis_sha256": "b287a82d0fa2b15098882c328be6afc2c1672c9255f64103e4aaeabd94ccebe5",
+      "size_bytes": 498508,
+      "unchanged": true,
+      "copied_path": null,
+      "copied_sha256": null
+    },
+    {
+      "source_path": "D:\\sem_iitk\\sem9\\thesis\\sep_week1\\arpipe-pm5-coverage\\reports\\pm5_expected_universe_snapshot.json",
+      "pre_analysis_sha256": "3c409ed44183651ab376f2cd8dc7ab6a29fb1fba0ae6dc34fb36498fdb12f7c8",
+      "post_analysis_sha256": "3c409ed44183651ab376f2cd8dc7ab6a29fb1fba0ae6dc34fb36498fdb12f7c8",
+      "size_bytes": 661572,
+      "unchanged": true,
+      "copied_path": null,
+      "copied_sha256": null
+    },
+    {
+      "source_path": "D:\\sem_iitk\\sem9\\thesis\\sep_week1\\arpipe-pm5-coverage\\reports\\pm5_reason_code_completeness.csv",
+      "pre_analysis_sha256": "0adb7410a857435e8a859d30c7ede67e7fa4beb4a4f8c7abda76eb43a246684c",
+      "post_analysis_sha256": "0adb7410a857435e8a859d30c7ede67e7fa4beb4a4f8c7abda76eb43a246684c",
+      "size_bytes": 213,
+      "unchanged": true,
+      "copied_path": null,
+      "copied_sha256": null
+    },
+    {
+      "source_path": "D:\\sem_iitk\\sem9\\thesis\\sep_week1\\arpipe-pm5-coverage\\reports\\pm5_loss_reasons.csv",
+      "pre_analysis_sha256": "e4b47f74a63c638dd33bc23902f29d50a7a08a160b447d2a9339f66ec59342a7",
+      "post_analysis_sha256": "e4b47f74a63c638dd33bc23902f29d50a7a08a160b447d2a9339f66ec59342a7",
+      "size_bytes": 491,
+      "unchanged": true,
+      "copied_path": null,
+      "copied_sha256": null
+    },
+    {
+      "source_path": "D:\\sem_iitk\\sem9\\thesis\\sep_week1\\arpipe-pm5-coverage\\reports\\coverage.json",
+      "pre_analysis_sha256": "c84166741d36a9774b7c9f29d71ea9583934d98c2ab153e651ec66ec4d371bcf",
+      "post_analysis_sha256": "c84166741d36a9774b7c9f29d71ea9583934d98c2ab153e651ec66ec4d371bcf",
+      "size_bytes": 7288,
+      "unchanged": true,
+      "copied_path": null,
+      "copied_sha256": null
+    },
+    {
+      "source_path": "D:\\sem_iitk\\sem9\\thesis\\sep_week1\\arpipe-pm5-coverage\\reports\\coverage.md",
+      "pre_analysis_sha256": "a662689d3c7705c1c76d2a139c6ea3baae37c84f8691129283d33b1a7056384b",
+      "post_analysis_sha256": "a662689d3c7705c1c76d2a139c6ea3baae37c84f8691129283d33b1a7056384b",
+      "size_bytes": 25660,
+      "unchanged": true,
+      "copied_path": null,
+      "copied_sha256": null
+    },
+    {
+      "source_path": "D:\\sem_iitk\\sem9\\thesis\\sep_week1\\arpipe-0.1.0\\cohort_reports.jsonl",
+      "pre_analysis_sha256": "c24f148ae5971dca545168921caa207aa6cfd84021958fcf969bd812a4a04b67",
+      "post_analysis_sha256": "c24f148ae5971dca545168921caa207aa6cfd84021958fcf969bd812a4a04b67",
+      "size_bytes": 445419,
+      "unchanged": true,
+      "copied_path": null,
+      "copied_sha256": null
+    },
+    {
+      "source_path": "D:\\sem_iitk\\sem9\\thesis\\sep_week1\\arpipe-0.1.0\\cohort_fetch_manifest.jsonl",
+      "pre_analysis_sha256": "d242cf51e15d8a4cf542e899d3bab703e0b35030b68d60f49d555957be9da9e1",
+      "post_analysis_sha256": "d242cf51e15d8a4cf542e899d3bab703e0b35030b68d60f49d555957be9da9e1",
+      "size_bytes": 177136,
+      "unchanged": true,
+      "copied_path": null,
+      "copied_sha256": null
+    },
+    {
+      "source_path": "D:\\sem_iitk\\sem9\\thesis\\sep_week1\\arpipe-0.1.0\\cohort_companies.csv",
+      "pre_analysis_sha256": "5f2d8078b9367c23aaf0cdd096f1cd0c819c321d4e3eb648a10019deaa2eb71b",
+      "post_analysis_sha256": "5f2d8078b9367c23aaf0cdd096f1cd0c819c321d4e3eb648a10019deaa2eb71b",
+      "size_bytes": 4851,
+      "unchanged": true,
+      "copied_path": null,
+      "copied_sha256": null
+    },
+    {
+      "source_path": "D:\\sem_iitk\\sem9\\thesis\\sep_week1\\arpipe-0.1.0\\live_store\\documents.jsonl",
+      "pre_analysis_sha256": "3a7c7bf15f554298e1c7f4a62b90ea6328a9e1e1e4ecde4840aee7ce42abab31",
+      "post_analysis_sha256": "3a7c7bf15f554298e1c7f4a62b90ea6328a9e1e1e4ecde4840aee7ce42abab31",
+      "size_bytes": 98527,
+      "unchanged": true,
+      "copied_path": null,
+      "copied_sha256": null
+    },
+    {
+      "source_path": "D:\\sem_iitk\\sem9\\thesis\\sep_week1\\arpipe-0.1.0\\live_dataset_prev\\manifest.jsonl",
+      "pre_analysis_sha256": "6366adeb35b76b7ed7325c5e3e83851ed0491e51d96f3d2a30f8539a41ff769c",
+      "post_analysis_sha256": "6366adeb35b76b7ed7325c5e3e83851ed0491e51d96f3d2a30f8539a41ff769c",
+      "size_bytes": 1183469,
+      "unchanged": true,
+      "copied_path": null,
+      "copied_sha256": null
+    },
+    {
+      "source_path": "D:\\sem_iitk\\sem9\\thesis\\sep_week1\\arpipe-pc0-coverage-diag\\reports\\coverage_diagnosis.json",
+      "pre_analysis_sha256": "e32351adefb76667e6db3ae85bf523e11de780fd37215243d7c9c9bdcaa9b913",
+      "post_analysis_sha256": "e32351adefb76667e6db3ae85bf523e11de780fd37215243d7c9c9bdcaa9b913",
+      "size_bytes": 87048,
+      "unchanged": true,
+      "copied_path": null,
+      "copied_sha256": null
+    },
+    {
+      "source_path": "D:\\sem_iitk\\sem9\\thesis\\sep_week1\\arpipe-pc0-coverage-diag\\reports\\coverage_diagnosis.md",
+      "pre_analysis_sha256": "a8f3d158c49d998de8457d4904850e4249a005b91736695fee12b71582d2d056",
+      "post_analysis_sha256": "a8f3d158c49d998de8457d4904850e4249a005b91736695fee12b71582d2d056",
+      "size_bytes": 32885,
+      "unchanged": true,
+      "copied_path": null,
+      "copied_sha256": null
+    },
+    {
+      "source_path": "D:\\sem_iitk\\sem9\\thesis\\sep_week1\\arpipe-pc0-coverage-diag\\reports\\pc0_sample_manifest.json",
+      "pre_analysis_sha256": "394c628d842bdcf967b6dd82ab695fb4b17a88602c7c79c0b17561a3d931bb0e",
+      "post_analysis_sha256": "394c628d842bdcf967b6dd82ab695fb4b17a88602c7c79c0b17561a3d931bb0e",
+      "size_bytes": 11752,
+      "unchanged": true,
+      "copied_path": null,
+      "copied_sha256": null
+    },
+    {
+      "source_path": "D:\\sem_iitk\\sem9\\thesis\\sep_week1\\arpipe-pc0-diagnostic-base\\reports\\pc0_diagnostic_base_check.md",
+      "pre_analysis_sha256": "53968bf73621bc08ed754336437f12e39723ab7a01b47f887b2596fb9a9d46c7",
+      "post_analysis_sha256": "53968bf73621bc08ed754336437f12e39723ab7a01b47f887b2596fb9a9d46c7",
+      "size_bytes": 16128,
+      "unchanged": true,
+      "copied_path": null,
+      "copied_sha256": null
+    },
+    {
+      "source_path": "D:\\sem_iitk\\sem9\\thesis\\sep_week1\\arpipe-pc0-diagnostic-base\\reports\\pc0_diagnostic_base_check.json",
+      "pre_analysis_sha256": "7d7ed536b8dc696f36dce10128eb462779de59904819d94bc28628924d697885",
+      "post_analysis_sha256": "7d7ed536b8dc696f36dce10128eb462779de59904819d94bc28628924d697885",
+      "size_bytes": 57329,
+      "unchanged": true,
+      "copied_path": null,
+      "copied_sha256": null
+    },
+    {
+      "source_path": "D:\\sem_iitk\\sem9\\thesis\\sep_week1\\arpipe-pc0r-acquisition-pilot\\reports\\pc0r_diagnosis.json",
+      "pre_analysis_sha256": "fc6e3948288e8e75c29af40088ea1d93e2b6dd316997a62c2a030abeb6d7e874",
+      "post_analysis_sha256": "fc6e3948288e8e75c29af40088ea1d93e2b6dd316997a62c2a030abeb6d7e874",
+      "size_bytes": 19223,
+      "unchanged": true,
+      "copied_path": null,
+      "copied_sha256": null
+    },
+    {
+      "source_path": "D:\\sem_iitk\\sem9\\thesis\\sep_week1\\arpipe-pc0r-acquisition-pilot\\reports\\pc0r_diagnosis.md",
+      "pre_analysis_sha256": "59c881e2176818f8b3031affc8ba977a38aa23faf52612077687fa3d31332540",
+      "post_analysis_sha256": "59c881e2176818f8b3031affc8ba977a38aa23faf52612077687fa3d31332540",
+      "size_bytes": 29203,
+      "unchanged": true,
+      "copied_path": null,
+      "copied_sha256": null
+    },
+    {
+      "source_path": "D:\\sem_iitk\\sem9\\thesis\\sep_week1\\arpipe-pc0r-acquisition-pilot\\reports\\pc0r_client_comparison.csv",
+      "pre_analysis_sha256": "3f2d5a6f9a10fd49b2eed63d1c1eefdf73e2cc79c8d3db02f83ca4b82d9ba88c",
+      "post_analysis_sha256": "3f2d5a6f9a10fd49b2eed63d1c1eefdf73e2cc79c8d3db02f83ca4b82d9ba88c",
+      "size_bytes": 3154,
+      "unchanged": true,
+      "copied_path": null,
+      "copied_sha256": null
+    },
+    {
+      "source_path": "D:\\sem_iitk\\sem9\\thesis\\sep_week1\\arpipe-pr1x-adjudication\\reports\\pr1x_adjudication.md",
+      "pre_analysis_sha256": "f6f981cb54a48b5ab15d8a929c2003a09596f1828a00d6e09e8ed2e57e21bf04",
+      "post_analysis_sha256": "f6f981cb54a48b5ab15d8a929c2003a09596f1828a00d6e09e8ed2e57e21bf04",
+      "size_bytes": 15035,
+      "unchanged": true,
+      "copied_path": null,
+      "copied_sha256": null
+    },
+    {
+      "source_path": "D:\\sem_iitk\\sem9\\thesis\\sep_week1\\arpipe-pr1x-adjudication\\reports\\pr1x_adjudication.json",
+      "pre_analysis_sha256": "001148507475598114c03fdf7e9d8c9d055467f1ad4e3e470f57230d01d70eed",
+      "post_analysis_sha256": "001148507475598114c03fdf7e9d8c9d055467f1ad4e3e470f57230d01d70eed",
+      "size_bytes": 9921,
+      "unchanged": true,
+      "copied_path": null,
+      "copied_sha256": null
+    },
+    {
+      "source_path": "D:\\sem_iitk\\sem9\\thesis\\sep_week1\\arpipe-pr1x-execution\\reports\\pr1x_observation_results.json",
+      "pre_analysis_sha256": "6fc3c5af586e4d2c185e01184e76065a1f72dc16a52a2e1c9e498988dab2e987",
+      "post_analysis_sha256": "6fc3c5af586e4d2c185e01184e76065a1f72dc16a52a2e1c9e498988dab2e987",
+      "size_bytes": 35376,
+      "unchanged": true,
+      "copied_path": null,
+      "copied_sha256": null
+    }
+  ]
+}

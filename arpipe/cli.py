@@ -178,11 +178,13 @@ def cmd_fetch(a: argparse.Namespace) -> int:
     cl = httpx.Client(headers={"User-Agent": discover.UA}, timeout=120,
                       follow_redirects=True)
     ok = err = skip = 0
+    telemetry_path = getattr(a, "telemetry_path", None)
+    sink = fetch.TelemetryWriter(telemetry_path) if telemetry_path else None
 
     def _fetch_pair(candidates: list[ReportRef]) -> StoredDoc | None:
         for r in candidates:
             try:
-                doc = fetch.fetch_one(r, a.root, cl, limiter)
+                doc = fetch.fetch_one(r, a.root, cl, limiter, telemetry_sink=sink)
                 if doc:
                     return doc
             except Exception as exc:
@@ -863,6 +865,8 @@ def main(argv: list[str] | None = None) -> int:
     f.add_argument("--root", default="store")
     f.add_argument("--workers", type=int, default=4)
     f.add_argument("--min-interval", type=float, default=1.5)
+    f.add_argument("--telemetry-path", default=None,
+                   help="Path to write structured JSONL failure telemetry")
     f.set_defaults(fn=cmd_fetch)
 
     t = sub.add_parser("triage", parents=[cfg_parent]); t.add_argument("--root", default="store")

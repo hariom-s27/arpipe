@@ -1,0 +1,43 @@
+{
+  "audit_date_utc": "2026-09-18T10:00:54.228101+00:00",
+  "target_historical_date": "2026-09-11",
+  "historical_configuration_status": "PARTIALLY ESTABLISHED",
+  "configuration": {
+    "http_library": "httpx (httpx.Client)",
+    "user_agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36",
+    "headers": {
+      "User-Agent": "discover.UA"
+    },
+    "cookies_session": "None (unseeded, empty cookie jar in cmd_fetch; session cookies restricted to cmd_discover)",
+    "timeout": 120.0,
+    "retries": 3,
+    "retry_delays": "5 * (attempt + 1) ** 2 for HTTP 403/429/503 (5s, 20s, 45s); 2 * (attempt + 1) for exceptions (2s, 4s, 6s)",
+    "pacing": "fetch.HostLimiter(min_interval=1.5) per netloc host",
+    "concurrency": "ThreadPoolExecutor(a.workers=4) (CLI default in cmd_fetch)",
+    "client_reuse": "Single httpx.Client shared across all worker threads within cmd_fetch invocation",
+    "redirect_behavior": "follow_redirects=True (httpx default max_redirects=20)",
+    "max_payload_bytes": "400 << 20 (400 MB)",
+    "stream_chunk_bytes": "1 << 18 (256 KB)",
+    "format_validation": "Magic byte sniff (b'PK' -> ZIP extraction of largest PDF; else assume PDF -> pymupdf.open -> fallback qpdf repair)",
+    "silent_drop_path": "fetch_one returns None without exception or error log if 3 attempts all return 403, 429, or 503",
+    "source_commit": "84318d37040338dca315b3f9c104b3f161eee433 / 9cf5192a353f2dc5c1ba34389a27cd335208f95a / 0fb8cbf6d932f4190bdfe3b2a1fecf62170cca14",
+    "source_artifacts": [
+      "arpipe/fetch.py",
+      "arpipe/cli.py",
+      "arpipe/discover.py",
+      "arpipe/configs/default.yaml"
+    ],
+    "confidence": "HIGH for committed code implementation; PARTIALLY ESTABLISHED for runtime invocation parameters",
+    "evidence_ids": [
+      "EV-HIST-06"
+    ]
+  },
+  "runtime_parameters_audit": {
+    "cli_workers_flag": "NOT_RECORDED (defaulted to 4 in code)",
+    "cli_min_interval_flag": "NOT_RECORDED (defaulted to 1.5 in code)",
+    "cli_manifest_flag": "NOT_RECORDED (defaulted to 'reports.jsonl'; contemporaneous files exist: 'cohort_reports.jsonl' and 'cohort_fetch_manifest.jsonl')",
+    "cli_root_flag": "NOT_RECORDED (defaulted to 'store'; actual output directory on 2026-09-11 was 'live_store')",
+    "shell_environment": "NOT_RECORDED (Windows PowerShell presumed from arpipe.ps1 and ConsoleHost_history.txt)",
+    "network_egress": "IIT Kanpur campus network / Indian ISP"
+  }
+}
