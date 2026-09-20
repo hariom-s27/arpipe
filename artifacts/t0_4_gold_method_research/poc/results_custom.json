@@ -1,0 +1,107 @@
+{
+  "checks": {
+    "append_only_export": {
+      "format": "JSONL, one record per action, server-stamped provenance",
+      "lines_after": 3,
+      "lines_before": 2
+    },
+    "browser": {
+      "100_next_page_clicks_seconds": 11.95,
+      "coordinate_roundtrip_max_error_points": 0.569,
+      "coordinate_roundtrip_note": "expected bbox = text bbox of synthetic MD&A heading from PyMuPDF; drawn by scripted mouse at the rendered image scale (110 dpi); error dominated by integer-pixel mouse resolution (~0.65 pt/px)",
+      "images_in_dom": 1,
+      "js_heap_mb_after_100_pages_of_600p": 4.45,
+      "js_heap_mb_initial": 2.68,
+      "jump_to_page_301_seconds": 0.138,
+      "provenance_fields_present": [
+        "annotator_id",
+        "doc",
+        "gold",
+        "protocol_version",
+        "record_type",
+        "source_pdf_sha256",
+        "timestamp_utc",
+        "tool_name",
+        "tool_version"
+      ],
+      "record_page_index0": 5
+    },
+    "doc_listing_leaks_filename_or_outline": false,
+    "docs_listed": [
+      {
+        "doc": "D02723d2c3a",
+        "n_pages": 20
+      },
+      {
+        "doc": "Dae23c52d2d",
+        "n_pages": 2
+      },
+      {
+        "doc": "D1f75fa06b6",
+        "n_pages": 600
+      }
+    ],
+    "isolation": {
+      "A01_sees_only_own_records": true,
+      "A02_sees_only_own_records": true,
+      "compare_as_adjudicator_status": 200,
+      "compare_returns_both_annotators": [
+        "A01",
+        "A02"
+      ],
+      "compare_without_adjudicator_status": 403,
+      "invalid_annotator_id_status": 400,
+      "known_weakness": "POC has NO authentication: annotator id is self-declared; a real deployment needs per-annotator credentials/tokens. ADJ role is likewise unauthenticated here."
+    },
+    "out_of_range_page_status": 404,
+    "page_index_convention": "API/records 0-based physical index; UI shows 1-based; folio never shown",
+    "render_latency": {
+      "20p_p5": {
+        "cold_render_s": 0.0287,
+        "image_sha256": "ba8a6126831c3aa6",
+        "page_points": "595.00,842.00",
+        "png_bytes": 105968,
+        "warm_render_s": 0.0
+      },
+      "2p_p0": {
+        "cold_render_s": 0.029,
+        "image_sha256": "70c50a5dc07f294d",
+        "page_points": "595.00,842.00",
+        "png_bytes": 67352,
+        "warm_render_s": 0.0
+      },
+      "600p_p0": {
+        "cold_render_s": 0.0349,
+        "image_sha256": "ad156b43f156d970",
+        "page_points": "595.00,842.00",
+        "png_bytes": 114499,
+        "warm_render_s": 0.0
+      },
+      "600p_p300": {
+        "cold_render_s": 0.0372,
+        "image_sha256": "9408ad6afef29e0b",
+        "page_points": "595.00,842.00",
+        "png_bytes": 115561,
+        "warm_render_s": 0.0
+      },
+      "600p_p599": {
+        "cold_render_s": 0.0277,
+        "image_sha256": "abd50f499c8e7b08",
+        "page_points": "595.00,842.00",
+        "png_bytes": 115610,
+        "warm_render_s": 0.0
+      }
+    },
+    "scan_all_600_pages": {
+      "process_tree_size": 2,
+      "seconds": 24.12,
+      "server_rss_mb_after": 72.1,
+      "server_rss_mb_before": 62.8
+    },
+    "server_rss_mb_final_process_tree": 72.4,
+    "server_start_seconds": 0.284
+  },
+  "gold": false,
+  "label": "TOOLING_POC_ONLY",
+  "tool": "custom (arpipe-custom-poc 0.0.1-POC)"
+}

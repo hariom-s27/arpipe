@@ -1,0 +1,136 @@
+{
+  "checks": {
+    "blinding_probe": {
+      "annotations_visible_to_B": 2,
+      "note": "Community edition; no role/visibility restriction observed if >1",
+      "status": 200
+    },
+    "browser_open_task": {
+      "synth_20p": {
+        "js_heap_mb": 32.3,
+        "ls_server_rss_mb": 319.9,
+        "page_image_requests_served": 4,
+        "pages_in_task": 20,
+        "seconds_to_network_idle": 1.53,
+        "task_number_shown": null,
+        "ui_ready": true,
+        "url_after": "http://127.0.0.1:8080/projects/2/data?labeling=1&tab=2"
+      },
+      "synth_2p": {
+        "js_heap_mb": 21.7,
+        "ls_server_rss_mb": 313.3,
+        "page_image_requests_served": 1,
+        "pages_in_task": 2,
+        "seconds_to_network_idle": 2.15,
+        "task_number_shown": null,
+        "ui_ready": true,
+        "url_after": "http://127.0.0.1:8080/projects/1/data?labeling=1&tab=1"
+      },
+      "synth_600p": {
+        "js_heap_mb": 39.0,
+        "ls_server_rss_mb": 316.1,
+        "page_image_requests_served": 4,
+        "pages_in_task": 600,
+        "seconds_to_network_idle": 1.59,
+        "task_number_shown": null,
+        "ui_ready": true,
+        "url_after": "http://127.0.0.1:8080/projects/3/data?labeling=1&tab=3"
+      }
+    },
+    "coordinate_roundtrip_max_error_points_user_A": 0.0,
+    "export_annotation_keys": [
+      "bulk_created",
+      "completed_by",
+      "created_at",
+      "draft_created_at",
+      "ground_truth",
+      "id",
+      "import_id",
+      "last_action",
+      "last_created_by",
+      "lead_time",
+      "parent_annotation",
+      "parent_prediction",
+      "prediction",
+      "project",
+      "result",
+      "result_count",
+      "task",
+      "unique_id",
+      "updated_at",
+      "updated_by",
+      "was_cancelled"
+    ],
+    "export_status": 200,
+    "import": {
+      "synth_20p": {
+        "import_status": 201,
+        "project_status": 201
+      },
+      "synth_2p": {
+        "import_status": 201,
+        "project_status": 201
+      },
+      "synth_600p": {
+        "import_status": 201,
+        "project_status": 201
+      }
+    },
+    "import_total_seconds_3_projects": 0.531,
+    "ls_data_dir_mb": 1.4,
+    "ls_rss_mb_after_import": 310.1,
+    "ls_rss_mb_final": 301.6,
+    "page_index_in_export": {
+      "convention": "0-based (docs); UI page counter shown 1-based",
+      "item_index": 5
+    },
+    "prerender_all_pages_required": {
+      "synth_20p": {
+        "image_bytes_total": 1831682,
+        "seconds": 0.58
+      },
+      "synth_2p": {
+        "image_bytes_total": 129080,
+        "seconds": 0.06
+      },
+      "synth_600p": {
+        "image_bytes_total": 66997350,
+        "seconds": 18.56
+      }
+    },
+    "project_ids": {
+      "synth_20p": 2,
+      "synth_2p": 1,
+      "synth_600p": 3
+    },
+    "provenance_missing_from_export": [
+      "source_pdf_sha256",
+      "rendered_image_sha256",
+      "tool_version",
+      "protocol_version",
+      "annotator_anonymous_id"
+    ],
+    "second_user": {
+      "invite_status": 200,
+      "signup_status": 302,
+      "token_status": 200
+    },
+    "task_600p_api_payload_bytes": 26372,
+    "task_ids": {
+      "synth_20p": 2,
+      "synth_2p": 1,
+      "synth_600p": 3
+    },
+    "two_annotations_in_export_with_distinct_users": [
+      1,
+      2
+    ],
+    "two_users_annotate_status": [
+      201,
+      201
+    ]
+  },
+  "gold": false,
+  "label": "TOOLING_POC_ONLY",
+  "tool": "Label Studio Community 1.23.0 (Python 3.12.14)"
+}

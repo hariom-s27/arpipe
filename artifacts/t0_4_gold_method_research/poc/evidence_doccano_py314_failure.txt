@@ -1,0 +1,9 @@
+# doccano 1.8.4 on Python 3.14.3 (Windows) -- pip install failure excerpt (TOOLING_POC_ONLY)
+Collecting doccano
+  Downloading doccano-1.8.4-py3-none-any.whl.metadata (9.3 kB)
+Collecting pandas<2.0.0,>=1.4.2 (from doccano)
+  Downloading pandas-1.5.3.tar.gz (5.2 MB)
+  Getting requirements to build wheel: finished with status 'error'
+...
+      ModuleNotFoundError: No module named 'pkg_resources'
+ERROR: Failed to build 'pandas' when getting requirements to build wheel

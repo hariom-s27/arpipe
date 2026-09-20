@@ -1,0 +1,9 @@
+population,n_units,hash_source,fraction_leading_hex_0_to_3 (nominal 0.25)
+all_475_selected_pages,475,selection_rank (min-rank-biased),0.7474
+all_475_selected_pages,475,"independent hash, DEMO_SEED_NOT_FOR_USE_1",0.2232
+all_475_selected_pages,475,"independent hash, DEMO_SEED_NOT_FOR_USE_2",0.2295
+all_475_selected_pages,475,"independent hash, DEMO_SEED_NOT_FOR_USE_3",0.2189
+oracle_literal_subset_79,79,selection_rank (min-rank-biased),0.6329
+oracle_literal_subset_79,79,"independent hash, DEMO_SEED_NOT_FOR_USE_1",0.2911
+oracle_literal_subset_79,79,"independent hash, DEMO_SEED_NOT_FOR_USE_2",0.1772
+oracle_literal_subset_79,79,"independent hash, DEMO_SEED_NOT_FOR_USE_3",0.3544

@@ -1,0 +1,8 @@
+    from .environ import *
+  File "C:\Users\hario\AppData\Local\Temp\claude\d--sem-iitk-sem9-thesis\c68b314a-31be-42b0-890f-d7c6fac03de5\scratchpad\poc\ls_venv\Lib\site-packages\environ\environ.py", line 30, in <module>
+    from .compat import (
+    ...<5 lines>...
+    )
+  File "C:\Users\hario\AppData\Local\Temp\claude\d--sem-iitk-sem9-thesis\c68b314a-31be-42b0-890f-d7c6fac03de5\scratchpad\poc\ls_venv\Lib\site-packages\environ\compat.py", line 11, in <module>
+    from pkgutil import find_loader
+ImportError: cannot import name 'find_loader' from 'pkgutil' (C:\Program Files\Python314\Lib\pkgutil.py)

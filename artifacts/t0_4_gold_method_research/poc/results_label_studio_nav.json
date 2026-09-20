@@ -1,0 +1,27 @@
+{
+  "gold": false,
+  "label": "TOOLING_POC_ONLY",
+  "nav": {
+    "30_next_clicks_seconds": 3.52,
+    "image_requests_after_20s_idle": 4,
+    "image_requests_at_open": 4,
+    "js_heap_mb_after_nav": 31.7,
+    "js_heap_mb_at_open": 33.5,
+    "jump_to_301_seconds": 0.11,
+    "ls_server_rss_mb": 303.5,
+    "open_seconds": 2.51,
+    "pagination_after_30_next": "331 of 600",
+    "pagination_after_jump": "301 of 600",
+    "pagination_text": "1 of 600",
+    "requested_after_jump": [
+      "297.png",
+      "298.png",
+      "299.png",
+      "300.png",
+      "301.png",
+      "302.png",
+      "303.png"
+    ]
+  },
+  "tool": "Label Studio Community 1.23.0"
+}

@@ -1,0 +1,26 @@
+{
+  "label": "RESEARCH_ONLY",
+  "note": "Demonstrative seeds are labelled DEMO_SEED_NOT_FOR_USE: no seed is proposed or frozen here (B4 is an author decision).",
+  "oracle_literal_subset_units": 79,
+  "selection_rank_leading_hex_histogram": {
+    "0": 249,
+    "1": 57,
+    "2": 31,
+    "3": 18,
+    "4": 21,
+    "5": 18,
+    "6": 13,
+    "7": 8,
+    "8": 4,
+    "9": 5,
+    "a": 9,
+    "b": 14,
+    "c": 8,
+    "d": 7,
+    "e": 8,
+    "f": 5
+  },
+  "track_a_pages": 475,
+  "track_b_annotatable_documents": 194,
+  "track_b_units": 208
+}
