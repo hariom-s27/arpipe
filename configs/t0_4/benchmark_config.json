@@ -1,0 +1,95 @@
+{
+  "schema_version": "1.0.0",
+  "task_id": "T0.4",
+  "base_commit": "ff030d97c13c8a2a977521bf91be2aca0cbf3034",
+  "corpus_policy": "NO_ACQUISITION",
+  "execution_policy": "SETUP_ONLY_DO_NOT_EXECUTE_BENCHMARK",
+  "primary_engines": [
+    "tesseract_5_hindi",
+    "paddleocr_vl_1_6",
+    "surya_2",
+    "gemini_2_5_flash_lite"
+  ],
+  "renderer": {
+    "implementation": "tools.t0_4.renderer.render_page",
+    "dpi": 300,
+    "color_space": "RGB",
+    "image_format": "PNG",
+    "preprocessing": "NONE",
+    "preprocessing_version": "t0.4-render-v1",
+    "content_addressed": true
+  },
+  "track_a": {
+    "name": "PAGE_LEVEL_RECOVERY",
+    "benchmark_unit": [
+      "document_id",
+      "page_number"
+    ],
+    "input_mode": "IMMUTABLE_RENDERED_PAGE_IMAGE_ONLY",
+    "forbidden_context": [
+      "original_pdf",
+      "neighboring_pages",
+      "previous_page",
+      "following_page",
+      "hidden_pdf_text",
+      "bookmarks",
+      "toc",
+      "external_document_metadata",
+      "prior_engine_output"
+    ],
+    "primary_endpoint": "CER"
+  },
+  "track_b": {
+    "name": "DOCUMENT_LEVEL_ARPIPE",
+    "benchmark_unit": [
+      "document_id",
+      "engine_route"
+    ],
+    "requires_full_document_context": true,
+    "primary_endpoint": "page_span_iou",
+    "common_downstream_pipeline": [
+      "document_profile",
+      "routing",
+      "recovery",
+      "standardized_reading_order",
+      "heading_inventory",
+      "candidate_generation",
+      "span_resolution",
+      "verification",
+      "quality_gate"
+    ]
+  },
+  "sentinels": {
+    "unsupported_capability": "NOT_AVAILABLE",
+    "missing_gold": "NOT_YET_ANNOTATED",
+    "unrendered_image": "NOT_YET_RENDERED",
+    "missing_local_input": "INPUT_UNAVAILABLE"
+  },
+  "holdout_policy": {
+    "allowed_before_final_freeze": false,
+    "allowed_uses_before_final_freeze": [
+      "manifest_predeclaration",
+      "schema_validation",
+      "split_integrity_audit"
+    ],
+    "forbidden_uses": [
+      "tuning",
+      "threshold_selection",
+      "engine_selection",
+      "sampling_changes",
+      "error_driven_methodology_changes"
+    ]
+  },
+  "determinism": {
+    "json_encoding": "UTF-8",
+    "json_key_order": "LEXICOGRAPHIC",
+    "json_indent": 2,
+    "forbidden_fields": [
+      "generated_at",
+      "timestamp",
+      "hostname",
+      "uuid",
+      "absolute_path"
+    ]
+  }
+}

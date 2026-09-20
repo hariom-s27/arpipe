@@ -1,0 +1,64 @@
+{
+  "absent_count": 2,
+  "acquisition_decision_made": false,
+  "acquisition_status": "NO_ACQUISITION",
+  "base_commit": "02bae116a6616d3a8637323dffe2fb27d36304f1",
+  "category_count": 35,
+  "core_relevance_summary": "Core English MD&A extraction is 100% supported by native digital documents (191 docs, 36 issuers).",
+  "dimension_count": 10,
+  "frozen_core_decision": "NO_ACQUISITION",
+  "important_gaps": [
+    "scanned_pages_in_validation: ABSENT (0 scanned documents exist in VALIDATION split; fully scanned documents restricted to FIT and HOLDOUT).",
+    "devanagari_in_fit_or_validation: ABSENT (0 Devanagari instances in FIT or VALIDATION splits; 100% restricted to HOLDOUT letterheads).",
+    "fully_scanned_document: SPARSE (only 2 documents across 2 issuers exist in frozen corpus; thin representation).",
+    "ocr_transcription_quality: NOT_ASSESSABLE (OCR CER/WER unmeasured in frozen artifacts; requires future pre-registered benchmark).",
+    "scanned_heading_localization_error: NOT_ASSESSABLE (MD&A heading boundary error on scanned pages unmeasured in frozen artifacts)."
+  ],
+  "non_era_categories_compared": 33,
+  "non_era_categories_preserved": true,
+  "not_assessable_count": 2,
+  "present_count": 25,
+  "report_era_extension": {
+    "categories": [
+      "pre_2015",
+      "post_2015"
+    ],
+    "coverage_interpretation": "The report-era coverage dimension uses two pre-specified complementary categories: pre-2015 and post-2015. Pre-2015 is directly relevant to the historical robustness scope inherited from T0.2. Post-2015 is included as the complementary category so that the era dimension describes the temporal composition of the full corpus. This statement applies to documents with valid fiscal_year values.",
+    "era_overlap_count": 0,
+    "era_overlap_empty": true,
+    "evidence_level": "VALIDATED_METADATA",
+    "justification_types": {
+      "post_2015": "CONTROLLED_COVERAGE_EXTENSION",
+      "pre_2015": "FROZEN_ROBUSTNESS_REQUIREMENT"
+    },
+    "missing_or_invalid_fiscal_year_count": 0,
+    "post_2015_derived_counts": {
+      "document_count": 136,
+      "fit_count": 66,
+      "holdout_count": 36,
+      "issuer_count": 36,
+      "page_count": 31054,
+      "validation_count": 34
+    },
+    "pre_2015_derived_counts": {
+      "document_count": 58,
+      "fit_count": 26,
+      "holdout_count": 18,
+      "issuer_count": 29,
+      "page_count": 6863,
+      "validation_count": 14
+    },
+    "predicates": {
+      "post_2015": "fiscal_year >= 2015",
+      "pre_2015": "fiscal_year < 2015"
+    },
+    "total_corpus_documents": 194,
+    "valid_fiscal_year_completeness": true,
+    "valid_fiscal_year_document_count": 194
+  },
+  "robustness_relevance_summary": "Scanned document representation is sparse (2 fully scanned docs, 0 in VALIDATION); OCR performance unmeasured.",
+  "sparse_count": 6,
+  "unresolved_questions": [
+    "No implementation-blocking questions remain. OCR quality, heading-localization performance, and other unmeasured properties remain intentionally unresolved because T0.3A-R1 is a coverage audit rather than a performance benchmark."
+  ]
+}

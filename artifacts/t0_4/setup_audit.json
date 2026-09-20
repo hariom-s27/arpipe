@@ -1,0 +1,47 @@
+{
+  "base_commit": "ff030d97c13c8a2a977521bf91be2aca0cbf3034",
+  "checks": {
+    "base_commit_is_ancestor": "PASS",
+    "common_output_adapter": "PASS",
+    "configuration_hash_consistency": "PASS",
+    "deterministic_repeat_byte_identical": "PASS",
+    "frozen_corpus_unchanged": "PASS",
+    "frozen_historical_artifacts_unchanged": "PASS",
+    "holdout_protection": "PASS",
+    "identical_track_a_image_contract": "PASS",
+    "no_absolute_paths_in_deterministic_artifacts": "PASS",
+    "no_api_call_code": "PASS",
+    "no_benchmark_execution_artifacts": "PASS",
+    "no_new_pdfs": "PASS",
+    "no_production_behavior_change": "PASS",
+    "no_timestamps_hostnames_or_uuids_in_deterministic_artifacts": "PASS",
+    "oracle_routing_protocol": "PASS",
+    "required_deliverables_present": "PASS",
+    "separate_page_and_document_gold": "PASS",
+    "track_a_track_b_separation": "PASS",
+    "uncertainty_preregistered": "PASS"
+  },
+  "derived_counts": {
+    "frozen_records": 208,
+    "input_unavailable_documents": 14,
+    "profiled_documents": 194,
+    "profiled_pages": 37917,
+    "track_a_fit_units": 223,
+    "track_a_holdout_units": 134,
+    "track_a_units": 475,
+    "track_a_validation_units": 118,
+    "track_b_units": 208
+  },
+  "deterministic_repeat_sha256": "d1eb3042c82900e345541ef6b7afbba95a6d7d8dc2e7948e5d610eaf89912f15",
+  "execution_attestations": {
+    "api_calls_made": false,
+    "benchmark_executed": false,
+    "ocr_engines_executed": false,
+    "pdfs_acquired": false,
+    "production_behavior_modified": false
+  },
+  "manifest_sha256": "d1eb3042c82900e345541ef6b7afbba95a6d7d8dc2e7948e5d610eaf89912f15",
+  "schema_version": "1.0.0",
+  "status": "PASS",
+  "task_id": "T0.4"
+}

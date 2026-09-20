@@ -1,0 +1,134 @@
+{
+  "schema_version": "1.0.0",
+  "no_composite_winner_score": true,
+  "reporting_dimensions": [
+    "engine",
+    "sampling_stratum",
+    "condition_label",
+    "metric"
+  ],
+  "levels": {
+    "A_OCR": {
+      "unit": "page",
+      "primary": "CER",
+      "secondary": [
+        "WER",
+        "heading_text_recovery",
+        "number_accuracy",
+        "money_value_accuracy",
+        "currency_unit_accuracy",
+        "percentage_accuracy",
+        "date_accuracy",
+        "entity_accuracy"
+      ],
+      "denominators_required": true
+    },
+    "B_DOCUMENT_STRUCTURE": {
+      "unit": "page_or_document_as_declared",
+      "primary": "pairwise_reading_order_accuracy",
+      "secondary": [
+        "inversion_rate",
+        "sequence_agreement",
+        "column_switch_errors",
+        "heading_order_correctness",
+        "heading_precision",
+        "heading_recall",
+        "heading_f1",
+        "heading_level_accuracy",
+        "heading_level_macro_f1"
+      ],
+      "supplementary_only": [
+        "kendall_style_agreement"
+      ]
+    },
+    "C_ARPIPE_DOCUMENT_TASK": {
+      "unit": "document",
+      "primary": "page_span_iou",
+      "secondary": [
+        "mda_present_absent_accuracy",
+        "iou_at_0_50",
+        "iou_at_0_75",
+        "iou_at_0_90",
+        "exact_start",
+        "start_within_1",
+        "exact_end",
+        "end_within_1",
+        "start_boundary_distance",
+        "end_boundary_distance",
+        "overrun_pages",
+        "underrun_pages",
+        "candidate_recall",
+        "candidate_recall_at_1",
+        "candidate_recall_at_3",
+        "candidate_recall_at_5",
+        "verification_accuracy",
+        "quality_gate_acceptance_accuracy",
+        "quality_gate_review_rate",
+        "quality_gate_false_acceptance_rate",
+        "quality_gate_false_rejection_rate"
+      ]
+    },
+    "LEGACY_FONT_REMAP": {
+      "separate_from_ocr": true,
+      "metrics": [
+        "character_accuracy",
+        "word_accuracy",
+        "heading_recovery",
+        "number_preservation",
+        "entity_preservation",
+        "failure_rate"
+      ]
+    },
+    "ROUTING": {
+      "classes": [
+        "native_ok",
+        "legacy_font",
+        "broken_text",
+        "scanned",
+        "vector_text"
+      ],
+      "metrics": [
+        "accuracy",
+        "macro_f1",
+        "per_class_precision",
+        "per_class_recall",
+        "confusion_matrix",
+        "false_native_rate",
+        "false_ocr_rate",
+        "false_legacy_rate",
+        "diagnostic_tier_reach_rate"
+      ]
+    }
+  },
+  "uncertainty": {
+    "confidence_level": 0.95,
+    "interval": "two-sided percentile paired cluster bootstrap",
+    "replicates": 10000,
+    "seed": 20260919,
+    "track_a_cluster": "document_id",
+    "track_b_cluster": "issuer_id",
+    "resampling_rule": "Within each declared analysis stratum and split, resample clusters with replacement; retain all paired engine observations for every sampled cluster.",
+    "difference_report": [
+      "metric_A",
+      "metric_B",
+      "paired_difference_A_minus_B",
+      "ci_95_lower",
+      "ci_95_upper",
+      "paired_unit_count",
+      "cluster_count"
+    ],
+    "insufficient_clusters": "NOT_ESTIMABLE when fewer than two independent clusters are available",
+    "missing_pair_policy": "Report missingness by engine and metric; paired differences use only units with both outputs and include the paired denominator.",
+    "multiplicity": "Pointwise intervals; no family-wise significance claim and no post-result method changes."
+  },
+  "routing_ablation": {
+    "conditions": [
+      "ACTUAL_ROUTING",
+      "ORACLE_ROUTING"
+    ],
+    "primary_difference": "page_span_iou_oracle_minus_actual",
+    "pipeline_after_routing": "IDENTICAL",
+    "interpretation_limit": "Attribution within the registered ablation only; not a general causal claim."
+  },
+  "efficiency_is_separate_from_quality": true
+}

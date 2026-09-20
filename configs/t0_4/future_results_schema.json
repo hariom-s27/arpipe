@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "arpipe://t0.4/future-results/1.0.0",
+  "title": "Future benchmark result row",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "track",
+    "benchmark_unit_id",
+    "engine_id",
+    "sampling_stratum",
+    "condition_labels",
+    "metric_name",
+    "metric_value",
+    "denominator",
+    "execution_status",
+    "failure_type",
+    "raw_output_hash",
+    "configuration_hash"
+  ],
+  "properties": {
+    "track": {"enum": ["TRACK_A", "TRACK_B", "LEGACY_REMAP", "ROUTING_ABLATION"]},
+    "benchmark_unit_id": {"type": "string"},
+    "engine_id": {"type": "string"},
+    "sampling_stratum": {"type": "string"},
+    "condition_labels": {"type": "array", "items": {"type": "string"}},
+    "metric_name": {"type": "string"},
+    "metric_value": {"oneOf": [{"type": "number"}, {"enum": ["NOT_AVAILABLE", "NOT_YET_ANNOTATED", "NOT_ESTIMABLE"]}]},
+    "denominator": {"type": "integer", "minimum": 0},
+    "execution_status": {"enum": ["SUCCESS", "FAILED", "TIMEOUT", "EMPTY_OUTPUT", "NOT_EXECUTED"]},
+    "failure_type": {"type": ["string", "null"]},
+    "raw_output_hash": {"oneOf": [{"type": "string", "pattern": "^[a-f0-9]{64}$"}, {"const": "NOT_AVAILABLE"}]},
+    "configuration_hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "quality_gate_state": {"enum": ["ACCEPT", "REVIEW", "REJECT", "NOT_AVAILABLE"]},
+    "efficiency": {"type": "object"}
+  },
+  "$comment": "Results are engine x stratum x metric. This schema intentionally has no overall winner or composite score field."
+}

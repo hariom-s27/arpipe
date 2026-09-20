@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "arpipe://t0.4/common-output/1.0.0",
+  "title": "CommonARPipeRepresentation",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "adapter_version",
+    "source_engine",
+    "document_id",
+    "page",
+    "input_image_hash",
+    "raw_output_hash",
+    "units"
+  ],
+  "properties": {
+    "adapter_version": {"const": "1.0.0"},
+    "source_engine": {"type": "string", "minLength": 1},
+    "document_id": {"type": "string", "minLength": 1},
+    "page": {"type": "integer", "minimum": 0},
+    "input_image_hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "raw_output_hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "units": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "page",
+          "block_id",
+          "line_id",
+          "text",
+          "bbox",
+          "block_type",
+          "reading_order",
+          "confidence",
+          "source_engine"
+        ],
+        "properties": {
+          "page": {"type": "integer", "minimum": 0},
+          "block_id": {"oneOf": [{"type": "string"}, {"const": "NOT_AVAILABLE"}]},
+          "line_id": {"oneOf": [{"type": "string"}, {"const": "NOT_AVAILABLE"}]},
+          "text": {"type": "string"},
+          "bbox": {
+            "oneOf": [
+              {
+                "type": "array",
+                "prefixItems": [{"type": "number"}, {"type": "number"}, {"type": "number"}, {"type": "number"}],
+                "items": false,
+                "minItems": 4,
+                "maxItems": 4
+              },
+              {"const": "NOT_AVAILABLE"}
+            ]
+          },
+          "block_type": {"oneOf": [{"type": "string"}, {"const": "NOT_AVAILABLE"}]},
+          "reading_order": {"oneOf": [{"type": "integer", "minimum": 0}, {"const": "NOT_AVAILABLE"}]},
+          "confidence": {"oneOf": [{"type": "number", "minimum": 0, "maximum": 1}, {"const": "NOT_AVAILABLE"}]},
+          "source_engine": {"type": "string", "minLength": 1}
+        }
+      }
+    }
+  },
+  "invariants": [
+    "Raw output is stored separately and is immutable.",
+    "Missing boxes, confidence, reading order, identifiers, or labels are represented as NOT_AVAILABLE and never fabricated.",
+    "Every unit source_engine equals the representation source_engine."
+  ]
+}

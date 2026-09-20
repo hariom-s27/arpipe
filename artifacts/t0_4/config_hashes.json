@@ -1,0 +1,17 @@
+{
+  "files": {
+    "configs/t0_4/benchmark_config.json": "79727cddfb28e13544edeef4e35ea43897f4e521cf8ca62e2c447e1a90c0c6af",
+    "configs/t0_4/benchmark_manifest_schema.json": "3748fa145a3bb0667cc68dd1c3ac1c910cd3c5ea9b0b8d572c6460ea5bb05ac5",
+    "configs/t0_4/common_output_schema.json": "7648ea43aa0e06a5bab8d35ac19385cce2607d2ea09772e27bcaf50c81b871af",
+    "configs/t0_4/efficiency_schema.json": "089bf6de4d6de0ec64c49f19498e626bb8c5eaa579dfdbe2ea68bdc9a6a5ef42",
+    "configs/t0_4/engine_registry.json": "74575cac2e96c71e01b006f258310362fbce1a05e5c899a0007542e7ccb4ed5e",
+    "configs/t0_4/failure_taxonomy.json": "78fb43f16e8d679b868b2b6600c3ad213ae1df5e5f4c0b7c8b8a37319ebcbc25",
+    "configs/t0_4/future_results_schema.json": "538c498ff8c6ceda2f85cb92acf0e5bfe7a948cd6174db1729af1f6d599a5e66",
+    "configs/t0_4/gold_schema.json": "e8b33a4a0e04da72c3572604ca3f82677920617607abe266717975ee3cc65247",
+    "configs/t0_4/metrics_spec.json": "d7590bebe271163f2ad341cace35f4749754cf22da3018cef32b12ad09c66336",
+    "configs/t0_4/oracle_routing_spec.json": "d5aa91eb161cc04eb06fd20edc5941e88e9dcdcc70c71d17e2c259d3a625fbc3",
+    "configs/t0_4/raw_output_schema.json": "bdbc512abe729c8401462223b2b540d997838ab897f369360cb3956b1939a781",
+    "configs/t0_4/sampling_spec.json": "412e040e9bcdc3915110906cd66d38a025e3aaad3f1f12bf31bf32327e17375c"
+  },
+  "schema_version": "1.0.0"
+}

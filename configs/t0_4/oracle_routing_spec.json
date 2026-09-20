@@ -1,0 +1,41 @@
+{
+  "schema_version": "1.0.0",
+  "experiment": "ROUTING_ABLATION",
+  "conditions": [
+    "ACTUAL_ROUTING",
+    "ORACLE_ROUTING"
+  ],
+  "gold_routes": [
+    "NATIVE",
+    "LEGACY",
+    "OCR"
+  ],
+  "annotation_fields": [
+    "document_id",
+    "page_number",
+    "annotator_id",
+    "route",
+    "confidence",
+    "reason"
+  ],
+  "subset_rule": {
+    "basis": "Deterministic coverage sample from the frozen FIT and VALIDATION partitions only",
+    "selection": "All Track-A FIT and VALIDATION units whose condition_labels include scanned, broken_text, vector_text, legacy_font_candidate, or native_clean_control",
+    "frozen_before_engine_output": true
+  },
+  "double_annotation": {
+    "rule": "Every unit whose deterministic SHA-256 rank begins with hexadecimal 0, 1, 2, or 3",
+    "expected_fraction": 0.25,
+    "selected_before_disagreement_observation": true
+  },
+  "adjudication": {
+    "trigger": "annotator route disagreement or either confidence below HIGH",
+    "adjudicator": "third human annotator blind to engine outputs",
+    "allowed_evidence": "rendered page image plus the written route protocol",
+    "engine_outputs_forbidden": true,
+    "result": "single adjudicated gold_route with retained original annotations"
+  },
+  "downstream_identity_rule": "Everything after routing, including recovery adapter version and all ARPipe downstream stages, is identical between ACTUAL_ROUTING and ORACLE_ROUTING.",
+  "primary_contribution_metric": "paired page_span_iou difference ORACLE_ROUTING minus ACTUAL_ROUTING with issuer-clustered 95% bootstrap CI",
+  "interpretation_limit": "Routing contribution is an experimental contrast, not a causal claim outside this design."
+}
