@@ -1,0 +1,16 @@
+condition_a,condition_b,document_count,issuer_count,page_count,development_count,challenge_count,validation_count,holdout_count,status,notes
+ocr_layer_candidate,scanned_or_mixed,98,31,23877,30,26,24,27,OBSERVED,issuers=31
+legacy_font_candidate,scanned_or_mixed,41,19,11108,18,12,7,9,OBSERVED,issuers=19
+hidden_text_candidate,ocr_layer_candidate,2,2,246,1,0,0,0,OBSERVED,issuers=2
+duplicate_text_candidate,ocr_layer_candidate,24,13,5914,9,4,6,6,OBSERVED,issuers=13
+two_column,table_candidate,184,36,37278,58,38,47,50,OBSERVED,issuers=36
+two_column,header_candidate,80,32,17994,21,13,26,24,OBSERVED,issuers=32
+two_column,footer_candidate,86,27,21473,29,21,29,16,OBSERVED,issuers=27
+two_column,devanagari_candidate,2,1,494,0,2,0,2,OBSERVED,issuers=1
+toc_candidate,deep_hierarchy_candidate,28,15,8108,11,12,12,2,OBSERVED,issuers=15
+toc_candidate,toc_offset_candidate,24,15,4858,7,4,10,5,OBSERVED,issuers=15
+annexure_candidate,combined_mdna_candidate,44,22,10066,16,8,11,12,OBSERVED,issuers=22
+bilingual_candidate,legacy_font_candidate,1,1,241,0,1,0,1,OBSERVED,issuers=1
+bilingual_candidate,scanned_or_mixed,1,1,253,0,1,0,1,OBSERVED,issuers=1
+long_report,deep_hierarchy_candidate,16,11,6165,5,5,7,2,OBSERVED,issuers=11
+long_report,scanned_or_mixed,45,20,17507,16,12,7,14,OBSERVED,issuers=20

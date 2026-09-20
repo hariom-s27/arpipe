@@ -1,0 +1,18 @@
+condition,document_count,issuer_count,page_count,fit_count,validation_count,holdout_count,classification,concentration,reconciled_label,semantic_interpretation,provenance
+native,191,36,36988,91,47,53,WELL_REPRESENTED,5.31,native,Candidate condition proxy,DERIVED_RECONCILIATION
+scanned,63,30,284,28,15,20,WELL_REPRESENTED,2.1,scanned,Candidate condition proxy,DERIVED_RECONCILIATION
+ocr_layer_candidate,98,31,189,47,24,27,WELL_REPRESENTED,3.16,ocr_layer_candidate,Candidate condition proxy,DERIVED_RECONCILIATION
+legacy_font_candidate,56,24,1007,30,10,16,WELL_REPRESENTED,2.33,legacy_font_candidate,Candidate condition proxy,DERIVED_RECONCILIATION
+hidden_text_candidate,3,3,4,3,0,0,RARE,1.0,hidden_text_candidate,Candidate condition proxy,DERIVED_RECONCILIATION
+duplicate_text_candidate,35,18,68,20,8,7,REPRESENTED,1.94,duplicate_text_candidate,Candidate condition proxy,DERIVED_RECONCILIATION
+devanagari_candidate,2,1,2,0,0,2,RARE,2.0,devanagari_candidate,Candidate condition proxy,DERIVED_RECONCILIATION
+bilingual_candidate,2,1,2,0,0,2,RARE,2.0,bilingual_candidate,Candidate condition proxy,DERIVED_RECONCILIATION
+two_column,184,36,15015,87,47,50,WELL_REPRESENTED,5.11,two_column,Candidate condition proxy,DERIVED_RECONCILIATION
+multi_column,191,36,17190,91,47,53,WELL_REPRESENTED,5.31,multi_column,Candidate condition proxy,DERIVED_RECONCILIATION
+table_candidate,190,36,29476,90,47,53,WELL_REPRESENTED,5.28,table_like_signals_unverified,Vector grid or numeric line heuristic signal; true table topology unverified,DERIVED_RECONCILIATION
+header_candidate,84,32,6980,31,26,27,WELL_REPRESENTED,2.62,running_header_repetition_heuristic,Repetitive header coordinates across consecutive pages,DERIVED_RECONCILIATION
+footer_candidate,90,28,8902,43,29,18,WELL_REPRESENTED,3.21,running_footer_repetition_heuristic,Repetitive footer coordinates across consecutive pages,DERIVED_RECONCILIATION
+toc_candidate,174,36,174,81,45,48,WELL_REPRESENTED,4.83,toc_candidate,Candidate condition proxy,DERIVED_RECONCILIATION
+deep_hierarchy_candidate,28,15,28,14,12,2,REPRESENTED,1.87,deep_hierarchy_candidate,Candidate condition proxy,DERIVED_RECONCILIATION
+annexure_candidate,188,36,188,88,47,53,WELL_REPRESENTED,5.22,annexure_keyword_signal,Occurrence of word 'annexure' in text/heading; not confirmed MD&A structure,DERIVED_RECONCILIATION
+combined_mdna_candidate,44,22,44,21,11,12,REPRESENTED,2.0,combined_mdna_candidate,Candidate condition proxy,DERIVED_RECONCILIATION

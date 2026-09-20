@@ -1,0 +1,67 @@
+{
+  "base_commit": "ef2e8c5c17a753fc133c66272e4ad755ab26e5a4",
+  "input_count": 12,
+  "inputs": [
+    {
+      "path": "configs/t0_3a/taxonomy_register.json",
+      "sha256": "0fbe3030eb03c4d4f4dafb338713f592f84f753936aca6c60f4a3fbeed7c6efb",
+      "source_provenance": "T03A_FROZEN_CONFIG"
+    },
+    {
+      "path": "dataset/corpus_freeze/corpus_inventory.csv",
+      "sha256": "93135febc51638ff3c6d2820e9198ed4eff3f647c68ec494b17213152b2bb2f7",
+      "source_provenance": "T0_FROZEN"
+    },
+    {
+      "path": "dataset/corpus_freeze/issuer_split.csv",
+      "sha256": "016e720245577833e8313bb2ec4905b1fb47ba77d15916706b702df4ed1bcc2a",
+      "source_provenance": "T0_FROZEN"
+    },
+    {
+      "path": "dataset/corpus_gap_audit/reconciled/acquisition_decision.csv",
+      "sha256": "b7dcaaaef4bd105ae0b33a79303e735afc45745aef7aaaac9f75e84b1e7f4216",
+      "source_provenance": "T01R_FROZEN"
+    },
+    {
+      "path": "dataset/corpus_gap_audit/reconciled/claim_audit.csv",
+      "sha256": "2870383817f981eb5145e43a97a9a33231549698b1277ec7cbb87a6e5182bef0",
+      "source_provenance": "T01R_FROZEN"
+    },
+    {
+      "path": "dataset/corpus_gap_audit/reconciled/gap_audit_document_reconciled.csv",
+      "sha256": "990f91e422e4f3992fb1ed3ebfeb8249ac8d666b0813391a7def18c3f28c98c0",
+      "source_provenance": "T01R_FROZEN"
+    },
+    {
+      "path": "dataset/corpus_gap_audit/reconciled/gap_audit_report_reconciled.md",
+      "sha256": "a1f7ff8f22227310ba2a77a4456706a36aa34c61b6aed1ad6c668b8fcceb75ba",
+      "source_provenance": "T01R_FROZEN"
+    },
+    {
+      "path": "dataset/corpus_gap_audit/reconciled/gap_audit_summary_reconciled.json",
+      "sha256": "b3273cceb2c45c683ea80e596696b0401d00fb75bf8232dc3514edd06fbf4366",
+      "source_provenance": "T01R_FROZEN"
+    },
+    {
+      "path": "dataset/corpus_gap_audit/reconciled/gap_summary_reconciled.csv",
+      "sha256": "1562982d65846cf4ea89eaf35aa4a2bf4524a16fddd2cfd76c85a042dbc4113a",
+      "source_provenance": "T01R_FROZEN"
+    },
+    {
+      "path": "dataset/corpus_gap_audit/reconciled/interaction_gap_matrix_reconciled.csv",
+      "sha256": "27b765abaf8f6f59e675661bd8f645bb1d097804accc63f756eb5dd1e3f2ed42",
+      "source_provenance": "T01R_FROZEN"
+    },
+    {
+      "path": "dataset/corpus_gap_audit/t0_2_robustness_gate/t0_2_claim_dependency_map.csv",
+      "sha256": "0a8a7bf77a1994d29ae6d22d2a05b7eb56221b9cb92f73038b983e27a07217eb",
+      "source_provenance": "T02_FROZEN"
+    },
+    {
+      "path": "dataset/corpus_gap_audit/t0_2_robustness_gate/t0_2_robustness_gate.csv",
+      "sha256": "7d6219cae656e97538205c1b4bb5999dfef9c6df8d8254dd7ce4aaf36d63de3c",
+      "source_provenance": "T02_FROZEN"
+    }
+  ],
+  "manifest_version": "1.0.0"
+}

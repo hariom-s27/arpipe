@@ -1,0 +1,37 @@
+{
+  "schema_version": "1.0.0",
+  "summary": {
+    "acquisitions_currently_justified": 0,
+    "total_triggers_defined": 1,
+    "total_triggers_executed": 0
+  },
+  "triggers": [
+    {
+      "acquisition_currently_justified": false,
+      "alternative_hypothesis": "Historical scanned annual reports exhibit scan degradation and multi-column raster layouts that cause page triage failure or OCR word error rates exceeding pre-registered tolerance, requiring targeted acquisition of historical filings.",
+      "condition": "fully_scanned_documents",
+      "direction_or_condition": "Trigger acquisition if and only if future benchmark on existing 2 fully scanned + 63 mixed documents yields triage error rate or heading WER exceeding the pre-registered threshold.",
+      "excluded_characteristics": "Born-digital PDFs with vector text layers, single-page stubs, unopenable/corrupted files.",
+      "execution_policy": "UNEXECUTED_IN_T0_2; requires separate future benchmark execution protocol",
+      "hypothesis_id": "HYP_ROB_SCANNED_01",
+      "issuer_diversity_requirement": "Each acquired historical document must belong to a distinct corporate issuer not already represented in the scanned cohort.",
+      "minimum_evidence_required": "Execution and reporting of a pre-registered OCR benchmark protocol on existing frozen scanned documents and pages.",
+      "minimum_sample_size": "TO_BE_SPECIFIED_BEFORE_ACQUISITION",
+      "minimum_sample_size_basis": "Sample size must be derived from statistical power calculations based on future pre-registered benchmark variance, not arbitrary convenience.",
+      "minimum_useful_document_type": "Fully scanned Indian corporate annual reports from pre-2015 historical fiscal years.",
+      "null_hypothesis": "The existing 2 fully scanned documents (91 pages) and 63 mixed-scanned documents provide sufficient triage stress-testing; OCR text recovery does not degrade MD&A boundary detection compared to native prose.",
+      "observable": "Page triage error rate (scanned vs native classification) and OCR Word Error Rate (WER) on disclosure section headings.",
+      "required_characteristics": ">= 30 physical pages, scanned raster pages, complete annual disclosure (directors' report / MD&A), distinct corporate issuer from historical filings.",
+      "selection_rule": "Stratified sampling across historical non-financial corporate issuers with verified scanned representation, conditioned on future benchmark failure.",
+      "selection_rule_basis": "Ensures representation across distinct document typographical styles and scanning resolutions without clustering in a single issuer.",
+      "threshold_basis": "No objective OCR error tolerance or triage failure threshold has been frozen in T0/T0.1/T0.1R methodology; establishing a numeric threshold requires pre-registration before benchmark execution.",
+      "threshold_source": "FUTURE_PREREGISTRATION_PROTOCOL",
+      "threshold_status": "TO_BE_SPECIFIED_BEFORE_EXECUTION",
+      "threshold_value": "TO_BE_SPECIFIED_BEFORE_EXECUTION",
+      "trigger_definition_status": "DEFINED_UNEXECUTED",
+      "trigger_executed": false,
+      "trigger_id": "TRIGGER_HISTORICAL_SCAN_01",
+      "trigger_result": "NOT_EXECUTED"
+    }
+  ]
+}

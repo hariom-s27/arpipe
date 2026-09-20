@@ -1,0 +1,517 @@
+{
+  "taxonomy_version": "1.0.0",
+  "policy": "EVIDENCE_SUPPORTED_TAXONOMY_ONLY",
+  "provenance_note": "Authoritative frozen methodological taxonomy for ARPipe T0.3A Scanned/Document-Type Coverage Audit. Contains zero empirical counts; all counts are derived by the T0.3A engine by evaluating predicates over frozen artifacts.",
+  "categories": [
+    {
+      "dimension": "document_representation",
+      "category": "native",
+      "predicate": "document_representation == 'NATIVE'",
+      "justification_type": "EXISTING_CORPUS_FIELD",
+      "source_artifacts": [
+        "dataset/corpus_gap_audit/reconciled/gap_audit_document_reconciled.csv"
+      ],
+      "source_claim_ids": [
+        "CLAIM:C005"
+      ],
+      "evidence_level": "EXISTING_CONDITION",
+      "interpretation_limit": "Whole-document representation assigned by T0.1R reconciliation based on page profile and absence of scanned pages."
+    },
+    {
+      "dimension": "document_representation",
+      "category": "mixed",
+      "predicate": "document_representation == 'MIXED'",
+      "justification_type": "EXISTING_CORPUS_FIELD",
+      "source_artifacts": [
+        "dataset/corpus_gap_audit/reconciled/gap_audit_document_reconciled.csv"
+      ],
+      "source_claim_ids": [
+        "CLAIM:C019"
+      ],
+      "evidence_level": "EXISTING_CONDITION",
+      "interpretation_limit": "Document contains both native digital text and raster/scanned pages or render mode 3 OCR proxy layers."
+    },
+    {
+      "dimension": "document_representation",
+      "category": "scanned",
+      "predicate": "document_representation == 'SCANNED'",
+      "justification_type": "EXISTING_CORPUS_FIELD",
+      "source_artifacts": [
+        "dataset/corpus_gap_audit/reconciled/gap_audit_document_reconciled.csv"
+      ],
+      "source_claim_ids": [
+        "CLAIM:C029"
+      ],
+      "evidence_level": "EXISTING_CONDITION",
+      "interpretation_limit": "Document contains 100% scanned raster pages without native digital font layers; characterized as RARE in frozen acquisition_decision.csv."
+    },
+    {
+      "dimension": "fully_scanned_vs_mixed",
+      "category": "fully_scanned_document",
+      "predicate": "document_representation == 'SCANNED'",
+      "justification_type": "EXISTING_CLAIM",
+      "source_artifacts": [
+        "dataset/corpus_gap_audit/reconciled/gap_audit_document_reconciled.csv"
+      ],
+      "source_claim_ids": [
+        "CLAIM:C029"
+      ],
+      "evidence_level": "EXISTING_CONDITION",
+      "interpretation_limit": "Confirmed 100% scanned raster filings across full document extent (2 documents across 2 issuers: INE002L01015_2012, INE003B01014_2011)."
+    },
+    {
+      "dimension": "fully_scanned_vs_mixed",
+      "category": "mixed_scanned_pages",
+      "predicate": "document_representation == 'MIXED' and int(scanned_page_count) > 0",
+      "justification_type": "EXISTING_CONDITION",
+      "source_artifacts": [
+        "dataset/corpus_gap_audit/reconciled/gap_audit_document_reconciled.csv"
+      ],
+      "source_claim_ids": [
+        "CLAIM:C019"
+      ],
+      "evidence_level": "EXISTING_CONDITION",
+      "interpretation_limit": "Documents classified as MIXED that contain at least 1 scanned raster page (distinct from whole-document scanned filings)."
+    },
+    {
+      "dimension": "fully_scanned_vs_mixed",
+      "category": "scanned_pages_in_validation",
+      "predicate": "document_representation == 'SCANNED' and split == 'VALIDATION'",
+      "justification_type": "EXISTING_JOIN",
+      "source_artifacts": [
+        "dataset/corpus_gap_audit/reconciled/gap_audit_document_reconciled.csv",
+        "dataset/corpus_freeze/issuer_split.csv"
+      ],
+      "source_claim_ids": [
+        "CLAIM:C029"
+      ],
+      "evidence_level": "EXISTING_CONDITION",
+      "interpretation_limit": "Intersection of document_representation == SCANNED and split == VALIDATION; zero instances observed."
+    },
+    {
+      "dimension": "report_era",
+      "category": "pre_2015",
+      "predicate": "int(fiscal_year) < 2015",
+      "justification_type": "FROZEN_ROBUSTNESS_REQUIREMENT",
+      "source_artifacts": [
+        "dataset/corpus_gap_audit/reconciled/gap_audit_document_reconciled.csv",
+        "dataset/corpus_gap_audit/t0_2_robustness_gate/t0_2_robustness_gate.csv"
+      ],
+      "source_claim_ids": [
+        "CLAIM:C057"
+      ],
+      "evidence_level": "VALIDATED_METADATA",
+      "interpretation_limit": "Historical corporate reporting era prior to 2015; specifically identified in T0.2 trigger TRIGGER_HISTORICAL_SCAN_01 as candidate historical filing cohort."
+    },
+    {
+      "dimension": "report_era",
+      "category": "post_2015",
+      "predicate": "int(fiscal_year) >= 2015",
+      "justification_type": "VALIDATED_METADATA",
+      "source_artifacts": [
+        "dataset/corpus_gap_audit/reconciled/gap_audit_document_reconciled.csv"
+      ],
+      "source_claim_ids": [
+        "CLAIM:C001"
+      ],
+      "evidence_level": "VALIDATED_METADATA",
+      "interpretation_limit": "Modern corporate reporting era from fiscal year 2015 onward, including 2015 stubs, 2017-2018, and 2024-2025 modern native reports."
+    },
+    {
+      "dimension": "ocr_layer_presence",
+      "category": "has_ocr_layer_pages",
+      "predicate": "int(ocr_page_count) > 0",
+      "justification_type": "EXISTING_CONDITION",
+      "source_artifacts": [
+        "dataset/corpus_gap_audit/reconciled/gap_audit_document_reconciled.csv",
+        "dataset/corpus_gap_audit/reconciled/gap_summary_reconciled.csv"
+      ],
+      "source_claim_ids": [
+        "CLAIM:C020",
+        "CLAIM:C021"
+      ],
+      "evidence_level": "CANDIDATE_PROXY",
+      "interpretation_limit": "Proxy heuristic detection based on PDF render mode 3 (invisible text layer); does not measure OCR transcription accuracy or text alignment."
+    },
+    {
+      "dimension": "ocr_layer_presence",
+      "category": "no_ocr_layer_pages",
+      "predicate": "int(ocr_page_count) == 0",
+      "justification_type": "EXISTING_CONDITION",
+      "source_artifacts": [
+        "dataset/corpus_gap_audit/reconciled/gap_audit_document_reconciled.csv"
+      ],
+      "source_claim_ids": [
+        "CLAIM:C020"
+      ],
+      "evidence_level": "CANDIDATE_PROXY",
+      "interpretation_limit": "Documents with zero pages flagged by render mode 3 proxy heuristic."
+    },
+    {
+      "dimension": "language_script",
+      "category": "devanagari_candidate",
+      "predicate": "int(devanagari_page_count) > 0",
+      "justification_type": "EXISTING_CONDITION",
+      "source_artifacts": [
+        "dataset/corpus_gap_audit/reconciled/gap_audit_document_reconciled.csv",
+        "dataset/corpus_gap_audit/reconciled/gap_summary_reconciled.csv"
+      ],
+      "source_claim_ids": [
+        "CLAIM:C022",
+        "CLAIM:C024"
+      ],
+      "evidence_level": "CANDIDATE_PROXY",
+      "interpretation_limit": "Character code detection of Unicode Devanagari block (U+0900..U+097F); observed in 2 documents restricted to cover page letterhead of 1 issuer (SJVN Limited); characterized as RARE."
+    },
+    {
+      "dimension": "language_script",
+      "category": "bilingual_candidate",
+      "predicate": "int(bilingual_candidate_page_count) > 0",
+      "justification_type": "EXISTING_CONDITION",
+      "source_artifacts": [
+        "dataset/corpus_gap_audit/reconciled/gap_audit_document_reconciled.csv",
+        "dataset/corpus_gap_audit/reconciled/gap_summary_reconciled.csv"
+      ],
+      "source_claim_ids": [
+        "CLAIM:C025",
+        "CLAIM:C026"
+      ],
+      "evidence_level": "CANDIDATE_PROXY",
+      "interpretation_limit": "Co-occurrence of Devanagari and Latin script characters on the same page; characterized as RARE in frozen gap_summary_reconciled.csv."
+    },
+    {
+      "dimension": "language_script",
+      "category": "no_devanagari_candidate",
+      "predicate": "int(devanagari_page_count) == 0",
+      "justification_type": "EXISTING_CONDITION",
+      "source_artifacts": [
+        "dataset/corpus_gap_audit/reconciled/gap_audit_document_reconciled.csv"
+      ],
+      "source_claim_ids": [
+        "CLAIM:C022"
+      ],
+      "evidence_level": "CANDIDATE_PROXY",
+      "interpretation_limit": "No Devanagari candidate was observed under the frozen detector; does not establish that documents are English-only."
+    },
+    {
+      "dimension": "language_script",
+      "category": "devanagari_in_fit_or_validation",
+      "predicate": "int(devanagari_page_count) > 0 and split in ('FIT', 'VALIDATION')",
+      "justification_type": "EXISTING_JOIN",
+      "source_artifacts": [
+        "dataset/corpus_gap_audit/reconciled/gap_audit_document_reconciled.csv",
+        "dataset/corpus_freeze/issuer_split.csv"
+      ],
+      "source_claim_ids": [
+        "CLAIM:C052"
+      ],
+      "evidence_level": "CANDIDATE_PROXY",
+      "interpretation_limit": "Intersection of devanagari_page_count > 0 and split in ('FIT', 'VALIDATION'); CLAIM:C052 confirms zero instances observed (100% absent from development cohort)."
+    },
+    {
+      "dimension": "legacy_or_broken_text",
+      "category": "legacy_font_candidate",
+      "predicate": "int(legacy_candidate_page_count) > 0",
+      "justification_type": "EXISTING_CONDITION",
+      "source_artifacts": [
+        "dataset/corpus_gap_audit/reconciled/gap_audit_document_reconciled.csv",
+        "dataset/corpus_gap_audit/reconciled/gap_summary_reconciled.csv"
+      ],
+      "source_claim_ids": [
+        "CLAIM:C030",
+        "CLAIM:C031"
+      ],
+      "evidence_level": "CANDIDATE_PROXY",
+      "interpretation_limit": "Detection of U+FFFD replacement characters or PUA codepoints indicating font encoding failures; candidate proxy heuristic count."
+    },
+    {
+      "dimension": "legacy_or_broken_text",
+      "category": "duplicate_text_candidate",
+      "predicate": "int(duplicate_text_candidate_page_count) > 0",
+      "justification_type": "EXISTING_CONDITION",
+      "source_artifacts": [
+        "dataset/corpus_gap_audit/reconciled/gap_audit_document_reconciled.csv",
+        "dataset/corpus_gap_audit/reconciled/gap_summary_reconciled.csv"
+      ],
+      "source_claim_ids": [
+        "CLAIM:C032",
+        "CLAIM:C033"
+      ],
+      "evidence_level": "CANDIDATE_PROXY",
+      "interpretation_limit": "Bounding-box text overlap heuristic (IoU >= 0.40); captures headers, footers, drop-shadows, and overlay layers."
+    },
+    {
+      "dimension": "legacy_or_broken_text",
+      "category": "hidden_text_candidate",
+      "predicate": "int(hidden_text_candidate_page_count) > 0",
+      "justification_type": "EXISTING_CONDITION",
+      "source_artifacts": [
+        "dataset/corpus_gap_audit/reconciled/gap_audit_document_reconciled.csv",
+        "dataset/corpus_gap_audit/reconciled/gap_summary_reconciled.csv"
+      ],
+      "source_claim_ids": [
+        "CLAIM:C027",
+        "CLAIM:C028"
+      ],
+      "evidence_level": "CANDIDATE_PROXY",
+      "interpretation_limit": "Sub-point font text heuristic (< 0.5 pt); intentional hidden text intent unproven; characterized as RARE in frozen gap_summary_reconciled.csv."
+    },
+    {
+      "dimension": "document_size",
+      "category": "size_short",
+      "predicate": "long_report_category == 'SHORT'",
+      "justification_type": "EXISTING_CORPUS_FIELD",
+      "source_artifacts": [
+        "dataset/corpus_gap_audit/reconciled/gap_audit_document_reconciled.csv"
+      ],
+      "source_claim_ids": [
+        "CLAIM:C038"
+      ],
+      "evidence_level": "VALIDATED_METADATA",
+      "interpretation_limit": "Total physical pages <= 100 pages."
+    },
+    {
+      "dimension": "document_size",
+      "category": "size_medium",
+      "predicate": "long_report_category == 'MEDIUM'",
+      "justification_type": "EXISTING_CORPUS_FIELD",
+      "source_artifacts": [
+        "dataset/corpus_gap_audit/reconciled/gap_audit_document_reconciled.csv"
+      ],
+      "source_claim_ids": [
+        "CLAIM:C039"
+      ],
+      "evidence_level": "VALIDATED_METADATA",
+      "interpretation_limit": "Total physical pages between 101 and 250 pages."
+    },
+    {
+      "dimension": "document_size",
+      "category": "size_long",
+      "predicate": "long_report_category == 'LONG'",
+      "justification_type": "EXISTING_CORPUS_FIELD",
+      "source_artifacts": [
+        "dataset/corpus_gap_audit/reconciled/gap_audit_document_reconciled.csv"
+      ],
+      "source_claim_ids": [
+        "CLAIM:C042"
+      ],
+      "evidence_level": "VALIDATED_METADATA",
+      "interpretation_limit": "Total physical pages between 251 and 350 pages."
+    },
+    {
+      "dimension": "document_size",
+      "category": "size_very_long",
+      "predicate": "long_report_category == 'VERY_LONG'",
+      "justification_type": "EXISTING_CORPUS_FIELD",
+      "source_artifacts": [
+        "dataset/corpus_gap_audit/reconciled/gap_audit_document_reconciled.csv"
+      ],
+      "source_claim_ids": [
+        "CLAIM:C043"
+      ],
+      "evidence_level": "VALIDATED_METADATA",
+      "interpretation_limit": "Total physical pages between 351 and 500 pages."
+    },
+    {
+      "dimension": "document_size",
+      "category": "size_extreme",
+      "predicate": "long_report_category == 'EXTREME'",
+      "justification_type": "EXISTING_CORPUS_FIELD",
+      "source_artifacts": [
+        "dataset/corpus_gap_audit/reconciled/gap_audit_document_reconciled.csv"
+      ],
+      "source_claim_ids": [
+        "CLAIM:C045"
+      ],
+      "evidence_level": "VALIDATED_METADATA",
+      "interpretation_limit": "Total physical pages > 500 pages (maximum observed 661 pages)."
+    },
+    {
+      "dimension": "document_size",
+      "category": "stub_filing",
+      "predicate": "corpus_hygiene_flag == 'STUB'",
+      "justification_type": "EXISTING_CORPUS_FIELD",
+      "source_artifacts": [
+        "dataset/corpus_gap_audit/reconciled/gap_audit_document_reconciled.csv"
+      ],
+      "source_claim_ids": [
+        "CLAIM:C058"
+      ],
+      "evidence_level": "VALIDATED_METADATA",
+      "interpretation_limit": "Total physical pages <= 2; exactly 2 filings (INE00FF01025_2015 [1 pg], INE00LO01017_2015 [2 pgs]); characterized as STUB hygiene flag."
+    },
+    {
+      "dimension": "layout_and_structure",
+      "category": "two_column_layout",
+      "predicate": "int(two_column_page_count) > 0",
+      "justification_type": "EXISTING_CONDITION",
+      "source_artifacts": [
+        "dataset/corpus_gap_audit/reconciled/gap_audit_document_reconciled.csv"
+      ],
+      "source_claim_ids": [
+        "CLAIM:C007"
+      ],
+      "evidence_level": "CANDIDATE_PROXY",
+      "interpretation_limit": "Heuristic candidate detection of two-column layout bounding boxes."
+    },
+    {
+      "dimension": "layout_and_structure",
+      "category": "multi_column_layout",
+      "predicate": "int(multi_column_page_count) > 0",
+      "justification_type": "EXISTING_CONDITION",
+      "source_artifacts": [
+        "dataset/corpus_gap_audit/reconciled/gap_audit_document_reconciled.csv"
+      ],
+      "source_claim_ids": [
+        "CLAIM:C009"
+      ],
+      "evidence_level": "CANDIDATE_PROXY",
+      "interpretation_limit": "Heuristic candidate detection of 3+ column layout bounding boxes."
+    },
+    {
+      "dimension": "layout_and_structure",
+      "category": "table_candidate",
+      "predicate": "int(table_candidate_page_count) > 0",
+      "justification_type": "EXISTING_CONDITION",
+      "source_artifacts": [
+        "dataset/corpus_gap_audit/reconciled/gap_audit_document_reconciled.csv"
+      ],
+      "source_claim_ids": [
+        "CLAIM:C011"
+      ],
+      "evidence_level": "CANDIDATE_PROXY",
+      "interpretation_limit": "Heuristic signal based on vector grids and aligned numeric lines; true table topology is unverified."
+    },
+    {
+      "dimension": "layout_and_structure",
+      "category": "running_furniture_candidate",
+      "predicate": "int(header_candidate_page_count) > 0 or int(footer_candidate_page_count) > 0",
+      "justification_type": "EXISTING_CONDITION",
+      "source_artifacts": [
+        "dataset/corpus_gap_audit/reconciled/gap_audit_document_reconciled.csv"
+      ],
+      "source_claim_ids": [
+        "CLAIM:C013",
+        "CLAIM:C015"
+      ],
+      "evidence_level": "CANDIDATE_PROXY",
+      "interpretation_limit": "Repetitive running header or footer coordinate detections across consecutive pages under repetition heuristic."
+    },
+    {
+      "dimension": "layout_and_structure",
+      "category": "combined_mdna_candidate",
+      "predicate": "combined_mdna_candidate == 'True'",
+      "justification_type": "EXISTING_CONDITION",
+      "source_artifacts": [
+        "dataset/corpus_gap_audit/reconciled/gap_audit_document_reconciled.csv"
+      ],
+      "source_claim_ids": [
+        "CLAIM:C037"
+      ],
+      "evidence_level": "CANDIDATE_PROXY",
+      "interpretation_limit": "Outline/heading candidate detection where MD&A is compounded with Directors' Report or Corporate Governance."
+    },
+    {
+      "dimension": "layout_and_structure",
+      "category": "annexure_candidate",
+      "predicate": "annexure_candidate == 'True'",
+      "justification_type": "EXISTING_CONDITION",
+      "source_artifacts": [
+        "dataset/corpus_gap_audit/reconciled/gap_audit_document_reconciled.csv"
+      ],
+      "source_claim_ids": [
+        "CLAIM:C018"
+      ],
+      "evidence_level": "CANDIDATE_PROXY",
+      "interpretation_limit": "Keyword regex match for 'annexure' in document outline or heading; does not confirm MD&A itself is an annexure."
+    },
+    {
+      "dimension": "layout_and_structure",
+      "category": "toc_candidate",
+      "predicate": "toc_candidate == 'True'",
+      "justification_type": "EXISTING_CONDITION",
+      "source_artifacts": [
+        "dataset/corpus_gap_audit/reconciled/gap_audit_document_reconciled.csv"
+      ],
+      "source_claim_ids": [
+        "CLAIM:C017"
+      ],
+      "evidence_level": "CANDIDATE_PROXY",
+      "interpretation_limit": "Printed keyword candidate detection within the first 30 pages of the document."
+    },
+    {
+      "dimension": "layout_and_structure",
+      "category": "no_toc_keyword_candidate",
+      "predicate": "toc_candidate == 'False'",
+      "justification_type": "EXISTING_CLAIM",
+      "source_artifacts": [
+        "dataset/corpus_gap_audit/reconciled/gap_audit_document_reconciled.csv"
+      ],
+      "source_claim_ids": [
+        "CLAIM:C036"
+      ],
+      "evidence_level": "CANDIDATE_PROXY",
+      "interpretation_limit": "Document yielded no printed TOC keyword candidate under search rule; does not prove complete absence of TOC across document."
+    },
+    {
+      "dimension": "coverage_intersections",
+      "category": "scanned_with_multi_column",
+      "predicate": "int(scanned_page_count) > 0 and int(multi_column_page_count) > 0",
+      "justification_type": "EXISTING_CONDITION",
+      "source_artifacts": [
+        "dataset/corpus_gap_audit/reconciled/gap_audit_document_reconciled.csv",
+        "dataset/corpus_gap_audit/reconciled/interaction_gap_matrix_reconciled.csv"
+      ],
+      "source_claim_ids": [
+        "CLAIM:C009",
+        "CLAIM:C048"
+      ],
+      "evidence_level": "DERIVED_INTERACTION",
+      "interpretation_limit": "Derived document-level intersection of scanned pages and multi-column candidate pages."
+    },
+    {
+      "dimension": "coverage_intersections",
+      "category": "scanned_with_table_candidate",
+      "predicate": "int(scanned_page_count) > 0 and int(table_candidate_page_count) > 0",
+      "justification_type": "EXISTING_CONDITION",
+      "source_artifacts": [
+        "dataset/corpus_gap_audit/reconciled/gap_audit_document_reconciled.csv"
+      ],
+      "source_claim_ids": [
+        "CLAIM:C011"
+      ],
+      "evidence_level": "DERIVED_INTERACTION",
+      "interpretation_limit": "Derived document-level intersection of scanned pages and tabular candidate pages."
+    },
+    {
+      "dimension": "evidence_limitations",
+      "category": "ocr_transcription_quality",
+      "predicate": "NONE",
+      "justification_type": "FROZEN_ROBUSTNESS_REQUIREMENT",
+      "source_artifacts": [
+        "dataset/corpus_gap_audit/reconciled/gap_audit_report_reconciled.md",
+        "dataset/corpus_gap_audit/t0_2_robustness_gate/t0_2_robustness_gate.csv"
+      ],
+      "source_claim_ids": [
+        "CLAIM:C020",
+        "CLAIM:C057"
+      ],
+      "evidence_level": "UNMEASURED",
+      "interpretation_limit": "Character error rate (CER) and word error rate (WER) on OCR text layers are not measured in frozen artifacts."
+    },
+    {
+      "dimension": "evidence_limitations",
+      "category": "scanned_heading_localization_error",
+      "predicate": "NONE",
+      "justification_type": "FROZEN_ROBUSTNESS_REQUIREMENT",
+      "source_artifacts": [
+        "dataset/corpus_gap_audit/t0_2_robustness_gate/t0_2_robustness_gate.csv"
+      ],
+      "source_claim_ids": [
+        "CLAIM:C057"
+      ],
+      "evidence_level": "UNMEASURED",
+      "interpretation_limit": "MD&A heading boundary localization accuracy and error rate on scanned raster pages are not measured in frozen artifacts."
+    }
+  ]
+}

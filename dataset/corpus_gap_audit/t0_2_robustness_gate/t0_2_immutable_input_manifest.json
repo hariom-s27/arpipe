@@ -1,0 +1,92 @@
+{
+  "base_commit": "879762a2f236b3aaa6df33b7ddacc60c01d633c1",
+  "input_count": 17,
+  "inputs": [
+    {
+      "path": "configs/t0_1r/input_allowlist.json",
+      "sha256": "65a10ae8c30237e8a3e9debedd6eae13328965e1cef0584c0a2506687889caf0",
+      "source_provenance": "T01R_CONFIG"
+    },
+    {
+      "path": "configs/t0_1r/reconciliation_rules.json",
+      "sha256": "9dbbec3e8d5565a3d29114e1bcb46b613c187a8017832b00f2ff9d984ae4cdd9",
+      "source_provenance": "T01R_CONFIG"
+    },
+    {
+      "path": "configs/t0_1r/reviewer_expectations.json",
+      "sha256": "c1286cde18df7efb3e68b78c9bcaf41a6888d5718d1136bbbe2944e124b03b26",
+      "source_provenance": "T01R_CONFIG"
+    },
+    {
+      "path": "dataset/corpus_freeze/corpus_inventory.csv",
+      "sha256": "93135febc51638ff3c6d2820e9198ed4eff3f647c68ec494b17213152b2bb2f7",
+      "source_provenance": "T0_FROZEN"
+    },
+    {
+      "path": "dataset/corpus_freeze/issuer_split.csv",
+      "sha256": "016e720245577833e8313bb2ec4905b1fb47ba77d15916706b702df4ed1bcc2a",
+      "source_provenance": "T0_FROZEN"
+    },
+    {
+      "path": "dataset/corpus_gap_audit/duplicate_text_candidates.csv",
+      "sha256": "f59a76833181df876f5f25cf262e079399892b485852d34a25669e47df56aaa5",
+      "source_provenance": "T01_RAW"
+    },
+    {
+      "path": "dataset/corpus_gap_audit/reconciled/acquisition_decision.csv",
+      "sha256": "b7dcaaaef4bd105ae0b33a79303e735afc45745aef7aaaac9f75e84b1e7f4216",
+      "source_provenance": "T01R_FROZEN"
+    },
+    {
+      "path": "dataset/corpus_gap_audit/reconciled/claim_audit.csv",
+      "sha256": "2870383817f981eb5145e43a97a9a33231549698b1277ec7cbb87a6e5182bef0",
+      "source_provenance": "T01R_FROZEN"
+    },
+    {
+      "path": "dataset/corpus_gap_audit/reconciled/condition_document_map_reconciled.csv",
+      "sha256": "755d94cc7b7748359477cd31128373d0111d9fe1d11c6dede8a688d32644ae1c",
+      "source_provenance": "T01R_FROZEN"
+    },
+    {
+      "path": "dataset/corpus_gap_audit/reconciled/condition_page_map_reconciled.csv",
+      "sha256": "325c58127386d0c4877e177db43b13cb5c1b179bb61992dc7a9e7a61fee970fa",
+      "source_provenance": "T01R_FROZEN"
+    },
+    {
+      "path": "dataset/corpus_gap_audit/reconciled/gap_audit_document_reconciled.csv",
+      "sha256": "990f91e422e4f3992fb1ed3ebfeb8249ac8d666b0813391a7def18c3f28c98c0",
+      "source_provenance": "T01R_FROZEN"
+    },
+    {
+      "path": "dataset/corpus_gap_audit/reconciled/gap_audit_report_reconciled.md",
+      "sha256": "a1f7ff8f22227310ba2a77a4456706a36aa34c61b6aed1ad6c668b8fcceb75ba",
+      "source_provenance": "T01R_FROZEN"
+    },
+    {
+      "path": "dataset/corpus_gap_audit/reconciled/gap_audit_summary_reconciled.json",
+      "sha256": "b3273cceb2c45c683ea80e596696b0401d00fb75bf8232dc3514edd06fbf4366",
+      "source_provenance": "T01R_FROZEN"
+    },
+    {
+      "path": "dataset/corpus_gap_audit/reconciled/gap_summary_reconciled.csv",
+      "sha256": "1562982d65846cf4ea89eaf35aa4a2bf4524a16fddd2cfd76c85a042dbc4113a",
+      "source_provenance": "T01R_FROZEN"
+    },
+    {
+      "path": "dataset/corpus_gap_audit/reconciled/interaction_gap_matrix_reconciled.csv",
+      "sha256": "27b765abaf8f6f59e675661bd8f645bb1d097804accc63f756eb5dd1e3f2ed42",
+      "source_provenance": "T01R_FROZEN"
+    },
+    {
+      "path": "dataset/corpus_gap_audit/reconciled/methodology_reconciled.md",
+      "sha256": "7c20fc439a8bec94e793932cd33d41e2c16b951ef0f11409ebd576fe35e1c64e",
+      "source_provenance": "T01R_FROZEN"
+    },
+    {
+      "path": "dataset/corpus_gap_audit/toc_offset_candidates.csv",
+      "sha256": "aa5252e21b899227c84fec088998b4192d781752a6975b6938652ec1bbaaedb8",
+      "source_provenance": "T01_RAW"
+    }
+  ],
+  "manifest_version": "1.0.0"
+}

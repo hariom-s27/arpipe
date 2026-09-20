@@ -1,0 +1,3 @@
+document_id,page_index,devanagari_chars,latin_chars,is_hindi_page,is_bilingual_page,detector_status,verification_status
+INE002L01015_2024,0,116,962,True,True,CANDIDATE,NOT_REVIEWED
+INE002L01015_2025,0,116,1109,True,True,CANDIDATE,NOT_REVIEWED

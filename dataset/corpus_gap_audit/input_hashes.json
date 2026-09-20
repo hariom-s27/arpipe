@@ -1,0 +1,14 @@
+{
+  "corpus_inventory.csv": "93135febc51638ff3c6d2820e9198ed4eff3f647c68ec494b17213152b2bb2f7",
+  "page_profile.csv": "5bffb19654fe9b868e21ae8eab13543b3f46f9e5753bcc4563f98305fa781dff",
+  "issuer_split.csv": "016e720245577833e8313bb2ec4905b1fb47ba77d15916706b702df4ed1bcc2a",
+  "development_manifest.csv": "518a9c74e8e1d544d10392f0ce61c90e41f81548079708f50c6b7ac8e1d1867f",
+  "validation_manifest.csv": "113b0658bb4973f36fbf61390b8d64273f64a0c801e199d1474870a42b44b631",
+  "holdout_manifest.csv": "a9cf459bc7f916d2c3a648ad54bd6bd6b24697c06fab48df16ebcd5f6e7fcdff",
+  "challenge_coverage_manifest.csv": "b7cdeb3d3d3c2d0b6492a7862cdf54d4c36e27389d8688a98614e0e0be31ba53",
+  "annotation_roster.csv": "b864938920b9452076b4d0da991d52e137f9f9f2155e6ffdf0adff0e0dd4bb00",
+  "diversity_matrix.csv": "236440f9b78ede9d46a02f179e4a2467f2fa85a21f3d699c91b32b69ee726c36",
+  "interaction_matrix.csv": "d3830431e36fc493c2d44861f2dca8a88cedb0a77a08c1333f34f33517ed0fd9",
+  "rare_condition_register.csv": "6306befac8734f54ee2aeaf5d14d298572ebcd5679499585172c0fc665059730",
+  "freeze_summary.json": "08677d7818511b5fbc49111bef5cb96f25eeac0dc5e6a04bf62b95f6b6a96cd1"
+}

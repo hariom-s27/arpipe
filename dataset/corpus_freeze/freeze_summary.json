@@ -1,0 +1,80 @@
+{
+  "counts": {
+    "annotation_roster": 25,
+    "challenge": 45,
+    "development": 60,
+    "docs_fit": 92,
+    "docs_holdout": 54,
+    "docs_validation": 48,
+    "documents_missing_from_live_store": 14,
+    "documents_openable": 194,
+    "documents_sha256_verified": 194,
+    "documents_total": 208,
+    "documents_with_local_pdf": 194,
+    "issuers_fit": 18,
+    "issuers_holdout": 9,
+    "issuers_total": 36,
+    "issuers_validation": 9
+  },
+  "development_selection": {
+    "achieved_n": 60,
+    "conditions_available_but_uncovered": [],
+    "conditions_covered": [
+      "OCR_layer",
+      "annexure",
+      "bookmark_absent",
+      "bookmark_present",
+      "deep_hierarchy",
+      "figure_heavy",
+      "hidden_text",
+      "image_heavy",
+      "legacy_font",
+      "long_report",
+      "mixed",
+      "mixed_orientation",
+      "mixed_page_sizes",
+      "multi_column",
+      "native",
+      "scanned",
+      "short_report",
+      "toc_absent",
+      "toc_present",
+      "two_column",
+      "vector_text_pages",
+      "visual_text_disagreement"
+    ],
+    "distinct_issuers": 18,
+    "target_n": 60
+  },
+  "issuer_disjoint_check": {
+    "fit_hold_empty": true,
+    "fit_val_empty": true,
+    "val_hold_empty": true
+  },
+  "live_store_root": "D:\\sem_iitk\\sem9\\thesis\\sep_week1\\arpipe-0.1.0\\live_store",
+  "roster_selection": {
+    "achieved_n": 25,
+    "conditions_available_but_uncovered": [],
+    "conditions_covered": [
+      "annexure",
+      "deep_hierarchy",
+      "legacy_font",
+      "long_report",
+      "mixed",
+      "multi_column",
+      "native",
+      "scanned",
+      "short_report",
+      "toc_absent",
+      "two_column"
+    ],
+    "distinct_issuers": 18,
+    "target_n": 25
+  },
+  "seed": 20260918,
+  "subset_checks": {
+    "development_subset_of_fit": true,
+    "roster_subset_of_development": true
+  },
+  "worktree_root": "D:\\sem_iitk\\sem9\\thesis\\sep_week1\\arpipe-extraction-corpus-freeze"
+}

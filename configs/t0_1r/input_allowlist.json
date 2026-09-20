@@ -1,0 +1,207 @@
+{
+  "allowlist_version": "1.0.0",
+  "policy": "FAIL_CLOSED_ON_UNLISTED_OR_MODIFIED",
+  "historical_source_commits": {
+    "t0_commit": "23d62286c4b807607b29a4dc14940179f90e3c0d",
+    "t01_commit": "b6b76d964e78edce37b3d42e3668450526ee4bb7"
+  },
+  "allowlist": [
+    {
+      "path": "dataset/corpus_freeze/corpus_inventory.csv",
+      "source_type": "T0_FROZEN",
+      "source_commit": "23d62286c4b807607b29a4dc14940179f90e3c0d",
+      "artifact_type": "T0_FROZEN_CSV",
+      "semantic_purpose": "Corpus executable enumeration, page counts, issuer mappings, and frozen split assignments"
+    },
+    {
+      "path": "dataset/corpus_freeze/freeze_summary.json",
+      "source_type": "T0_FROZEN",
+      "source_commit": "23d62286c4b807607b29a4dc14940179f90e3c0d",
+      "artifact_type": "T0_FROZEN_JSON",
+      "semantic_purpose": "Frozen T0 corpus baseline totals and verification parameters"
+    },
+    {
+      "path": "dataset/corpus_freeze/diversity_matrix.csv",
+      "source_type": "T0_FROZEN",
+      "source_commit": "23d62286c4b807607b29a4dc14940179f90e3c0d",
+      "artifact_type": "T0_FROZEN_CSV",
+      "semantic_purpose": "Historical T0 condition counts and definition baselines for cross-phase comparison"
+    },
+    {
+      "path": "dataset/corpus_freeze/issuer_split.csv",
+      "source_type": "T0_FROZEN",
+      "source_commit": "23d62286c4b807607b29a4dc14940179f90e3c0d",
+      "artifact_type": "T0_FROZEN_CSV",
+      "semantic_purpose": "Disjoint issuer partitioning across FIT, VALIDATION, and HOLDOUT"
+    },
+    {
+      "path": "dataset/corpus_gap_audit/gap_audit_document.csv",
+      "source_type": "T01_RAW",
+      "source_commit": "b6b76d964e78edce37b3d42e3668450526ee4bb7",
+      "artifact_type": "T01_RAW_CSV",
+      "semantic_purpose": "Per-document page-grain condition counts, representation assignments, and long report categories"
+    },
+    {
+      "path": "dataset/corpus_gap_audit/gap_summary.csv",
+      "source_type": "T01_RAW",
+      "source_commit": "b6b76d964e78edce37b3d42e3668450526ee4bb7",
+      "artifact_type": "T01_RAW_CSV",
+      "semantic_purpose": "Raw T0.1 condition aggregations across documents, issuers, and splits"
+    },
+    {
+      "path": "dataset/corpus_gap_audit/gap_audit_summary.json",
+      "source_type": "T01_RAW",
+      "source_commit": "b6b76d964e78edce37b3d42e3668450526ee4bb7",
+      "artifact_type": "T01_RAW_JSON",
+      "semantic_purpose": "Raw T0.1 corpus inventory distribution percentiles and summary metrics"
+    },
+    {
+      "path": "dataset/corpus_gap_audit/condition_document_map.csv",
+      "source_type": "T01_RAW",
+      "source_commit": "b6b76d964e78edce37b3d42e3668450526ee4bb7",
+      "artifact_type": "T01_RAW_CSV",
+      "semantic_purpose": "Document-level candidate condition mappings and original detector verification statuses"
+    },
+    {
+      "path": "dataset/corpus_gap_audit/condition_page_map.csv",
+      "source_type": "T01_RAW",
+      "source_commit": "b6b76d964e78edce37b3d42e3668450526ee4bb7",
+      "artifact_type": "T01_RAW_CSV",
+      "semantic_purpose": "Page-level condition candidate detections, detector names, and evidence scores"
+    },
+    {
+      "path": "dataset/corpus_gap_audit/interaction_gap_matrix.csv",
+      "source_type": "T01_RAW",
+      "source_commit": "b6b76d964e78edce37b3d42e3668450526ee4bb7",
+      "artifact_type": "T01_RAW_CSV",
+      "semantic_purpose": "Raw cross-condition pairwise document counts and aggregated document page sums"
+    },
+    {
+      "path": "dataset/corpus_gap_audit/manual_review_manifest.csv",
+      "source_type": "T01_RAW",
+      "source_commit": "b6b76d964e78edce37b3d42e3668450526ee4bb7",
+      "artifact_type": "T01_RAW_CSV",
+      "semantic_purpose": "Pre-review manifest of sampled candidate conditions prior to apply_model_review.py execution"
+    },
+    {
+      "path": "dataset/corpus_gap_audit/manual_review_results.csv",
+      "source_type": "T01_RAW",
+      "source_commit": "b6b76d964e78edce37b3d42e3668450526ee4bb7",
+      "artifact_type": "T01_RAW_CSV",
+      "semantic_purpose": "Historical review records containing auto-relabelled MODEL_REVIEWED status requiring provenance correction"
+    },
+    {
+      "path": "dataset/corpus_gap_audit/language_candidates.csv",
+      "source_type": "T01_RAW",
+      "source_commit": "b6b76d964e78edce37b3d42e3668450526ee4bb7",
+      "artifact_type": "T01_RAW_CSV",
+      "semantic_purpose": "Page-level Devanagari and Latin character counts establishing letterhead vs prose presence"
+    },
+    {
+      "path": "dataset/corpus_gap_audit/duplicate_text_candidates.csv",
+      "source_type": "T01_RAW",
+      "source_commit": "b6b76d964e78edce37b3d42e3668450526ee4bb7",
+      "artifact_type": "T01_RAW_CSV",
+      "semantic_purpose": "Bounding-box overlap candidate pages (IoU >= 0.40) and snippets"
+    },
+    {
+      "path": "dataset/corpus_gap_audit/toc_offset_candidates.csv",
+      "source_type": "T01_RAW",
+      "source_commit": "b6b76d964e78edce37b3d42e3668450526ee4bb7",
+      "artifact_type": "T01_RAW_CSV",
+      "semantic_purpose": "TOC printed folio vs physical page offset matches, support counts, and detector statuses"
+    },
+    {
+      "path": "dataset/corpus_gap_audit/table_candidates.csv",
+      "source_type": "T01_RAW",
+      "source_commit": "b6b76d964e78edce37b3d42e3668450526ee4bb7",
+      "artifact_type": "T01_RAW_CSV",
+      "semantic_purpose": "Vector grid and aligned numeric line heuristic candidate page detections"
+    },
+    {
+      "path": "dataset/corpus_gap_audit/header_footer_candidates.csv",
+      "source_type": "T01_RAW",
+      "source_commit": "b6b76d964e78edce37b3d42e3668450526ee4bb7",
+      "artifact_type": "T01_RAW_CSV",
+      "semantic_purpose": "Repetitive running header and footer layout coordinate detections"
+    },
+    {
+      "path": "dataset/corpus_gap_audit/structure_candidates.csv",
+      "source_type": "T01_RAW",
+      "source_commit": "b6b76d964e78edce37b3d42e3668450526ee4bb7",
+      "artifact_type": "T01_RAW_CSV",
+      "semantic_purpose": "Multi-column layout, annexure keyword, and heading pattern candidates"
+    },
+    {
+      "path": "dataset/corpus_gap_audit/mdna_candidate_complexity.csv",
+      "source_type": "T01_RAW",
+      "source_commit": "b6b76d964e78edce37b3d42e3668450526ee4bb7",
+      "artifact_type": "T01_RAW_CSV",
+      "semantic_purpose": "Combined MD&A outline and heading candidates"
+    },
+    {
+      "path": "dataset/corpus_gap_audit/gap_audit_report.md",
+      "source_type": "T01_RAW",
+      "source_commit": "b6b76d964e78edce37b3d42e3668450526ee4bb7",
+      "artifact_type": "T01_RAW_MD",
+      "semantic_purpose": "Original T0.1 report text containing claims audited in claim_audit.csv"
+    },
+    {
+      "path": "dataset/corpus_gap_audit/methodology.md",
+      "source_type": "T01_RAW",
+      "source_commit": "b6b76d964e78edce37b3d42e3668450526ee4bb7",
+      "artifact_type": "T01_RAW_MD",
+      "semantic_purpose": "Original T0.1 methodology documentation audited in methodology_reconciled.md"
+    },
+    {
+      "path": "dataset/corpus_gap_audit/audit_config.json",
+      "source_type": "T01_RAW",
+      "source_commit": "b6b76d964e78edce37b3d42e3668450526ee4bb7",
+      "artifact_type": "T01_RAW_JSON",
+      "semantic_purpose": "Original T0.1 detector threshold configurations"
+    },
+    {
+      "path": "dataset/corpus_gap_audit/environment.json",
+      "source_type": "T01_RAW",
+      "source_commit": "b6b76d964e78edce37b3d42e3668450526ee4bb7",
+      "artifact_type": "T01_RAW_JSON",
+      "semantic_purpose": "Original T0.1 execution environment parameters"
+    },
+    {
+      "path": "dataset/corpus_gap_audit/input_hashes.json",
+      "source_type": "T01_RAW",
+      "source_commit": "b6b76d964e78edce37b3d42e3668450526ee4bb7",
+      "artifact_type": "T01_RAW_JSON",
+      "semantic_purpose": "Original T0 input hashes recorded at T0.1 execution"
+    },
+    {
+      "path": "tools/audit_corpus_gaps.py",
+      "source_type": "T01_SCRIPT",
+      "source_commit": "b6b76d964e78edce37b3d42e3668450526ee4bb7",
+      "artifact_type": "T01_PYTHON_SCRIPT",
+      "semantic_purpose": "Source code establishing exact historical detector logic, thresholds, and interaction definitions"
+    },
+    {
+      "path": "tools/apply_model_review.py",
+      "source_type": "T01_SCRIPT",
+      "source_commit": "b6b76d964e78edce37b3d42e3668450526ee4bb7",
+      "artifact_type": "T01_PYTHON_SCRIPT",
+      "semantic_purpose": "Source code establishing the automatic relabeling defect for review provenance correction"
+    },
+    {
+      "path": "configs/t0_1r/reconciliation_rules.json",
+      "source_type": "T01R_CONFIG",
+      "expected_sha256": "9dbbec3e8d5565a3d29114e1bcb46b613c187a8017832b00f2ff9d984ae4cdd9",
+      "artifact_type": "T01R_CONFIG_JSON",
+      "semantic_purpose": "Formal reconciliation rules, calculation mappings, and statistical conventions"
+    },
+    {
+      "path": "configs/t0_1r/reviewer_expectations.json",
+      "source_type": "T01R_CONFIG",
+      "expected_sha256": "c1286cde18df7efb3e68b78c9bcaf41a6888d5718d1136bbbe2944e124b03b26",
+      "artifact_type": "T01R_CONFIG_JSON",
+      "semantic_purpose": "External independent review hypotheses recorded strictly as non-authoritative metadata"
+    }
+  ]
+}
+

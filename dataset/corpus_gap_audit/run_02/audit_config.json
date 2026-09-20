@@ -1,0 +1,97 @@
+{
+  "config_version": "1.0.0",
+  "audit_name": "T0.1 Corpus Gap Audit",
+  "seed": 20260918,
+  "expected_corpus_size": 194,
+  "expected_total_pages": 37917,
+  "expected_issuers": 36,
+  "live_store_root": "D:\\sem_iitk\\sem9\\thesis\\sep_week1\\arpipe-0.1.0\\live_store",
+  "text_and_pdf_representation": {
+    "scanned_page_max_chars": 20,
+    "scanned_page_min_image_frac": 0.85,
+    "hybrid_page_min_image_frac": 0.25,
+    "broken_font_min_pua_or_mojibake_ratio": 0.05,
+    "ocr_render_mode_indicator": 3,
+    "hidden_text_max_font_size": 0.5,
+    "overlap_iou_threshold": 0.7,
+    "near_overlap_iou_threshold": 0.4,
+    "duplicate_text_min_chars": 30,
+    "low_text_high_raster_chars": 50,
+    "low_text_high_raster_image_frac": 0.75
+  },
+  "language_and_script": {
+    "devanagari_unicode_range": [
+      "\u0900",
+      "\u097f"
+    ],
+    "devanagari_page_min_chars": 1,
+    "hindi_page_min_devanagari_chars": 20,
+    "bilingual_page_min_latin_chars": 100,
+    "bilingual_page_min_devanagari_chars": 50
+  },
+  "layout_and_reading_order": {
+    "margin_top_frac": 0.08,
+    "margin_bottom_frac": 0.08,
+    "single_column_min_width_frac": 0.65,
+    "two_column_gutter_min_pt": 10.0,
+    "unequal_column_ratio_max": 0.6,
+    "sidebar_width_max_frac": 0.3,
+    "footnote_max_font_size_ratio": 0.85
+  },
+  "table_candidate_heuristics": {
+    "table_min_aligned_columns": 3,
+    "table_min_aligned_rows": 3,
+    "table_numeric_token_min_ratio": 0.3,
+    "table_vector_grid_min_rects": 4,
+    "table_heavy_doc_min_page_frac": 0.2
+  },
+  "header_footer_heuristics": {
+    "header_max_y1_frac": 0.08,
+    "footer_min_y0_frac": 0.92,
+    "furniture_min_consecutive_pages": 2,
+    "furniture_y_tolerance_pt": 5.0
+  },
+  "toc_candidate_heuristics": {
+    "toc_title_patterns": [
+      "contents",
+      "table of contents",
+      "index",
+      "annual report index"
+    ],
+    "toc_min_entries": 3,
+    "toc_max_start_page_search": 50,
+    "toc_offset_high_confidence_min_matches": 3,
+    "toc_offset_medium_confidence_min_matches": 1
+  },
+  "structure_and_mda_heuristics": {
+    "mda_heading_patterns": [
+      "management discussion and analysis",
+      "management's discussion and analysis",
+      "management discussion & analysis",
+      "management's discussion & analysis",
+      "management review and analysis",
+      "management's review and analysis",
+      "review of operations",
+      "directors' report and management discussion",
+      "business overview and md&a"
+    ],
+    "annexure_patterns": [
+      "annexure",
+      "annexure to directors' report",
+      "annexure to the directors' report"
+    ]
+  },
+  "review_manifest_sampling": {
+    "target_candidates_per_family": 10,
+    "conditions_for_review": [
+      "table_candidate",
+      "full_width_header",
+      "full_width_footer",
+      "toc_offset",
+      "duplicate_text",
+      "bilingual_candidate",
+      "annexure_candidate",
+      "combined_mda_candidate"
+    ]
+  }
+}
