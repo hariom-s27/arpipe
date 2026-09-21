@@ -32,7 +32,7 @@ In accordance with Phase 2.1 safety rules, historical reports and Git commits re
 2. **PC-02 (P2-02):** Documented that T0.4 Markdown protocol files are identified by Git blobs at closure `63e3c04` (amended at `33ba76a`), while `config_hashes.json` hashes the 12 JSON configs.
 3. **PC-03 (P2-14):** Established that `file_size_bytes` in the T0 inventory is unverified fetch metadata; file identity is governed exclusively by cryptographic SHA-256 (194/194 match).
 4. **PC-04 (P2-15):** Clarified missing-byte record semantics: 8 records are `UNASSIGNED_HISTORICAL`, 6 are administrative `INPUT_UNAVAILABLE`; all 14 remain excluded from executable partitions (194 executable docs invariant).
-5. **PC-05 (P2-20):** Resolved `configs/audit_config.sha256` delta: recorded hash matches blob plus one trailing newline (`\n`); pinned CRLF copy in `dataset/` matches its hash file.
+5. **PC-05 (P2-20):** Resolved `configs/audit_config.sha256` delta: recorded hash matches the blob with one of its two trailing LF bytes removed (cause not established; see PC-05, Section 2A of the provenance ledger); pinned CRLF copy in `dataset/` matches its hash file.
 6. **PC-06 (P2-21):** Corrected the 10 erroneous hash strings in `PHASE1_FROZEN_FOUNDATION_VERIFICATION.md` by publishing authoritative blob digests from `PHASE2_FOUNDATION_INTEGRITY_FINDINGS.json`.
 7. **PC-07 (P2-22):** Formally decoupled T0.4 closure observations (2 items) from post-closure T0.4-GOLD research items (B1–B8).
 8. **PC-08 (P2-23):** Classified snapshot branches `t0.4-gold` (`d9f974b`) and `t0.4-routing-clarification` (`916407d`) as local non-methodology commits (`T0.4_LF_BLOCKED`).
