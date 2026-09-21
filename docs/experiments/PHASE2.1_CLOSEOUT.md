@@ -1,7 +1,7 @@
 # Phase 2.1 — Provenance Correction Closeout
 
-**Status:** downstream correction record (documentation/provenance layer only)  
-**Applies on top of:** `ebf9e11b936687d4ab2a4f53058ef458cd2b68a2` (parent `813ba5badd75021263f0433d23ff217f6d764719`)  
+**Status:** downstream correction record (documentation/provenance layer only)
+**Applies on top of:** `ebf9e11b936687d4ab2a4f53058ef458cd2b68a2` (parent `813ba5badd75021263f0433d23ff217f6d764719`)
 **Claim labels:** VERIFIED = recomputed from Git objects/command output in this task; INFERRED / PROPOSED are not used for any adopted claim below.
 
 ---
