@@ -26,7 +26,7 @@ The starting worktree is clean, isolated, and verified bitwise against Git tree 
 
 ## PART B — Objective Provenance Corrections
 
-In accordance with Phase 2.1 safety rules, historical reports and Git commits remain immutable. All corrections are formally established in [`PHASE2.1_PROVENANCE_CORRECTIONS.md`](PHASE2.1_PROVENANCE_CORRECTIONS.md):
+In accordance with Phase 2.1 safety rules, historical reports and Git commits remain immutable. Recorded 10 downstream correction entries (PC-01 through PC-10) in [`PHASE2.1_PROVENANCE_CORRECTIONS.md`](PHASE2.1_PROVENANCE_CORRECTIONS.md): 4 `OBJECTIVE_CORRECTION` entries and 6 `DOCUMENTATION_CLARIFICATION` entries.
 
 1. **PC-01 (P2-01):** Corrected task text typo in T0.1R commit SHA to `879762a2f236b3aaa6df33b7ddacc60c01d633c1`.
 2. **PC-02 (P2-02):** Documented that T0.4 Markdown protocol files are identified by Git blobs at closure `63e3c04` (amended at `33ba76a`), while `config_hashes.json` hashes the 12 JSON configs.
@@ -135,7 +135,7 @@ Interpretation constraint:
 ### B2: Route Precedence for Overlapping Classes
 - **Status:** `PENDING_AUTHOR_DECISION`
 - **Fact:** No routing precedence exists in frozen code.
-- **Rule:** `sampling_stratum_priority` MUST NOT be reused as routing precedence. Under recommended B1 contract, precedence between legacy and broken text is `NOT_APPLICABLE`.
+- **Rule:** `sampling_stratum_priority` MUST NOT be reused as routing precedence. Under the recommended B1 contract, legacy-vs-broken_text routing precedence is `NOT_APPLICABLE`. Final B2 status remains `PENDING_AUTHOR_DECISION` because the recommended B1 contract has not yet been ratified as an adopted author decision.
 
 ### B3: Oracle Routing Population Specification
 - **Status:** `PENDING_AUTHOR_DECISION`
@@ -145,7 +145,7 @@ Interpretation constraint:
 ### B4: Deterministic Double-Annotation Selector
 - **Status:** `PENDING_AUTHOR_DECISION`
 - **Fact:** `selection_rank` is biased (74.7% in hex 0–3) and cannot be reused as an independent 25% selector.
-- **Hard Requirements:** Deterministic canonical serialization, injective serialization over eligible IDs, fixed UTF-8 encoding, fixed domain separation tag, fixed threshold ($\text{rank} < \lfloor 0.25 \times 2^{256} \rfloor$), no duplicate keys, no `selection_rank` reuse, no post-hoc tuning (`same input -> same bytes -> same digest -> same selection`). Diagnostic statistics (observed fraction, stratum distribution) reported separately, not as validity criteria.
+- **Hard Requirements:** Deterministic canonical serialization, injective serialization over eligible IDs, fixed UTF-8 encoding, fixed domain separation tag, fixed threshold ($\text{rank} < \lfloor 0.25 \times 2^{256} \rfloor$; canonical form: $\text{rank} = \text{uint256}(\text{SHA256}(\text{domain\_tag} \parallel \text{unit\_bytes}))$, selected iff $\text{rank} < \lfloor 0.25 \times 2^{256} \rfloor$; ASCII-safe equivalent: `rank = uint256(SHA256(domain_tag || unit_bytes))` selected iff `rank < floor(0.25 * 2^256)`), no duplicate keys, no `selection_rank` reuse, no post-hoc tuning (`same input -> same bytes -> same digest -> same selection`). Diagnostic statistics (observed fraction, stratum distribution) reported separately, not as validity criteria.
 
 ### B5: Oracle Scientific Construct & Evidence Channels
 - **Status:** `PENDING_AUTHOR_DECISION`

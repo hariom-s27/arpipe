@@ -84,11 +84,11 @@ FORMAL_T0.4_AMENDMENT_EFFECTIVE = NO
   - In actual code (`arpipe/triage.py:_classify`), execution follows sequential `if/elif` blocks: `blank` -> `broken_text` -> text-empty branch (`scanned`, `vector_text`, `digital`) -> `hybrid` -> `digital`.
 - **status:** `PENDING_AUTHOR_DECISION`
 - **options:**
-  - Option 1 (Dependent on B1): If B1 adopts the recommended contract (broken text routes to OCR; legacy retained as forensic attribute), B2 precedence between legacy and broken text becomes `NOT_APPLICABLE`.
-  - Option 2: If a separate operational REMAP route is later specified, define explicit deterministic precedence (e.g. Specificity/REMAP first with fallback to OCR on failure).
-- **recommended_option:** Mark `NOT_APPLICABLE` for legacy vs. broken text under the recommended B1 contract; enforce that `sampling_stratum_priority` MUST NEVER be used as routing precedence.
+  - Option 1 (Dependent on B1): If an author decision formally adopts the recommended B1 contract (broken text routes to OCR; legacy retained as forensic attribute), B2 precedence between legacy and broken text becomes `NOT_APPLICABLE`.
+  - Option 2: If an author decision adopts a separate operational REMAP route, define explicit deterministic precedence (e.g. Specificity/REMAP first with fallback to OCR on failure).
+- **recommended_option:** Under the recommended B1 contract, legacy-vs-broken_text routing precedence is `NOT_APPLICABLE`. Final B2 status remains `PENDING_AUTHOR_DECISION` because B1 has not yet been ratified as an adopted author decision. Enforce that `sampling_stratum_priority` MUST NEVER be used as routing precedence.
 - **selected_option:** `null`
-- **rationale:** Awaiting author decision on B1.
+- **rationale:** Awaiting author decision on B1 (preserving status `PENDING_AUTHOR_DECISION`).
 - **dependencies:** Strictly dependent on B1.
 - **effective_protocol_version:** `null`
 - **affected_artifacts:** `arpipe/triage.py`, `configs/t0_4/benchmark_config.json`
@@ -135,7 +135,7 @@ FORMAL_T0.4_AMENDMENT_EFFECTIVE = NO
 - **verified_state:**
   - `oracle_routing_spec.json` specifies: "deterministic 25% hash slice (SHA-256 rank starting with hex 0, 1, 2, or 3)".
   - The specification names no domain key, no seed, no field order, and no byte encoding.
-  - Reusing the manifest's `selection_rank` is mathematically invalid: `selection_rank` is a per-cell minimum over available pages, resulting in 355 of 475 units (74.7%) and 50 of 79 literal oracle units (63.3%) beginning with hex 0–3, completely violating the 25% expectation.
+  - The observed distribution shows that `selection_rank` does not implement the intended independent 25% double-annotation selector under the preregistered selection requirement: `selection_rank` is a per-cell minimum over available pages, resulting in 355 of 475 units (74.7%) and 50 of 79 literal oracle units (63.3%) beginning with hex 0–3.
   - The repository contains no implemented double-annotation selector.
 - **status:** `PENDING_AUTHOR_DECISION`
 - **hard_requirements:**
@@ -145,18 +145,24 @@ FORMAL_T0.4_AMENDMENT_EFFECTIVE = NO
   3. Fixed UTF-8 encoding.
   4. Fixed domain separation tag (e.g. `arpipe-oracle-double-v1`).
   5. Fixed threshold:
-     $$\text{rank} = \text{uint256}(\text{SHA256}(\text{domain\_tag} \parallel \text{unit\_bytes})) < \lfloor 0.25 \times 2^{256} \rfloor$$
-  6. No duplicate canonical keys.
-  7. No reuse of sampling `selection_rank`.
-  8. No post-hoc key or threshold tuning after observing outcomes.
-  9. Invariance: `same input -> same bytes -> same digest -> same selection`.
+      Canonical form:
+      $$\text{rank} = \text{uint256}(\text{SHA256}(\text{domain\_tag} \parallel \text{unit\_bytes}))$$
+      selected iff:
+      $$\text{rank} < \lfloor 0.25 \times 2^{256} \rfloor$$
+      ASCII-safe equivalent:
+      `rank = uint256(SHA256(domain_tag || unit_bytes))`
+      selected iff `rank < floor(0.25 * 2^256)`.
+   6. No duplicate canonical keys.
+   7. No reuse of sampling `selection_rank`.
+   8. No post-hoc key or threshold tuning after observing outcomes.
+   9. Invariance: `same input -> same bytes -> same digest -> same selection`.
 - **diagnostic_statistics:** (Evaluated for information only, NOT as pass/fail gates):
   - Overall selected fraction.
   - Distribution across strata.
   - Hex-prefix distribution.
 - **recommended_option:** Adopt the injective formula:
   $$\text{canonical\_bytes} = \text{document\_id} \mathbin{\Vert} \text{0x00} \mathbin{\Vert} \text{page\_number\_decimal}$$
-  with domain tag `arpipe-oracle-double-v1` and threshold $\lfloor 0.25 \times 2^{256} \rfloor$.
+  with domain tag `arpipe-oracle-double-v1` and threshold $\lfloor 0.25 \times 2^{256} \rfloor$ (ASCII-safe: `rank < floor(0.25 * 2^256)`).
 - **selected_option:** `null`
 - **rationale:** Mathematical constraints are proven; author must approve domain key and eligible unit set.
 - **dependencies:** Depends on B3 (eligibility pool); gates double annotation execution.
