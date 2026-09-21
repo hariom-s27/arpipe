@@ -215,15 +215,21 @@ All future experiments X0–X7 remain strictly **UNEXECUTED** and un-authorized 
 
 ## PART I — Master Change Ledger Summary
 
-The master change ledger in [`PHASE2.1_CHANGE_LEDGER.md`](PHASE2.1_CHANGE_LEDGER.md) records 30 distinct changes:
-- 7 Objective Corrections (PC-01, PC-05, PC-06, PC-07, CHG-08, CHG-10, CHG-20)
-- 9 Documentation Clarifications (PC-02, PC-03, PC-04, PC-08, PC-09, PC-10, CHG-09, CHG-14, CHG-15, CHG-28)
-- 12 Semantic Normalizations (CHG-03, CHG-04, CHG-05, CHG-06, CHG-11, CHG-12, CHG-13, CHG-16, CHG-17, CHG-18, CHG-19, CHG-26, CHG-27)
+The master change ledger in [`PHASE2.1_CHANGE_LEDGER.md`](PHASE2.1_CHANGE_LEDGER.md) records 30 distinct changes (CHG-01 through CHG-30):
+- 6 Objective Corrections (CHG-01, CHG-08, CHG-10, CHG-20, CHG-21, CHG-22)
+- 8 Documentation Clarifications (CHG-02, CHG-09, CHG-14, CHG-15, CHG-23, CHG-24, CHG-25, CHG-28)
+- 13 Semantic Normalizations (CHG-03, CHG-04, CHG-05, CHG-06, CHG-11, CHG-12, CHG-13, CHG-16, CHG-17, CHG-18, CHG-19, CHG-26, CHG-27)
 - 1 Deferred Empirical Question (CHG-07)
 - 1 Author Decision Governance Record (CHG-29)
 - 1 Formal Amendment Status Record (CHG-30)
 
 **Immutability Invariant:** Every single row confirms `historical_artifact_changed = NO`.
+
+The provenance correction ledger in [`PHASE2.1_PROVENANCE_CORRECTIONS.md`](PHASE2.1_PROVENANCE_CORRECTIONS.md) separately records 10 provenance corrections (PC-01 through PC-10):
+- 4 Objective Corrections (PC-01, PC-05, PC-06, PC-07)
+- 6 Documentation Clarifications (PC-02, PC-03, PC-04, PC-08, PC-09, PC-10)
+
+The 10 PC entries are not additional to the 30 CHG changes: each PC entry corresponds to the CHG entry with the same P2 finding ID (for example, PC-05 = CHG-20 and PC-06 = CHG-21), so CHG totals and PC totals must not be added together.
 
 ---
 
