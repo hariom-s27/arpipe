@@ -1,0 +1,4 @@
+{
+  "$comment": "Exceptions for tools/check_doc_hashes.py. Each entry documents a row whose recorded 'Verified Git SHA-256' is allowed to mismatch the recomputed Git blob hash, keyed by doc + source_commit + source_path. Empty because the current PHASE2.1_PROVENANCE_CORRECTIONS.md Section 3 table has 0 unallowed failures.",
+  "exceptions": []
+}
