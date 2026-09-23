@@ -1,0 +1,242 @@
+{
+  "task": "P-C0R: Instrumented Acquisition Resolution Pilot",
+  "mode": "DIAGNOSTIC / EXPERIMENT ONLY",
+  "generated_at_utc": "2026-09-17T15:25:00Z",
+  "generated_at_local": "2026-09-17T20:55:00+05:30",
+  "worktree": {
+    "path": "D:\\sem_iitk\\sem9\\thesis\\sep_week1\\arpipe-pc0r-acquisition-pilot",
+    "branch": "pc0r-acquisition-pilot",
+    "head_sha": "0fb8cbf6d932f4190bdfe3b2a1fecf62170cca14",
+    "head_commit_subject": "P33: audit post-P25 patterns for false positives, fix is-given-below rejection",
+    "original_worktree_arpipe_0_1_0": "READ-ONLY forensic evidence, untouched",
+    "pc0_worktree": "arpipe-pc0-coverage-diag, read-only forensic input, untouched",
+    "pm5_worktree": "arpipe-pm5-coverage, read-only forensic input, untouched"
+  },
+  "frozen_evidence_hashes_sha256": {
+    "pm5_coverage_json": "c84166741d36a9774b7c9f29d71ea9583934d98c2ab153e651ec66ec4d371bcf",
+    "pm5_stage_table_csv": "30e93b59ac689f00fab182583fb25883322e429be42b4ba14e13a1011b916dc9",
+    "pm5_expected_universe_snapshot_csv": "b287a82d0fa2b15098882c328be6afc2c1672c9255f64103e4aaeabd94ccebe5",
+    "pc0_sample_manifest_json": "4b971a8069d3eeb1ec3528bca617c5fb54cf69076fa4d5d9cfa3a681c81ef9d2",
+    "pc0r_sample_manifest_json": "42e244f1fdef68d5b7d8aa8de8a80fd422ad708f8cf8c3ec93151121b45ceabd",
+    "pc0r_request_configuration_json": "06b1add2a4676b5eca09cf49e891481e52e1a47ae8f1cb4c6bf9d35fdb6481cd",
+    "pc0r_attempt_log_csv": "af8ea0c881595a9322fe32293608b305737776a1585d39246dff401f1cb83397",
+    "pc0r_client_comparison_csv": "3f2d5a6f9a10fd49b2eed63d1c1eefdf73e2cc79c8d3db02f83ca4b82d9ba88c"
+  },
+  "part1_sample_manifest_summary": {
+    "file": "reports/pc0r_sample_manifest.json",
+    "sha256": "42e244f1fdef68d5b7d8aa8de8a80fd422ad708f8cf8c3ec93151121b45ceabd",
+    "n_observations": 10,
+    "group_download_zero_fy_count": 5,
+    "group_download_nonzero_fy_control_count": 5,
+    "observations": [
+      { "index": 1, "id": "INE002A01018::FY2010", "company": "Reliance Industries Limited", "fy": 2010, "group": "DOWNLOAD_ZERO_FY", "url": "https://nsearchives.nseindia.com/annual_reports/AR_RELIANCE_2009_2010_20082010120000.zip" },
+      { "index": 2, "id": "INE040A01034::FY2014", "company": "HDFC Bank Limited", "fy": 2014, "group": "DOWNLOAD_ZERO_FY", "url": "https://nsearchives.nseindia.com/annual_reports/AR_3393_HDFCBANK_2013_2014_12062014114216.zip" },
+      { "index": 3, "id": "INE081A01020::FY2016", "company": "Tata Steel Limited", "fy": 2016, "group": "DOWNLOAD_ZERO_FY", "url": "https://nsearchives.nseindia.com/annual_reports/AR_9362_TATASTEEL_2015_2016_16082016104323.zip" },
+      { "index": 4, "id": "INE171A01029::FY2021", "company": "The Federal Bank Limited", "fy": 2021, "group": "DOWNLOAD_ZERO_FY", "url": "https://nsearchives.nseindia.com/annual_reports/AR_18152_FEDERALBNK_2020_2021_17062021235201_18062021070010.zip" },
+      { "index": 5, "id": "INE226A01021::FY2022", "company": "Voltas Limited", "fy": 2022, "group": "DOWNLOAD_ZERO_FY", "url": "https://nsearchives.nseindia.com/annual_reports/AR_19956_VOLTAS_2021_2022_28052022144748_05282022150002.zip" },
+      { "index": 6, "id": "INE002A01018::FY2012", "company": "Reliance Industries Limited", "fy": 2012, "group": "DOWNLOAD_NONZERO_FY_CONTROL", "url": "https://nsearchives.nseindia.com/annual_reports/AR_RELIANCE_2011_2012_29062012101059.zip" },
+      { "index": 7, "id": "INE009A01021::FY2013", "company": "Infosys Limited", "fy": 2013, "group": "DOWNLOAD_NONZERO_FY_CONTROL", "url": "https://nsearchives.nseindia.com/annual_reports/AR_27_INFY_2012_2013_20062013105245.zip" },
+      { "index": 8, "id": "INE040A01034::FY2017", "company": "HDFC Bank Limited", "fy": 2017, "group": "DOWNLOAD_NONZERO_FY_CONTROL", "url": "https://nsearchives.nseindia.com/annual_reports/AR_10840_HDFCBANK_2016_2017_25072017151900.zip" },
+      { "index": 9, "id": "INE044A01036::FY2018", "company": "Sun Pharmaceutical Industries Limited", "fy": 2018, "group": "DOWNLOAD_NONZERO_FY_CONTROL", "url": "https://nsearchives.nseindia.com/annual_reports/AR_13921_SUNPHARMA_2017_2018_01102018175233.zip" },
+      { "index": 10, "id": "INE081A01020::FY2024", "company": "Tata Steel Limited", "fy": 2024, "group": "DOWNLOAD_NONZERO_FY_CONTROL", "url": "https://nsearchives.nseindia.com/annual_reports/AR_24166_TATASTEEL_2023_2024_2206202419194.pdf" }
+    ]
+  },
+  "part2_request_configuration_summary": {
+    "file": "reports/pc0r_request_configuration.json",
+    "sha256": "06b1add2a4676b5eca09cf49e891481e52e1a47ae8f1cb4c6bf9d35fdb6481cd",
+    "http_library": "httpx 0.28.1 (Python 3.14.3)",
+    "method": "GET",
+    "user_agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36 (discover.UA)",
+    "timeout_seconds": 120.0,
+    "connect_timeout_seconds": 30.0,
+    "read_timeout_seconds": 120.0,
+    "follow_redirects": true,
+    "max_redirects": 20,
+    "tls": "default SSLContext with system CAs",
+    "proxy": "none (direct connection)",
+    "scheduled_timestamps_utc": {
+      "attempt_1_t0": "2026-09-17T14:40:00Z",
+      "comparison_t10": "2026-09-17T14:50:00Z",
+      "attempt_2_t20": "2026-09-17T15:00:00Z",
+      "attempt_3_t40": "2026-09-17T15:20:00Z"
+    }
+  },
+  "part5_repeated_request_results": {
+    "attempts_executed": 3,
+    "total_probe_count": 30,
+    "success_count": 30,
+    "failure_count": 0,
+    "breakdown_by_attempt": {
+      "attempt_1": {
+        "scheduled_time_utc": "2026-09-17T14:40:00Z",
+        "actual_window_utc": "2026-09-17T14:41:37Z – 14:42:42Z",
+        "result": "10/10 SUCCESS (100%)",
+        "terminal_states": { "SUCCESS_ZIP": 9, "SUCCESS_PDF": 1 },
+        "first_failure_layer": { "NONE": 10 }
+      },
+      "attempt_2": {
+        "scheduled_time_utc": "2026-09-17T15:00:00Z",
+        "actual_window_utc": "2026-09-17T15:00:00Z – 15:04:16Z",
+        "result": "10/10 SUCCESS (100%)",
+        "terminal_states": { "SUCCESS_ZIP": 9, "SUCCESS_PDF": 1 },
+        "first_failure_layer": { "NONE": 10 }
+      },
+      "attempt_3": {
+        "scheduled_time_utc": "2026-09-17T15:20:00Z",
+        "actual_window_utc": "2026-09-17T15:20:00Z – 15:21:06Z",
+        "result": "10/10 SUCCESS (100%)",
+        "terminal_states": { "SUCCESS_ZIP": 9, "SUCCESS_PDF": 1 },
+        "first_failure_layer": { "NONE": 10 }
+      }
+    },
+    "group_distribution": {
+      "DOWNLOAD_ZERO_FY": "15/15 SUCCESS (100% across Attempts 1, 2, 3)",
+      "DOWNLOAD_NONZERO_FY_CONTROL": "15/15 SUCCESS (100% across Attempts 1, 2, 3)"
+    },
+    "byte_integrity": {
+      "obs1_reliance_fy10": { "status": 200, "bytes": 8795366, "type": "application/zip", "validation": "valid_zip, extracted main PDF validated with qpdf" },
+      "obs2_hdfc_fy14": { "status": 200, "bytes": 5591336, "type": "application/zip", "validation": "valid_zip, extracted main PDF validated with qpdf" },
+      "obs3_tatasteel_fy16": { "status": 200, "bytes": 5455878, "type": "application/zip", "validation": "valid_zip, extracted main PDF validated with qpdf" },
+      "obs4_federal_fy21": { "status": 200, "bytes": 9448336, "type": "application/zip", "validation": "valid_zip, extracted main PDF validated with qpdf" },
+      "obs5_voltas_fy22": { "status": 200, "bytes": 7482626, "type": "application/zip", "validation": "valid_zip, extracted main PDF validated with qpdf" },
+      "obs6_reliance_fy12": { "status": 200, "bytes": 5111665, "type": "application/zip", "validation": "valid_zip, extracted main PDF validated with qpdf" },
+      "obs7_infosys_fy13": { "status": 200, "bytes": 8608682, "type": "application/zip", "validation": "valid_zip, extracted main PDF validated with qpdf" },
+      "obs8_hdfc_fy17": { "status": 200, "bytes": 7230114, "type": "application/zip", "validation": "valid_zip, extracted main PDF validated with qpdf" },
+      "obs9_sunpharma_fy18": { "status": 200, "bytes": 3050947, "type": "application/zip", "validation": "valid_zip, extracted main PDF validated with qpdf" },
+      "obs10_tatasteel_fy24": { "status": 200, "bytes": 26006738, "type": "application/pdf", "validation": "valid_pdf validated with qpdf, authoritative sha256 matches P-M5: 870be0ca867c1c..." }
+    }
+  },
+  "part6_controlled_client_comparison_results": {
+    "total_pairs_tested": 10,
+    "arm_definitions": {
+      "ARM_A": "discovery-client-equivalent: cookie jar seeded via 2 GETs to www.nseindia.com, headers = User-Agent + Accept + Accept-Language + Referer, timeout=120s, follow_redirects=True",
+      "ARM_B": "fetch-client-equivalent: fresh client per probe, unseeded cookie jar, User-Agent only, timeout=120s, follow_redirects=True"
+    },
+    "predeclared_order_alternation": {
+      "A_then_B_count": 5,
+      "B_then_A_count": 5
+    },
+    "outcome_summary": {
+      "A_and_B_both_succeed": 10,
+      "A_succeeds_B_fails": 0,
+      "A_fails_B_succeeds": 0,
+      "A_and_B_both_fail": 0,
+      "unable_to_test": 0
+    },
+    "order_effect": "None detected. Both configurations succeeded identically regardless of whether A or B was executed first.",
+    "client_effect": "No client-configuration effect observed. Both discovery-client and fetch-client configurations succeed uniformly."
+  },
+  "part7_current_time_variation_analysis": {
+    "p_c0r_repeated_arm_observation": "stable success (10/10 at T+0, 10/10 at T+20, 10/10 at T+40)",
+    "today_multi_session_synthesis": {
+      "session_1_diagnostic_base_check": "0/9 success (~13:17 UTC) - connection resets (56) and 45s timeouts (28)",
+      "session_2_p_c0_single_pass": "10/10 success (~13:59 UTC) - 40-50 min later, same network/machine, clean HTTP 200s",
+      "session_3_p_c0r_pilot": "30/30 repeated success + 20/20 A/B paired success (14:40-15:21 UTC) - sustained stable success over 40-min window",
+      "time_variation_status": "CURRENT ACCESS VARIATION OBSERVED across today's sessions on sub-hour timescales, but STABLE SUCCESS within the P-C0R 40-minute window"
+    }
+  },
+  "part8_historical_vs_current_evidence": {
+    "historical_persisted_evidence": "194/512 company-years have fetched_at timestamps (2026-09-11 10:28:44-10:33:08 UTC). 318/512 have zero persisted attempt records, error logs, or HTTP telemetry.",
+    "historical_invocation_classification": "UNKNOWN for all 318 losses",
+    "current_observation": "Live HTTP probes on 2026-09-17 demonstrate time-varying availability of nsearchives.nseindia.com, but NO acquisition failure reproduced during the P-C0R pilot window.",
+    "inference_boundary": "Current live observation cannot prove historical cause. Absence of historical telemetry prevents establishing whether the 318 failed company-years were ever attempted on 2026-09-11 or hit an identical access block."
+  },
+  "part9_controlled_observability_check": {
+    "status": "OBSERVABILITY DEFECT CONFIRMED",
+    "code_inspection": {
+      "production_fetch_one": "Logs failures only via ephemeral stderr prints (WARN / ERR). Exhausted 403/429/503 loop silently returns None with zero output and no exception. Failures write nothing to disk.",
+      "pm5_coverage_tool": "Reports 0.0% reason-code coverage for DOWNLOAD and DISCOVERY stages (hard-coded REASON_CODE_MISSING) because no failure artifact exists.",
+      "pc0r_diagnostic_instrumentation": "Records full state machine (DISCOVERY_ONLY -> FETCH_STARTED -> RESPONSE_RECEIVED -> ARTIFACT_RECEIVED -> ARTIFACT_VALIDATED -> DOWNLOAD_SUCCESS/FAILED), L0-L6 failure layers, terminal states, safe HTTP headers, latency, magic bytes, and qpdf validation detail."
+    },
+    "causal_boundary": "Observability defect is confirmed by committed code inspection, but observability defect != historical acquisition cause. Missing logging explains why historical cause is unknowable, not why the network connection failed."
+  },
+  "part11_historical_evidence_table": [
+    {
+      "claim": "Current URL fails",
+      "evidence_source": "P-C0R 3-attempt repeated arm & A/B comparison",
+      "status": "NOT CURRENTLY REPRODUCED (30/30 repeated requests and 20/20 A/B requests succeeded during P-C0R; earlier today 9/9 failed in diagnostic-base check)"
+    },
+    {
+      "claim": "Current behavior changes over time",
+      "evidence_source": "Multi-session trajectory (diagnostic-base 0/9 at ~13:17 UTC vs P-C0 10/10 at ~13:59 UTC vs P-C0R 30/30 at 14:40-15:21 UTC)",
+      "status": "CURRENTLY REPRODUCED across multi-hour session span; STABLE SUCCESS within P-C0R 40-minute window"
+    },
+    {
+      "claim": "Client configuration asymmetry (cookies/headers) causes failure",
+      "evidence_source": "P-C0R Part 6 Controlled A/B Client Comparison (10 pairs with alternating order)",
+      "status": "CURRENTLY REFUTED (10/10 pairs succeeded equally under Arm A and Arm B)"
+    },
+    {
+      "claim": "Historical 2026-09-11 fetch failed",
+      "evidence_source": "Persisted historical evidence",
+      "status": "NOT ESTABLISHED (no historical attempt record, exception log, or HTTP telemetry exists; historical invocation = UNKNOWN)"
+    },
+    {
+      "claim": "Historical failure had same mechanism as today's transient block",
+      "evidence_source": "Inference from current pilot",
+      "status": "PLAUSIBLE BUT UNPROVEN (no direct historical evidence exists)"
+    },
+    {
+      "claim": "fetch_one() lacks structured failure persistence",
+      "evidence_source": "Committed source inspection (arpipe/fetch.py, arpipe/cli.py, tools/pm5_coverage.py)",
+      "status": "HISTORICALLY ESTABLISHED (Observability defect confirmed)"
+    },
+    {
+      "claim": "194-row cohort_fetch_manifest was a pre-fetch filter",
+      "evidence_source": "Code and git history inspection (tools/seed_historical_labels.py, commit 1d7dc05)",
+      "status": "HISTORICALLY REFUTED (Post-hoc label export derived from successful store, not an input filter)"
+    },
+    {
+      "claim": "downloaded=0, mda_located=0, accepted=0 are distinct FY sets",
+      "evidence_source": "pm5_stage_table.csv and coverage.json reconciliation",
+      "status": "HISTORICALLY ESTABLISHED (downloaded=0 has 8 FYs, mda_located=0 has 9 FYs, accepted=0 has 10 FYs)"
+    }
+  ],
+  "part12_analysis_answers": {
+    "q1_does_acquisition_failure_reproduce_today": "In the P-C0R pilot window (14:40-15:21 UTC), NO: all 30 repeated requests and 20 A/B requests succeeded (50/50 total). Earlier today (~13:17 UTC), YES (0/9 succeeded). Thus, failure did not reproduce during P-C0R, reflecting an open access window.",
+    "q2_does_behavior_vary_with_time_under_fixed_conditions": "Across today's full session history, YES (0/9 failure at 13:17 UTC flipped to 10/10 success at 13:59 UTC with no code change). Within P-C0R's 40-minute window, NO (stable success at T+0, T+20, and T+40).",
+    "q3_does_client_configuration_affect_outcome_under_paired_controls": "NO. In 10/10 paired comparisons with alternating execution order, Arm A (discovery client with cookies and headers) and Arm B (fetch client with User-Agent only) both succeeded identically.",
+    "q4_what_is_the_first_failing_layer": "In P-C0R: NONE (all layers L0 through L6 succeeded). In earlier failure window (~13:17 UTC): L0 (DNS resolution failure) and L1 (TCP connection reset / 45s connect timeout).",
+    "q5_what_exact_http_transport_behavior_occurs": "In P-C0R: clean HTTP/1.1 200 OK from AkamaiNetStorage/AkamaiGHost edge, complete byte streams matching Content-Length header, valid ZIP/PDF magic bytes, zero corruption, valid qpdf checks.",
+    "q6_does_failure_disappear_without_changing_code": "YES. The failure observed at 13:17 UTC completely vanished by 13:59 UTC and remained absent throughout P-C0R without modifying a single line of production code.",
+    "q7_is_current_behavior_consistent_with_time_varying_access": "YES. The sharp sub-hour transition from 0/9 to 10/10 success on identical endpoints under identical network conditions is classic time-varying CDN/endpoint access behavior.",
+    "q8_is_there_evidence_that_the_same_mechanism_caused_historical_losses": "NO DIRECT EVIDENCE. Historical invocation records, error logs, and HTTP telemetry are completely absent for all 318 losses. While the ~4.5-minute clustering of historical successes is consistent with time-varying availability, it does not prove historical cause.",
+    "q9_what_remains_unknowable_because_historical_telemetry_is_absent": "Whether cmd_fetch was ever run against the 318 failed pairs; what error (403, 429, 503, timeout, reset) was encountered if run; how many retry attempts occurred; and whether the code used on 2026-09-11 was byte-identical to HEAD 0fb8cbf."
+  },
+  "part13_root_cause_classification": {
+    "primary_mechanism": "NO_REPRODUCIBLE_FAILURE (within controlled P-C0R pilot window) / CURRENT_TRANSIENT_ACCESS_BEHAVIOR (across full multi-session observation span on 2026-09-17)",
+    "contributing_factors": [
+      "OBSERVABILITY_PROBLEM: Insufficient structured persistence of fetch failures in fetch_one() / cmd_fetch, causing historical failure reasons to be lost.",
+      "CONTROL_FLOW_GAP: Silent fallthrough on exhausted HTTP 403/429/503 in fetch_one() returning None without setting last_err or logging."
+    ],
+    "ruled_out_hypotheses": [
+      "CLIENT_CONFIGURATION_EFFECT: Ruled out by Part 6 paired A/B comparison (10/10 pairs succeeded under both Arm A and Arm B).",
+      "FILE_FORMAT_PROBLEM: Ruled out (100% valid magic bytes, valid ZIP and PDF archives).",
+      "VALIDATION_PROBLEM: Ruled out (qpdf validates all downloaded archives).",
+      "CONTROL_FLOW_PROBLEM: Ruled out (cohort_fetch_manifest.jsonl was a post-hoc evaluation export, not a pre-fetch filter)."
+    ]
+  },
+  "part14_confidence_ratings": {
+    "observability_defect_confirmed": "HIGH (Direct committed code inspection in arpipe/fetch.py and arpipe/cli.py)",
+    "client_configuration_asymmetry_ruled_out": "HIGH (Controlled paired experimental trial across all 10 sample observations)",
+    "file_format_and_validation_ruled_out": "HIGH (Direct byte inspection, magic byte verification, and qpdf validation across 50 successful responses)",
+    "current_time_varying_access_behavior": "MEDIUM (Observed across multi-session trajectory today, but stable success observed in P-C0R window)",
+    "historical_acquisition_cause_identification": "LOW (Historical execution evidence is completely absent; invocation remains UNKNOWN)"
+  },
+  "part15_stop_rule_compliance": {
+    "all_3_repeated_attempts_complete": true,
+    "all_predeclared_ab_comparisons_complete": true,
+    "no_urls_added": true,
+    "no_attempts_added": true,
+    "no_timing_changed": true,
+    "no_production_code_modified": true,
+    "stopped_immediately_after_pilot": true
+  },
+  "part16_minimal_next_repair_test": {
+    "description": "Minimal additive patch to arpipe/fetch.py implementing structured JSONL failure persistence for fetch_one().",
+    "details": "Record timestamp_utc, company_id, fy_end, source, url, attempt_number, error_type, status_code, and error_message to a structured failure store. Fix silent fallthrough on exhausted 403/429/503. Test in a separate worktree on a small frozen subset without modifying acquisition parameters.",
+    "implementation_state": "DEFINED ONLY — NOT IMPLEMENTED HERE per task scope."
+  },
+  "final_verdict": "NO REPRODUCIBLE CURRENT FAILURE — HISTORICAL CAUSE REMAINS UNKNOWN"
+}
+

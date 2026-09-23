@@ -1,0 +1,132 @@
+{
+  "task": "P-C0R: Instrumented Acquisition Resolution Pilot - Part 2 Frozen Request Configuration",
+  "mode": "DIAGNOSTIC / EXPERIMENT ONLY",
+  "frozen_at_utc": "2026-09-17T14:33:00Z",
+  "frozen_at_local": "2026-09-17T20:03:00+05:30",
+  "frozen_before_first_request": true,
+  "no_configuration_change_during_experiment": true,
+  "common_environment": {
+    "http_library": "httpx",
+    "http_library_version": "0.28.1",
+    "python_version": "3.14.3",
+    "method": "GET",
+    "user_agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36",
+    "user_agent_source": "verbatim copy of discover.UA (used by cmd_fetch and discover)",
+    "timeout_total_seconds": 120.0,
+    "timeout_connect_seconds": 30.0,
+    "timeout_read_seconds": 120.0,
+    "timeout_write_seconds": 30.0,
+    "timeout_pool_seconds": 30.0,
+    "follow_redirects": true,
+    "max_redirects": 20,
+    "proxy_behavior": "none (direct connection, no HTTP_PROXY / HTTPS_PROXY environment variables applied)",
+    "tls_configuration": "default SSLContext using system CA certificates (Windows Schannel / Python ssl default)",
+    "http_version": "HTTP/1.1",
+    "local_timezone": "Asia/Kolkata (IST, UTC+05:30)",
+    "test_host_environment": "Windows 11 host at IIT Kanpur, direct campus network connection (ns2.iitk.ac.in DNS)"
+  },
+  "part5_fixed_repeated_request_arm": {
+    "description": "Fixed repeated-request arm testing current time-varying access conditions on all 10 sample observations under identical request configuration (Arm B equivalent)",
+    "attempts_per_url": 3,
+    "client_arm_used": "ARM B (fetch-client-equivalent)",
+    "client_configuration": {
+      "headers": {
+        "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36"
+      },
+      "cookies_session_behavior": "none (fresh client instance per observation/attempt, empty cookie jar, no prior cookies seeded)"
+    },
+    "scheduled_timestamps": {
+      "attempt_1_t0": {
+        "scheduled_time_utc": "2026-09-17T14:40:00Z",
+        "scheduled_time_local": "2026-09-17T20:10:00+05:30",
+        "relative_offset_minutes": 0
+      },
+      "attempt_2_t20": {
+        "scheduled_time_utc": "2026-09-17T15:00:00Z",
+        "scheduled_time_local": "2026-09-17T20:30:00+05:30",
+        "relative_offset_minutes": 20
+      },
+      "attempt_3_t40": {
+        "scheduled_time_utc": "2026-09-17T15:20:00Z",
+        "scheduled_time_local": "2026-09-17T20:50:00+05:30",
+        "relative_offset_minutes": 40
+      }
+    }
+  },
+  "part6_controlled_client_comparison_arm": {
+    "description": "Controlled A/B client comparison testing discovery-client-equivalent (Arm A) vs fetch-client-equivalent (Arm B) with alternating execution order across paired observations",
+    "scheduled_timestamp": {
+      "scheduled_time_utc": "2026-09-17T14:50:00Z",
+      "scheduled_time_local": "2026-09-17T20:20:00+05:30",
+      "relative_offset_minutes": 10
+    },
+    "arms": {
+      "ARM_A": {
+        "name": "discovery-client-equivalent",
+        "cookie_seeding": "2 sequential GET requests to https://www.nseindia.com and https://www.nseindia.com/companies-listing/corporate-filings-annual-reports, reusing the resulting cookie jar for the target request (verbatim discover.nse_session() logic)",
+        "headers": {
+          "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36",
+          "Accept": "application/json, text/plain, */*",
+          "Accept-Language": "en-US,en;q=0.9",
+          "Referer": "https://www.nseindia.com/companies-listing/corporate-filings-annual-reports"
+        },
+        "timeout_seconds": 120.0,
+        "follow_redirects": true
+      },
+      "ARM_B": {
+        "name": "fetch-client-equivalent",
+        "cookie_seeding": "none (fresh client instance, empty cookie jar, unseeded)",
+        "headers": {
+          "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36"
+        },
+        "timeout_seconds": 120.0,
+        "follow_redirects": true
+      }
+    },
+    "predeclared_order_alternation": [
+      { "sample_index": 1, "observation_id": "INE002A01018::FY2010", "arm_order": "A_then_B" },
+      { "sample_index": 2, "observation_id": "INE040A01034::FY2014", "arm_order": "B_then_A" },
+      { "sample_index": 3, "observation_id": "INE081A01020::FY2016", "arm_order": "A_then_B" },
+      { "sample_index": 4, "observation_id": "INE171A01029::FY2021", "arm_order": "B_then_A" },
+      { "sample_index": 5, "observation_id": "INE226A01021::FY2022", "arm_order": "A_then_B" },
+      { "sample_index": 6, "observation_id": "INE002A01018::FY2012", "arm_order": "B_then_A" },
+      { "sample_index": 7, "observation_id": "INE009A01021::FY2013", "arm_order": "A_then_B" },
+      { "sample_index": 8, "observation_id": "INE040A01034::FY2017", "arm_order": "B_then_A" },
+      { "sample_index": 9, "observation_id": "INE044A01036::FY2018", "arm_order": "A_then_B" },
+      { "sample_index": 10, "observation_id": "INE081A01020::FY2024", "arm_order": "B_then_A" }
+    ]
+  },
+  "part3_response_and_secret_handling": {
+    "safe_headers_captured": [
+      "Date", "Retry-After", "Age", "Via", "Server", "X-Request-ID", "Akamai-GRN",
+      "Cache-Control", "Expires", "ETag", "Last-Modified", "Content-Length", "Content-Type"
+    ],
+    "forbidden_headers_redacted_or_omitted": [
+      "Authorization", "Cookie", "Set-Cookie", "API keys", "tokens", "credentials", "signed URLs"
+    ],
+    "body_storage_rules": {
+      "binary_content": "Store SHA-256(body[:500]) + total size in bytes + declared Content-Type only; no raw binary bodies persisted",
+      "html_or_plaintext": "Store sanitized first 200 characters (strip tags/scripts/sensitive tokens) + SHA-256(body[:500])"
+    }
+  },
+  "part4_layered_instrumentation": {
+    "layers": [
+      "L0 DNS", "L1 TCP/connect", "L2 TLS", "L3 HTTP response", "L4 artifact receipt", "L5 artifact classification", "L6 artifact validation"
+    ],
+    "first_failure_layer_taxonomy": [
+      "DNS_FAILURE", "CONNECT_FAILURE", "TLS_FAILURE", "HTTP_ERROR", "REDIRECT_FAILURE",
+      "CONTENT_TYPE_MISMATCH", "ARTIFACT_TRUNCATED", "VALIDATION_FAILURE", "OTHER_ERROR", "NONE"
+    ],
+    "terminal_state_taxonomy": [
+      "SUCCESS_PDF", "SUCCESS_ZIP", "HTTP_ERROR", "CONNECTION_ERROR", "TIMEOUT", "RESET",
+      "REDIRECT_FAILURE", "UNEXPECTED_CONTENT", "VALIDATION_FAILURE", "OTHER_ERROR"
+    ]
+  },
+  "part10_acquisition_state_machine": {
+    "states": [
+      "DISCOVERY_ONLY", "FETCH_STARTED", "RESPONSE_RECEIVED", "ARTIFACT_RECEIVED",
+      "ARTIFACT_VALIDATED", "DOWNLOAD_SUCCESS", "DOWNLOAD_FAILED"
+    ]
+  }
+}
+
