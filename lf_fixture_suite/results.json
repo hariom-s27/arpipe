@@ -1,0 +1,999 @@
+{
+ "pymupdf": "1.28.2",
+ "results": [
+  {
+   "fixture": "F00_clean",
+   "arpipe_kind": "digital",
+   "arpipe_route": "NATIVE_READ",
+   "arpipe_mojibake_ratio": 0.0,
+   "arpipe_script": "latin",
+   "n_chars": 818,
+   "pua_chars": 0,
+   "fffd_chars_no_cid_flag": 0,
+   "dict_hit_rate": 1.0,
+   "cer_native_pymupdf": 0.0,
+   "cer_pdfminer": 0.0,
+   "cer_pypdf": 0.979,
+   "pdfminer_cid_tokens": 0,
+   "sample_pymupdf": "Management Discussion and Analysis. The Company operates in ",
+   "sample_pdfminer": "Management Discussion and Analysis. The Company operates in ",
+   "ocr_lang": "eng",
+   "cer_ocr_tesseract": 0.0,
+   "cer_R1_embedded_cmap": "ERR KeyError",
+   "cer_R3_blind_legacy_table": 0.517,
+   "fonts": [
+    {
+     "font": "/RQINMN+DejaVu Sans Book",
+     "tounicode_present": true,
+     "used_codes": 43,
+     "tounicode_covers_used": 1.0,
+     "tounicode_vs_embedded_cmap_agree": 0.0,
+     "glyphname_vs_tounicode_agree": 0.186,
+     "embedded_cmap_entries": 0,
+     "embedded_tables": [
+      "GlyphOrder",
+      "OS/2",
+      "cvt ",
+      "fpgm",
+      "glyf",
+      "head",
+      "hhea",
+      "hmtx",
+      "loca",
+      "maxp",
+      "name",
+      "prep"
+     ],
+     "sample_glyph_names": [
+      "glyph00003",
+      "glyph00015",
+      "glyph00017",
+      "glyph00019",
+      "glyph00020",
+      "glyph00021"
+     ]
+    }
+   ],
+   "font_level_flags": {
+    "DejaVu Sans Book": {
+     "chars": 818,
+     "junk_ratio": 0.0,
+     "lexicon_hit": 1.0,
+     "flag": false
+    }
+   },
+   "font_level_any_flag": false
+  },
+  {
+   "fixture": "F00b_clean_fullfont",
+   "arpipe_kind": "digital",
+   "arpipe_route": "NATIVE_READ",
+   "arpipe_mojibake_ratio": 0.0,
+   "arpipe_script": "latin",
+   "n_chars": 818,
+   "pua_chars": 0,
+   "fffd_chars_no_cid_flag": 0,
+   "dict_hit_rate": 1.0,
+   "cer_native_pymupdf": 0.0,
+   "cer_pdfminer": 0.0,
+   "cer_pypdf": 0.979,
+   "pdfminer_cid_tokens": 0,
+   "sample_pymupdf": "Management Discussion and Analysis. The Company operates in ",
+   "sample_pdfminer": "Management Discussion and Analysis. The Company operates in ",
+   "ocr_lang": "eng",
+   "cer_ocr_tesseract": 0.0,
+   "cer_R1_embedded_cmap": 0.0,
+   "cer_R3_blind_legacy_table": 0.517,
+   "fonts": [
+    {
+     "font": "/DejaVu Sans Book",
+     "tounicode_present": true,
+     "used_codes": 43,
+     "tounicode_covers_used": 1.0,
+     "tounicode_vs_embedded_cmap_agree": 1.0,
+     "glyphname_vs_tounicode_agree": 1.0,
+     "embedded_cmap_entries": 5918,
+     "embedded_tables": [
+      "FFTM",
+      "GDEF",
+      "GPOS",
+      "GSUB",
+      "GlyphOrder",
+      "MATH",
+      "OS/2",
+      "cmap",
+      "cvt ",
+      "fpgm",
+      "gasp",
+      "glyf",
+      "head",
+      "hhea",
+      "hmtx",
+      "kern",
+      "loca",
+      "maxp",
+      "name",
+      "post",
+      "prep"
+     ],
+     "sample_glyph_names": [
+      "comma",
+      "one",
+      "period",
+      "space",
+      "two",
+      "zero"
+     ]
+    }
+   ],
+   "font_level_flags": {
+    "DejaVuSans": {
+     "chars": 818,
+     "junk_ratio": 0.0,
+     "lexicon_hit": 1.0,
+     "flag": false
+    }
+   },
+   "font_level_any_flag": false
+  },
+  {
+   "fixture": "F01_missing_tounicode_subset",
+   "arpipe_kind": "broken_text",
+   "arpipe_route": "OCR",
+   "arpipe_mojibake_ratio": 0.15629,
+   "arpipe_script": "latin",
+   "n_chars": 818,
+   "pua_chars": 0,
+   "fffd_chars_no_cid_flag": 809,
+   "dict_hit_rate": 0.01,
+   "cer_native_pymupdf": 0.989,
+   "cer_pdfminer": 7.643,
+   "cer_pypdf": 0.917,
+   "pdfminer_cid_tokens": 809,
+   "sample_pymupdf": "0DQDJHPHQW\u0003'LVFXVVLRQ\u0003DQG\u0003$QDO\\VLV\u0011\u00037KH\u0003&RPSDQ\\\u0003RSHUDWHV\u0003LQ\u0003",
+   "sample_pdfminer": "(cid:48)(cid:68)(cid:81)(cid:68)(cid:74)(cid:72)(cid:80)(cid",
+   "ocr_lang": "eng",
+   "cer_ocr_tesseract": 0.0,
+   "cer_R1_embedded_cmap": "ERR KeyError",
+   "cer_R3_blind_legacy_table": 0.989,
+   "fonts": [
+    {
+     "font": "/RQINMN+DejaVu Sans Book",
+     "tounicode_present": false,
+     "used_codes": 43,
+     "tounicode_covers_used": null,
+     "tounicode_vs_embedded_cmap_agree": null,
+     "glyphname_vs_tounicode_agree": null,
+     "embedded_cmap_entries": 0,
+     "embedded_tables": [
+      "GlyphOrder",
+      "OS/2",
+      "cvt ",
+      "fpgm",
+      "glyf",
+      "head",
+      "hhea",
+      "hmtx",
+      "loca",
+      "maxp",
+      "name",
+      "prep"
+     ],
+     "sample_glyph_names": [
+      "glyph00003",
+      "glyph00015",
+      "glyph00017",
+      "glyph00019",
+      "glyph00020",
+      "glyph00021"
+     ]
+    }
+   ],
+   "font_level_flags": {
+    "DejaVu Sans Book": {
+     "chars": 818,
+     "junk_ratio": 0.156,
+     "lexicon_hit": 0.01,
+     "flag": true
+    }
+   },
+   "font_level_any_flag": true
+  },
+  {
+   "fixture": "F02_missing_tounicode_fullfont",
+   "arpipe_kind": "broken_text",
+   "arpipe_route": "OCR",
+   "arpipe_mojibake_ratio": 0.15629,
+   "arpipe_script": "latin",
+   "n_chars": 818,
+   "pua_chars": 0,
+   "fffd_chars_no_cid_flag": 809,
+   "dict_hit_rate": 0.01,
+   "cer_native_pymupdf": 0.989,
+   "cer_pdfminer": 0.984,
+   "cer_pypdf": 0.917,
+   "pdfminer_cid_tokens": 0,
+   "sample_pymupdf": "0DQDJHPHQW\u0003'LVFXVVLRQ\u0003DQG\u0003$QDO\\VLV\u0011\u00037KH\u0003&RPSDQ\\\u0003RSHUDWHV\u0003LQ\u0003",
+   "sample_pdfminer": "ERR ('Unhandled', 12)",
+   "ocr_lang": "eng",
+   "cer_ocr_tesseract": 0.0,
+   "cer_R1_embedded_cmap": 0.0,
+   "cer_R3_blind_legacy_table": 0.989,
+   "fonts": [
+    {
+     "font": "/DejaVu Sans Book",
+     "tounicode_present": false,
+     "used_codes": 43,
+     "tounicode_covers_used": null,
+     "tounicode_vs_embedded_cmap_agree": null,
+     "glyphname_vs_tounicode_agree": null,
+     "embedded_cmap_entries": 5918,
+     "embedded_tables": [
+      "FFTM",
+      "GDEF",
+      "GPOS",
+      "GSUB",
+      "GlyphOrder",
+      "MATH",
+      "OS/2",
+      "cmap",
+      "cvt ",
+      "fpgm",
+      "gasp",
+      "glyf",
+      "head",
+      "hhea",
+      "hmtx",
+      "kern",
+      "loca",
+      "maxp",
+      "name",
+      "post",
+      "prep"
+     ],
+     "sample_glyph_names": [
+      "comma",
+      "one",
+      "period",
+      "space",
+      "two",
+      "zero"
+     ]
+    }
+   ],
+   "font_level_flags": {
+    "DejaVuSans": {
+     "chars": 818,
+     "junk_ratio": 0.156,
+     "lexicon_hit": 0.01,
+     "flag": true
+    }
+   },
+   "font_level_any_flag": true
+  },
+  {
+   "fixture": "F03_wrong_tounicode_shift",
+   "arpipe_kind": "digital",
+   "arpipe_route": "NATIVE_READ",
+   "arpipe_mojibake_ratio": 0.0,
+   "arpipe_script": "latin",
+   "n_chars": 818,
+   "pua_chars": 0,
+   "fffd_chars_no_cid_flag": 0,
+   "dict_hit_rate": 0.01,
+   "cer_native_pymupdf": 0.828,
+   "cer_pdfminer": 0.828,
+   "cer_pypdf": 0.828,
+   "pdfminer_cid_tokens": 0,
+   "sample_pymupdf": "Pdqdjhphqw Glvfxvvlrq dqg Dqdobvlv. Wkh Frpsdqb rshudwhv lq ",
+   "sample_pdfminer": "Pdqdjhphqw Glvfxvvlrq dqg Dqdobvlv. Wkh Frpsdqb rshudwhv lq ",
+   "ocr_lang": "eng",
+   "cer_ocr_tesseract": 0.0,
+   "cer_R1_embedded_cmap": "ERR KeyError",
+   "cer_R3_blind_legacy_table": 0.831,
+   "fonts": [
+    {
+     "font": "/RQINMN+DejaVu Sans Book",
+     "tounicode_present": true,
+     "used_codes": 43,
+     "tounicode_covers_used": 1.0,
+     "tounicode_vs_embedded_cmap_agree": 0.0,
+     "glyphname_vs_tounicode_agree": 0.186,
+     "embedded_cmap_entries": 0,
+     "embedded_tables": [
+      "GlyphOrder",
+      "OS/2",
+      "cvt ",
+      "fpgm",
+      "glyf",
+      "head",
+      "hhea",
+      "hmtx",
+      "loca",
+      "maxp",
+      "name",
+      "prep"
+     ],
+     "sample_glyph_names": [
+      "glyph00003",
+      "glyph00015",
+      "glyph00017",
+      "glyph00019",
+      "glyph00020",
+      "glyph00021"
+     ]
+    }
+   ],
+   "font_level_flags": {
+    "DejaVu Sans Book": {
+     "chars": 818,
+     "junk_ratio": 0.0,
+     "lexicon_hit": 0.01,
+     "flag": true
+    }
+   },
+   "font_level_any_flag": true
+  },
+  {
+   "fixture": "F03b_wrong_tounicode_fullfont",
+   "arpipe_kind": "digital",
+   "arpipe_route": "NATIVE_READ",
+   "arpipe_mojibake_ratio": 0.0,
+   "arpipe_script": "latin",
+   "n_chars": 818,
+   "pua_chars": 0,
+   "fffd_chars_no_cid_flag": 0,
+   "dict_hit_rate": 0.01,
+   "cer_native_pymupdf": 0.828,
+   "cer_pdfminer": 0.828,
+   "cer_pypdf": 0.828,
+   "pdfminer_cid_tokens": 0,
+   "sample_pymupdf": "Pdqdjhphqw Glvfxvvlrq dqg Dqdobvlv. Wkh Frpsdqb rshudwhv lq ",
+   "sample_pdfminer": "Pdqdjhphqw Glvfxvvlrq dqg Dqdobvlv. Wkh Frpsdqb rshudwhv lq ",
+   "ocr_lang": "eng",
+   "cer_ocr_tesseract": 0.0,
+   "cer_R1_embedded_cmap": 0.0,
+   "cer_R3_blind_legacy_table": 0.831,
+   "fonts": [
+    {
+     "font": "/DejaVu Sans Book",
+     "tounicode_present": true,
+     "used_codes": 43,
+     "tounicode_covers_used": 1.0,
+     "tounicode_vs_embedded_cmap_agree": 0.186,
+     "glyphname_vs_tounicode_agree": 0.186,
+     "embedded_cmap_entries": 5918,
+     "embedded_tables": [
+      "FFTM",
+      "GDEF",
+      "GPOS",
+      "GSUB",
+      "GlyphOrder",
+      "MATH",
+      "OS/2",
+      "cmap",
+      "cvt ",
+      "fpgm",
+      "gasp",
+      "glyf",
+      "head",
+      "hhea",
+      "hmtx",
+      "kern",
+      "loca",
+      "maxp",
+      "name",
+      "post",
+      "prep"
+     ],
+     "sample_glyph_names": [
+      "comma",
+      "one",
+      "period",
+      "space",
+      "two",
+      "zero"
+     ]
+    }
+   ],
+   "font_level_flags": {
+    "DejaVuSans": {
+     "chars": 818,
+     "junk_ratio": 0.0,
+     "lexicon_hit": 0.01,
+     "flag": true
+    }
+   },
+   "font_level_any_flag": true
+  },
+  {
+   "fixture": "F04_pua_tounicode",
+   "arpipe_kind": "digital",
+   "arpipe_route": "NATIVE_READ",
+   "arpipe_mojibake_ratio": 0.0,
+   "arpipe_script": "unknown",
+   "n_chars": 818,
+   "pua_chars": 809,
+   "fffd_chars_no_cid_flag": 0,
+   "dict_hit_rate": null,
+   "cer_native_pymupdf": 0.989,
+   "cer_pdfminer": 0.989,
+   "cer_pypdf": 0.989,
+   "pdfminer_cid_tokens": 0,
+   "sample_pymupdf": "",
+   "sample_pdfminer": "",
+   "ocr_lang": "eng",
+   "cer_ocr_tesseract": 0.0,
+   "cer_R1_embedded_cmap": "ERR KeyError",
+   "cer_R3_blind_legacy_table": 0.989,
+   "fonts": [
+    {
+     "font": "/RQINMN+DejaVu Sans Book",
+     "tounicode_present": true,
+     "used_codes": 43,
+     "tounicode_covers_used": 1.0,
+     "tounicode_vs_embedded_cmap_agree": 0.0,
+     "glyphname_vs_tounicode_agree": 1.0,
+     "embedded_cmap_entries": 0,
+     "embedded_tables": [
+      "GlyphOrder",
+      "OS/2",
+      "cvt ",
+      "fpgm",
+      "glyf",
+      "head",
+      "hhea",
+      "hmtx",
+      "loca",
+      "maxp",
+      "name",
+      "prep"
+     ],
+     "sample_glyph_names": [
+      "glyph00003",
+      "glyph00015",
+      "glyph00017",
+      "glyph00019",
+      "glyph00020",
+      "glyph00021"
+     ]
+    }
+   ],
+   "font_level_flags": {
+    "DejaVu Sans Book": {
+     "chars": 818,
+     "junk_ratio": 0.989,
+     "lexicon_hit": null,
+     "flag": true
+    }
+   },
+   "font_level_any_flag": true
+  },
+  {
+   "fixture": "F05_ascii_slot_legacy_deva",
+   "arpipe_kind": "digital",
+   "arpipe_route": "NATIVE_READ",
+   "arpipe_mojibake_ratio": 0.0,
+   "arpipe_script": "latin",
+   "n_chars": 377,
+   "pua_chars": 0,
+   "fffd_chars_no_cid_flag": 0,
+   "dict_hit_rate": 0.2,
+   "cer_native_pymupdf": 0.716,
+   "cer_pdfminer": 0.716,
+   "cer_pypdf": 0.995,
+   "pdfminer_cid_tokens": 0,
+   "sample_pymupdf": "ljkaj uek dmu kbe ita exj lmu uxj goa jat ljkaj uek dmu kbe ",
+   "sample_pdfminer": "ljkaj uek dmu kbe ita exj lmu uxj goa jat ljkaj uek dmu kbe ",
+   "ocr_lang": "hin+eng",
+   "cer_ocr_tesseract": 0.093,
+   "cer_R1_embedded_cmap": "ERR KeyError",
+   "cer_R3_blind_legacy_table": 0.0,
+   "fonts": [
+    {
+     "font": "/SBQJLI+SlotDevaDemo Regular",
+     "tounicode_present": true,
+     "used_codes": 15,
+     "tounicode_covers_used": 1.0,
+     "tounicode_vs_embedded_cmap_agree": 0.0,
+     "glyphname_vs_tounicode_agree": 0.067,
+     "embedded_cmap_entries": 0,
+     "embedded_tables": [
+      "GlyphOrder",
+      "OS/2",
+      "cvt ",
+      "fpgm",
+      "glyf",
+      "head",
+      "hhea",
+      "hmtx",
+      "loca",
+      "maxp",
+      "name",
+      "prep"
+     ],
+     "sample_glyph_names": [
+      "glyph00004",
+      "glyph01888",
+      "glyph01890",
+      "glyph01892",
+      "glyph01894",
+      "glyph01898"
+     ]
+    }
+   ],
+   "font_level_flags": {
+    "SlotDevaDemo Regular": {
+     "chars": 377,
+     "junk_ratio": 0.0,
+     "lexicon_hit": 0.2,
+     "flag": true
+    }
+   },
+   "font_level_any_flag": true
+  },
+  {
+   "fixture": "F06_mixed_heading_missing_tu",
+   "arpipe_kind": "digital",
+   "arpipe_route": "NATIVE_READ",
+   "arpipe_mojibake_ratio": 0.00465,
+   "arpipe_script": "latin",
+   "n_chars": 860,
+   "pua_chars": 0,
+   "fffd_chars_no_cid_flag": 41,
+   "dict_hit_rate": 1.0,
+   "cer_native_pymupdf": 0.048,
+   "cer_pdfminer": 0.377,
+   "cer_pypdf": 0.978,
+   "pdfminer_cid_tokens": 41,
+   "sample_pymupdf": "1%2%+)1)28\u0004(-7'977-32\u0004%2(\u0004%2%0=7-7\u00046)4368\nManagement Discuss",
+   "sample_pdfminer": "(cid:49)(cid:37)(cid:50)(cid:37)(cid:43)(cid:41)(cid:49)(cid",
+   "ocr_lang": "eng",
+   "cer_ocr_tesseract": 0.0,
+   "cer_R1_embedded_cmap": "ERR KeyError",
+   "cer_R3_blind_legacy_table": 0.54,
+   "fonts": [
+    {
+     "font": "/RQINMN+DejaVu Sans Book",
+     "tounicode_present": true,
+     "used_codes": 43,
+     "tounicode_covers_used": 1.0,
+     "tounicode_vs_embedded_cmap_agree": 0.0,
+     "glyphname_vs_tounicode_agree": 0.186,
+     "embedded_cmap_entries": 0,
+     "embedded_tables": [
+      "GlyphOrder",
+      "OS/2",
+      "cvt ",
+      "fpgm",
+      "glyf",
+      "head",
+      "hhea",
+      "hmtx",
+      "loca",
+      "maxp",
+      "name",
+      "prep"
+     ],
+     "sample_glyph_names": [
+      "glyph00003",
+      "glyph00015",
+      "glyph00017",
+      "glyph00019",
+      "glyph00020",
+      "glyph00021"
+     ]
+    },
+    {
+     "font": "/BAMDYA+FreeSerif Regular",
+     "tounicode_present": false,
+     "used_codes": 17,
+     "tounicode_covers_used": null,
+     "tounicode_vs_embedded_cmap_agree": null,
+     "glyphname_vs_tounicode_agree": null,
+     "embedded_cmap_entries": 0,
+     "embedded_tables": [
+      "GlyphOrder",
+      "OS/2",
+      "cvt ",
+      "fpgm",
+      "glyf",
+      "head",
+      "hhea",
+      "hmtx",
+      "loca",
+      "maxp",
+      "name",
+      "prep"
+     ],
+     "sample_glyph_names": [
+      "glyph00004",
+      "glyph00037",
+      "glyph00039",
+      "glyph00040",
+      "glyph00041",
+      "glyph00043"
+     ]
+    }
+   ],
+   "font_level_flags": {
+    "FreeSerif Regular": {
+     "chars": 41,
+     "junk_ratio": 0.098,
+     "lexicon_hit": null,
+     "flag": true
+    },
+    "DejaVu Sans Book": {
+     "chars": 818,
+     "junk_ratio": 0.0,
+     "lexicon_hit": 1.0,
+     "flag": false
+    }
+   },
+   "font_level_any_flag": true
+  },
+  {
+   "fixture": "F07_mixed_heading_wrong_tu",
+   "arpipe_kind": "digital",
+   "arpipe_route": "NATIVE_READ",
+   "arpipe_mojibake_ratio": 0.0,
+   "arpipe_script": "latin",
+   "n_chars": 860,
+   "pua_chars": 0,
+   "fffd_chars_no_cid_flag": 0,
+   "dict_hit_rate": 0.952,
+   "cer_native_pymupdf": 0.043,
+   "cer_pdfminer": 0.043,
+   "cer_pypdf": 0.978,
+   "pdfminer_cid_tokens": 0,
+   "sample_pymupdf": "PDQDJHPHQW GLVFXVVLRQ DQG DQDOBVLV UHSRUW\nManagement Discuss",
+   "sample_pdfminer": "PDQDJHPHQW GLVFXVVLRQ DQG DQDOBVLV UHSRUW\n\nManagement Discus",
+   "ocr_lang": "eng",
+   "cer_ocr_tesseract": 0.0,
+   "cer_R1_embedded_cmap": "ERR KeyError",
+   "cer_R3_blind_legacy_table": 0.535,
+   "fonts": [
+    {
+     "font": "/RQINMN+DejaVu Sans Book",
+     "tounicode_present": true,
+     "used_codes": 43,
+     "tounicode_covers_used": 1.0,
+     "tounicode_vs_embedded_cmap_agree": 0.0,
+     "glyphname_vs_tounicode_agree": 0.186,
+     "embedded_cmap_entries": 0,
+     "embedded_tables": [
+      "GlyphOrder",
+      "OS/2",
+      "cvt ",
+      "fpgm",
+      "glyf",
+      "head",
+      "hhea",
+      "hmtx",
+      "loca",
+      "maxp",
+      "name",
+      "prep"
+     ],
+     "sample_glyph_names": [
+      "glyph00003",
+      "glyph00015",
+      "glyph00017",
+      "glyph00019",
+      "glyph00020",
+      "glyph00021"
+     ]
+    },
+    {
+     "font": "/BAMDYA+FreeSerif Regular",
+     "tounicode_present": true,
+     "used_codes": 17,
+     "tounicode_covers_used": 1.0,
+     "tounicode_vs_embedded_cmap_agree": 0.0,
+     "glyphname_vs_tounicode_agree": 0.059,
+     "embedded_cmap_entries": 0,
+     "embedded_tables": [
+      "GlyphOrder",
+      "OS/2",
+      "cvt ",
+      "fpgm",
+      "glyf",
+      "head",
+      "hhea",
+      "hmtx",
+      "loca",
+      "maxp",
+      "name",
+      "prep"
+     ],
+     "sample_glyph_names": [
+      "glyph00004",
+      "glyph00037",
+      "glyph00039",
+      "glyph00040",
+      "glyph00041",
+      "glyph00043"
+     ]
+    }
+   ],
+   "font_level_flags": {
+    "FreeSerif Regular": {
+     "chars": 41,
+     "junk_ratio": 0.0,
+     "lexicon_hit": 0.0,
+     "flag": true
+    },
+    "DejaVu Sans Book": {
+     "chars": 818,
+     "junk_ratio": 0.0,
+     "lexicon_hit": 1.0,
+     "flag": false
+    }
+   },
+   "font_level_any_flag": true
+  },
+  {
+   "fixture": "F08_mixed_heading_legacy_slot",
+   "arpipe_kind": "digital",
+   "arpipe_route": "NATIVE_READ",
+   "arpipe_mojibake_ratio": 0.0,
+   "arpipe_script": "latin",
+   "n_chars": 836,
+   "pua_chars": 0,
+   "fffd_chars_no_cid_flag": 0,
+   "dict_hit_rate": 0.971,
+   "cer_native_pymupdf": 0.016,
+   "cer_pdfminer": 0.016,
+   "cer_pypdf": 0.98,
+   "pdfminer_cid_tokens": 0,
+   "sample_pymupdf": "ljkaj dmu kbe ita\nManagement Discussion and Analysis. The Co",
+   "sample_pdfminer": "ljkaj dmu kbe ita\n\nManagement Discussion and Analysis. The C",
+   "ocr_lang": "hin+eng",
+   "cer_ocr_tesseract": 0.004,
+   "cer_R1_embedded_cmap": "ERR KeyError",
+   "cer_R3_blind_legacy_table": 0.506,
+   "fonts": [
+    {
+     "font": "/RQINMN+DejaVu Sans Book",
+     "tounicode_present": true,
+     "used_codes": 43,
+     "tounicode_covers_used": 1.0,
+     "tounicode_vs_embedded_cmap_agree": 0.0,
+     "glyphname_vs_tounicode_agree": 0.186,
+     "embedded_cmap_entries": 0,
+     "embedded_tables": [
+      "GlyphOrder",
+      "OS/2",
+      "cvt ",
+      "fpgm",
+      "glyf",
+      "head",
+      "hhea",
+      "hmtx",
+      "loca",
+      "maxp",
+      "name",
+      "prep"
+     ],
+     "sample_glyph_names": [
+      "glyph00003",
+      "glyph00015",
+      "glyph00017",
+      "glyph00019",
+      "glyph00020",
+      "glyph00021"
+     ]
+    },
+    {
+     "font": "/ZWIUUJ+SlotDevaDemo Regular",
+     "tounicode_present": true,
+     "used_codes": 12,
+     "tounicode_covers_used": 1.0,
+     "tounicode_vs_embedded_cmap_agree": 0.0,
+     "glyphname_vs_tounicode_agree": 0.083,
+     "embedded_cmap_entries": 0,
+     "embedded_tables": [
+      "GlyphOrder",
+      "OS/2",
+      "cvt ",
+      "fpgm",
+      "glyf",
+      "head",
+      "hhea",
+      "hmtx",
+      "loca",
+      "maxp",
+      "name",
+      "prep"
+     ],
+     "sample_glyph_names": [
+      "glyph00004",
+      "glyph01888",
+      "glyph01890",
+      "glyph01892",
+      "glyph01894",
+      "glyph01898"
+     ]
+    }
+   ],
+   "font_level_flags": {
+    "SlotDevaDemo Regular": {
+     "chars": 17,
+     "junk_ratio": 0.0,
+     "lexicon_hit": 0.25,
+     "flag": true
+    },
+    "DejaVu Sans Book": {
+     "chars": 818,
+     "junk_ratio": 0.0,
+     "lexicon_hit": 1.0,
+     "flag": false
+    }
+   },
+   "font_level_any_flag": true
+  },
+  {
+   "fixture": "F09_bilingual_half_legacy",
+   "arpipe_kind": "digital",
+   "arpipe_route": "NATIVE_READ",
+   "arpipe_mojibake_ratio": 0.0,
+   "arpipe_script": "latin",
+   "n_chars": 998,
+   "pua_chars": 0,
+   "fffd_chars_no_cid_flag": 0,
+   "dict_hit_rate": 0.566,
+   "cer_native_pymupdf": 0.271,
+   "cer_pdfminer": 0.271,
+   "cer_pypdf": 0.983,
+   "pdfminer_cid_tokens": 0,
+   "sample_pymupdf": "Management Discussion and Analysis. The Company operates in ",
+   "sample_pdfminer": "Management Discussion and Analysis. The Company operates in ",
+   "ocr_lang": "hin+eng",
+   "cer_ocr_tesseract": 0.036,
+   "cer_R1_embedded_cmap": "ERR KeyError",
+   "cer_R3_blind_legacy_table": 0.319,
+   "fonts": [
+    {
+     "font": "/MTNJKR+DejaVu Sans Book",
+     "tounicode_present": true,
+     "used_codes": 39,
+     "tounicode_covers_used": 1.0,
+     "tounicode_vs_embedded_cmap_agree": 0.0,
+     "glyphname_vs_tounicode_agree": 0.154,
+     "embedded_cmap_entries": 0,
+     "embedded_tables": [
+      "GlyphOrder",
+      "OS/2",
+      "cvt ",
+      "fpgm",
+      "glyf",
+      "head",
+      "hhea",
+      "hmtx",
+      "loca",
+      "maxp",
+      "name",
+      "prep"
+     ],
+     "sample_glyph_names": [
+      "glyph00003",
+      "glyph00015",
+      "glyph00017",
+      "glyph00020",
+      "glyph00021",
+      "glyph00023"
+     ]
+    },
+    {
+     "font": "/SBQJLI+SlotDevaDemo Regular",
+     "tounicode_present": true,
+     "used_codes": 15,
+     "tounicode_covers_used": 1.0,
+     "tounicode_vs_embedded_cmap_agree": 0.0,
+     "glyphname_vs_tounicode_agree": 0.067,
+     "embedded_cmap_entries": 0,
+     "embedded_tables": [
+      "GlyphOrder",
+      "OS/2",
+      "cvt ",
+      "fpgm",
+      "glyf",
+      "head",
+      "hhea",
+      "hmtx",
+      "loca",
+      "maxp",
+      "name",
+      "prep"
+     ],
+     "sample_glyph_names": [
+      "glyph00004",
+      "glyph01888",
+      "glyph01890",
+      "glyph01892",
+      "glyph01894",
+      "glyph01898"
+     ]
+    }
+   ],
+   "font_level_flags": {
+    "DejaVu Sans Book": {
+     "chars": 620,
+     "junk_ratio": 0.0,
+     "lexicon_hit": 1.0,
+     "flag": false
+    },
+    "SlotDevaDemo Regular": {
+     "chars": 377,
+     "junk_ratio": 0.0,
+     "lexicon_hit": 0.2,
+     "flag": true
+    }
+   },
+   "font_level_any_flag": true
+  },
+  {
+   "fixture": "F10_image_plus_wrong_invisible_layer",
+   "arpipe_kind": "digital",
+   "arpipe_route": "NATIVE_READ",
+   "arpipe_mojibake_ratio": 0.0,
+   "arpipe_script": "latin",
+   "n_chars": 818,
+   "pua_chars": 0,
+   "fffd_chars_no_cid_flag": 0,
+   "dict_hit_rate": 0.01,
+   "cer_native_pymupdf": 0.828,
+   "cer_pdfminer": 0.828,
+   "cer_pypdf": 0.979,
+   "pdfminer_cid_tokens": 0,
+   "sample_pymupdf": "Pdqdjhphqw Glvfxvvlrq dqg Dqdobvlv. Wkh Frpsdqb rshudwhv lq ",
+   "sample_pdfminer": "Pdqdjhphqw Glvfxvvlrq dqg Dqdobvlv. Wkh Frpsdqb rshudwhv lq ",
+   "ocr_lang": "eng",
+   "cer_ocr_tesseract": 0.0,
+   "cer_R1_embedded_cmap": "ERR KeyError",
+   "cer_R3_blind_legacy_table": 0.831,
+   "fonts": [
+    {
+     "font": "/KGVHJK+DejaVu Sans Book",
+     "tounicode_present": true,
+     "used_codes": 43,
+     "tounicode_covers_used": 1.0,
+     "tounicode_vs_embedded_cmap_agree": 0.0,
+     "glyphname_vs_tounicode_agree": 0.186,
+     "embedded_cmap_entries": 0,
+     "embedded_tables": [
+      "GlyphOrder",
+      "OS/2",
+      "cvt ",
+      "fpgm",
+      "glyf",
+      "head",
+      "hhea",
+      "hmtx",
+      "loca",
+      "maxp",
+      "name",
+      "prep"
+     ],
+     "sample_glyph_names": [
+      "glyph00003",
+      "glyph00015",
+      "glyph00017",
+      "glyph00019",
+      "glyph00020",
+      "glyph00021"
+     ]
+    }
+   ],
+   "font_level_flags": {
+    "DejaVu Sans Book": {
+     "chars": 818,
+     "junk_ratio": 0.0,
+     "lexicon_hit": 0.01,
+     "flag": true
+    }
+   },
+   "font_level_any_flag": true
+  }
+ ]
+}
