@@ -1,0 +1,53 @@
+measure,group,value,note
+track_a_pages,FIT,223,
+track_a_documents,FIT,82,
+track_a_issuers,FIT,18,
+track_a_pages,VALIDATION,118,
+track_a_documents,VALIDATION,42,
+track_a_issuers,VALIDATION,9,
+track_a_pages,HOLDOUT,134,
+track_a_documents,HOLDOUT,49,
+track_a_issuers,HOLDOUT,9,
+track_a_pages,ALL,475,
+track_a_documents,ALL,173,
+track_a_issuers,ALL,36,
+track_a_pages_by_representation_class,blank,55,blank => empty reference => CER denominator 0 unless a rule is frozen
+track_a_pages_by_representation_class,broken_text,20,
+track_a_pages_by_representation_class,hybrid,102,
+track_a_pages_by_representation_class,native_ok,209,
+track_a_pages_by_representation_class,scanned,72,
+track_a_pages_by_representation_class,vector_text,17,
+track_a_pages_by_primary_stratum,devanagari_candidate,1,
+track_a_pages_by_primary_stratum,legacy_font_candidate,20,
+track_a_pages_by_primary_stratum,multi_column,94,
+track_a_pages_by_primary_stratum,native_clean_control,60,
+track_a_pages_by_primary_stratum,other,21,
+track_a_pages_by_primary_stratum,pre_2015,52,
+track_a_pages_by_primary_stratum,scanned,72,
+track_a_pages_by_primary_stratum,table_candidate,138,
+track_a_pages_by_primary_stratum,vector_text,17,
+track_a_pages_by_condition_label,bilingual_candidate,1,labels overlap; a page can carry several
+track_a_pages_by_condition_label,blank,55,labels overlap; a page can carry several
+track_a_pages_by_condition_label,broken_text,20,labels overlap; a page can carry several
+track_a_pages_by_condition_label,devanagari_candidate,1,labels overlap; a page can carry several
+track_a_pages_by_condition_label,hybrid,102,labels overlap; a page can carry several
+track_a_pages_by_condition_label,legacy_font_candidate,20,labels overlap; a page can carry several
+track_a_pages_by_condition_label,multi_column,176,labels overlap; a page can carry several
+track_a_pages_by_condition_label,native_ok,366,labels overlap; a page can carry several
+track_a_pages_by_condition_label,ocr_layer_proxy,26,labels overlap; a page can carry several
+track_a_pages_by_condition_label,pre_2015,184,labels overlap; a page can carry several
+track_a_pages_by_condition_label,scanned,72,labels overlap; a page can carry several
+track_a_pages_by_condition_label,table_candidate,206,labels overlap; a page can carry several
+track_a_pages_by_condition_label,vector_text,17,labels overlap; a page can carry several
+track_b_annotatable_documents,FIT,92,pages total=19466; median=180.5; max=661
+track_b_issuers_with_annotatable_docs,FIT,18,
+track_b_annotatable_documents,VALIDATION,48,pages total=8298; median=157.0; max=456
+track_b_issuers_with_annotatable_docs,VALIDATION,9,
+track_b_annotatable_documents,HOLDOUT,54,pages total=10153; median=146.0; max=499
+track_b_issuers_with_annotatable_docs,HOLDOUT,9,
+track_b_annotatable_documents,UNASSIGNED_HISTORICAL,0,pages total=0; median=NA; max=NA
+track_b_issuers_with_annotatable_docs,UNASSIGNED_HISTORICAL,0,
+track_b_annotatable_documents,ALL,194,pages total=37917; median=165.0; max=661
+track_b_issuers_with_annotatable_docs,ALL,36,
+track_b_input_unavailable_documents,ALL,14,no PDF bytes => DocumentGold cannot be annotated; must stay INPUT_UNAVAILABLE in denominators
+track_b_docs_per_issuer,distribution,,"[[2, 3], [3, 2], [4, 2], [6, 29]]"

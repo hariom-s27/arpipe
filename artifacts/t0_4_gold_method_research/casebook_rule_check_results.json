@@ -1,0 +1,313 @@
+{
+  "all_order_independent": true,
+  "determinate": [
+    "CASE-01",
+    "CASE-02",
+    "CASE-03",
+    "CASE-04",
+    "CASE-05",
+    "CASE-06",
+    "CASE-08",
+    "CASE-09",
+    "PROBE-D_heading_at_page_bottom"
+  ],
+  "explicit_unresolved_or_ambiguous": [
+    "CASE-07",
+    "CASE-10",
+    "PROBE-A_toc_only",
+    "PROBE-B_pointer_only",
+    "PROBE-C_combined_heading"
+  ],
+  "interpretation": "A DETERMINATE/EXPLICIT_UNRESOLVED outcome means the draft rules give one answer or one explicit 'cannot decide' answer; it does NOT show two humans will agree. Agreement must be measured in the pilot on real documents.",
+  "label": "RESEARCH_ONLY_NON_GOLD",
+  "n_cases": 14,
+  "results": [
+    {
+      "case": "CASE-01",
+      "fired": {
+        "end": [
+          "E1:END=page_before_next_top_level_heading"
+        ],
+        "multiplicity": [
+          "M1:SINGLE_PRIMARY"
+        ],
+        "presence": [
+          "P1:PRESENT"
+        ],
+        "start": [
+          "S1:START=heading_page"
+        ]
+      },
+      "order_independent": true,
+      "problems": [],
+      "status": "DETERMINATE"
+    },
+    {
+      "case": "CASE-02",
+      "fired": {
+        "end": [
+          "E1:END=page_before_next_top_level_heading"
+        ],
+        "multiplicity": [
+          "M1:SINGLE_PRIMARY"
+        ],
+        "presence": [
+          "P1:PRESENT"
+        ],
+        "start": [
+          "S2:START=heading_page_of_designated_subheading"
+        ]
+      },
+      "order_independent": true,
+      "problems": [],
+      "status": "DETERMINATE"
+    },
+    {
+      "case": "CASE-03",
+      "fired": {
+        "end": [
+          "E1:END=page_before_next_top_level_heading"
+        ],
+        "multiplicity": [
+          "M1:SINGLE_PRIMARY"
+        ],
+        "presence": [
+          "P1:PRESENT"
+        ],
+        "start": [
+          "S1:START=heading_page"
+        ]
+      },
+      "order_independent": true,
+      "problems": [],
+      "status": "DETERMINATE"
+    },
+    {
+      "case": "CASE-04",
+      "fired": {
+        "end": [
+          "E1:END=page_before_next_top_level_heading"
+        ],
+        "multiplicity": [
+          "M1:SINGLE_PRIMARY"
+        ],
+        "presence": [
+          "P1:PRESENT"
+        ],
+        "start": [
+          "S1:START=heading_page"
+        ]
+      },
+      "order_independent": true,
+      "problems": [],
+      "status": "DETERMINATE"
+    },
+    {
+      "case": "CASE-05",
+      "fired": {
+        "end": [
+          "E2:END=page_of_next_heading_(MD&A_text_precedes_it_on_that_page)"
+        ],
+        "multiplicity": [
+          "M1:SINGLE_PRIMARY"
+        ],
+        "presence": [
+          "P1:PRESENT"
+        ],
+        "start": [
+          "S1:START=heading_page"
+        ]
+      },
+      "order_independent": true,
+      "problems": [],
+      "status": "DETERMINATE"
+    },
+    {
+      "case": "CASE-06",
+      "fired": {
+        "end": [
+          "E3:END=page_before_annexure_heading_or_its_page_if_MD&A_text_precedes"
+        ],
+        "multiplicity": [
+          "M1:SINGLE_PRIMARY"
+        ],
+        "presence": [
+          "P1:PRESENT"
+        ],
+        "start": [
+          "S1:START=heading_page"
+        ]
+      },
+      "order_independent": true,
+      "problems": [],
+      "status": "DETERMINATE"
+    },
+    {
+      "case": "CASE-07",
+      "fired": {
+        "end": [
+          "E1:END=page_before_next_top_level_heading"
+        ],
+        "multiplicity": [
+          "M2:PRIMARY_SPAN_RULE_UNRESOLVED"
+        ],
+        "presence": [
+          "P1:PRESENT"
+        ],
+        "start": [
+          "S1:START=heading_page"
+        ]
+      },
+      "order_independent": true,
+      "problems": [],
+      "status": "EXPLICIT_UNRESOLVED_OR_AMBIGUOUS"
+    },
+    {
+      "case": "CASE-08",
+      "fired": {
+        "end": [
+          "E1:END=page_before_next_top_level_heading"
+        ],
+        "flag": [
+          "F2:FLAG_TOC_BODY_DISAGREE(TOC_ignored)"
+        ],
+        "multiplicity": [
+          "M1:SINGLE_PRIMARY"
+        ],
+        "presence": [
+          "P1:PRESENT"
+        ],
+        "start": [
+          "S1:START=heading_page"
+        ]
+      },
+      "order_independent": true,
+      "problems": [],
+      "status": "DETERMINATE"
+    },
+    {
+      "case": "CASE-09",
+      "fired": {
+        "end": [
+          "E1:END=page_before_next_top_level_heading"
+        ],
+        "flag": [
+          "F1:FLAG_BILINGUAL_HEADING"
+        ],
+        "multiplicity": [
+          "M1:SINGLE_PRIMARY"
+        ],
+        "presence": [
+          "P1:PRESENT"
+        ],
+        "start": [
+          "S1:START=heading_page"
+        ]
+      },
+      "order_independent": true,
+      "problems": [],
+      "status": "DETERMINATE"
+    },
+    {
+      "case": "CASE-10",
+      "fired": {
+        "end": [
+          "E5:END=AMBIGUOUS_TRANSITION_(record_both_admissible)"
+        ],
+        "multiplicity": [
+          "M1:SINGLE_PRIMARY"
+        ],
+        "presence": [
+          "P1:PRESENT"
+        ],
+        "start": [
+          "S1:START=heading_page"
+        ]
+      },
+      "order_independent": true,
+      "problems": [],
+      "status": "EXPLICIT_UNRESOLVED_OR_AMBIGUOUS"
+    },
+    {
+      "case": "PROBE-A_toc_only",
+      "fired": {
+        "end": [
+          "E0:END=NONE_(no_start)"
+        ],
+        "multiplicity": [
+          "M3:NO_CANDIDATE"
+        ],
+        "presence": [
+          "P3:NOT_ESTABLISHED_BY_OCCURRENCE"
+        ],
+        "start": [
+          "S5:START=NONE"
+        ]
+      },
+      "order_independent": true,
+      "problems": [],
+      "status": "EXPLICIT_UNRESOLVED_OR_AMBIGUOUS"
+    },
+    {
+      "case": "PROBE-B_pointer_only",
+      "fired": {
+        "end": [
+          "E0:END=NONE_(no_start)"
+        ],
+        "multiplicity": [
+          "M3:NO_CANDIDATE"
+        ],
+        "presence": [
+          "P3:NOT_ESTABLISHED_BY_OCCURRENCE"
+        ],
+        "start": [
+          "S5:START=NONE"
+        ]
+      },
+      "order_independent": true,
+      "problems": [],
+      "status": "EXPLICIT_UNRESOLVED_OR_AMBIGUOUS"
+    },
+    {
+      "case": "PROBE-C_combined_heading",
+      "fired": {
+        "end": [
+          "E1:END=page_before_next_top_level_heading"
+        ],
+        "multiplicity": [
+          "M1:SINGLE_PRIMARY"
+        ],
+        "presence": [
+          "P2:PRESENT_STRUCTURE_COMBINED"
+        ],
+        "start": [
+          "S4:START=UNRESOLVED_combined_section"
+        ]
+      },
+      "order_independent": true,
+      "problems": [],
+      "status": "EXPLICIT_UNRESOLVED_OR_AMBIGUOUS"
+    },
+    {
+      "case": "PROBE-D_heading_at_page_bottom",
+      "fired": {
+        "end": [
+          "E4:END=last_content_page"
+        ],
+        "multiplicity": [
+          "M1:SINGLE_PRIMARY"
+        ],
+        "presence": [
+          "P1:PRESENT"
+        ],
+        "start": [
+          "S3:START=heading_page_AND_flag_substantive_start_next_page"
+        ]
+      },
+      "order_independent": true,
+      "problems": [],
+      "status": "DETERMINATE"
+    }
+  ],
+  "rule_set_defects": 0
+}
