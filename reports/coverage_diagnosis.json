@@ -1,0 +1,1198 @@
+{
+  "task": "P-C0: coverage diagnosis (diagnosis only, no repair)",
+  "mode": "READ-ONLY DIAGNOSTIC",
+  "generated_at": "2026-09-17",
+  "worktree": {
+    "diagnostic_worktree_path": "D:\\sem_iitk\\sem9\\thesis\\sep_week1\\arpipe-pc0-coverage-diag",
+    "created_via": "git worktree add --detach <path> 0fb8cbf6d932f4190bdfe3b2a1fecf62170cca14 (run from arpipe-0.1.0)",
+    "head_sha": "0fb8cbf6d932f4190bdfe3b2a1fecf62170cca14",
+    "head_commit_subject": "P33: audit post-P25 patterns for false positives, fix is-given-below rejection",
+    "writes_made_in_this_worktree": [
+      "reports/pc0_sample_manifest.json",
+      "reports/coverage_diagnosis.md",
+      "reports/coverage_diagnosis.json"
+    ],
+    "original_worktree_arpipe_0_1_0": "READ-ONLY forensic evidence, not modified (confirmed dirty and untouched, per pc0_diagnostic_base_check.json)",
+    "other_worktrees_touched": "none"
+  },
+  "frozen_evidence_sources": {
+    "pm5_coverage_worktree": "D:\\sem_iitk\\sem9\\thesis\\sep_week1\\arpipe-pm5-coverage",
+    "pm5_branch": "pm5-coverage-funnel @ 7292111149ab1cf9fc8d638d1f08023e3fcb13d5",
+    "pm5_action_taken": "read-only: opened and hashed, never edited/committed/merged/cherry-picked",
+    "artifact_hashes_sha256": {
+      "reports/coverage.json": "c84166741d36a9774b7c9f29d71ea9583934d98c2ab153e651ec66ec4d371bcf",
+      "reports/pm5_expected_universe_snapshot.csv": "b287a82d0fa2b15098882c328be6afc2c1672c9255f64103e4aaeabd94ccebe5",
+      "reports/pm5_expected_universe_snapshot.json": "3c409ed44183651ab376f2cd8dc7ab6a29fb1fba0ae6dc34fb36498fdb12f7c8",
+      "reports/pm5_source_snapshot_manifest.json": "827406a1d2fce8a084e65583c5adea172a330c2233c025c0e02b858c0ce1adfb",
+      "reports/pm5_stage_table.csv": "30e93b59ac689f00fab182583fb25883322e429be42b4ba14e13a1011b916dc9",
+      "reports/pm5_reason_code_completeness.csv": "0adb7410a857435e8a859d30c7ede67e7fa4beb4a4f8c7abda76eb43a246684c",
+      "reports/pm5_loss_by_company.csv": "7106fed99c33d8e5ccd728fa1b0c4b53d9c09aee79ef18a9e1b74547c4dba6a6",
+      "reports/pm5_loss_reasons.csv": "e4b47f74a63c638dd33bc23902f29d50a7a08a160b447d2a9339f66ec59342a7"
+    },
+    "pc0_diagnostic_base_check_md_sha256": "53968bf73621bc08ed754336437f12e39723ab7a01b47f887b2596fb9a9d46c7",
+    "pc0_diagnostic_base_check_json_sha256": "7d7ed536b8dc696f36dce10128eb462779de59904819d94bc28628924d697885",
+    "cross_check": "all hashes recomputed independently in this task and matched against coverage.json's embedded stage_csv_sha256/expected_csv_sha256 and pm5_source_snapshot_manifest.json's embedded hashes; no drift detected."
+  },
+  "part1_fy_stage_table": {
+    "per_fy": [
+      {
+        "FY": 2010,
+        "expected": 36,
+        "discovered": 28,
+        "downloaded": 0,
+        "identity_verified": 0,
+        "mda_located": 0,
+        "accepted": 0,
+        "accepted_over_expected_pct": 0.0,
+        "downloaded_over_expected_pct": 0.0,
+        "mda_located_over_expected_pct": 0.0,
+        "loss_discovered_to_downloaded": 28,
+        "loss_downloaded_to_identity": 0,
+        "loss_identity_to_mda": 0,
+        "loss_mda_to_accepted": 0
+      },
+      {
+        "FY": 2011,
+        "expected": 36,
+        "discovered": 29,
+        "downloaded": 1,
+        "identity_verified": 1,
+        "mda_located": 1,
+        "accepted": 0,
+        "accepted_over_expected_pct": 0.0,
+        "downloaded_over_expected_pct": 2.78,
+        "mda_located_over_expected_pct": 2.78,
+        "loss_discovered_to_downloaded": 28,
+        "loss_downloaded_to_identity": 0,
+        "loss_identity_to_mda": 0,
+        "loss_mda_to_accepted": 1
+      },
+      {
+        "FY": 2012,
+        "expected": 36,
+        "discovered": 28,
+        "downloaded": 28,
+        "identity_verified": 23,
+        "mda_located": 26,
+        "accepted": 17,
+        "accepted_over_expected_pct": 47.22,
+        "downloaded_over_expected_pct": 77.78,
+        "mda_located_over_expected_pct": 72.22,
+        "loss_discovered_to_downloaded": 0,
+        "loss_downloaded_to_identity": 5,
+        "loss_identity_to_mda": -3,
+        "loss_mda_to_accepted": 9
+      },
+      {
+        "FY": 2013,
+        "expected": 36,
+        "discovered": 29,
+        "downloaded": 29,
+        "identity_verified": 23,
+        "mda_located": 28,
+        "accepted": 17,
+        "accepted_over_expected_pct": 47.22,
+        "downloaded_over_expected_pct": 80.56,
+        "mda_located_over_expected_pct": 77.78,
+        "loss_discovered_to_downloaded": 0,
+        "loss_downloaded_to_identity": 6,
+        "loss_identity_to_mda": -5,
+        "loss_mda_to_accepted": 11
+      },
+      {
+        "FY": 2014,
+        "expected": 36,
+        "discovered": 30,
+        "downloaded": 0,
+        "identity_verified": 0,
+        "mda_located": 0,
+        "accepted": 0,
+        "accepted_over_expected_pct": 0.0,
+        "downloaded_over_expected_pct": 0.0,
+        "mda_located_over_expected_pct": 0.0,
+        "loss_discovered_to_downloaded": 30,
+        "loss_downloaded_to_identity": 0,
+        "loss_identity_to_mda": 0,
+        "loss_mda_to_accepted": 0
+      },
+      {
+        "FY": 2015,
+        "expected": 36,
+        "discovered": 33,
+        "downloaded": 2,
+        "identity_verified": 0,
+        "mda_located": 0,
+        "accepted": 0,
+        "accepted_over_expected_pct": 0.0,
+        "downloaded_over_expected_pct": 5.56,
+        "mda_located_over_expected_pct": 0.0,
+        "loss_discovered_to_downloaded": 31,
+        "loss_downloaded_to_identity": 2,
+        "loss_identity_to_mda": 0,
+        "loss_mda_to_accepted": 0
+      },
+      {
+        "FY": 2016,
+        "expected": 36,
+        "discovered": 31,
+        "downloaded": 0,
+        "identity_verified": 0,
+        "mda_located": 0,
+        "accepted": 0,
+        "accepted_over_expected_pct": 0.0,
+        "downloaded_over_expected_pct": 0.0,
+        "mda_located_over_expected_pct": 0.0,
+        "loss_discovered_to_downloaded": 31,
+        "loss_downloaded_to_identity": 0,
+        "loss_identity_to_mda": 0,
+        "loss_mda_to_accepted": 0
+      },
+      {
+        "FY": 2017,
+        "expected": 36,
+        "discovered": 31,
+        "downloaded": 31,
+        "identity_verified": 28,
+        "mda_located": 29,
+        "accepted": 22,
+        "accepted_over_expected_pct": 61.11,
+        "downloaded_over_expected_pct": 86.11,
+        "mda_located_over_expected_pct": 80.56,
+        "loss_discovered_to_downloaded": 0,
+        "loss_downloaded_to_identity": 3,
+        "loss_identity_to_mda": -1,
+        "loss_mda_to_accepted": 7
+      },
+      {
+        "FY": 2018,
+        "expected": 36,
+        "discovered": 31,
+        "downloaded": 31,
+        "identity_verified": 26,
+        "mda_located": 28,
+        "accepted": 18,
+        "accepted_over_expected_pct": 50.0,
+        "downloaded_over_expected_pct": 86.11,
+        "mda_located_over_expected_pct": 77.78,
+        "loss_discovered_to_downloaded": 0,
+        "loss_downloaded_to_identity": 5,
+        "loss_identity_to_mda": -2,
+        "loss_mda_to_accepted": 10
+      },
+      {
+        "FY": 2019,
+        "expected": 36,
+        "discovered": 32,
+        "downloaded": 0,
+        "identity_verified": 0,
+        "mda_located": 0,
+        "accepted": 0,
+        "accepted_over_expected_pct": 0.0,
+        "downloaded_over_expected_pct": 0.0,
+        "mda_located_over_expected_pct": 0.0,
+        "loss_discovered_to_downloaded": 32,
+        "loss_downloaded_to_identity": 0,
+        "loss_identity_to_mda": 0,
+        "loss_mda_to_accepted": 0
+      },
+      {
+        "FY": 2020,
+        "expected": 36,
+        "discovered": 33,
+        "downloaded": 0,
+        "identity_verified": 0,
+        "mda_located": 0,
+        "accepted": 0,
+        "accepted_over_expected_pct": 0.0,
+        "downloaded_over_expected_pct": 0.0,
+        "mda_located_over_expected_pct": 0.0,
+        "loss_discovered_to_downloaded": 33,
+        "loss_downloaded_to_identity": 0,
+        "loss_identity_to_mda": 0,
+        "loss_mda_to_accepted": 0
+      },
+      {
+        "FY": 2021,
+        "expected": 36,
+        "discovered": 34,
+        "downloaded": 0,
+        "identity_verified": 0,
+        "mda_located": 0,
+        "accepted": 0,
+        "accepted_over_expected_pct": 0.0,
+        "downloaded_over_expected_pct": 0.0,
+        "mda_located_over_expected_pct": 0.0,
+        "loss_discovered_to_downloaded": 34,
+        "loss_downloaded_to_identity": 0,
+        "loss_identity_to_mda": 0,
+        "loss_mda_to_accepted": 0
+      },
+      {
+        "FY": 2022,
+        "expected": 36,
+        "discovered": 35,
+        "downloaded": 0,
+        "identity_verified": 0,
+        "mda_located": 0,
+        "accepted": 0,
+        "accepted_over_expected_pct": 0.0,
+        "downloaded_over_expected_pct": 0.0,
+        "mda_located_over_expected_pct": 0.0,
+        "loss_discovered_to_downloaded": 35,
+        "loss_downloaded_to_identity": 0,
+        "loss_identity_to_mda": 0,
+        "loss_mda_to_accepted": 0
+      },
+      {
+        "FY": 2023,
+        "expected": 36,
+        "discovered": 36,
+        "downloaded": 0,
+        "identity_verified": 0,
+        "mda_located": 0,
+        "accepted": 0,
+        "accepted_over_expected_pct": 0.0,
+        "downloaded_over_expected_pct": 0.0,
+        "mda_located_over_expected_pct": 0.0,
+        "loss_discovered_to_downloaded": 36,
+        "loss_downloaded_to_identity": 0,
+        "loss_identity_to_mda": 0,
+        "loss_mda_to_accepted": 0
+      },
+      {
+        "FY": 2024,
+        "expected": 36,
+        "discovered": 36,
+        "downloaded": 36,
+        "identity_verified": 35,
+        "mda_located": 35,
+        "accepted": 26,
+        "accepted_over_expected_pct": 72.22,
+        "downloaded_over_expected_pct": 100.0,
+        "mda_located_over_expected_pct": 97.22,
+        "loss_discovered_to_downloaded": 0,
+        "loss_downloaded_to_identity": 1,
+        "loss_identity_to_mda": 0,
+        "loss_mda_to_accepted": 9
+      },
+      {
+        "FY": 2025,
+        "expected": 36,
+        "discovered": 36,
+        "downloaded": 36,
+        "identity_verified": 34,
+        "mda_located": 35,
+        "accepted": 27,
+        "accepted_over_expected_pct": 75.0,
+        "downloaded_over_expected_pct": 100.0,
+        "mda_located_over_expected_pct": 97.22,
+        "loss_discovered_to_downloaded": 0,
+        "loss_downloaded_to_identity": 2,
+        "loss_identity_to_mda": -1,
+        "loss_mda_to_accepted": 8
+      }
+    ],
+    "accepted_eq_0_fys": [
+      2010,
+      2011,
+      2014,
+      2015,
+      2016,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023
+    ],
+    "downloaded_eq_0_fys": [
+      2010,
+      2014,
+      2016,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023
+    ],
+    "mda_located_eq_0_fys": [
+      2010,
+      2014,
+      2015,
+      2016,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023
+    ],
+    "n_accepted_eq_0": 10,
+    "n_downloaded_eq_0": 8,
+    "n_mda_located_eq_0": 9,
+    "explicit_non_conflation_note": "These are three DIFFERENT sets, not one 'zero-coverage' set. downloaded=0 (8 FYs) is a strict subset of mda_located=0 (9 FYs), which is a strict subset of accepted=0 (10 FYs). FY2011 is in accepted=0 and NOT in downloaded=0 or mda_located=0 (it had 1 download, 1 identity-verify, 1 mda-locate, but 0 accepts). FY2015 is in accepted=0 and mda_located=0 but NOT in downloaded=0 (it had 2 downloads, 0 identity-verifies, 0 mda-locates, 0 accepts). The earlier informal summary '8 of 16 fiscal years at zero' is EXACTLY the downloaded=0 count (8), and is true only for that specific stage -- it is false if read as accepted=0 (which is 10) or mda_located=0 (which is 9).",
+    "monotonicity_note": "coverage.json's own monotonicity_checks show mda_located<=identity_verified is FALSE (12 violations, e.g. INE007A01025::FY2012 'mda_located_without_identity_verified'). MDA location and identity verification are not a strict nested waterfall in this pipeline; an observation can have mda_located=True while identity_verified=False. Transition-loss figures below can therefore be negative (a 'gain') for the identity->MDA step, and that is a real property of the data, not a computation error.",
+    "transition_losses_definition": "loss_X_to_Y = count(X) - count(Y) at the same FY, exactly as pm5_stage_table.csv aggregates it; a negative value means Y > X for that FY (see monotonicity_note)."
+  },
+  "part2_fy_pattern": {
+    "downloaded_pattern": {
+      "nonzero_fys": [
+        2011,
+        2012,
+        2013,
+        2015,
+        2017,
+        2018,
+        2024,
+        2025
+      ],
+      "zero_fys": [
+        2010,
+        2014,
+        2016,
+        2019,
+        2020,
+        2021,
+        2022,
+        2023
+      ],
+      "contiguous_nonzero_runs": [
+        "2011-2013",
+        "2015 (isolated)",
+        "2017-2018",
+        "2024-2025"
+      ],
+      "contiguous_zero_runs": [
+        "2010 (isolated)",
+        "2014 (isolated)",
+        "2016 (isolated)",
+        "2019-2023 (5-year run)"
+      ]
+    },
+    "mda_located_pattern": {
+      "nonzero_fys": [
+        2011,
+        2012,
+        2013,
+        2017,
+        2018,
+        2024,
+        2025
+      ],
+      "zero_fys": [
+        2010,
+        2014,
+        2015,
+        2016,
+        2019,
+        2020,
+        2021,
+        2022,
+        2023
+      ],
+      "contiguous_nonzero_runs": [
+        "2011-2013",
+        "2017-2018",
+        "2024-2025"
+      ],
+      "contiguous_zero_runs": [
+        "2010 (isolated)",
+        "2014-2016 (3-year run)",
+        "2019-2023 (5-year run)"
+      ]
+    },
+    "accepted_pattern": {
+      "nonzero_fys": [
+        2012,
+        2013,
+        2017,
+        2018,
+        2024,
+        2025
+      ],
+      "zero_fys": [
+        2010,
+        2011,
+        2014,
+        2015,
+        2016,
+        2019,
+        2020,
+        2021,
+        2022,
+        2023
+      ],
+      "contiguous_nonzero_runs": [
+        "2012-2013",
+        "2017-2018",
+        "2024-2025"
+      ],
+      "contiguous_zero_runs": [
+        "2010-2011 (2-year run)",
+        "2014-2016 (3-year run)",
+        "2019-2023 (5-year run)"
+      ]
+    },
+    "classification": "CLUSTERED. Not contiguous overall, not alternating, not a single pre/post-date split. Three tight nonzero clusters ({2011-13}/{2012-13}, {2017-18}, {2024-25} depending on stage) separated by multi-year zero runs, with the 2019-2023 gap being the largest single contiguous zero-download run in the whole series.",
+    "alignment_checks": {
+      "era_definition_version": "NOT aligned. E1(2010-2012), E4(2016-2019) and E6(2023-2025) are each internally mixed zero/nonzero at the downloaded stage, so era boundaries do not explain the split.",
+      "source_type": "NOT aligned. All 3 FY-level zero/nonzero groups are dominated by the same discovery source (nse, priority 10) in the frozen manifests; source type is a per-company-year attribute, not an FY-level one, so it cannot by itself produce an FY-level pattern.",
+      "exchange": "NOT aligned. exchange='both' for effectively all sampled large/mid-cap rows regardless of FY group; exchange is a per-company attribute, structurally incapable of producing an FY-level pattern on its own.",
+      "issuer": "NOT aligned. The same companies (Reliance, HDFC Bank, Tata Steel, Infosys, Sun Pharma) appear in BOTH the zero and nonzero groups across different FYs -- the pattern is a property of WHEN (which FY was being fetched), not WHICH issuer."
+    },
+    "cause_inference_explicitly_withheld": "This section reports the shape of the pattern only. Part 11/Part 13 below discuss candidate causes separately, per this task's instruction not to infer cause from pattern alone."
+  },
+  "part3_frozen_sample": {
+    "task": "P-C0 coverage diagnosis - Part 3 frozen 10-observation sample",
+    "frozen_before_network_testing": true,
+    "no_sample_substitution_after_freeze": true,
+    "evidence_source": {
+      "pm5_stage_table_csv_sha256": "30e93b59ac689f00fab182583fb25883322e429be42b4ba14e13a1011b916dc9",
+      "diagnostic_base_check_json_sha256": "7d7ed536b8dc696f36dce10128eb462779de59904819d94bc28628924d697885",
+      "diagnostic_base_check_md_sha256": "53968bf73621bc08ed754336437f12e39723ab7a01b47f887b2596fb9a9d46c7"
+    },
+    "group_definitions": {
+      "DOWNLOAD_ZERO_FY": "discovered=True, downloaded=False, drawn from an FY where the FY-level aggregate downloaded count in pm5_stage_table.csv is exactly 0 (2010, 2014, 2016, 2019, 2020, 2021, 2022, 2023). Deliberately NOT the same as the 'accepted=0' set (10 FYs) used loosely as 'ZERO' by the diagnostic-base check.",
+      "DOWNLOAD_NONZERO_FY_CONTROL": "downloaded=True at the observation level, drawn from an FY where FY-level downloaded>0 (2011,2012,2013,2015,2017,2018,2024,2025)."
+    },
+    "reuse_note": "8 of 10 observations reused verbatim from reports/pc0_diagnostic_base_check.json. 2 replaced (see selection_basis on FY2021/FY2022 rows) because the diagnostic-base's own 'ZERO' group definition was accepted=0, which is not the same set as downloaded=0 -- exactly the conflation this task's Part 1 prohibits. The 2 replacements were drawn from FY2019-2023, a contiguous 5-year downloaded=0 run that no prior diagnostic had sampled.",
+    "observations": [
+      {
+        "observation_id": "INE002A01018::FY2010",
+        "company_id": "INE002A01018",
+        "company_name": "Reliance Industries Limited",
+        "FY": 2010,
+        "group": "DOWNLOAD_ZERO_FY",
+        "exact_url": "https://nsearchives.nseindia.com/annual_reports/AR_RELIANCE_2009_2010_20082010120000.zip",
+        "discovery_source": "nse",
+        "source_id": "fbc9e6dc63",
+        "M5_stage_state": {
+          "discovered": true,
+          "downloaded": false,
+          "identity_verified": false,
+          "mda_located": false,
+          "accepted": false,
+          "first_failed_stage": "DOWNLOAD",
+          "first_failed_reason_code": "REASON_CODE_MISSING",
+          "terminal_state": "FIRST_FAILURE_AT_DOWNLOAD"
+        },
+        "selection_basis": "Reused verbatim from reports/pc0_diagnostic_base_check.json step2_selected_sample obs#1. FY2010 satisfies the strict FY-level downloaded=0 criterion (pm5_stage_table.csv: FY2010 downloaded=0/36)."
+      },
+      {
+        "observation_id": "INE040A01034::FY2014",
+        "company_id": "INE040A01034",
+        "company_name": "HDFC Bank Limited",
+        "FY": 2014,
+        "group": "DOWNLOAD_ZERO_FY",
+        "exact_url": "https://nsearchives.nseindia.com/annual_reports/AR_3393_HDFCBANK_2013_2014_12062014114216.zip",
+        "discovery_source": "nse",
+        "source_id": "9dfb47cb0b",
+        "M5_stage_state": {
+          "discovered": true,
+          "downloaded": false,
+          "identity_verified": false,
+          "mda_located": false,
+          "accepted": false,
+          "first_failed_stage": "DOWNLOAD",
+          "first_failed_reason_code": "REASON_CODE_MISSING",
+          "terminal_state": "FIRST_FAILURE_AT_DOWNLOAD"
+        },
+        "selection_basis": "Reused verbatim from reports/pc0_diagnostic_base_check.json step2_selected_sample obs#3. FY2014 satisfies the strict FY-level downloaded=0 criterion (pm5_stage_table.csv: FY2014 downloaded=0/36)."
+      },
+      {
+        "observation_id": "INE081A01020::FY2016",
+        "company_id": "INE081A01020",
+        "company_name": "Tata Steel Limited",
+        "FY": 2016,
+        "group": "DOWNLOAD_ZERO_FY",
+        "exact_url": "https://nsearchives.nseindia.com/annual_reports/AR_9362_TATASTEEL_2015_2016_16082016104323.zip",
+        "discovery_source": "nse",
+        "source_id": "e58b68b642",
+        "M5_stage_state": {
+          "discovered": true,
+          "downloaded": false,
+          "identity_verified": false,
+          "mda_located": false,
+          "accepted": false,
+          "first_failed_stage": "DOWNLOAD",
+          "first_failed_reason_code": "REASON_CODE_MISSING",
+          "terminal_state": "FIRST_FAILURE_AT_DOWNLOAD"
+        },
+        "selection_basis": "Reused verbatim from reports/pc0_diagnostic_base_check.json step2_selected_sample obs#5. FY2016 satisfies the strict FY-level downloaded=0 criterion (pm5_stage_table.csv: FY2016 downloaded=0/36)."
+      },
+      {
+        "observation_id": "INE171A01029::FY2021",
+        "company_id": "INE171A01029",
+        "company_name": "The Federal Bank  Limited",
+        "FY": 2021,
+        "group": "DOWNLOAD_ZERO_FY",
+        "exact_url": "https://nsearchives.nseindia.com/annual_reports/AR_18152_FEDERALBNK_2020_2021_17062021235201_18062021070010.zip",
+        "discovery_source": "nse",
+        "source_id": "be1f9f75db",
+        "M5_stage_state": {
+          "discovered": true,
+          "downloaded": false,
+          "identity_verified": false,
+          "mda_located": false,
+          "accepted": false,
+          "first_failed_stage": "DOWNLOAD",
+          "first_failed_reason_code": "REASON_CODE_MISSING",
+          "terminal_state": "FIRST_FAILURE_AT_DOWNLOAD"
+        },
+        "selection_basis": "NEWLY SELECTED for P-C0 (not in the diagnostic-base sample). Replaces diagnostic-base obs#2 (INE009A01021 Infosys FY2011), which this task's Part 3/Part 1 distinction disqualifies: FY2011 has FY-level downloaded=1 (not 0) in pm5_stage_table.csv, so it belongs to the accepted=0 list but NOT the strict downloaded=0 list. FY2021 falls inside the previously-unsampled 2019-2023 contiguous zero-download run and satisfies downloaded=0 strictly (0/36)."
+      },
+      {
+        "observation_id": "INE226A01021::FY2022",
+        "company_id": "INE226A01021",
+        "company_name": "Voltas Limited",
+        "FY": 2022,
+        "group": "DOWNLOAD_ZERO_FY",
+        "exact_url": "https://nsearchives.nseindia.com/annual_reports/AR_19956_VOLTAS_2021_2022_28052022144748_05282022150002.zip",
+        "discovery_source": "nse",
+        "source_id": "ee08a3985b",
+        "M5_stage_state": {
+          "discovered": true,
+          "downloaded": false,
+          "identity_verified": false,
+          "mda_located": false,
+          "accepted": false,
+          "first_failed_stage": "DOWNLOAD",
+          "first_failed_reason_code": "REASON_CODE_MISSING",
+          "terminal_state": "FIRST_FAILURE_AT_DOWNLOAD"
+        },
+        "selection_basis": "NEWLY SELECTED for P-C0 (not in the diagnostic-base sample). Replaces diagnostic-base obs#4 (INE044A01036 SunPharma FY2015), which this task's Part 3/Part 1 distinction disqualifies: FY2015 has FY-level downloaded=2 (not 0) in pm5_stage_table.csv (this specific company-year is downloaded=False, but the FY itself is not a downloaded=0 FY), so it belongs to the accepted=0 and mda_located=0 lists but NOT the strict downloaded=0 list. FY2022 falls inside the previously-unsampled 2019-2023 contiguous zero-download run and satisfies downloaded=0 strictly (0/36)."
+      },
+      {
+        "observation_id": "INE002A01018::FY2012",
+        "company_id": "INE002A01018",
+        "company_name": "Reliance Industries Limited",
+        "FY": 2012,
+        "group": "DOWNLOAD_NONZERO_FY_CONTROL",
+        "exact_url": "https://nsearchives.nseindia.com/annual_reports/AR_RELIANCE_2011_2012_29062012101059.zip",
+        "discovery_source": "nse",
+        "source_id": "356e3b4a0d",
+        "M5_stage_state": {
+          "discovered": true,
+          "downloaded": true,
+          "identity_verified": true,
+          "mda_located": true,
+          "accepted": true,
+          "first_failed_stage": "",
+          "first_failed_reason_code": "",
+          "terminal_state": "ACCEPTED"
+        },
+        "selection_basis": "Reused verbatim from reports/pc0_diagnostic_base_check.json step2_selected_sample obs#6. FY2012 satisfies downloaded>0 (28/36) and this observation itself reached ACCEPTED."
+      },
+      {
+        "observation_id": "INE009A01021::FY2013",
+        "company_id": "INE009A01021",
+        "company_name": "Infosys Limited",
+        "FY": 2013,
+        "group": "DOWNLOAD_NONZERO_FY_CONTROL",
+        "exact_url": "https://nsearchives.nseindia.com/annual_reports/AR_27_INFY_2012_2013_20062013105245.zip",
+        "discovery_source": "nse",
+        "source_id": "bfd2f11f02",
+        "M5_stage_state": {
+          "discovered": true,
+          "downloaded": true,
+          "identity_verified": true,
+          "mda_located": true,
+          "accepted": true,
+          "first_failed_stage": "",
+          "first_failed_reason_code": "",
+          "terminal_state": "ACCEPTED"
+        },
+        "selection_basis": "Reused verbatim from reports/pc0_diagnostic_base_check.json step2_selected_sample obs#7. FY2013 satisfies downloaded>0 (29/36) and this observation itself reached ACCEPTED."
+      },
+      {
+        "observation_id": "INE040A01034::FY2017",
+        "company_id": "INE040A01034",
+        "company_name": "HDFC Bank Limited",
+        "FY": 2017,
+        "group": "DOWNLOAD_NONZERO_FY_CONTROL",
+        "exact_url": "https://nsearchives.nseindia.com/annual_reports/AR_10840_HDFCBANK_2016_2017_25072017151900.zip",
+        "discovery_source": "nse",
+        "source_id": "97262e9305",
+        "M5_stage_state": {
+          "discovered": true,
+          "downloaded": true,
+          "identity_verified": true,
+          "mda_located": true,
+          "accepted": false,
+          "first_failed_stage": "ACCEPTANCE",
+          "first_failed_reason_code": "source_shredded",
+          "terminal_state": "FIRST_FAILURE_AT_ACCEPTANCE"
+        },
+        "selection_basis": "Reused verbatim from reports/pc0_diagnostic_base_check.json step2_selected_sample obs#8. FY2017 satisfies downloaded>0 (31/36); this specific observation shows downloaded=True is possible while a LATER stage (ACCEPTANCE) still fails for an unrelated reason (source_shredded) -- deliberately kept in the control group to show downloaded=0 is not the only way to end up not-accepted."
+      },
+      {
+        "observation_id": "INE044A01036::FY2018",
+        "company_id": "INE044A01036",
+        "company_name": "Sun Pharmaceutical Industries Limited",
+        "FY": 2018,
+        "group": "DOWNLOAD_NONZERO_FY_CONTROL",
+        "exact_url": "https://nsearchives.nseindia.com/annual_reports/AR_13921_SUNPHARMA_2017_2018_01102018175233.zip",
+        "discovery_source": "nse",
+        "source_id": "ddeee389ba",
+        "M5_stage_state": {
+          "discovered": true,
+          "downloaded": true,
+          "identity_verified": true,
+          "mda_located": true,
+          "accepted": true,
+          "first_failed_stage": "",
+          "first_failed_reason_code": "",
+          "terminal_state": "ACCEPTED"
+        },
+        "selection_basis": "Reused verbatim from reports/pc0_diagnostic_base_check.json step2_selected_sample obs#9. FY2018 satisfies downloaded>0 (31/36) and this observation itself reached ACCEPTED."
+      },
+      {
+        "observation_id": "INE081A01020::FY2024",
+        "company_id": "INE081A01020",
+        "company_name": "Tata Steel Limited",
+        "FY": 2024,
+        "group": "DOWNLOAD_NONZERO_FY_CONTROL",
+        "exact_url": "https://nsearchives.nseindia.com/annual_reports/AR_24166_TATASTEEL_2023_2024_2206202419194.pdf",
+        "discovery_source": "nse",
+        "source_id": "6a3b8c5ed5",
+        "M5_stage_state": {
+          "discovered": true,
+          "downloaded": true,
+          "identity_verified": true,
+          "mda_located": true,
+          "accepted": true,
+          "first_failed_stage": "",
+          "first_failed_reason_code": "",
+          "terminal_state": "ACCEPTED"
+        },
+        "selection_basis": "Reused verbatim from reports/pc0_diagnostic_base_check.json step2_selected_sample obs#10. FY2024 satisfies downloaded>0 (36/36) and this observation itself reached ACCEPTED."
+      }
+    ]
+  },
+  "part4_current_http_diagnostic": {
+    "deterministic_request_configuration": {
+      "tool": "curl",
+      "exact_version": "curl 8.19.0 (x86_64-w64-mingw32) libcurl/8.19.0 Schannel zlib/1.3.2 brotli/1.2.0 zstd/1.5.7 libidn2/2.3.8 libpsl/0.21.5 libssh2/1.11.1 WinLDAP",
+      "http_method": "GET",
+      "user_agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36 (verbatim copy of arpipe/discover.py:UA, used because this is what cmd_fetch's client actually sends)",
+      "timeout": "--max-time 120 (matches fetch.py fetch_one's per-request timeout=120.0)",
+      "follow_redirects": "-L --max-redirs 20 (matches httpx.Client default max_redirects=20, which fetch.py/cli.py never override)",
+      "headers": "User-Agent only. No Accept, no Accept-Language, no Referer, no cookies (matches cli.py cmd_fetch's httpx.Client(headers={'User-Agent': discover.UA}, ...) exactly).",
+      "cookie_session_behavior": "none: fresh client per script invocation, no cookie jar, no prior requests to any host before the target GET.",
+      "proxy_behavior": "none: no proxy environment variables set or used by this script; system default (direct connection).",
+      "retries_added_by_this_script": "NONE (single attempt per URL, per this task's stop-condition against adding retry/backoff)",
+      "timestamp_with_timezone": "2026-09-17T13:59:08Z through 2026-09-17T13:59:49Z (UTC); session timezone IST (+05:30)",
+      "network_origin": "Same machine/network as reports/pc0_diagnostic_base_check.md's Step 3 probe (IIT Kanpur campus network), approx. 40-50 minutes later the same day."
+    },
+    "results": [
+      {
+        "sample_index": 1,
+        "observation_id": "INE002A01018::FY2010",
+        "group": "DOWNLOAD_ZERO_FY",
+        "url": "https://nsearchives.nseindia.com/annual_reports/AR_RELIANCE_2009_2010_20082010120000.zip",
+        "config": "B (fetch-client-equivalent: User-Agent header only, no cookies, no Referer, timeout=120s, follow_redirects=True, max_redirects=20, single attempt / no retry added by this diagnostic)",
+        "http_status": 200,
+        "num_redirects": 0,
+        "content_type": "application/zip",
+        "response_length_bytes": 8795366,
+        "time_total_seconds": 8.302659,
+        "first_500_bytes_hex": "504b0304140000000800005db53c1d8ae8c334348600eee2a4002800000041525f52454c49414e43455f323030395f323031305f32303038323031303132303030302e706466ec7a075853dbf667e8184469a10a84de0da451a5f7de7b91123a0443a84a551463a177a5f72282800282852e45a409a820a21411940e523241bdf7beffbbff6f66decc7b73dffb86fd7dbfe49cb5d75967afb2d7de6b277c86aaea62126791d47c1f665f0e530311087171b03818ede409969383e87af8a21c311ea12817b00444172c212e258e909696821880097c30881a182a0993144740f4c150a838c494c080944648c3a5219a601b301c8104c3a4a4c4ede4e5a951be2e0491d46042a306066350aebfde24450d14ffd52490e01fdf60dfdf687018eccf3484f89f694898d49f6852d2b03fd1a411f0bfa721a0d27f92277e34f2df69588ca387370a430d24d8c384608a23d5a520861854e02f75614888311a8d3da24b104c670cd1f2754583117069e99f77aa36722a3018545d4d1d86548223a02aeaca12307175096555096584a494b8045c555e4e5252524212a60495804a4255c4e170251814a104452aabaa20a4a4d5d5e0f2475604fa631d31d89fe613a706f2f1a919a853037fd894f072c99f7e3b721bcad70deb0e86494ac2202a60a4b42414a2eee18d456120eade8e58942aca19ed828268",
+        "magic_number_classification": "ZIP",
+        "sha256_of_body": "e86d6cadd2a581e7dad0150262c4263ef2e2e9da6ec06318c819587772cad045",
+        "connection_error": null,
+        "timestamp_utc": "2026-09-17T13:59:08Z to 2026-09-17T13:59:49Z (sequential, ~1.7s apart on average, one host, no concurrency)"
+      },
+      {
+        "sample_index": 2,
+        "observation_id": "INE040A01034::FY2014",
+        "group": "DOWNLOAD_ZERO_FY",
+        "url": "https://nsearchives.nseindia.com/annual_reports/AR_3393_HDFCBANK_2013_2014_12062014114216.zip",
+        "config": "B (fetch-client-equivalent: User-Agent header only, no cookies, no Referer, timeout=120s, follow_redirects=True, max_redirects=20, single attempt / no retry added by this diagnostic)",
+        "http_status": 200,
+        "num_redirects": 0,
+        "content_type": "application/zip",
+        "response_length_bytes": 5591336,
+        "time_total_seconds": 1.209058,
+        "first_500_bytes_hex": "504b03041400080008003b5dcc440000000000000000000000001000000041525f323031335f323031342e70646674b90374a45d942e9c8e6d5b9da463dbb66ddbb653b16dab63db49c7b6eda46375f4a7bf6fe6cedcffceac55b5d7ae7d9ecdf7bceb3c67d5777961511a065a56b8ef7bfbd3f370d00c4c0cac84f48476869670dcdc74a2168e4ece840c1c4c6c74d226b666cee6848cecaccc5f666b6713473a516b0367136113233b63133a5942467a7a3a650f7b133a39434b25671b5e5e27674713031b3868f7b5896cab48e31624c067846f5f94a44b3ce82fc45723c8e0a1ed095ff57a217a76fc860ec0c1f671d5eff9d5d5c22e0d2d03e87d8b3639a99f622e1c76f3bf2d299bc4f31924e936aa103158b819a4d46827c79254d36090507eb56e89e60302588708264ee052b90c640772698b91f63daf8aeb9c2b75a494fa2221d02f023110a86cfe2c30c024cae446c8880ef0c3507dcce08688e115ab502ad6395628825219ce4442aada82ae4ffeb4533776a696536dfc730b34c36a665185a66289693e1bc30707c489451534223e3a49fd2bcf7623b21c87b6493d571debe851b3ae5efdb4db1b0537ba96a9694e865eaae93e5f1df13366ad2e55016b72b2b740884ad7ba2b4ad6dda1c6443a6d46ff3729aeed40b9dc2f8b46de71656d3bf6b055085deec689f044f36b845d",
+        "magic_number_classification": "ZIP",
+        "sha256_of_body": "09175f2a6095a1ba62c35f3df1b86095e09b3aba8a7e021dc605da57c7e24875",
+        "connection_error": null,
+        "timestamp_utc": "2026-09-17T13:59:08Z to 2026-09-17T13:59:49Z (sequential, ~1.7s apart on average, one host, no concurrency)"
+      },
+      {
+        "sample_index": 3,
+        "observation_id": "INE081A01020::FY2016",
+        "group": "DOWNLOAD_ZERO_FY",
+        "url": "https://nsearchives.nseindia.com/annual_reports/AR_9362_TATASTEEL_2015_2016_16082016104323.zip",
+        "config": "B (fetch-client-equivalent: User-Agent header only, no cookies, no Referer, timeout=120s, follow_redirects=True, max_redirects=20, single attempt / no retry added by this diagnostic)",
+        "http_status": 200,
+        "num_redirects": 0,
+        "content_type": "application/zip",
+        "response_length_bytes": 5455878,
+        "time_total_seconds": 2.939332,
+        "first_500_bytes_hex": "504b0304140008080800685510490000000000000000000000001000000041525f323031355f323031362e706466bcbb65545cddb2368a07770dd640707708eeeeeedab8bb13dc4270f7e04e7027b8bbbbbbbbd35fdefdee7dcefe8e8c7bffdcbbfecc59bde6ac9a256b3dcf1aa39a5c51549c9e99811d89bce878b20f099e99899d9b850dc004b037b642e2e56594b5b4031a39597a014d01cc8c0a807fdce6649404e800389858002ccccc1c7a8cb2000e662e6e664e664631001b13331b17a33c809589995115c0cecdc1c1c4cec1cf8f04b433fd4b23e0ff9feb6f3f58d9ffd30f953f2efce3f4ac9c8ce296362e402746711b2317a028d0c4de14c8a8eae90064d454069a314ad999023d74fe190666563d460d1d66002b80598f51d109e8f62f8f18658176e62e167f4446657b7b97bfe3f29739e53f0accecff9659ff9645757899984d8d394d39d88cb9ccb880cc264c46c6cc6c1cac46c6ec5c1cc64c662666fcbc40565666330e209b999989113bab198ba9198b091b0b909383c38c8bc594c5885f8f9fdfd9c50968648b04ef9169626a886a6868bae500892eab0458b003747b124a3ab480c1d941038cb831245d0c20d0dfad048d9151620d9bbb7ff7713d1240822d34c03620c1ff49c43ff5fc7f9a927f5612c77f66e07f88fa3f83c8ccc6ccc6a808606254f953501c5c7fca",
+        "magic_number_classification": "ZIP",
+        "sha256_of_body": "1c9a133b93a94962d0063d041fdbbbce1e12091e602951281ee33f6aeca2af6d",
+        "connection_error": null,
+        "timestamp_utc": "2026-09-17T13:59:08Z to 2026-09-17T13:59:49Z (sequential, ~1.7s apart on average, one host, no concurrency)"
+      },
+      {
+        "sample_index": 4,
+        "observation_id": "INE171A01029::FY2021",
+        "group": "DOWNLOAD_ZERO_FY",
+        "url": "https://nsearchives.nseindia.com/annual_reports/AR_18152_FEDERALBNK_2020_2021_17062021235201_18062021070010.zip",
+        "config": "B (fetch-client-equivalent: User-Agent header only, no cookies, no Referer, timeout=120s, follow_redirects=True, max_redirects=20, single attempt / no retry added by this diagnostic)",
+        "http_status": 200,
+        "num_redirects": 0,
+        "content_type": "application/zip",
+        "response_length_bytes": 9448336,
+        "time_total_seconds": 1.676149,
+        "first_500_bytes_hex": "504b030414000000080081a4d85250081a11e22a90007e489a00260000004645444552414c424e4b5f31373036323032313233353130345f4152534546494c452e706466d49a0b38546bdbc797848c634224d19643217366428a244514914c721ae32c6318548890534ac829a7848a84528e115199198d42ca26e743b6720a25bea5bdf7fbd6f5adf6f7ee77babe79dfeb9a35d7b366ad59ebb97fcf7ddfcfff7ed69235deb35719b11d0b93edeb6f790143a190d270690f5b679886064c45db89ec654c2099d8b89d742548abc154f610ec3cec09d296706984f437db71f088879b8d93fbd723e09eaefb9fe76151e0ee5e2757328124adb2d7d5864cf8fd1ae08fdeee7664270f7753bf930469384cc580e04e243b4a231060db88640f9e8f80a91cb6712742decfc4c91ffc1d8b3e0edbb913e64526116cdc60fb2294ea0966ab6c00a05693efeafe70e96dbfc6346c9e0b6e5e9c1faad6ef1b496860a04efbcef5a49aaba46b86ea094cfc5aeeddfffac803726f57b289fc852f3c815f3c07eeeb7005740a9cf2f9ed5519e14598b74b6f9e9459e1d1327b8676922ab13ddac9c4838d13c0d59f7e0923b8dbff7163b0b5820c85c2b01a1e1cfbefc333a8b714d506005d06b7184cffd0d6b8ee3d870e1d7a81d6bc1afbd9a6e8de67fafcecd5c936338980f9a1288ce299a92c4aa2926fff",
+        "magic_number_classification": "ZIP",
+        "sha256_of_body": "7a04dbb6e3279a2396bee36bec513369f712699ad9e35bbf0fb2cdc40e6261ef",
+        "connection_error": null,
+        "timestamp_utc": "2026-09-17T13:59:08Z to 2026-09-17T13:59:49Z (sequential, ~1.7s apart on average, one host, no concurrency)"
+      },
+      {
+        "sample_index": 5,
+        "observation_id": "INE226A01021::FY2022",
+        "group": "DOWNLOAD_ZERO_FY",
+        "url": "https://nsearchives.nseindia.com/annual_reports/AR_19956_VOLTAS_2021_2022_28052022144748_05282022150002.zip",
+        "config": "B (fetch-client-equivalent: User-Agent header only, no cookies, no Referer, timeout=120s, follow_redirects=True, max_redirects=20, single attempt / no retry added by this diagnostic)",
+        "http_status": 200,
+        "num_redirects": 0,
+        "content_type": "application/zip",
+        "response_length_bytes": 7482626,
+        "time_total_seconds": 1.767616,
+        "first_500_bytes_hex": "504b03041400020008000178bc5422e0df99142c720025e29d002c001c0041525f31393935365f564f4c5441535f323032315f323032325f32383035323032323134343734382e70646655540900039aeb91629aeb916275780b0001048217000004f0030000ec5d79804e551bcf92a48d28cb971a6bb2de73ce3de7de63fb6cc9be7f24eb60ec06334349a814125a10da541f95a268234b28294992ad448b244b848488ef7bdfb9cf9db953336366ce7dae9977ce1f3137f33e33effb7b7ecff99ddf7dce732bb469d4b81aa96e15aab0faf44b170a9128236a68af81856ad78eaad126ba5f4c7c140dfd9f7651353a8c1a161355a3617442f4e0a1fda2ead62d1413db27fc8dd4f382864347c42644319b44d5683ea04f7c54972896f86233f14f9ef8a748fcd34afcd34efc5326fe490ce72fe2fce5fc54e2bc9e3801881381382188138338418813853a51a813853a51a813853a51a813853a51a813853a51a81385395198138539519813853951981385395198138539519813c574a2984e14d38962c227e244319d28a613c574a2984e14d389c29d28dc89c29d28dc89c2e18375a270270a77a270270a77a208278a70a208278a70a208278a007c9c28c289229c28c2896239512c278ae544b19c289613c572a25800b313c572a2584e14db89623b516c278aed44b19d28b613c576a2d8",
+        "magic_number_classification": "ZIP",
+        "sha256_of_body": "76556b4dab7cb4275b00b970569bdaf919439e91a9a29a0b203001e1ab21f353",
+        "connection_error": null,
+        "timestamp_utc": "2026-09-17T13:59:08Z to 2026-09-17T13:59:49Z (sequential, ~1.7s apart on average, one host, no concurrency)"
+      },
+      {
+        "sample_index": 6,
+        "observation_id": "INE002A01018::FY2012",
+        "group": "DOWNLOAD_NONZERO_FY_CONTROL",
+        "url": "https://nsearchives.nseindia.com/annual_reports/AR_RELIANCE_2011_2012_29062012101059.zip",
+        "config": "B (fetch-client-equivalent: User-Agent header only, no cookies, no Referer, timeout=120s, follow_redirects=True, max_redirects=20, single attempt / no retry added by this diagnostic)",
+        "http_status": 200,
+        "num_redirects": 0,
+        "content_type": "application/zip",
+        "response_length_bytes": 5111665,
+        "time_total_seconds": 0.949794,
+        "first_500_bytes_hex": "504b030414000000080016a7a7404a23603abffe4d005fc663002800000041525f52454c49414e43455f323031315f323031325f32393036323031323130313035392e7064668cfa03906d4bb32e80b6edd53656dbb66ddbb66ddbb66ddbb66ddb76f7dbfb3fe7bc7b5fc4891b6f44cc88fc2ab3b2b2322bc6ac39bf24961312a1a6a76181253e389c5d8485626565a4c7a7c3b735b080e5e2a29532b731d67730f73036c2a7a795c267616664636362a595c5ffc78c9156189f959d819d898e56069f81818e56e95f3d13133303ad18be263e333b0b3e0b1d0b9d360f0facb18dd1bf0ef1fff3fcbb062bc3ff5943c8d8d0d6c8584edfc1daf11f24686be56c6de388cf4c2be7606c646ee864eb804fcfc0c3432b626ee564ec402b62a5ef64fc5f5368c58534b958f9e9f95985989984d8588584e89998f919d9d9d9e9e804e804d858f919588479b80445fe1917a16762a2e767e6176662e01761e067676165a1131466a2636610e4d1a615b7313276d3fccfd6ff09f81f6862fbef0ee9fe09528156cad8c6d4c90c9f9e95eddf905cfe7b938cb40ab6b64eff5a31fcc74af19f24fd83d8e96995dced8c69d5148c4d685535e9f119f1e9ffc980a39383b1be352c94d98e8181911e829e9e815edc070021c68cbfd88906c2b83b9090050e407c46287fd1071a42b93c0c0996ffdf420b9cb0",
+        "magic_number_classification": "ZIP",
+        "sha256_of_body": "229edb87381f600baaba44cc5d338adaf876c8dd1f15bc4026eb106f5adaa0c7",
+        "connection_error": null,
+        "timestamp_utc": "2026-09-17T13:59:08Z to 2026-09-17T13:59:49Z (sequential, ~1.7s apart on average, one host, no concurrency)"
+      },
+      {
+        "sample_index": 7,
+        "observation_id": "INE009A01021::FY2013",
+        "group": "DOWNLOAD_NONZERO_FY_CONTROL",
+        "url": "https://nsearchives.nseindia.com/annual_reports/AR_27_INFY_2012_2013_20062013105245.zip",
+        "config": "B (fetch-client-equivalent: User-Agent header only, no cookies, no Referer, timeout=120s, follow_redirects=True, max_redirects=20, single attempt / no retry added by this diagnostic)",
+        "http_status": 200,
+        "num_redirects": 0,
+        "content_type": "application/zip",
+        "response_length_bytes": 8608682,
+        "time_total_seconds": 2.16011,
+        "first_500_bytes_hex": "504b03041400080008008256d4420000000000000000000000001000000041525f323031325f323031332e7064669498754014ddffef55445444540414a4bb73e96e44ba976e58ba1b24a4435aba6381a5974ee9ae5dba5b60e994ba3e8ffbbddffbbbf7afbb7fcc7bf7cccceb9c33735e9f19a05010936060610460bca480fef960bc64216626b6350461bce4e3635271b7336112357032b0b2356352303033712466fdb35b89e98b818d19b5890d83aa320db18000c64b131be37fcf61fdbf4ffef72426515b671b2762160037938c85b1a31631db3f10628e7fb7dcff6e5958ff06e06f70fd1bac2c7f83fd6f70fe1b6ccc7fe32f83ed2f84ed2f85fd2f85fd2f85fd2f05f09702f84b01fca570fca5702047f297c2f197c2f997c2f997c2f997c2f597c2f597c2f597c2fd97c2fd97c28d9c107246ccc8293123e7c4fc17c4c2c2824c76647222af003332d990c9814c248f0dc96343f2d8903c76248f1dc96347f200481e00c903207900248f03c9e340f238903c4e248f13c9e344f2b8903c2e248f0bc9e342f2b8913c6e248f1b79139991779119791b993991379719996cc8e440e65f1e2b2b2b3201c844f2d8903c36248f0dc96347f2d8913c76248f1dc903207900240f80e47120791c481e0792c789e47122799c481e2792c785e47121795c481e3792c78de471ff67dd22172e33",
+        "magic_number_classification": "ZIP",
+        "sha256_of_body": "61b692adb9778dfb9fc3d303a13e3c34bc17e85f8ed7c56bf29ac7d1400f6877",
+        "connection_error": null,
+        "timestamp_utc": "2026-09-17T13:59:08Z to 2026-09-17T13:59:49Z (sequential, ~1.7s apart on average, one host, no concurrency)"
+      },
+      {
+        "sample_index": 8,
+        "observation_id": "INE040A01034::FY2017",
+        "group": "DOWNLOAD_NONZERO_FY_CONTROL",
+        "url": "https://nsearchives.nseindia.com/annual_reports/AR_10840_HDFCBANK_2016_2017_25072017151900.zip",
+        "config": "B (fetch-client-equivalent: User-Agent header only, no cookies, no Referer, timeout=120s, follow_redirects=True, max_redirects=20, single attempt / no retry added by this diagnostic)",
+        "http_status": 200,
+        "num_redirects": 0,
+        "content_type": "application/zip",
+        "response_length_bytes": 7230114,
+        "time_total_seconds": 0.993715,
+        "first_500_bytes_hex": "504b03041400080808005d7af94a0000000000000000000000001000000041525f323031365f323031372e7064668cf905509c4dd33d0ee3eeeeeecee241827b70775b1c1677f7e0ee1008ee1224b8bbbb4b70770df625f7733ff5fefe556fbdf56ded5e3567a7a77bfaf4d4557d6aa895c42599d959b891a97776a7e69011d8793900646c6420136b64010156792b7ba0b1939517d08c8c9d559e8c8b970dc0c90d605524fb63c6c92a41c6cececdcdc7c5aa400600b0b1aafd9d67e302f0b14a93e99271b1739201b8d939f585849081f6667f1d92fdf3f91b838bfd7f6288034d4166402563273be73f480c64eb6a67ef4cc6c5aae40434b33275013991b10384845825ad6c5d804eac92b6c62ec0ff2c619511d71500f0f1f2b28b4972487289b2b3b1738af2f149f0f2f1f070f2f272b089f3f1f10809f08a898b01447901bcdc929c9c929c3ca29cbc6c7c1cdcbc7c7ca222e2a2a25c42faac32f666400fdd7f52e7e0fa0bcd417f33fcbb49155679a0bd858b25193b1be0ef96dcfe9324071bab0a08e4f2d78ae31f2bd53f24fd41dc3cac6a9e0e40562d15a039aba62e3b190719fb1f069c5d9c80c676c808969b262666466846462646db336009486564893230f29dd009f532642aaf6811c90ae00980cf2285e28088640cc80404ef40aaddaf8a46dc5a218c04b6bd026823bcb8e3",
+        "magic_number_classification": "ZIP",
+        "sha256_of_body": "ed4da8e9e41aa8b7bee94876aea82f8d7f12977601f4e40b5e175cf2fa99b339",
+        "connection_error": null,
+        "timestamp_utc": "2026-09-17T13:59:08Z to 2026-09-17T13:59:49Z (sequential, ~1.7s apart on average, one host, no concurrency)"
+      },
+      {
+        "sample_index": 9,
+        "observation_id": "INE044A01036::FY2018",
+        "group": "DOWNLOAD_NONZERO_FY_CONTROL",
+        "url": "https://nsearchives.nseindia.com/annual_reports/AR_13921_SUNPHARMA_2017_2018_01102018175233.zip",
+        "config": "B (fetch-client-equivalent: User-Agent header only, no cookies, no Referer, timeout=120s, follow_redirects=True, max_redirects=20, single attempt / no retry added by this diagnostic)",
+        "http_status": 200,
+        "num_redirects": 0,
+        "content_type": "application/zip",
+        "response_length_bytes": 3050947,
+        "time_total_seconds": 0.787643,
+        "first_500_bytes_hex": "504b0304140008080800908e414d0000000000000000000000001000000041525f323031375f323031382e7064668cb905505d4df23e8cbb3b04b9b8cbc5dddd5d825b707708eeeeee1edcdddd82077777872041fec9eebbdfee7ef5d6aff6564d55f79d999e9eee7ece9c790eb9a2a8383d90811d917c776f7a1e110ec8c4ca056002d8195922f2f232ca5ad89a1a3a5a789a9a00808cb200662e2e4e667620a30200c8c406641403005959d9d93819e501ccacac8caa7ffad9815c4c8c92006d001b1b07808d99995d979f1fd1d4d6e48f41c03f7e7fd6e064f9f71aa2a6c67626a68a868e364ebf35113b6b171b5b27001ba3a2a3a98985b1b39d2300c8cccfcf286e61ed6ceac8286e6de86cfacf298c52a2dabcc26caccc1cc2224c22c2e26c6c2cacac42625c421c404e7676162097889898183f2f2b079b9830a79810070b3397b8302b27270bbb10905d8c9d15c821fa5b62e3d76594b2353175d7fec7d659b9fea85fec7eef9095f3b793ca8cb2a6b666cee6bfb70afce392eb5f9b04322adbd939ff8903d33f46a9fc0ed26f8d8b9351d5c3de945153d9f40ba3863610c00200fe8e8093b3a3a9a10d229cf9a6919189018a818191018a15747c54132021fc93683d44e08a595f11aba6097298093b78a28341bc2ad31abc2c8d9fd427a667085147b140493307145c17026b1fe638",
+        "magic_number_classification": "ZIP",
+        "sha256_of_body": "d7cfe8050549908d0c8d6269c03dcc2f95716c6f9a51b7d6f1c2a5f78fbe5285",
+        "connection_error": null,
+        "timestamp_utc": "2026-09-17T13:59:08Z to 2026-09-17T13:59:49Z (sequential, ~1.7s apart on average, one host, no concurrency)"
+      },
+      {
+        "sample_index": 10,
+        "observation_id": "INE081A01020::FY2024",
+        "group": "DOWNLOAD_NONZERO_FY_CONTROL",
+        "url": "https://nsearchives.nseindia.com/annual_reports/AR_24166_TATASTEEL_2023_2024_2206202419194.pdf",
+        "config": "B (fetch-client-equivalent: User-Agent header only, no cookies, no Referer, timeout=120s, follow_redirects=True, max_redirects=20, single attempt / no retry added by this diagnostic)",
+        "http_status": 200,
+        "num_redirects": 0,
+        "content_type": "application/pdf",
+        "response_length_bytes": 26006738,
+        "time_total_seconds": 2.591261,
+        "first_500_bytes_hex": "255044462d312e370d25e2e3cfd30d0a33362030206f626a0d0a3c3c2f4c656e6774682031333739300d0a2f46696c746572202f466c6174654465636f64650d0a3e3e0d0a73747265616d0d0a4889ec575b6fdbc8157ee7af98471188e8b9901cf23171771769bb69b35611a0d96221cb929cc4926cc98a91fefa9edb0c87a4e45c0af4a9701052c39973fdce77ce3c6417bf5c69b53e645acdfe7af1f346ab3fedb2b7d9c525ac2e0e4a17adabf17f5fe1ff6dadd461b18d87aab62c4aed945655eb8aaaf5cabb46ed97d92a7b00895a19d33461ed9dda6646e11fc9788017daa26aa7952f41476dd46243e7f0ffa97185ad2a6574e1cb4a4d6da9e01f3e1699b3ae285b4bbfee32e76ad8e2e9972b3d7f91d3e1b7c653f26eb52bb4b37832ac98bab08d57ae6a0aebbcb2d6d30ee70d7f97df8bacd2188d3aaedc659529e18c892b952d7987f385f7befb5d99204356aa0676342443566a8d7be08cc8ac8da11d416bf8bdc8c0d5f0e32e931085051de5e8a86391dd425624b3975790cdb272f8bf6be17fe79d5257976f320d41534faa54bfaaff67e87f9d218ceb1de4e90af2f4167f15151617d85871cd68aab4b23090a441a50d96b1d81e3259d4469794495fea022a12eab85198bec240f8ca12737af13ad4fedbecd52c2dd48b99f90341305b65535d68ebd46ca1e4e549213dc01f3c",
+        "magic_number_classification": "PDF",
+        "sha256_of_body": "870be0ca867c1c562337a5319d09cac353a85dbb7907dce7c13ee47ad7af3e21",
+        "connection_error": null,
+        "timestamp_utc": "2026-09-17T13:59:08Z to 2026-09-17T13:59:49Z (sequential, ~1.7s apart on average, one host, no concurrency)"
+      }
+    ],
+    "summary": {
+      "urls_tested": 10,
+      "urls_succeeded_200": 10,
+      "urls_failed": 0,
+      "all_bodies_valid_magic_number_for_declared_extension": true,
+      "notable_cross_check": "obs10 (INE081A01020::FY2024, Tata Steel, .pdf) downloaded today hashes to 870be0ca867c1c562337a5319d09cac353a85dbb7907dce7c13ee47ad7af3e21, an EXACT match to the frozen authoritative_artifact_sha256 already recorded for this observation in pm5_stage_table.csv -- direct evidence this specific source has been byte-stable since the original crawl.",
+      "contrast_with_diagnostic_base_check": "reports/pc0_diagnostic_base_check.md's Step 3 (same day, ~40-50 minutes earlier, same network, same 9 of these 10 NSE URLs) recorded 0 of 9 successes (a mix of CURLE_RECV_ERROR resets and CURLE_OPERATION_TIMEDOUT after 45s x3 retries). This run records 10 of 10 successes with clean 200s. The NSE archive host's behavior for the IDENTICAL URL set flipped from total failure to total success within under an hour, from the same network. This is the single strongest piece of current-observation evidence in this diagnosis: it demonstrates the endpoint is highly time-variable on a sub-hour timescale, independent of any zero/nonzero-FY grouping (today's failure and today's success were BOTH uniform across the whole sample, not split by group).",
+      "explicit_caveat": "This describes CURRENT (2026-09-17) endpoint behavior only. It does not, by itself, prove what happened during the historical 2026-09-11 crawl -- see part6 and part11 below."
+    }
+  },
+  "part5_redaction_note": "Config A's NSE_HOME cookie-seeding responses set Akamai bot-management cookies (names: nsit, _abck; also bm_sz observed in one earlier exploratory probe). These are session/tracking tokens, not user credentials, but are redacted here per this task's Part 5 instruction (Cookie/Set-Cookie values redacted; names retained). No Authorization headers, API keys, or signed query parameters were present anywhere in this diagnosis -- all tested URLs are public regulatory-archive endpoints requiring no authentication. The target-host (nsearchives.nseindia.com) responses in Part 4 and Part 9 carry no Set-Cookie header at all, so no redaction was needed on those specific response headers.",
+  "part6_historical_vs_current_evidence": {
+    "historical_evidence": {
+      "definition": "Persisted records dated to the actual 2026-09-11 crawl: fetched_at timestamps in live_store_documents.jsonl (194 rows, successes only), the discovered-candidate rows in the frozen cohort_reports.jsonl / pm5_source_snapshots (512 discovered company-years' worth of ReportRef rows), and pm5_stage_table.csv's derived stage flags.",
+      "what_it_directly_proves": [
+        "512 of 576 expected company-years had at least one candidate URL discovered.",
+        "194 of those 512 have a StoredDoc with a fetched_at timestamp between 2026-09-11T10:28:44Z and 2026-09-11T10:33:08Z.",
+        "0 of the other 318 have ANY persisted timestamp, exception record, or HTTP telemetry -- there is no 'attempt log' for them at all."
+      ],
+      "what_it_does_not_prove": [
+        "Whether cmd_fetch was ever invoked against the other 318 candidates.",
+        "If invoked, what error (if any) occurred.",
+        "Whether the 2026-09-11 run(s) executed code byte-identical to HEAD 0fb8cbf (cannot be proven from this evidence alone; the live arpipe-0.1.0 tree is confirmed dirty today, so its current state cannot stand in for 2026-09-11's)."
+      ]
+    },
+    "current_network_observation": {
+      "definition": "Live GET requests issued by this diagnosis on 2026-09-17 against the same URLs.",
+      "what_it_directly_proves": [
+        "What nsearchives.nseindia.com and www.bseindia.com return RIGHT NOW, under two specific documented client configurations.",
+        "That the endpoint's behavior for this exact URL set changed from 0/9 success to 10/10 success within roughly 40-50 minutes on the same day."
+      ],
+      "what_it_does_not_prove": [
+        "What the endpoint returned on 2026-09-11.",
+        "That today's failure mode (when it occurred) or success mode is the SAME mechanism as whatever occurred on 2026-09-11."
+      ]
+    },
+    "explicit_rule_followed": "These two classes are never merged into a single 'this is what happened' statement anywhere in this report."
+  },
+  "part7_committed_fetch_control_flow": {
+    "files_inspected": [
+      "arpipe/discover.py",
+      "arpipe/fetch.py",
+      "arpipe/cli.py (cmd_discover, cmd_fetch, cmd_universe)"
+    ],
+    "why_separate_clients": "cmd_discover and cmd_fetch are separate CLI subcommands ('arpipe discover' then 'arpipe fetch'), documented in cli.py's own module docstring as deliberately decoupled ('Stages are separate commands on purpose... fetch runs once'). discover.nse_session() is called once inside cmd_discover and closed at the end of that command (finally: nse_cl.close()). cmd_fetch is a later, separate process/invocation that only ever reads the discovery manifest file from disk (a JSONL of ReportRef rows: url/source/priority/company_id/fy_end/declared_name/... -- no header or cookie fields exist in that schema) and builds its OWN httpx.Client from scratch at cli.py line 176-177.",
+    "q1_why_separate_clients": "Architectural: discover and fetch are separate CLI commands/processes so that `extract` can be re-run without re-fetching; there is no shared in-memory client by design, and the on-disk manifest handoff format has no field to carry session state even if the processes were merged.",
+    "q2_cookies_differ": "YES. discover.nse_session() performs 2 GETs to NSE_HOME to populate its client's cookie jar before any API call. cmd_fetch's client is constructed fresh with no seeding requests; its cookie jar is empty for the life of the command.",
+    "q3_headers_differ": "YES. discover.NSE_HEADERS = User-Agent, Accept, Accept-Language, Referer (pointed at the corporate-filings-annual-reports page). cmd_fetch's client sets only {'User-Agent': discover.UA} -- no Accept, no Accept-Language, no Referer.",
+    "q4_user_agent_differs": "NO. Both clients use the identical string discover.UA.",
+    "q5_redirects_differ": "NO. Both rely on httpx's follow_redirects=True with the library default max_redirects (20); neither cli.py nor fetch.py overrides it.",
+    "q6_timeout_differs": "YES, nominally. discover.nse_session(timeout=20.0) default vs cmd_fetch's httpx.Client(timeout=120). In practice fetch.py's fetch_one() overrides the per-request timeout to 120.0 explicitly on its own call regardless of the client's default, so this difference only matters for calls made directly on the discovery client (which never requests the archive host in production).",
+    "q7_tls_proxy_differs": "NO EVIDENCE OF DIFFERENCE. Neither client configures a custom SSL context or proxy; both use httpx defaults.",
+    "q8_connection_session_reuse_differs": "YES. discover's nse_session() client persists across ALL companies within one `arpipe discover` run (opened once, reused ~2568 times, closed once). cmd_fetch's client persists across all pairs within one `arpipe fetch` run but is a DIFFERENT object with no shared history; there is no code path connecting the two.",
+    "q9_discovery_state_transferred_to_fetch": "NO. Confirmed structurally, not just observed: the manifest file discover writes (ReportRef JSON rows) has no field for cookies, headers, or session identifiers, and cmd_fetch never reads anything but that file plus its own fresh client. Even if both commands ran in the same process, the current code has no line that would copy cookies/headers from one client to the other.",
+    "q10_response_formats_accepted": "fetch_one() does not check the Content-Type header at all. It inspects the first 2 bytes of the body: b'PK' is treated as a zip (extracts the largest embedded PDF); anything else is written to disk and opened directly with pymupdf as a PDF. If pymupdf.open() raises, it tries a qpdf repair pass; if that also fails, fetch_one returns None silently (no exception, no WARN/ERR print at that specific point -- the aggregate 'FAILED ... across all candidate sources' print only fires later, in cli.py's ThreadPoolExecutor loop, once every candidate for that pair has been exhausted).",
+    "q11_network_exception_handling": "fetch_one() wraps the GET/stream in a broad `except Exception`, stores it as last_err, sleeps 2*(attempt+1) seconds, and retries up to `retries` (default 3) times; after exhausting attempts it re-raises last_err. Separately, HTTP 403/429/503 responses trigger `time.sleep(5*(attempt+1)**2)` and `continue` WITHOUT setting last_err. CONCRETE GAP FOUND: if all `retries` attempts return 403/429/503 (never a generic exception), the for loop exits with last_err still None, and fetch_one falls through to `return None` -- no exception is ever raised, and no information about the repeated 403/429/503 survives anywhere, not even a print statement. This is a genuine, code-verified silent-failure path distinct from the already-known stderr-only WARN/ERR path.",
+    "q12_exceptions_persisted_or_printed": "Only printed, never persisted. cli.py's _fetch_pair prints a one-line WARN to stderr per exception; the ThreadPoolExecutor loop prints ERR or FAILED to stderr once per pair after all candidates are exhausted. fetch.py itself prints informational [FETCH] lines to STDOUT (zip-extract, repair, decrypt notices) which are a separate channel again. None of these three print channels are written to documents.jsonl, to any log file, or to any other structure that a later reconciliation pass (e.g. tools/pm5_coverage.py) could read. This is confirmed independently by tools/pm5_coverage.py's own source comment (line ~68-71 in the pm5-coverage-funnel worktree): DISCOVERY and DOWNLOAD failures are hard-coded to REASON_CODE_MISSING because, in the tool's own words, those stages have no persisted reason/artifact to inspect -- consistent with, and independently corroborating, the code-reading finding here.",
+    "q13_fetch_step_skipped_before_invocation": "Checked directly against the only committed fetch-input-shaped file in this repo, cohort_fetch_manifest.jsonl (460 rows / 194 distinct (company_id, fy_end) pairs, committed at 1d7dc05, 2026-09-11T16:21:07+05:30). This set is EXACTLY equal to the 194 downloaded=True pairs in pm5_stage_table.csv (same FY distribution: {2011:1,2012:28,2013:29,2015:2,2017:31,2018:31,2024:36,2025:36}), and the generating script is not committed. HYPOTHESIS TESTED AND REJECTED: this file is NOT a pre-fetch input that filtered out the 318 candidates before cmd_fetch ran -- it cannot be, because a pre-fetch filter would have had to predict which 194 of 512 candidates would later succeed, which is not something any committed code does. It is far more consistent with being a POST-hoc derivative built FROM the successful documents.jsonl/store contents (the same 2026-09-11 16:21 commit also added tools/seed_historical_labels.py, which reads arpipe/p11_store/documents.jsonl -- the post-fetch success store -- for an unrelated P13b evaluation/labelling task). Within cmd_fetch itself, the only skip logic is the `done` set built from any PRE-EXISTING documents.jsonl in the output root; it skips pairs already recorded as successfully downloaded, and would NOT skip a pair that had only ever failed (failures are never written to documents.jsonl, so they can never appear in `done`). No skip-before-invocation bug was found for the 318 losses; this specific control-flow hypothesis is RULED OUT by direct evidence, not merely unconfirmed.",
+    "would_head_accept_todays_responses": "Yes for all 10 sampled URLs today (all returned clean 200s with correct magic numbers); fetch_one() would accept and store every one of them without retry."
+  },
+  "part8_evidence_hierarchy": {
+    "strong_evidence_available": [
+      "fetched_at timestamps for the 194 successes (persisted HTTP telemetry-adjacent evidence, success-only)",
+      "discovered-candidate rows for 512 company-years (persisted discovery evidence)",
+      "pm5_reason_code_completeness.csv (persisted, directly shows 0/318 DOWNLOAD reasons and 0/64 DISCOVERY reasons vs 24/24 IDENTITY and 39/43 ACCEPTANCE)"
+    ],
+    "strong_evidence_absent": [
+      "No persisted fetch-attempt record for any of the 318 discover->download losses.",
+      "No persisted exception for any of them.",
+      "No persisted HTTP telemetry (status code, timing) for any of them.",
+      "No download log file of any kind (only ephemeral stdout/stderr prints, per part7 q12)."
+    ],
+    "indirect_evidence_only": [
+      "Discovered candidate exists for these 318 (from cohort_reports.jsonl / pm5_stage_table.csv).",
+      "No downloaded artifact exists for them.",
+      "Later stages are absent (identity_verified/mda_located/accepted all False, by construction of the funnel)."
+    ],
+    "explicit_ruling": "Per this task's fixed rule: absence of a downloaded artifact is NOT proof that fetch was attempted, and absence of a persisted reason is NOT proof that no reason existed. For all 318 discover->download losses, HISTORICAL FETCH INVOCATION = UNKNOWN. This diagnosis does not and cannot upgrade that to CONFIRMED with the evidence available."
+  },
+  "part9_controlled_differential_test": {
+    "hypothesis_tested": "The fetch-client's missing NSE session cookies/Referer (vs the discovery-client's) causes nsearchives.nseindia.com to block/reset archive downloads.",
+    "representative_urls_tested": 3,
+    "results": [
+      {
+        "sample_index": 1,
+        "observation_id": "INE002A01018::FY2010",
+        "group": "DOWNLOAD_ZERO_FY",
+        "url": "https://nsearchives.nseindia.com/annual_reports/AR_RELIANCE_2009_2010_20082010120000.zip",
+        "config_A": {
+          "description": "discovery-client-equivalent: cookie jar seeded by 2 sequential GETs to https://www.nseindia.com and the NSE Referer page, headers = User-Agent + Accept + Accept-Language + Referer, timeout=20s (nse_session() default), follow_redirects=True",
+          "seed_request_1_status": 403,
+          "seed_request_2_status": 200,
+          "cookie_jar_entries_after_seeding": 2,
+          "cookie_names": [
+            "nsit",
+            "_abck"
+          ],
+          "cookie_values": "<REDACTED - Akamai bot-management session tokens, not authentication credentials, redacted per Part 5>",
+          "target_request_status": 200,
+          "target_content_type": "application/zip",
+          "target_response_length_bytes": 8795366,
+          "time_total_seconds": 6.936343
+        },
+        "config_B": {
+          "description": "fetch-client-equivalent, same as Part 4 config B",
+          "target_request_status": 200,
+          "target_content_type": "application/zip",
+          "target_response_length_bytes": 8795366,
+          "time_total_seconds": 1.694818
+        },
+        "response_headers_identical_aside_from_date_and_akamai_request_id": true,
+        "outcome_classification": "A and B both succeed"
+      },
+      {
+        "sample_index": 4,
+        "observation_id": "INE171A01029::FY2021",
+        "group": "DOWNLOAD_ZERO_FY",
+        "url": "https://nsearchives.nseindia.com/annual_reports/AR_18152_FEDERALBNK_2020_2021_17062021235201_18062021070010.zip",
+        "config_A": {
+          "description": "discovery-client-equivalent (see obs1)",
+          "seed_request_1_status": 403,
+          "seed_request_2_status": 200,
+          "cookie_jar_entries_after_seeding": 2,
+          "cookie_names": [
+            "nsit",
+            "_abck"
+          ],
+          "cookie_values": "<REDACTED>",
+          "target_request_status": 200,
+          "target_content_type": "application/zip",
+          "target_response_length_bytes": 9448336,
+          "time_total_seconds": 4.846105
+        },
+        "config_B": {
+          "description": "fetch-client-equivalent",
+          "target_request_status": 200,
+          "target_content_type": "application/zip",
+          "target_response_length_bytes": 9448336,
+          "time_total_seconds": 1.54589
+        },
+        "response_headers_identical_aside_from_date_and_akamai_request_id": true,
+        "outcome_classification": "A and B both succeed"
+      },
+      {
+        "sample_index": 7,
+        "observation_id": "INE009A01021::FY2013",
+        "group": "DOWNLOAD_NONZERO_FY_CONTROL",
+        "url": "https://nsearchives.nseindia.com/annual_reports/AR_27_INFY_2012_2013_20062013105245.zip",
+        "config_A": {
+          "description": "discovery-client-equivalent (see obs1)",
+          "seed_request_1_status": 403,
+          "seed_request_2_status": 200,
+          "cookie_jar_entries_after_seeding": 2,
+          "cookie_names": [
+            "nsit",
+            "_abck"
+          ],
+          "cookie_values": "<REDACTED>",
+          "target_request_status": 200,
+          "target_content_type": "application/zip",
+          "target_response_length_bytes": 8608682,
+          "time_total_seconds": 1.905217
+        },
+        "config_B": {
+          "description": "fetch-client-equivalent",
+          "target_request_status": 200,
+          "target_content_type": "application/zip",
+          "target_response_length_bytes": 8608682,
+          "time_total_seconds": 2.348449
+        },
+        "response_headers_identical_aside_from_date_and_akamai_request_id": true,
+        "outcome_classification": "A and B both succeed"
+      }
+    ],
+    "aggregate_outcome": "A and B both succeed (for all 3 URLs tested, on 2026-09-17 between 13:59:51Z and 14:00:25Z)",
+    "response_header_comparison": "Byte-for-byte identical response headers from the target host between config A and config B (aside from the Date timestamp and the per-request Akamai-GRN request ID), including the absence of any Set-Cookie header from the archive host itself in either config.",
+    "interpretation_current_observation_only": "Today, a completely cookie-less, Referer-less client (config B, i.e. what cmd_fetch actually sends) succeeds against nsearchives.nseindia.com exactly as well as a client carrying NSE session cookies and Referer (config A). The archive host shows no observable current-day preference for either configuration. This WEAKENS the cookie/session-asymmetry hypothesis as a general, always-true explanation, without eliminating the possibility that cookies mattered under the specific (unobserved) conditions of the 2026-09-11 run.",
+    "explicit_caveat": "This is a CURRENT differential result. It shows a reproducible current mechanism (or lack thereof). It does NOT automatically prove that cookie/session state did or did not cause the historical 2026-09-11 losses -- that would require historical attempt-level evidence, which part8 establishes does not exist."
+  },
+  "part10_zero_vs_nonzero_comparison": {
+    "dimensions_compared": [
+      "url_pattern",
+      "hostname",
+      "path_structure",
+      "file_extension",
+      "redirects",
+      "response_content_type",
+      "required_cookies_session",
+      "user_agent_requirements",
+      "fetch_client_behavior",
+      "invocation_state",
+      "exception_behavior",
+      "acceptance_logic",
+      "source_identifier",
+      "year_encoding",
+      "exchange"
+    ],
+    "findings": {
+      "url_pattern": "Identical AR_<id>_<SYMBOL>_<FY0>_<FY1>_<timestamp>.<ext> structure in both groups, matched by the same discover.py regex.",
+      "hostname": "All 10 sampled top-priority URLs are nsearchives.nseindia.com in both groups.",
+      "file_extension": "Both groups mix .zip (older) and .pdf (newer, e.g. the FY2024 control observation); extension tracks calendar year of filing, not zero/nonzero group.",
+      "redirects": "0 redirects observed for all 10 URLs today, in both configs A and B.",
+      "response_content_type_today": "All 10 returned correct, matching content-type (application/zip or application/pdf) with valid magic numbers today -- no group-based difference.",
+      "required_cookies_session": "Per part9's differential test on 1 DOWNLOAD_ZERO_FY url (obs1), 1 newly-sampled DOWNLOAD_ZERO_FY url (obs4) and 1 control url (obs7): none required cookies/session today; both groups behaved identically.",
+      "user_agent_requirements": "Both groups' URLs accepted the same generic Chrome UA string today; no group-based difference observed.",
+      "fetch_client_behavior": "Identical: fetch_one()'s code path is group-agnostic -- it has no branch that treats a URL differently based on which FY or company it belongs to.",
+      "invocation_state": "Cannot be compared -- per part8, historical invocation state for the DOWNLOAD_ZERO_FY group is UNKNOWN (no persisted record), so there is nothing to structurally contrast against the control group's known-successful invocation.",
+      "exception_behavior": "Cannot be compared historically for the same reason; today, no exceptions occurred in either group (all 10 URLs succeeded).",
+      "acceptance_logic": "Not reached for the DOWNLOAD_ZERO_FY group in the historical data (they never got past DOWNLOAD); the control group shows acceptance logic CAN independently fail downloaded documents for unrelated reasons (obs8, HDFC Bank FY2017, source_shredded) -- i.e. downloaded=0 is not the only route to accepted=0.",
+      "source_identifier": "Both groups' sampled top-priority source is 'nse' (priority 10); no group-based difference.",
+      "year_encoding": "Both groups use the same fromYr/toYr NSE API encoding and the same filename year-span regex; no group-based difference.",
+      "exchange": "Both groups are exchange='both' companies; no group-based difference."
+    },
+    "conclusion": "No STRUCTURAL difference was found between the DOWNLOAD_ZERO_FY and DOWNLOAD_NONZERO_FY_CONTROL groups on any dimension observable today or in the frozen static evidence (URL shape, host, path, extension, source, year encoding, exchange all match). The only measurable difference anywhere in this diagnosis is TEMPORAL: the frozen fetched_at clustering (part11) and today's demonstrated ~40-50 minute flip from 0/9 to 10/10 success on the identical URL set. This is consistent with, but does not prove, a time-varying access condition on the source side rather than a company- or year-specific structural cause."
+  },
+  "part11_historical_timestamp_analysis": {
+    "source": "pm5_source_snapshots/live_store_documents.jsonl 'fetched_at' field (frozen, read-only), as already extracted by reports/pc0_diagnostic_base_check.json step1_fiscal_year_pattern.fetched_at_timestamp_clustering",
+    "field_semantics": "fetched_at is generated client-side by arpipe/models.py's StoredDoc dataclass (default_factory=dt.datetime.now(dt.UTC).isoformat()), stamped at the moment fetch.py's fetch_one() successfully constructs a StoredDoc -- i.e. AFTER the GET succeeded, the zip/pdf was parsed or repaired, and the blob was written to the content-addressed store. It exists ONLY on success; no equivalent field is stamped anywhere on failure.",
+    "what_it_proves": [
+      "All 194 successful downloads completed between 2026-09-11T10:28:44.383654+00:00 and 2026-09-11T10:33:08.081915+00:00 (a ~4.5 minute span).",
+      "Within that span, successes cluster into 3 tight sub-bursts by FY, in order: {2012,2013} first (10:28:44-10:29:58), {2017,2018} next (10:30:04-10:31:26), {2024,2025} last (10:31:29-10:33:08), with FY2011's single success (10:29:04) landing inside the first burst's window and FY2015's 2 successes (10:31:21-10:31:22) landing inside the second burst's window.",
+      "This is consistent with 3 sub-populations of company-years each becoming fetchable in a short window, rather than 3 separate crawl days -- it is one continuous span."
+    ],
+    "what_it_does_not_prove": [
+      "That any of the 318 failed pairs were attempted during this window, before it, after it, or at all -- no timestamp of any kind exists for them.",
+      "How many attempts (of the up-to-3 built into fetch_one's retry loop) preceded each successful StoredDoc construction -- attempt count is not persisted.",
+      "That there was only ONE invocation of `arpipe fetch` ever run against this cohort -- cmd_fetch supports incremental resume via a `done' set read from any pre-existing documents.jsonl, so multiple invocations over time are structurally possible and would leave no trace for any invocation that produced zero successes.",
+      "Ordering/causality between the sub-bursts beyond 'these particular successes completed in this order' -- e.g. it does not prove the FY2012/2013 candidates were attempted before the FY2024/2025 candidates, only that they finished first (ThreadPoolExecutor runs pairs concurrently, so completion order is not the same as attempt-start order)."
+    ],
+    "explicit_rule_followed": "This diagnosis does NOT infer 'not downloaded = attempted and failed' from this timestamp evidence. For the 318 losses, historical invocation remains UNKNOWN per part8."
+  },
+  "part12_observability_gap": {
+    "download_stage_reason_coverage_pct": 0.0,
+    "discovery_stage_reason_coverage_pct": 0.0,
+    "identity_stage_reason_coverage_pct": 100.0,
+    "acceptance_stage_reason_coverage_pct": 90.7,
+    "source": "reports/pm5_reason_code_completeness.csv (frozen, read-only)",
+    "where_code_logs_vs_swallows": {
+      "prints_to_stderr": "cli.py cmd_fetch's _fetch_pair (WARN line per exception) and the ThreadPoolExecutor completion loop (ERR / FAILED lines).",
+      "prints_to_stdout": "fetch.py's fetch_one (zip-extract / repair / decrypt notices via bare print()).",
+      "swallows_silently_no_print_at_all": "fetch_one's own exhausted-403/429/503 path (part7 q11) -- falls through to `return None` with last_err still None, zero output on any channel.",
+      "persists_a_structured_reason_to_a_file": "Nowhere in the DOWNLOAD or DISCOVERY stages. IDENTITY and ACCEPTANCE stages DO have inspectable fields in the post-processing manifest (verify.py/triage.py's downstream outputs) that tools/pm5_coverage.py can read after the fact -- this is why those two stages show 100% / 90.7% reason coverage while DOWNLOAD/DISCOVERY show 0%."
+    },
+    "structural_root_of_the_gap": "It is not merely that fetch.py/cli.py choose stderr over a log file. It is that a DOWNLOAD failure produces NO ARTIFACT of any kind (the content-addressed store only ever writes an entry on success), so even a smart post-hoc reconciliation tool has nothing on disk to inspect for a failed pair. tools/pm5_coverage.py's own source comment confirms this design tension directly: DISCOVERY and DOWNLOAD failures are unconditionally coded REASON_CODE_MISSING because those two stages have no persisted artifact to derive a reason from.",
+    "separation_maintained": {
+      "observability_failure_confirmed": "YES, directly, by code reading: DOWNLOAD/DISCOVERY failure reasons are never persisted anywhere, only ever printed (or, in one code path, not even printed).",
+      "acquisition_failure_mechanism_confirmed": "NOT by this fact alone. 'Reason was not persisted' proves the pipeline cannot currently tell you WHY a given company-year failed. It does not by itself tell you WHAT that reason was. The two are reported separately throughout this diagnosis and must not be merged."
+    }
+  },
+  "part13_root_cause_structure": {
+    "primary_cause": {
+      "category": "C. HTTP/access problem (time-varying availability on the NSE archive host)",
+      "confidence": "MEDIUM",
+      "supporting_evidence": [
+        "Frozen historical evidence: all 194 successes fall inside one ~4.5 minute window with 3 internal sub-bursts, nothing before or after (part11).",
+        "Current-observation evidence: the identical 10-URL sample flipped from 0/10 success (pc0_diagnostic_base_check.md Step 3, same day) to 10/10 success (this task's part4) within roughly 40-50 minutes, on the same network, with no code changes in between.",
+        "part10: no structural (URL/host/path/extension/source/exchange) difference was found between the DOWNLOAD_ZERO_FY and control groups, in either the frozen evidence or today's live probing -- ruling out a company- or file-specific explanation and leaving a time-dependent access condition as the best-supported remaining explanation.",
+        "part9's controlled differential test found NO current requirement for discovery-session cookies/Referer to succeed against this host -- ruling out client-configuration asymmetry as a SOLE or CURRENT explanation (it may still be a contributing factor under conditions not observed today; see contributing_factors)."
+      ],
+      "why_not_high_confidence": [
+        "Historical per-attempt execution evidence for the 318 losses does not exist (part8: UNKNOWN). This diagnosis cannot directly observe that a 403/429/503/timeout/reset actually occurred for any specific one of the 318 pairs on 2026-09-11. The conclusion rests on convergent circumstantial evidence (timestamp clustering + demonstrated current volatility + absence of any structural alternative), which this task's own confidence definitions place at MEDIUM, not HIGH."
+      ]
+    },
+    "contributing_factors": [
+      {
+        "factor": "Observability / reason-code persistence failure (part12)",
+        "role": "Does not cause the acquisition loss, but makes it impossible to confirm or refute the primary-cause hypothesis directly from historical records, and would silently absorb the same failure again on any future re-run."
+      },
+      {
+        "factor": "fetch_one's silent-return-None path on exhausted 403/429/503 (part7 q11)",
+        "role": "A confirmed, code-level gap that specifically matches an HTTP/access-problem failure mode (repeated 403/429/503) with total silence -- directly compatible with, though not proof of, the primary cause."
+      },
+      {
+        "factor": "Discovery-client vs fetch-client configuration asymmetry (part7 q1-q9, part9)",
+        "role": "A real, confirmed code asymmetry (cookies, Referer, Accept headers all differ). Tested directly and found NOT to matter under today's conditions (part9: A and B both succeed). Downgraded from primary-cause candidate to a documented-but-unconfirmed contributing hypothesis; cannot be fully ruled out for 2026-09-11's specific unobserved conditions."
+      }
+    ],
+    "causes_considered_and_ruled_out": [
+      {
+        "hypothesis": "D. File-format/validation problem (e.g. fetch_one rejecting a valid file)",
+        "status": "RULED OUT for the sampled URLs -- all 10 sample URLs, including all 5 DOWNLOAD_ZERO_FY ones, returned valid, correctly-typed ZIP/PDF bodies today with correct magic numbers; fetch_one's format handling would accept every one of them."
+      },
+      {
+        "hypothesis": "E. Control-flow/skipping problem (candidates dropped between discovery and fetch invocation)",
+        "status": "RULED OUT for the specific committed-manifest hypothesis tested in part7 q13 (cohort_fetch_manifest.jsonl) -- shown to be a post-hoc derivative of successful downloads, not a pre-fetch filter. cmd_fetch's own `done`-set skip logic only skips already-succeeded pairs, never failed ones. No other skip mechanism was found in the read code."
+      },
+      {
+        "hypothesis": "A. Discovery/source problem (candidates never discovered)",
+        "status": "NOT APPLICABLE to this loss -- by definition, all 318 losses in this diagnosis have discovered=True; a discovery-stage problem is a separate, already-quantified loss (64 company-years, DISCOVERED stage, out of scope for 'discover->download' specifically)."
+      }
+    ],
+    "multiple_primary_causes_note": "Only one primary cause (C) is supported by convergent evidence strong enough to name as primary; B (fetch invocation/client-state) is retained only as a contributing/unconfirmed factor per the evidence in part9, not promoted to a second primary cause."
+  },
+  "part14_confidence_definitions": {
+    "HIGH": "Direct evidence from committed control flow or persisted historical records.",
+    "MEDIUM": "Multiple independent pieces of evidence converge, but historical execution cannot be directly observed.",
+    "LOW": "Plausible explanation with incomplete supporting evidence.",
+    "applied_in_this_report": {
+      "HIGH": [
+        "Discovery-client vs fetch-client code asymmetry exists (direct code reading).",
+        "DOWNLOAD/DISCOVERY reason-code coverage is 0% (direct, persisted frozen evidence).",
+        "fetch_one's exhausted-403/429/503 path returns None with no exception and no output (direct code reading).",
+        "cohort_fetch_manifest.jsonl's pair-set equals the downloaded=True set exactly, ruling out the pre-fetch-filter hypothesis (direct, computed evidence)."
+      ],
+      "MEDIUM": [
+        "PRIMARY CAUSE: time-varying HTTP/access condition on the NSE archive host explains the discover->download loss pattern."
+      ],
+      "LOW": [
+        "Any claim about what specifically happened (timeout vs reset vs 403 vs something else) to any INDIVIDUAL one of the 318 lost pairs on 2026-09-11 -- there is no evidence at that granularity at all."
+      ]
+    }
+  },
+  "unresolved_questions": [
+    "Whether the 2026-09-11 crawl(s) ran on code byte-identical to HEAD 0fb8cbf (cannot be established from committed history or frozen evidence alone).",
+    "Whether there was exactly one `arpipe fetch` invocation on 2026-09-11 or several (documents.jsonl's append + resume-skip design cannot distinguish these).",
+    "What specific failure mode (timeout / reset / 403 / 429 / 503 / other) applied to any specific one of the 318 losses -- no per-attempt evidence exists.",
+    "Whether the NSE archive host's volatility is genuinely time-of-day/session/rate-limit-state dependent on NSE's side, or reflects transient conditions specific to the IIT Kanpur campus network used for all live probing in this diagnosis and its predecessor -- both explanations remain open.",
+    "Whether concurrency (ThreadPoolExecutor worker count) during the historical run interacted with per-host rate limiting or Akamai bot-mitigation thresholds -- HostLimiter enforces only a 1.5s per-host minimum interval, which would not by itself prevent a burst of concurrent connections from multiple worker threads to the same host at the moment the limiter's window opens."
+  ],
+  "minimal_next_repair_test": {
+    "description": "Before any repair: add structured, persisted failure-reason logging to cmd_fetch/_fetch_pair and fetch_one (e.g. write a JSONL row per failed attempt with company_id, fy_end, source, url, exception type/message or HTTP status, and a UTC timestamp) -- purely additive observability, no retry/backoff/timeout/client changes. Then re-run `arpipe fetch` against a SMALL, already-frozen subset of the discover->download losses (e.g. this task's 5 DOWNLOAD_ZERO_FY sample observations) in isolation, and inspect the new persisted reasons directly. This converts 'historical invocation = UNKNOWN' into a directly observable, persisted, per-attempt record for future runs, without touching acquisition logic, and would immediately confirm or refute whether repeated 403/429/503 (part7 q11's silent path), timeouts, or resets are actually what these specific pairs hit.",
+    "explicitly_not_implemented_in_this_task": true,
+    "why_this_and_not_a_bigger_fix": "This task's evidence supports MEDIUM confidence in a time-varying access condition, not HIGH confidence in any single deterministic bug. Adding retries, backoff, or cookie-sharing now (part9's ruled-out-as-necessary hypothesis) would be a repair attempt without the observability needed to verify it worked or understand why. The logging-only step is the smallest change that converts an UNKNOWN into evidence, consistent with this task's scope (diagnosis only, no repair)."
+  },
+  "scope_compliance": {
+    "did_not": [
+      "modify production code (arpipe/*.py untouched; diff against HEAD is empty)",
+      "rerun the full 576-observation acquisition",
+      "rerun the 194-document extraction",
+      "add retries or backoff to any client",
+      "change any timeout in production code",
+      "alter any HTTP client in production code",
+      "change URL handling or acceptance logic",
+      "modify any manifest",
+      "create Universe V2",
+      "change P-M5 stage membership",
+      "modify the arpipe-0.1.0 or arpipe-pm5-coverage or arpipe-pc0-diagnostic-base worktrees"
+    ],
+    "network_requests_made_by_this_task": "10 (part4) + 3*(2 seed + 1 target)=9 for config A + 3 for config B (part9) = 22 total GETs, all single-attempt, no retries added, to public regulatory-archive endpoints already sampled in the predecessor diagnostic."
+  },
+  "final_verdict": "COVERAGE MECHANISM PARTIALLY IDENTIFIED - FURTHER EVIDENCE REQUIRED"
+}
