@@ -1,0 +1,240 @@
+{
+  "task": "P-C0R: Instrumented Acquisition Resolution Pilot - Part 1 Frozen Sample Manifest",
+  "mode": "DIAGNOSTIC / EXPERIMENT ONLY",
+  "frozen_at_utc": "2026-09-17T14:32:00Z",
+  "frozen_at_local": "2026-09-17T20:02:00+05:30",
+  "frozen_before_network_testing": true,
+  "no_sample_substitution_after_freeze": true,
+  "evidence_sources": {
+    "pc0_sample_manifest_json": "D:\\sem_iitk\\sem9\\thesis\\sep_week1\\arpipe-pc0-coverage-diag\\reports\\pc0_sample_manifest.json",
+    "pc0_sample_manifest_sha256": "4b971a8069d3eeb1ec3528bca617c5fb54cf69076fa4d5d9cfa3a681c81ef9d2",
+    "pm5_stage_table_csv_sha256": "30e93b59ac689f00fab182583fb25883322e429be42b4ba14e13a1011b916dc9"
+  },
+  "group_definitions": {
+    "DOWNLOAD_ZERO_FY": "discovered=True, downloaded=False, drawn from an FY where the FY-level aggregate downloaded count in pm5_stage_table.csv is exactly 0 (2010, 2014, 2016, 2019, 2020, 2021, 2022, 2023).",
+    "DOWNLOAD_NONZERO_FY_CONTROL": "downloaded=True at the observation level, drawn from an FY where FY-level downloaded>0 (2011, 2012, 2013, 2015, 2017, 2018, 2024, 2025)."
+  },
+  "observations": [
+    {
+      "observation_id": "INE002A01018::FY2010",
+      "company_id": "INE002A01018",
+      "company_name": "Reliance Industries Limited",
+      "FY": 2010,
+      "group": "DOWNLOAD_ZERO_FY",
+      "exact_url": "https://nsearchives.nseindia.com/annual_reports/AR_RELIANCE_2009_2010_20082010120000.zip",
+      "source": "nse",
+      "domain": "nsearchives.nseindia.com",
+      "source_id": "fbc9e6dc63",
+      "original_M5_stage_state": {
+        "discovered": true,
+        "downloaded": false,
+        "identity_verified": false,
+        "mda_located": false,
+        "accepted": false,
+        "first_failed_stage": "DOWNLOAD",
+        "first_failed_reason_code": "REASON_CODE_MISSING",
+        "terminal_state": "FIRST_FAILURE_AT_DOWNLOAD"
+      },
+      "selection_basis": "Reused verbatim from P-C0 sample obs#1. FY2010 satisfies strict downloaded=0 (0/36)."
+    },
+    {
+      "observation_id": "INE040A01034::FY2014",
+      "company_id": "INE040A01034",
+      "company_name": "HDFC Bank Limited",
+      "FY": 2014,
+      "group": "DOWNLOAD_ZERO_FY",
+      "exact_url": "https://nsearchives.nseindia.com/annual_reports/AR_3393_HDFCBANK_2013_2014_12062014114216.zip",
+      "source": "nse",
+      "domain": "nsearchives.nseindia.com",
+      "source_id": "9dfb47cb0b",
+      "original_M5_stage_state": {
+        "discovered": true,
+        "downloaded": false,
+        "identity_verified": false,
+        "mda_located": false,
+        "accepted": false,
+        "first_failed_stage": "DOWNLOAD",
+        "first_failed_reason_code": "REASON_CODE_MISSING",
+        "terminal_state": "FIRST_FAILURE_AT_DOWNLOAD"
+      },
+      "selection_basis": "Reused verbatim from P-C0 sample obs#2. FY2014 satisfies strict downloaded=0 (0/36)."
+    },
+    {
+      "observation_id": "INE081A01020::FY2016",
+      "company_id": "INE081A01020",
+      "company_name": "Tata Steel Limited",
+      "FY": 2016,
+      "group": "DOWNLOAD_ZERO_FY",
+      "exact_url": "https://nsearchives.nseindia.com/annual_reports/AR_9362_TATASTEEL_2015_2016_16082016104323.zip",
+      "source": "nse",
+      "domain": "nsearchives.nseindia.com",
+      "source_id": "e58b68b642",
+      "original_M5_stage_state": {
+        "discovered": true,
+        "downloaded": false,
+        "identity_verified": false,
+        "mda_located": false,
+        "accepted": false,
+        "first_failed_stage": "DOWNLOAD",
+        "first_failed_reason_code": "REASON_CODE_MISSING",
+        "terminal_state": "FIRST_FAILURE_AT_DOWNLOAD"
+      },
+      "selection_basis": "Reused verbatim from P-C0 sample obs#3. FY2016 satisfies strict downloaded=0 (0/36)."
+    },
+    {
+      "observation_id": "INE171A01029::FY2021",
+      "company_id": "INE171A01029",
+      "company_name": "The Federal Bank Limited",
+      "FY": 2021,
+      "group": "DOWNLOAD_ZERO_FY",
+      "exact_url": "https://nsearchives.nseindia.com/annual_reports/AR_18152_FEDERALBNK_2020_2021_17062021235201_18062021070010.zip",
+      "source": "nse",
+      "domain": "nsearchives.nseindia.com",
+      "source_id": "be1f9f75db",
+      "original_M5_stage_state": {
+        "discovered": true,
+        "downloaded": false,
+        "identity_verified": false,
+        "mda_located": false,
+        "accepted": false,
+        "first_failed_stage": "DOWNLOAD",
+        "first_failed_reason_code": "REASON_CODE_MISSING",
+        "terminal_state": "FIRST_FAILURE_AT_DOWNLOAD"
+      },
+      "selection_basis": "Reused verbatim from P-C0 sample obs#4. FY2021 falls inside the 2019-2023 contiguous zero-download run (0/36)."
+    },
+    {
+      "observation_id": "INE226A01021::FY2022",
+      "company_id": "INE226A01021",
+      "company_name": "Voltas Limited",
+      "FY": 2022,
+      "group": "DOWNLOAD_ZERO_FY",
+      "exact_url": "https://nsearchives.nseindia.com/annual_reports/AR_19956_VOLTAS_2021_2022_28052022144748_05282022150002.zip",
+      "source": "nse",
+      "domain": "nsearchives.nseindia.com",
+      "source_id": "ee08a3985b",
+      "original_M5_stage_state": {
+        "discovered": true,
+        "downloaded": false,
+        "identity_verified": false,
+        "mda_located": false,
+        "accepted": false,
+        "first_failed_stage": "DOWNLOAD",
+        "first_failed_reason_code": "REASON_CODE_MISSING",
+        "terminal_state": "FIRST_FAILURE_AT_DOWNLOAD"
+      },
+      "selection_basis": "Reused verbatim from P-C0 sample obs#5. FY2022 falls inside the 2019-2023 contiguous zero-download run (0/36)."
+    },
+    {
+      "observation_id": "INE002A01018::FY2012",
+      "company_id": "INE002A01018",
+      "company_name": "Reliance Industries Limited",
+      "FY": 2012,
+      "group": "DOWNLOAD_NONZERO_FY_CONTROL",
+      "exact_url": "https://nsearchives.nseindia.com/annual_reports/AR_RELIANCE_2011_2012_29062012101059.zip",
+      "source": "nse",
+      "domain": "nsearchives.nseindia.com",
+      "source_id": "356e3b4a0d",
+      "original_M5_stage_state": {
+        "discovered": true,
+        "downloaded": true,
+        "identity_verified": true,
+        "mda_located": true,
+        "accepted": true,
+        "first_failed_stage": "",
+        "first_failed_reason_code": "",
+        "terminal_state": "ACCEPTED"
+      },
+      "selection_basis": "Reused verbatim from P-C0 sample obs#6. FY2012 satisfies downloaded>0 (28/36) and reached ACCEPTED."
+    },
+    {
+      "observation_id": "INE009A01021::FY2013",
+      "company_id": "INE009A01021",
+      "company_name": "Infosys Limited",
+      "FY": 2013,
+      "group": "DOWNLOAD_NONZERO_FY_CONTROL",
+      "exact_url": "https://nsearchives.nseindia.com/annual_reports/AR_27_INFY_2012_2013_20062013105245.zip",
+      "source": "nse",
+      "domain": "nsearchives.nseindia.com",
+      "source_id": "bfd2f11f02",
+      "original_M5_stage_state": {
+        "discovered": true,
+        "downloaded": true,
+        "identity_verified": true,
+        "mda_located": true,
+        "accepted": true,
+        "first_failed_stage": "",
+        "first_failed_reason_code": "",
+        "terminal_state": "ACCEPTED"
+      },
+      "selection_basis": "Reused verbatim from P-C0 sample obs#7. FY2013 satisfies downloaded>0 (29/36) and reached ACCEPTED."
+    },
+    {
+      "observation_id": "INE040A01034::FY2017",
+      "company_id": "INE040A01034",
+      "company_name": "HDFC Bank Limited",
+      "FY": 2017,
+      "group": "DOWNLOAD_NONZERO_FY_CONTROL",
+      "exact_url": "https://nsearchives.nseindia.com/annual_reports/AR_10840_HDFCBANK_2016_2017_25072017151900.zip",
+      "source": "nse",
+      "domain": "nsearchives.nseindia.com",
+      "source_id": "97262e9305",
+      "original_M5_stage_state": {
+        "discovered": true,
+        "downloaded": true,
+        "identity_verified": true,
+        "mda_located": true,
+        "accepted": false,
+        "first_failed_stage": "ACCEPTANCE",
+        "first_failed_reason_code": "source_shredded",
+        "terminal_state": "FIRST_FAILURE_AT_ACCEPTANCE"
+      },
+      "selection_basis": "Reused verbatim from P-C0 sample obs#8. FY2017 satisfies downloaded>0 (31/36); demonstrates non-download failure (source_shredded)."
+    },
+    {
+      "observation_id": "INE044A01036::FY2018",
+      "company_id": "INE044A01036",
+      "company_name": "Sun Pharmaceutical Industries Limited",
+      "FY": 2018,
+      "group": "DOWNLOAD_NONZERO_FY_CONTROL",
+      "exact_url": "https://nsearchives.nseindia.com/annual_reports/AR_13921_SUNPHARMA_2017_2018_01102018175233.zip",
+      "source": "nse",
+      "domain": "nsearchives.nseindia.com",
+      "source_id": "ddeee389ba",
+      "original_M5_stage_state": {
+        "discovered": true,
+        "downloaded": true,
+        "identity_verified": true,
+        "mda_located": true,
+        "accepted": true,
+        "first_failed_stage": "",
+        "first_failed_reason_code": "",
+        "terminal_state": "ACCEPTED"
+      },
+      "selection_basis": "Reused verbatim from P-C0 sample obs#9. FY2018 satisfies downloaded>0 (31/36) and reached ACCEPTED."
+    },
+    {
+      "observation_id": "INE081A01020::FY2024",
+      "company_id": "INE081A01020",
+      "company_name": "Tata Steel Limited",
+      "FY": 2024,
+      "group": "DOWNLOAD_NONZERO_FY_CONTROL",
+      "exact_url": "https://nsearchives.nseindia.com/annual_reports/AR_24166_TATASTEEL_2023_2024_2206202419194.pdf",
+      "source": "nse",
+      "domain": "nsearchives.nseindia.com",
+      "source_id": "6a3b8c5ed5",
+      "original_M5_stage_state": {
+        "discovered": true,
+        "downloaded": true,
+        "identity_verified": true,
+        "mda_located": true,
+        "accepted": true,
+        "first_failed_stage": "",
+        "first_failed_reason_code": "",
+        "terminal_state": "ACCEPTED"
+      },
+      "selection_basis": "Reused verbatim from P-C0 sample obs#10. FY2024 satisfies downloaded>0 (36/36) and reached ACCEPTED."
+    }
+  ]
+}
+
