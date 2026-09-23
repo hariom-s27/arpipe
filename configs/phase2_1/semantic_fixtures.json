@@ -1,0 +1,133 @@
+{
+  "schema_version": "2.1.0",
+  "fixtures": {
+    "discrimination_rules": [
+      {
+        "rule_id": "RULE-01",
+        "description": "document_native != page_native",
+        "valid_case": {
+          "doc_predicate": "NATIVE_DOC_WHOLE_V1",
+          "page_predicate": "PAGE_TEXT_DIGITAL",
+          "doc_count": 60,
+          "page_count": 35580,
+          "valid_relationship": "DISTINCT_GRANULARITY_AND_UNITS"
+        },
+        "invalid_coercion": {
+          "statement": "NATIVE_DOC_WHOLE_V1 implies all pages are PAGE_TEXT_DIGITAL",
+          "disproven_by": "39 of 60 whole-native documents contain non-text/vector/empty pages without scanned/ocr flags"
+        }
+      },
+      {
+        "rule_id": "RULE-02",
+        "description": "sampling_priority != routing_precedence",
+        "valid_case": {
+          "sampling_priority_stratum": "legacy_font_candidate",
+          "routing_action": "broken_text -> OCR",
+          "valid_relationship": "SAMPLING_PRIORITY_DOES_NOT_GOVERN_PIPELINE_EXECUTION"
+        },
+        "invalid_coercion": {
+          "statement": "legacy_font_candidate sampling priority requires REMAP execution before OCR",
+          "disproven_by": "sampling_spec priority governs benchmark quota filling only; production routing is defined by triage NEEDS_OCR"
+        }
+      },
+      {
+        "rule_id": "RULE-03",
+        "description": "candidate_proxy != verified_fact",
+        "valid_case": {
+          "predicate": "OCR_LAYER_CANDIDATE_PROXY",
+          "evidence_class": "CANDIDATE_PROXY",
+          "semantic_status": "RULE_DERIVED_REPRESENTATION",
+          "human_reviewed_count": 0
+        },
+        "invalid_coercion": {
+          "statement": "OCR_LAYER_CANDIDATE_PROXY detects PDF render mode 3 invisible text",
+          "disproven_by": "Code tests kind == 'scanned' and n_chars > 50; no code inspects PDF render mode 3"
+        }
+      },
+      {
+        "rule_id": "RULE-04",
+        "description": "historical_holdout != t0_holdout",
+        "valid_case": {
+          "historical_partition": "LEGACY_RANDOM_HOLDOUT",
+          "frozen_partition": "T0_ISSUER_HOLDOUT",
+          "overlap_mapping": "45 legacy holdout docs map to T0 FIT 18 / VAL 13 / HOLDOUT 14"
+        },
+        "invalid_coercion": {
+          "statement": "T0 HOLDOUT was never exposed to historical ARPipe development",
+          "disproven_by": "Surviving Git records cannot prove historical non-exposure; status is UNKNOWN with forward DEFAULT_DENY"
+        }
+      },
+      {
+        "rule_id": "RULE-05",
+        "description": "unknown != absent",
+        "valid_case": {
+          "question": "genuine_legacy_font_occurrence",
+          "status": "UNKNOWN",
+          "valid_interpretation": "Empirical question unresolved; assigned to forensic test X1"
+        },
+        "invalid_coercion": {
+          "statement": "Absence of legacy_font producer proves legacy fonts are absent from corpus",
+          "disproven_by": "Absence of evidence is not evidence of absence; legacy occurrence remains empirical unknown"
+        }
+      },
+      {
+        "rule_id": "RULE-06",
+        "description": "ocr_layer_candidate != ocr_execution",
+        "valid_case": {
+          "candidate_flag": "has_ocr_layer_pages",
+          "condition_pages": 189,
+          "member_doc_pages": 23877,
+          "valid_interpretation": "Candidate proxy for mixed representation; not an executed OCR pipeline run"
+        },
+        "invalid_coercion": {
+          "statement": "Corpus contains 23,877 OCR pages",
+          "disproven_by": "23,877 is total pages of member documents; exactly 189 pages exhibit candidate flag"
+        }
+      },
+      {
+        "rule_id": "RULE-07",
+        "description": "legacy_font_candidate != verified_legacy_font",
+        "valid_case": {
+          "proxy_predicate": "LEGACY_FONT_CANDIDATE_T03A",
+          "pages_flagged": 1007,
+          "verified_encoding_defects": 0,
+          "human_verified": "NO"
+        },
+        "invalid_coercion": {
+          "statement": "56 documents have verified legacy Indian font encoding failures",
+          "disproven_by": "Heuristic flag captures U+FFFD, PUA, and broken_text; zero font tables have been verified"
+        }
+      },
+      {
+        "rule_id": "RULE-08",
+        "description": "representation != route",
+        "valid_case": {
+          "representation_class": "hybrid",
+          "page_count": 483,
+          "production_action": "NEEDS_OCR -> _ocr_pages",
+          "prose_claim": "read text, OCR image"
+        },
+        "invalid_coercion": {
+          "statement": "hybrid representation class automatically executes hybrid text/image merge",
+          "disproven_by": "Production code runs whole-page OCR on hybrid pages; merge is an unexecuted research proposal"
+        }
+      }
+    ],
+    "b4_selector_spec": {
+      "domain_tag": "arpipe-oracle-double-v1",
+      "encoding": "utf-8",
+      "separator": "0x00",
+      "target_fraction": 0.25,
+      "formula": "SHA256(domain_tag || 0x00 || document_id || 0x00 || str(page_number))",
+      "test_units": [
+        {"document_id": "INE002A01018_2015", "page_number": 42},
+        {"document_id": "INE002A01018_2015", "page_number": 43},
+        {"document_id": "INE002L01015_2012", "page_number": 1},
+        {"document_id": "INE002L01015_2012", "page_number": 2},
+        {"document_id": "INE003B01014_2011", "page_number": 10},
+        {"document_id": "INE040A01034_2025", "page_number": 100}
+      ]
+    }
+  }
+}
+
