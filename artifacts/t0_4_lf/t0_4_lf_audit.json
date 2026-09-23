@@ -1,0 +1,202 @@
+{
+  "B1_outcome": "LEGACY_ROUTE_REQUIRES_FURTHER_DEFINITION",
+  "B1_status": "BLOCKED",
+  "B2_outcome": "ROUTE_PRECEDENCE_UNRESOLVED",
+  "B2_status": "UNRESOLVED",
+  "B3_note": "NOT_ASSESSED_HALTED_AT_B1",
+  "B3_status": "UNRESOLVED",
+  "B4_note": "NOT_ASSESSED_HALTED_AT_B1",
+  "B4_status": "UNRESOLVED",
+  "B5_note": "NOT_ASSESSED_HALTED_AT_B1",
+  "B5_status": "UNRESOLVED",
+  "B6_status": "OUT_OF_SCOPE",
+  "B7_status": "OUT_OF_SCOPE",
+  "B8_note": "NOT_ASSESSED_HALTED_AT_B1",
+  "B8_status": "UNRESOLVED",
+  "amendment_id": "T0.4-LF",
+  "b1_b2_evidence": {
+    "blank_label_units": 55,
+    "broken_text_pages": 803,
+    "cid_or_broken_text_indicator_pages": 803,
+    "detector_page_kinds": [
+      "blank",
+      "broken_text",
+      "digital",
+      "hybrid",
+      "scanned",
+      "vector_text"
+    ],
+    "hybrid_label_units": 102,
+    "indicator_page_set_equals_broken_text_page_set": true,
+    "manifest_track_a_units": 475,
+    "manifest_units_class_without_label": 0,
+    "manifest_units_label_and_class_broken_text": 20,
+    "manifest_units_label_without_class": 0,
+    "native_clean_control_units_in_condition_labels": 0,
+    "needs_ocr_page_kinds": [
+      "broken_text",
+      "hybrid",
+      "scanned",
+      "vector_text"
+    ],
+    "profiled_pages": 37917,
+    "remap_token_in_production_code": false
+  },
+  "base_commit": "63e3c047a09044d9c3bd9c61e3b56a01612f3d11",
+  "boundary": {
+    "benchmark_results_inspected": false,
+    "external_api_called": false,
+    "gold_labels_created": false,
+    "ocr_executed": false,
+    "pdf_acquired_opened_or_rendered": false
+  },
+  "evidence_sources": [
+    "arpipe/CLAUDE.md",
+    "arpipe/configs/default.yaml",
+    "arpipe/models.py",
+    "arpipe/triage.py",
+    "artifacts/t0_4/benchmark_manifest.json",
+    "artifacts/t0_4/config_hashes.json",
+    "artifacts/t0_4/final_closure_audit.json",
+    "artifacts/t0_4/setup_audit.json",
+    "configs/t0_4/benchmark_config.json",
+    "configs/t0_4/gold_schema.json",
+    "configs/t0_4/metrics_spec.json",
+    "configs/t0_4/oracle_routing_spec.json",
+    "configs/t0_4/sampling_spec.json",
+    "dataset/corpus_freeze/page_profile.csv",
+    "docs/experiments/T0.4_final_closure_audit.md",
+    "docs/experiments/T0.4_ocr_benchmark_preregistration.md",
+    "docs/experiments/T0.4_p-x1_reuse_audit.md",
+    "tests/t0_4/test_t0_4_setup.py",
+    "tools/audit_corpus_gaps.py",
+    "tools/audit_t0_4_setup.py",
+    "tools/freeze_extraction_corpus.py",
+    "tools/t0_4/closure.py",
+    "tools/t0_4/core.py"
+  ],
+  "files_created": [
+    "artifacts/t0_4_lf/t0_4_lf_audit.json",
+    "docs/experiments/T0.4-routing-clarification.md",
+    "tests/t0_4_lf/__init__.py",
+    "tests/t0_4_lf/test_t0_4_lf_b1_b2_evidence.py"
+  ],
+  "files_not_created": [
+    "configs/t0_4/oracle_hash_spec.json",
+    "configs/t0_4/t0_4_lf_amendment.json"
+  ],
+  "final_commit": "NONE_BLOCKED_NO_COMMIT",
+  "output_path_deviation": {
+    "mandated_path": "artifacts/t0_4/t0_4_lf_audit.json",
+    "reason": "A file under artifacts/t0_4 outside the four frozen names fails the frozen setup audit and closure scan; configs/t0_4 is likewise an exact file set. Verified by placing empty stand-ins and running the frozen suite (artifact stand-in: 2 failures; config stand-in: 1 failure; clean baseline 96 passed).",
+    "written_to": "artifacts/t0_4_lf/t0_4_lf_audit.json"
+  },
+  "overall_status": "T0.4_LF_BLOCKED",
+  "production_code_changed": false,
+  "ready_for_t0_4_gold_return": false,
+  "stop_conditions_triggered": [
+    "LEGACY_ROUTE_DEFINITION_BLOCKER",
+    "ROUTE_PRECEDENCE_UNRESOLVED"
+  ],
+  "tests": {
+    "frozen_t0_4_suite_passed": 96,
+    "full_tests_directory_passed": 162,
+    "new_b1_b2_evidence_tests_passed": 7,
+    "new_tests_created_for_b3_b4_b5_b8": 0
+  },
+  "tracked_files_changed_vs_base": [],
+  "unchanged_frozen_artifacts": {
+    "arpipe/CLAUDE.md": {
+      "identical_to_base": true,
+      "sha256": "0af8dbf9cc78fa702135b3cbf987f695009632f65eb61e283822f0e8bdac8a94"
+    },
+    "arpipe/configs/default.yaml": {
+      "identical_to_base": true,
+      "sha256": "1ab406c607eac5c9799d5b5ac89b8c42f56bde8659f9f6214de5063d5bd3cb85"
+    },
+    "arpipe/models.py": {
+      "identical_to_base": true,
+      "sha256": "7d8dbc4a1196cab812374d287a918f7dc60bd24359c89a4d82bb98c3cc37d2cd"
+    },
+    "arpipe/triage.py": {
+      "identical_to_base": true,
+      "sha256": "17e5a4ad79e0442e5978a9981a9fca2474740a0d07371fae1dfc6df39d4134bd"
+    },
+    "artifacts/t0_4/benchmark_manifest.json": {
+      "identical_to_base": true,
+      "sha256": "d1eb3042c82900e345541ef6b7afbba95a6d7d8dc2e7948e5d610eaf89912f15"
+    },
+    "artifacts/t0_4/config_hashes.json": {
+      "identical_to_base": true,
+      "sha256": "199c7d56c622e3e19fe58adadede2871ad4f2e3f459adb53f4a4fd8c816fd74f"
+    },
+    "artifacts/t0_4/final_closure_audit.json": {
+      "identical_to_base": true,
+      "sha256": "96cc089d95cc72d82614d7dc8d909720699cfb444998b4e2c36ba0bb7df7a98e"
+    },
+    "artifacts/t0_4/setup_audit.json": {
+      "identical_to_base": true,
+      "sha256": "f883ff9fea99b91d4a9e19335891512ec6b60280c1a0db15c25f3234ff87bbc2"
+    },
+    "configs/t0_4/benchmark_config.json": {
+      "identical_to_base": true,
+      "sha256": "79727cddfb28e13544edeef4e35ea43897f4e521cf8ca62e2c447e1a90c0c6af"
+    },
+    "configs/t0_4/gold_schema.json": {
+      "identical_to_base": true,
+      "sha256": "e8b33a4a0e04da72c3572604ca3f82677920617607abe266717975ee3cc65247"
+    },
+    "configs/t0_4/metrics_spec.json": {
+      "identical_to_base": true,
+      "sha256": "d7590bebe271163f2ad341cace35f4749754cf22da3018cef32b12ad09c66336"
+    },
+    "configs/t0_4/oracle_routing_spec.json": {
+      "identical_to_base": true,
+      "sha256": "d5aa91eb161cc04eb06fd20edc5941e88e9dcdcc70c71d17e2c259d3a625fbc3"
+    },
+    "configs/t0_4/sampling_spec.json": {
+      "identical_to_base": true,
+      "sha256": "412e040e9bcdc3915110906cd66d38a025e3aaad3f1f12bf31bf32327e17375c"
+    },
+    "dataset/corpus_freeze/page_profile.csv": {
+      "identical_to_base": true,
+      "sha256": "5bffb19654fe9b868e21ae8eab13543b3f46f9e5753bcc4563f98305fa781dff"
+    },
+    "docs/experiments/T0.4_final_closure_audit.md": {
+      "identical_to_base": true,
+      "sha256": "8c22f645e51b6b319b492692606c530a42fb00acee073cf13684701198804013"
+    },
+    "docs/experiments/T0.4_ocr_benchmark_preregistration.md": {
+      "identical_to_base": true,
+      "sha256": "6314105d261b5f80419e8116fd2fd6d8f85668e680a8ba7a177437766b5d106d"
+    },
+    "docs/experiments/T0.4_p-x1_reuse_audit.md": {
+      "identical_to_base": true,
+      "sha256": "931c1e787dbd2fb08c994f79771ab874e756d452d4610c06b93851107f79beea"
+    },
+    "tests/t0_4/test_t0_4_setup.py": {
+      "identical_to_base": true,
+      "sha256": "391b6654a609026a939301a0fd21c0a37f0ba593dff6e027423b33a64c41c82a"
+    },
+    "tools/audit_corpus_gaps.py": {
+      "identical_to_base": true,
+      "sha256": "1174dca349e9b26c201d79ca99074fa98a2915532a1c0c52dab8f68bdfb5f398"
+    },
+    "tools/audit_t0_4_setup.py": {
+      "identical_to_base": true,
+      "sha256": "fbe7fcfcb2d301ce9aa850b4230c0fd29d88863a862b3efd6839671bca9854f0"
+    },
+    "tools/freeze_extraction_corpus.py": {
+      "identical_to_base": true,
+      "sha256": "7bc1d088a7b0e20f360c0493eef2f08f550c52b58bfa2d20988b7be685256efa"
+    },
+    "tools/t0_4/closure.py": {
+      "identical_to_base": true,
+      "sha256": "03cbeb494993b0923974203e4993f7773365f142fe207834a1b057f2fec14e81"
+    },
+    "tools/t0_4/core.py": {
+      "identical_to_base": true,
+      "sha256": "174ed2811e0ffe63cb66ae595ab1c0ac78a71a59f21862ae3035caa2af5ad2c6"
+    }
+  }
+}
