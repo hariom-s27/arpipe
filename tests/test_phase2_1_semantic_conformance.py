@@ -32,6 +32,9 @@ ALLOWED_PHASE2_1_PATTERNS = [
     re.compile(r"^docs/experiments/PHASE2\.1_.*\.md$"),
     re.compile(r"^tests/test_phase2_1_semantic_conformance\.py$"),
     re.compile(r"^configs/phase2_1/semantic_fixtures\.json$"),
+    re.compile(r"^tools/check_doc_hashes\.py$"),
+    re.compile(r"^tools/check_doc_hashes_allowlist\.json$"),
+    re.compile(r"^tests/test_check_doc_hashes\.py$"),
 ]
 
 
