@@ -1,0 +1,2674 @@
+{
+  "schema_version": "1.0.0",
+  "record_type": "PHASE2_FOUNDATION_INTEGRITY_FINDINGS",
+  "audit_date": "2026-09-20",
+  "base_commit": "63e3c047a09044d9c3bd9c61e3b56a01612f3d11",
+  "base_tree": "91ee231effb2f9ba5cef39d5c17059e3aace0996",
+  "branch": "phase2-foundation-integrity",
+  "readiness_decision": "FOUNDATION READY FOR PHASE 3 - WITH DOCUMENTED ISSUES",
+  "blockers": [],
+  "summary_counts": {
+    "total_findings": 28,
+    "consistent": 5,
+    "inconsistent": 18,
+    "unverified": 5,
+    "out_of_scope": 0,
+    "blockers": 0,
+    "targeted_issues": 11,
+    "non_blocking": 17,
+    "documentation_only_issues": 8,
+    "findings_with_deferred_question": 8,
+    "open_questions_listed": 6,
+    "b_items_open": 8,
+    "verified_safe_items": 16
+  },
+  "bucket_assignment": {
+    "SHOULD_FIX": [
+      "P2-01",
+      "P2-03",
+      "P2-04",
+      "P2-08",
+      "P2-09",
+      "P2-10",
+      "P2-17",
+      "P2-20",
+      "P2-21",
+      "P2-22"
+    ],
+    "DEFERRED_P3": [
+      "P2-02",
+      "P2-05",
+      "P2-06",
+      "P2-11",
+      "P2-12",
+      "P2-13",
+      "P2-14",
+      "P2-15",
+      "P2-18",
+      "P2-23",
+      "P2-24",
+      "P2-25",
+      "P2-26",
+      "P2-27",
+      "P2-28"
+    ],
+    "DEFERRED_P45": [
+      "P2-07",
+      "P2-16",
+      "P2-19"
+    ]
+  },
+  "milestones": [
+    {
+      "stage": "T0",
+      "commit": "23d62286c4b807607b29a4dc14940179f90e3c0d",
+      "object_type": "commit",
+      "parents": [
+        "158a9eac48a3374a9506af8281acb93f49a37a0d"
+      ],
+      "tree": "7099ae0d77badd0bd13faeb14fe434d9dda49c17",
+      "subject": "T0: freeze diverse extraction corpus and issuer splits"
+    },
+    {
+      "stage": "T0.1",
+      "commit": "b6b76d964e78edce37b3d42e3668450526ee4bb7",
+      "object_type": "commit",
+      "parents": [
+        "23d62286c4b807607b29a4dc14940179f90e3c0d"
+      ],
+      "tree": "677481d204cb073430c1a4c4ec066e7c6d70799b",
+      "subject": "T0.1: audit extraction corpus coverage and identify gaps"
+    },
+    {
+      "stage": "T0.1R",
+      "commit": "879762a2f236b3aaa6df33b7ddacc60c01d633c1",
+      "object_type": "commit",
+      "parents": [
+        "5089a0b441e460cc279432e9cbc15fc0a060e33a"
+      ],
+      "tree": "9a4fe6f355a7c6b04d3cab7c5a925b624eaf6d43",
+      "subject": "T0.1R: promote final verified reconciled artifacts after stub, dependency, and acquisition corrections"
+    },
+    {
+      "stage": "T0.2",
+      "commit": "ef2e8c5c17a753fc133c66272e4ad755ab26e5a4",
+      "object_type": "commit",
+      "parents": [
+        "879762a2f236b3aaa6df33b7ddacc60c01d633c1"
+      ],
+      "tree": "793dbcf57564169142f79d5b1e90912f2006453d",
+      "subject": "T0.2: implement deterministic robustness-gate decision audit engine and derived package"
+    },
+    {
+      "stage": "T0.3A",
+      "commit": "02bae116a6616d3a8637323dffe2fb27d36304f1",
+      "object_type": "commit",
+      "parents": [
+        "ef2e8c5c17a753fc133c66272e4ad755ab26e5a4"
+      ],
+      "tree": "39bc2fe59104ec97b8779a56f39c986ed94b9012",
+      "subject": "T0.3A: scanned and document-type coverage audit with frozen taxonomy input and zero acquisition"
+    },
+    {
+      "stage": "T0.3A-R1",
+      "commit": "ff030d97c13c8a2a977521bf91be2aca0cbf3034",
+      "object_type": "commit",
+      "parents": [
+        "f0e5805a2e26f396c4f384fa334e6ed2fb5fd6f5"
+      ],
+      "tree": "af8abb3b667e8a914112a30f9c8ae4b67ba1d6bc",
+      "subject": "T0.3A-R1: report-era coverage taxonomy extension, deterministic engine, auditor, and test suite"
+    },
+    {
+      "stage": "T0.4 Initial",
+      "commit": "b937b58298930114de08d9b0236714c564c6da02",
+      "object_type": "commit",
+      "parents": [
+        "ff030d97c13c8a2a977521bf91be2aca0cbf3034"
+      ],
+      "tree": "9f4e6f10ae560a6ffa47b99ce4b3f2da70fcea15",
+      "subject": "T0.4: preregister dual-track OCR benchmark"
+    },
+    {
+      "stage": "T0.4 Audited Tree",
+      "commit": "33ba76acf9da13d25027e39414e724dfa1170b59",
+      "object_type": "commit",
+      "parents": [
+        "b937b58298930114de08d9b0236714c564c6da02"
+      ],
+      "tree": "d5fc73d81b6248534caea9d7c756626f08b3c47b",
+      "subject": "T0.4-CLOSE: register vector_text route, fix held-out wording, add closure audit engine"
+    },
+    {
+      "stage": "T0.4 Final Closure",
+      "commit": "63e3c047a09044d9c3bd9c61e3b56a01612f3d11",
+      "object_type": "commit",
+      "parents": [
+        "33ba76acf9da13d25027e39414e724dfa1170b59"
+      ],
+      "tree": "91ee231effb2f9ba5cef39d5c17059e3aace0996",
+      "subject": "T0.4-CLOSE: record final closure audit; T0.4 closed for the gold phase"
+    }
+  ],
+  "unregistered_intermediate_commits": [
+    {
+      "commit": "55e507566d1d3efea658748f59cf3a6f692e1226",
+      "parents": [
+        "b6b76d964e78edce37b3d42e3668450526ee4bb7"
+      ],
+      "tree": "d503288e3bbae72856df73971445b24c5d273b7e",
+      "subject": "T0.1R: add configuration allowlist, rules, and reviewer expectations"
+    },
+    {
+      "commit": "80420420253c65d13b4e20fe816e4e25a7275459",
+      "parents": [
+        "55e507566d1d3efea658748f59cf3a6f692e1226"
+      ],
+      "tree": "15db658597f83ee705d0028e9d911688d6679be9",
+      "subject": "T0.1R: implement reconciliation engine, auditor, and tests"
+    },
+    {
+      "commit": "937065e1ddd245b216db3023e5eb94ea100d3d57",
+      "parents": [
+        "80420420253c65d13b4e20fe816e4e25a7275459"
+      ],
+      "tree": "6de00f83a3ace6984fbc8ac88741ec89c42a051c",
+      "subject": "T0.1R: promote verified reconciled corpus gap audit artifacts"
+    },
+    {
+      "commit": "5089a0b441e460cc279432e9cbc15fc0a060e33a",
+      "parents": [
+        "937065e1ddd245b216db3023e5eb94ea100d3d57"
+      ],
+      "tree": "ee592e6e16d505e6b426def3b77c3c943683f084",
+      "subject": "T0.1R: apply final corrections to stub rule, interaction dependency, and core acquisition wording"
+    },
+    {
+      "commit": "f0e5805a2e26f396c4f384fa334e6ed2fb5fd6f5",
+      "parents": [
+        "02bae116a6616d3a8637323dffe2fb27d36304f1"
+      ],
+      "tree": "1b63b0032aea92e13bba5114923d31263b69ec49",
+      "subject": "T0.3A-R1: freeze pre-specified report-era taxonomy register before measurement"
+    }
+  ],
+  "commit_counts": {
+    "after_t0": 13,
+    "including_t0": 14,
+    "merge_commits": 0
+  },
+  "findings": [
+    {
+      "id": "P2-01",
+      "area": "A/L Lineage",
+      "artifact": "Task milestone registry: T0.1R SHA",
+      "commit": "879762a2f236b3aaa6df33b7ddacc60c01d633c1",
+      "evidence_class": "VERIFIED_FACT",
+      "status": "INCONSISTENT",
+      "severity": "NON_BLOCKING",
+      "observed": "The T0.1R SHA in the Phase-2 task text is 41 hex characters (`...df33db7dd...`) and does not resolve as a Git object. The 7-character prefix `879762a` resolves uniquely to the 40-character SHA `879762a2f236b3aaa6df33b7ddacc60c01d633c1` (`...df33b7dd...`, one `d` fewer), which is the tip of branch `t0.1-reconcile`, the sole parent of T0.2, and the value in the Phase-1 registry.",
+      "expected": "A 40-hex SHA that resolves to a commit.",
+      "impact": "None on the repository. Any script fed the 41-character string fails to resolve it.",
+      "repair": "None to history. This report uses the 40-character SHA and records the correction.",
+      "owner_phase": "Task author (registry text)",
+      "bucket": "SHOULD_FIX",
+      "documentation_only": true,
+      "deferred_question": false
+    },
+    {
+      "id": "P2-02",
+      "area": "A Lineage",
+      "artifact": "T0.4 preregistration and P-X1 reuse audit (freeze-set docs); tools/audit_t0_4_setup.py; tools/t0_4/README.md",
+      "commit": "33ba76a",
+      "evidence_class": "DOCUMENTED_CLAIM",
+      "status": "CONSISTENT",
+      "severity": "NON_BLOCKING",
+      "observed": "The preregistration says it is 'frozen before execution' and the P-X1 audit 'frozen before benchmark execution', yet both were amended at 33ba76a (documented in closure sections 1 and 9). The preregistration names these two docs as part of the configuration freeze, but `artifacts/t0_4/config_hashes.json` hashes only the 12 JSON configs; the two docs are identified by Git blob only.",
+      "expected": "Freeze-set members identified either by a recorded content hash or by an explicit commit.",
+      "impact": "No scientific effect. A consumer citing the docs at b937b58 would cite superseded text.",
+      "repair": "None. Cite the 63e3c04 blobs.",
+      "owner_phase": "Phase 3 (citation rule)",
+      "bucket": "DEFERRED_P3",
+      "documentation_only": false,
+      "deferred_question": false
+    },
+    {
+      "id": "P2-03",
+      "area": "B/D Consistency",
+      "artifact": "T0.3A and T0.3A-R1 `core_relevance_summary` (t0_3a_summary.json:7, t0_3a_r1_summary.json:7; tools/run_t0_3a_document_coverage.py:319)",
+      "commit": "02bae11 / ff030d9",
+      "evidence_class": "DETERMINISTIC_DERIVED",
+      "status": "INCONSISTENT",
+      "severity": "TARGETED_ISSUE",
+      "observed": "The sentence 'Core English MD&A extraction is 100% supported by native digital documents (191 docs, 36 issuers)' is a hard-coded string literal, not derived from the register. The same artifacts' coverage matrix gives native=60, mixed=132, scanned=2 documents. 191 is T0.1's count of documents containing at least one native text page (CLAIM:C005); T0 classified 151 documents `digital`; T0.1R explicitly separated '191 docs containing native pages' from '60 whole-document native representation' (tools/reconcile_t0_1.py:499-506).",
+      "expected": "A summary sentence derivable from registered categories, worded 'documents containing at least one native text page (191)'.",
+      "impact": "A reader or later phase could cite '191 native documents' for a category the register counts as 60. No acquisition decision is derived from this sentence (T0.2 decides).",
+      "repair": "None in Phase 2 (frozen artifact; a separately authorized amendment would be required). Recorded here. Proposed wording recorded.",
+      "owner_phase": "Amendment task / Phase 3 (do not cite the sentence)",
+      "bucket": "SHOULD_FIX",
+      "documentation_only": true,
+      "deferred_question": false
+    },
+    {
+      "id": "P2-04",
+      "area": "D/C Predicates",
+      "artifact": "T0.4 `condition_labels` label `native_ok` vs `representation_class` `native_ok`; T0.1 `native_page` (tools/audit_corpus_gaps.py:254-262); tools/t0_4/core.py:290-329; metrics_spec.json ROUTING.classes",
+      "commit": "b937b58 / b6b76d9",
+      "evidence_class": "DETERMINISTIC_DERIVED",
+      "status": "INCONSISTENT",
+      "severity": "TARGETED_ISSUE",
+      "observed": "The label `native_ok` in `condition_labels` comes from T0.1 `native_page` (char_count > 50 and not (chars <= 20 and image >= 0.85)), which also covers hybrid, broken_text and vector_text pages. The routing-class name `native_ok` is the detector kind `digital`. Detector digital = 35,580 pages; T0.1 native_page = 36,988. In the 475-unit manifest 157 units carry the label `native_ok` together with an OCR-routed representation class: hybrid 102/102, broken_text 20/20, scanned 28/72, vector_text 7/17. Stratum `native_clean_control` (60 units, all splits) contains 22 hybrid units.",
+      "expected": "One meaning per label; page-kind and routing-class vocabularies kept apart.",
+      "impact": "Deriving routing classes from `condition_labels` (instead of `representation_class`) mislabels at least 157 units. `native_clean_control` is not a clean-native set.",
+      "repair": "None in Phase 2 (frozen artifact; a separately authorized amendment would be required). Recorded here. Consumers must use `representation_class` for page kind.",
+      "owner_phase": "Phase 3 / Phase 4 (Gold universe)",
+      "bucket": "SHOULD_FIX",
+      "documentation_only": false,
+      "deferred_question": false
+    },
+    {
+      "id": "P2-05",
+      "area": "D/C Predicates",
+      "artifact": "`scanned` in T0.1 (audit_corpus_gaps.py:254-256) vs detector (arpipe/triage.py:_classify) vs T0.3A categories vs T0.4 stratum",
+      "commit": "b6b76d9 / 02bae11 / b937b58",
+      "evidence_class": "DETERMINISTIC_DERIVED",
+      "status": "INCONSISTENT",
+      "severity": "NON_BLOCKING",
+      "observed": "Predicate A (detector `scanned`): n_chars < 120 and image area >= 0.55, or >= 0.25 when drawings < 400 -> 804 pages. Predicate B (T0.1 `scanned_page`): chars <= 20 and image >= 0.85 -> 284 pages, a strict subset of A (A-only 520, B-only 0). T0.3A categories (`scanned`, `fully_scanned_document`, `mixed_scanned_pages`) use B; the T0.4 stratum and representation class `scanned` use A (72 units).",
+      "expected": "One documented predicate per name, or distinct names.",
+      "impact": "'Scanned' counts in T0.3A (2 fully scanned documents) and T0.4 (72 scanned units) are not comparable.",
+      "repair": "None in Phase 2 (frozen artifact; a separately authorized amendment would be required). Recorded here.",
+      "owner_phase": "Phase 3 (state which predicate)",
+      "bucket": "DEFERRED_P3",
+      "documentation_only": false,
+      "deferred_question": false
+    },
+    {
+      "id": "P2-06",
+      "area": "D/C Predicates",
+      "artifact": "`multi_column` in T0.1/T0.3A vs T0.4 (tools/audit_corpus_gaps.py:657-659; tools/t0_4/core.py:312,327)",
+      "commit": "b6b76d9 / b937b58",
+      "evidence_class": "DETERMINISTIC_DERIVED",
+      "status": "INCONSISTENT",
+      "severity": "NON_BLOCKING",
+      "observed": "T0.1/T0.3A `multi_column` = T0.1 estimator with >= 3 columns (17,190 pages, 191 documents). T0.4 label `multi_column` = detector `n_columns >= 2` (18,855 pages) OR T0.1 `two_column_page` (15,015 pages). The two estimators disagree: T0.1 `two_column_page` is not equal to detector `n_columns == 2` (9,521) and is not a subset of `n_columns >= 2`.",
+      "expected": "Same name, same predicate; or distinct names for the >=2 and >=3 column notions.",
+      "impact": "T0.3A `multi_column_layout` (191 documents) and T0.4 stratum `multi_column` (94 units) measure different things.",
+      "repair": "None in Phase 2 (frozen artifact; a separately authorized amendment would be required). Recorded here.",
+      "owner_phase": "Phase 3",
+      "bucket": "DEFERRED_P3",
+      "documentation_only": false,
+      "deferred_question": false
+    },
+    {
+      "id": "P2-07",
+      "area": "D Predicates",
+      "artifact": "`legacy_font_candidate`: tools/freeze_extraction_corpus.py:416,975; tools/audit_corpus_gaps.py:264; tools/t0_4/core.py:318; configs/t0_3a/taxonomy_register.json",
+      "commit": "23d6228 / b6b76d9 / b937b58",
+      "evidence_class": "DETERMINISTIC_DERIVED",
+      "status": "INCONSISTENT",
+      "severity": "TARGETED_ISSUE",
+      "observed": "Three operationalizations share one name. (a) T0 document-level `legacy_font` = document has >= 1 detector `broken_text` page: 24 documents, evidence INFERRED. (b) T0.3A `legacy_font_candidate` = `legacy_candidate_page_count > 0`, where a page is a candidate if detector broken_text OR any U+FFFD OR more than 5 private-use characters: 56 documents, 1,007 pages; the register describes only 'U+FFFD or PUA', and the config key `broken_font_min_pua_or_mojibake_ratio` (0.05) is never read. (c) T0.4 label/stratum = `cid_or_broken_text_indicator`, identical to `kind == broken_text` (803/803 pages; 20/20 units). Overlap: the 24 documents in (a) and (c) are inside the 56 in (b); 32 documents are (b)-only.",
+      "expected": "One documented predicate per name.",
+      "impact": "Legacy-font coverage differs by 2.3x (24 vs 56 documents) depending on the definition; the 32 (b)-only documents contribute no legacy-labelled page to T0.4. Bears on B1 and B5.",
+      "repair": "None in Phase 2 (frozen artifact; a separately authorized amendment would be required). Recorded here.",
+      "owner_phase": "Phase 4/5 (Legacy) after author decision; Phase 3 must name the predicate",
+      "bucket": "DEFERRED_P45",
+      "documentation_only": false,
+      "deferred_question": true
+    },
+    {
+      "id": "P2-08",
+      "area": "D Predicates",
+      "artifact": "OCR-layer proxy: tools/freeze_extraction_corpus.py:977; tools/audit_corpus_gaps.py:249,1062; configs/t0_3a/taxonomy_register.json:134; dataset/corpus_gap_audit/gap_audit_report.md:86; tools/reconcile_t0_1.py:556-566",
+      "commit": "23d6228 / b6b76d9 / 879762a / 02bae11",
+      "evidence_class": "PROXY_OR_CANDIDATE",
+      "status": "INCONSISTENT",
+      "severity": "TARGETED_ISSUE",
+      "observed": "About eight frozen artifacts describe the OCR-layer proxy as detection of 'PDF render mode 3 (invisible text layer)' or OCR producer signatures. The implemented predicate is `kind == 'scanned' and n_chars > 50` (T0 page profile); T0.1 consumes it unchanged (`is_t0_ocr`, line 249) and no code inspects PDF text render modes. 189 pages, all detector-`scanned`, none in T0.1 `scanned_page`. The evidence label stays CANDIDATE_PROXY.",
+      "expected": "Documented definition equals the implemented predicate.",
+      "impact": "The proxy can be misdescribed as a direct invisible-text measurement. The 71 documents whose MIXED status rests only on this proxy (see P2-13) inherit the description.",
+      "repair": "None in Phase 2 (frozen artifact; a separately authorized amendment would be required). Recorded here.",
+      "owner_phase": "Amendment task / Phase 3 wording",
+      "bucket": "SHOULD_FIX",
+      "documentation_only": true,
+      "deferred_question": false
+    },
+    {
+      "id": "P2-09",
+      "area": "D Predicates",
+      "artifact": "TOC and annexure candidates: configs/t0_3a/taxonomy_register.json vs configs/audit_config.json and tools/audit_corpus_gaps.py:355-357,515,592,665",
+      "commit": "02bae11 / b6b76d9",
+      "evidence_class": "DETERMINISTIC_DERIVED",
+      "status": "INCONSISTENT",
+      "severity": "TARGETED_ISSUE",
+      "observed": "(a) TOC: the register says the keyword is sought 'within the first 30 pages'; the implementation flags any page with a keyword and `physical_page < 50` (`toc_max_start_page_search`). The keyword list includes the substring `index`, and `toc_min_entries` is not applied to candidate flagging: 174 of 194 documents flagged (89.7%). (b) Annexure: the register says a keyword match 'in document outline or heading'; the implementation flags a document when any page's full text contains 'annexure' (`has_annexure_keyword`): 188 of 194 documents (96.9%). `combined_mdna_candidate` matches its register description (outline title or heading line), apart from two extra trigger words (`board`, `annexure`).",
+      "expected": "Documented window and scope equal the implemented window and scope.",
+      "impact": "The register misstates two predicates; both proxies are near-saturated. No sensitivity of the counts to the window or scope was tested (out of scope).",
+      "repair": "None in Phase 2 (frozen artifact; a separately authorized amendment would be required). Recorded here.",
+      "owner_phase": "Amendment task / Phase 3 wording",
+      "bucket": "SHOULD_FIX",
+      "documentation_only": true,
+      "deferred_question": false
+    },
+    {
+      "id": "P2-10",
+      "area": "C Terminology",
+      "artifact": "T0.3A/T0.3A-R1 coverage matrix column `page_count` (t0_3a_coverage_matrix.csv, t0_3a_r1_coverage_matrix.csv)",
+      "commit": "02bae11 / ff030d9",
+      "evidence_class": "DETERMINISTIC_DERIVED",
+      "status": "INCONSISTENT",
+      "severity": "TARGETED_ISSUE",
+      "observed": "In the T0.3A/R1 matrices `page_count` is the total pages of member documents, not the pages exhibiting the condition (verified by summing `total_pages`): legacy_font_candidate 13,377 vs 1,007 candidate pages; has_ocr_layer_pages 23,877 vs 189 OCR-layer pages; multi_column_layout 37,667 vs 17,190; native 7,694 = total pages of the 60 NATIVE documents. The audit plan does not define the column, and T0.1 uses the suffix `_page_count` for pages that exhibit the condition.",
+      "expected": "A column name that states its denominator.",
+      "impact": "Misreading OCR-layer pages as 23,877 overstates them 126x.",
+      "repair": "None in Phase 2 (frozen artifact; a separately authorized amendment would be required). Recorded here.",
+      "owner_phase": "Amendment task / Phase 3 (never quote the column as condition pages)",
+      "bucket": "SHOULD_FIX",
+      "documentation_only": true,
+      "deferred_question": false
+    },
+    {
+      "id": "P2-11",
+      "area": "E Evidence",
+      "artifact": "Proxy categories: table_candidate, annexure_candidate, toc_candidate, combined_mdna_candidate, OCR-layer, legacy-font, hidden-text, duplicate-text",
+      "commit": "b6b76d9 / 879762a / 02bae11",
+      "evidence_class": "PROXY_OR_CANDIDATE",
+      "status": "CONSISTENT",
+      "severity": "NON_BLOCKING",
+      "observed": "Every proxy is labelled CANDIDATE_PROXY (T0.3A register: 17 categories) and NOT_REVIEWED at page level (condition_page_map 52,478 rows, table_candidates 29,476, language_candidates 2); T0.1R records human_reviewed_count = 0. No promotion to VERIFIED was found. Flagged prevalence is near-saturated: table_candidate 29,476 of 37,917 pages (77.7%); annexure_candidate 188/194 documents; toc_candidate 174/194. Not human-verified; no precision or recall exists.",
+      "expected": "Proxies stay proxies; prevalence not read as truth.",
+      "impact": "T0.3A prevalences are proxy prevalences. The largest T0.4 stratum (`table_candidate`, 138 units) is a proxy stratum.",
+      "repair": "None needed.",
+      "owner_phase": "Phase 3 (wording)",
+      "bucket": "DEFERRED_P3",
+      "documentation_only": false,
+      "deferred_question": false
+    },
+    {
+      "id": "P2-12",
+      "area": "C/E Evidence",
+      "artifact": "Evidence-level vocabularies; `VALIDATED_METADATA` (18 files)",
+      "commit": "23d6228 .. 63e3c04",
+      "evidence_class": "DOCUMENTED_CLAIM",
+      "status": "UNVERIFIED",
+      "severity": "NON_BLOCKING",
+      "observed": "`VALIDATED_METADATA` labels era, size, stub and split metadata in T0.3A and T0.4 but is defined nowhere, and the T0 inventory has no `fiscal_year_evidence` column. Five vocabularies coexist without a mapping: T0 (KNOWN_FROM_PRIOR / OBSERVED / INFERRED / UNKNOWN), T0.1 (NOT_REVIEWED / MODEL_REVIEWED), T0.3A (EXISTING_CONDITION / EXISTING_CORPUS_FIELD / VALIDATED_METADATA / CANDIDATE_PROXY / DERIVED_INTERACTION / UNMEASURED), T0.4 (VALIDATED_METADATA / CANDIDATE_PROXY / NOT_YET_ANNOTATED), and the T0.4 sentinels.",
+      "expected": "Each evidence label defined once; a cross-stage mapping.",
+      "impact": "'Validated' could be read as human-verified; nothing frozen supports that reading.",
+      "repair": "None (a definition would be a new decision).",
+      "owner_phase": "Phase 3",
+      "bucket": "DEFERRED_P3",
+      "documentation_only": false,
+      "deferred_question": true
+    },
+    {
+      "id": "P2-13",
+      "area": "D/E Predicates",
+      "artifact": "`document_representation` (T0.1R reconciled gap_audit_document_reconciled.csv; T0.3A register `native`/`mixed`)",
+      "commit": "879762a / 02bae11",
+      "evidence_class": "DETERMINISTIC_DERIVED",
+      "status": "CONSISTENT",
+      "severity": "NON_BLOCKING",
+      "observed": "Verified rule: NATIVE = scanned_page_count == 0 and ocr_page_count == 0 (60 documents; only 21 of them have every page native); MIXED = scanned > 0 or ocr > 0 (132 documents: 71 via the OCR-layer proxy only, 34 via scanned pages only, 27 via both); SCANNED = fully scanned (2). All 189 OCR-layer pages are detector-`scanned`. T0.1R documented the ocr-to-MIXED dependency (KNOWN_DEPENDENCY). The T0.3A register limit for `native` mentions only 'absence of scanned pages', and the category is labelled EXISTING_CONDITION, not proxy.",
+      "expected": "Document classes that state the proxy dependency at the point of use.",
+      "impact": "Document-level classes rest on detector heuristics that are not human-verified.",
+      "repair": "None needed beyond this record.",
+      "owner_phase": "Phase 3 (wording)",
+      "bucket": "DEFERRED_P3",
+      "documentation_only": false,
+      "deferred_question": false
+    },
+    {
+      "id": "P2-14",
+      "area": "B Consistency",
+      "artifact": "T0 corpus_inventory.csv column `file_size_bytes` (tools/freeze_extraction_corpus.py:297)",
+      "commit": "23d6228",
+      "evidence_class": "VERIFIED_FACT",
+      "status": "INCONSISTENT",
+      "severity": "NON_BLOCKING",
+      "observed": "For 83 of 194 documents the recorded `file_size_bytes` differs from the size of the stored PDF (deltas -7.29 MB to +15.48 MB, median +222 KB, both signs) although the SHA-256 matches for 194/194. The tool copies `n_bytes` from the fetch-stage manifest instead of measuring the stored blob; the reason for the difference is not recorded.",
+      "expected": "A size field equal to the size of the hashed file.",
+      "impact": "Descriptive only. Identity is the SHA-256, which was verified.",
+      "repair": "None in Phase 2 (frozen artifact; a separately authorized amendment would be required). Recorded here.",
+      "owner_phase": "Phase 3 (do not use as an integrity check)",
+      "bucket": "DEFERRED_P3",
+      "documentation_only": false,
+      "deferred_question": false
+    },
+    {
+      "id": "P2-15",
+      "area": "B/C Consistency",
+      "artifact": "Missing-byte records: freeze_protocol.md and stratification_report.md vs T0.4 preregistration and manifest Track B",
+      "commit": "23d6228 / b937b58",
+      "evidence_class": "DETERMINISTIC_DERIVED",
+      "status": "INCONSISTENT",
+      "severity": "NON_BLOCKING",
+      "observed": "T0 says the 14 MISSING records are 'excluded from every split'. In the T0.4 Track-B manifest 6 of the 14 carry their issuer's split with role INPUT_UNAVAILABLE (FIT 2, VALIDATION 4) and 8 are UNASSIGNED_HISTORICAL; the preregistration says records 'deliberately excluded from all frozen partitions remain UNASSIGNED_HISTORICAL'. The two statements agree for 8 records and are ambiguous for 6. Document counts (194 = 92 + 48 + 54) are unaffected.",
+      "expected": "One rule for missing records stated once.",
+      "impact": "Wording only.",
+      "repair": "None in Phase 2 (frozen artifact; a separately authorized amendment would be required). Recorded here.",
+      "owner_phase": "Phase 3",
+      "bucket": "DEFERRED_P3",
+      "documentation_only": true,
+      "deferred_question": false
+    },
+    {
+      "id": "P2-16",
+      "area": "C Terminology",
+      "artifact": "Legacy-font / REMAP vocabulary (configs/t0_4/metrics_spec.json, future_results_schema.json, oracle_routing_spec.json, T0.4 docs, P-X1 audit)",
+      "commit": "b937b58 / 33ba76a",
+      "evidence_class": "DOCUMENTED_CLAIM",
+      "status": "INCONSISTENT",
+      "severity": "NON_BLOCKING",
+      "observed": "One concept has seven names: `legacy_font` (routing class), `legacy_font_candidate` (label/stratum), `LEGACY` (oracle route), 'REMAP lane' (preregistration), `LEGACY_FONT_REMAP` (metrics level), `LEGACY_REMAP` (future-results track), 'legacy-font lane' (P-X1 audit). REMAP is never defined operationally; no code implements it (about a dozen non-CSV mentions, all prose, schema names or guard regexes).",
+      "expected": "One term per concept and one definition.",
+      "impact": "Naming only. The Legacy/REMAP decision itself is out of scope for Phase 2.",
+      "repair": "None in Phase 2 (frozen artifact; a separately authorized amendment would be required). Recorded here.",
+      "owner_phase": "Phase 4/5",
+      "bucket": "DEFERRED_P45",
+      "documentation_only": false,
+      "deferred_question": true
+    },
+    {
+      "id": "P2-17",
+      "area": "G Routing",
+      "artifact": "arpipe/CLAUDE.md 'Five page classes'; arpipe/models.py:19; arpipe/triage.py:284-285; arpipe/pipeline.py:171,232,247; arpipe/ocr.py:257; configs/t0_4/metrics_spec.json ROUTING.classes",
+      "commit": "b467e36 / 9cf5192 / 0fb8cbf / b937b58",
+      "evidence_class": "DOCUMENTED_CLAIM",
+      "status": "INCONSISTENT",
+      "severity": "TARGETED_ISSUE",
+      "observed": "Hybrid: CLAUDE.md and models.py say 'read text, OCR the image'; the code puts HYBRID in NEEDS_OCR, reads the text layer only for DIGITAL pages, and OCRs whole pages (`_ocr_pages`); no code branches on HYBRID (only docstring hints). Blank: PageKind has six members but CLAUDE.md lists 'five page classes'; blank is excluded implicitly at triage.py:303 and pipeline.py:247 with no documented route. T0.4 ROUTING.classes (native_ok, legacy_font, broken_text, scanned, vector_text) omit hybrid and blank: 157 of 475 units (33%) sit in representation classes with no ROUTING class, and `legacy_font` is a ROUTING class with no PageKind and no producer. Route rows verified consistent: digital -> text layer; scanned, broken_text, vector_text -> OCR.",
+      "expected": "Every page class has one documented status; conflicting sources recorded, not resolved.",
+      "impact": "Routing semantics for hybrid depend on which frozen source is read. Phase 2 does not choose.",
+      "repair": "None. Both sources recorded; the choice belongs to the author (B1).",
+      "owner_phase": "Author decision (B1) then Phase 4/5",
+      "bucket": "SHOULD_FIX",
+      "documentation_only": false,
+      "deferred_question": true
+    },
+    {
+      "id": "P2-18",
+      "area": "F/G Sampling",
+      "artifact": "Closure audit section 5 wording; sampling_spec.json `sampling_stratum_priority`; tools/t0_4/core.py",
+      "commit": "63e3c04 / 33ba76a",
+      "evidence_class": "DETERMINISTIC_DERIVED",
+      "status": "INCONSISTENT",
+      "severity": "NON_BLOCKING",
+      "observed": "The closure attributes the empty `broken_text` and `ocr_layer_proxy` strata to 'the corpus and priority order'. Both are structural: `legacy_font_candidate` (identical to broken_text, higher priority) always pre-empts `broken_text`, and the OCR-layer indicator is defined as `kind == scanned and ...`, so `scanned` always pre-empts `ocr_layer_proxy`. Only 15 of 77 declared (stratum, representation) pairs occur on any page; 13,392 of the 16,632 declared cells lie in the other 62 pairs, so most of the 16,157 zero-availability cells are structurally impossible combinations, not coverage gaps.",
+      "expected": "Interpretive text that names predicate identity and containment as the cause.",
+      "impact": "Citing '16,157 zero-availability cells' as a coverage gap would mislead. The closure's definition of the number is accurate.",
+      "repair": "None in Phase 2 (frozen artifact; a separately authorized amendment would be required). Recorded here.",
+      "owner_phase": "Phase 3 (coverage wording)",
+      "bucket": "DEFERRED_P3",
+      "documentation_only": false,
+      "deferred_question": false
+    },
+    {
+      "id": "P2-19",
+      "area": "H Gold/oracle",
+      "artifact": "configs/t0_4/gold_schema.json; oracle_routing_spec.json; dataset/corpus_freeze/annotation_roster.csv",
+      "commit": "b937b58 / 23d6228",
+      "evidence_class": "VERIFIED_FACT",
+      "status": "INCONSISTENT",
+      "severity": "NON_BLOCKING",
+      "observed": "(a) `OracleRouteGold` is not a frozen name: the oracle record exists only as `oracle_routing_spec.json:annotation_fields` and is not validated by `gold_schema.json`, whose `oneOf` has only page_gold and document_gold. (b) No T0.4 schema has a blinding field; `saw_pipeline_output` exists only in the T0 roster header (25 rows, all blank); blinding of primary annotators to detector output is unspecified (only the adjudicator is 'blind to all engine outputs'). (c) PageGold `annotation_provenance` requires annotator_id, protocol_version and adjudication_status; DocumentGold `annotation_provenance` is an unconstrained object. (d) `reading_order_pairs` are string-ID pairs with no reference unit. (e) The `bbox` coordinate convention is unspecified.",
+      "expected": "Gold and oracle records described consistently, with blinding fields.",
+      "impact": "The frozen record does not misdescribe these items; it is silent or asymmetric. Gold-phase schema work must supply them.",
+      "repair": "None in Phase 2 (frozen artifact; a separately authorized amendment would be required). Recorded here.",
+      "owner_phase": "Phase 4/5 (Gold)",
+      "bucket": "DEFERRED_P45",
+      "documentation_only": false,
+      "deferred_question": true
+    },
+    {
+      "id": "P2-20",
+      "area": "I Hash",
+      "artifact": "configs/audit_config.sha256 vs configs/audit_config.json",
+      "commit": "b6b76d9",
+      "evidence_class": "DETERMINISTIC_DERIVED",
+      "status": "INCONSISTENT",
+      "severity": "TARGETED_ISSUE",
+      "observed": "Recorded `8e26bec124a34806...`; actual blob `a3a575cda1ec7345...`. The recorded value is reproduced exactly by the blob plus one trailing newline, so the hashed content is identifiable. The two `audit_config.json` copies parse to identical JSON (same canonical hash); the dataset copy is CRLF, its `.sha256` matches (`65ed1a7e...`), and T0.1R's raw_input_manifest pins that copy. History shows a single commit for both files.",
+      "expected": "`sha256sum -c configs/audit_config.sha256` succeeds.",
+      "impact": "A verification command fails on a frozen T0.1 artifact. The pinned copy verifies, so no primary-foundation artifact is affected.",
+      "repair": "None in Phase 2 (frozen artifact; a separately authorized amendment would be required). Recorded here. Diagnosis: 1-byte trailing-newline difference.",
+      "owner_phase": "Amendment task",
+      "bucket": "SHOULD_FIX",
+      "documentation_only": false,
+      "deferred_question": false
+    },
+    {
+      "id": "P2-21",
+      "area": "I/K Hash",
+      "artifact": "docs/experiments/PHASE1_FROZEN_FOUNDATION_VERIFICATION.md, 'Artifact verification' table",
+      "commit": "e52166f",
+      "evidence_class": "DOCUMENTED_CLAIM",
+      "status": "INCONSISTENT",
+      "severity": "TARGETED_ISSUE",
+      "observed": "10 of the 27 SHA-256 strings in the table are marked 'Matches / VERIFIED' but do not equal the SHA-256 of the cited blob (issuer_split.csv, page_profile.csv, audit_config.json, gap_audit_document.csv, condition_page_map.csv, table_candidates.csv, language_candidates.csv, manual_review_manifest.csv, manual_review_results.csv, toc_offset_candidates.csv). None equals the SHA-256 of any of the 252 blobs in the closure tree or of the Phase-1 worktree file. Five share only the 8-character prefix printed in the closure report. The cited pin sources (raw_input_manifest.json, final_closure_audit.json) record the correct values. The other 17 rows match.",
+      "expected": "Recorded hashes reproducible from the cited artifacts.",
+      "impact": "The table cannot serve as a hash registry. Its 'byte for byte' conclusion is unsupported as written; the frozen artifacts themselves are unaffected.",
+      "repair": "None to the Phase-1 document (not Phase-2-owned). Phase 2 supplies a verified registry in the JSON record.",
+      "owner_phase": "Phase-1 document owner",
+      "bucket": "SHOULD_FIX",
+      "documentation_only": true,
+      "deferred_question": false
+    },
+    {
+      "id": "P2-22",
+      "area": "K Provenance",
+      "artifact": "docs/experiments/PHASE1_FROZEN_FOUNDATION_VERIFICATION.md, 'Issues' section 2",
+      "commit": "e52166f",
+      "evidence_class": "DOCUMENTED_CLAIM",
+      "status": "INCONSISTENT",
+      "severity": "TARGETED_ISSUE",
+      "observed": "Phase 1 says the T0.4 closure report 'documents 8 methodological questions'. The closure (markdown and JSON) documents two observations (native_clean_control reading; class-to-route map) and contains none of the double-annotation, adjudication, reading-order, HOLDOUT-authorization, hash-rank or precedence topics. The list of eight is the post-closure T0.4-GOLD register (B1-B8), renumbered and lossy in Phase 1 (no precedence item; 'route-class to oracle-class mapping' as item 8), and it defers them to 'Phase 2 (Gold Method Research and Integration)', whereas this Phase 2 is the integrity audit.",
+      "expected": "B1-B8 attributed to their source, with stable numbering.",
+      "impact": "A later reader following Phase 1 would look for the questions in the frozen closure and not find them.",
+      "repair": "None to the Phase-1 document. Section 'B1-B8' of this report gives the traced record.",
+      "owner_phase": "Phase-1 document owner",
+      "bucket": "SHOULD_FIX",
+      "documentation_only": true,
+      "deferred_question": false
+    },
+    {
+      "id": "P2-23",
+      "area": "K Provenance",
+      "artifact": "B1-B8 register: docs/experiments/T0.4-GOLD_preimplementation_audit.md (d9f974b); T0.4-routing-clarification.md (916407d)",
+      "commit": "d9f974b / 916407d",
+      "evidence_class": "HISTORICAL_CONTEXT",
+      "status": "UNVERIFIED",
+      "severity": "NON_BLOCKING",
+      "observed": "The register exists only in post-closure safety-snapshot commits (subject 'REPOSITORY SAFETY SNAPSHOT - NOT A SCIENTIFIC METHODOLOGY COMMIT') on local branches; `origin/t0.4-gold` and `origin/t0.4-routing-clarification` still point at 63e3c04. The T0.4-LF record contains an unadopted recommendation ('A. One class, OCR route (recommended)', status T0.4_LF_BLOCKED, 'No rule was adopted'). Every checkable fact in the register was reproduced (see Audit results, B1-B8).",
+      "expected": "Deferred questions traceable from a published commit.",
+      "impact": "The register is outside the frozen foundation and not on the remote refs observed.",
+      "repair": "None.",
+      "owner_phase": "Author (publication); Phase 3 cites by commit",
+      "bucket": "DEFERRED_P3",
+      "documentation_only": false,
+      "deferred_question": true
+    },
+    {
+      "id": "P2-24",
+      "area": "K Provenance",
+      "artifact": "Inputs outside Git: live_store PDFs (`*.pdf` ignored), corpus_inventory.csv `source_locator` (194 absolute local paths), P-X1 harness snapshot",
+      "commit": "23d6228 / b937b58",
+      "evidence_class": "DOCUMENTED_CLAIM",
+      "status": "CONSISTENT",
+      "severity": "NON_BLOCKING",
+      "observed": "PDF bytes are not in Git. Read-only byte hashing of the 194 local PDFs found 194/194 SHA-256 matches with the inventory and 0 missing. T0/T0.1 independent re-derivation therefore needs the local store; the T0.4 sampling reproduction needs only Git-tracked CSVs. The P-X1 reuse audit's description of the P-X1 harness rests on an external snapshot the audit itself says is 'not present in the T0.3A-R1 Git tree'; those descriptions are UNVERIFIED from the tree.",
+      "expected": "Inputs either in Git or identified by a verifiable hash.",
+      "impact": "T0/T0.1 numbers can be re-derived only on this machine's store.",
+      "repair": "None.",
+      "owner_phase": "Phase 3 (record the dependency)",
+      "bucket": "DEFERRED_P3",
+      "documentation_only": false,
+      "deferred_question": false
+    },
+    {
+      "id": "P2-25",
+      "area": "K Provenance",
+      "artifact": "T0.3A register/measurement ordering (02bae11) vs T0.3A-R1 pre-specification (f0e5805 -> ff030d9)",
+      "commit": "02bae11 / f0e5805 / ff030d9",
+      "evidence_class": "DOCUMENTED_CLAIM",
+      "status": "UNVERIFIED",
+      "severity": "NON_BLOCKING",
+      "observed": "T0.3A's subject says 'frozen taxonomy input', but the register and the measurement outputs are in one commit, so Git cannot show that the register preceded the measurement. For R1, f0e5805 adds only configs/t0_3a_r1/taxonomy_register.json and is an ancestor of ff030d9, so that ordering is Git-verifiable; however both era categories had already been measured in T0.3A (58/6,863/29 and 136/31,054/36, identical in R1), and R1 changed only the justification text of `post_2015`.",
+      "expected": "Pre-specification claims supported by commit order.",
+      "impact": "'Pre-specified before measurement' holds for the R1 engine run, not for the era counts having been unseen.",
+      "repair": "None.",
+      "owner_phase": "Phase 3 (wording)",
+      "bucket": "DEFERRED_P3",
+      "documentation_only": false,
+      "deferred_question": false
+    },
+    {
+      "id": "P2-26",
+      "area": "J HOLDOUT",
+      "artifact": "Legacy holdout protocol (configs/eval_protocol.md, labels_*_queue.csv, eval_holdout_log.csv) vs T0 HOLDOUT; raw T0.1 report line 155",
+      "commit": "23d6228 / b6b76d9",
+      "evidence_class": "DETERMINISTIC_DERIVED",
+      "status": "UNVERIFIED",
+      "severity": "TARGETED_ISSUE",
+      "observed": "'Holdout' has at least three referents in the frozen tree: (1) T0 frozen `HOLDOUT` (54 documents, 9 issuers, issuer-disjoint, seed 20260918); (2) the legacy holdout of `configs/eval_protocol.md` (45-document queue, document-level random split, seed 20260912, `contaminated` flag, 4 holdout-scoring log entries on 2026-09-11 at commit bc5f174); (3) P-X1's historical development/holdout page partitions (external snapshot). T0 and T0.4 never reference the legacy protocol. By SHA-256, the 45 legacy-holdout documents fall in T0 FIT 18 / VALIDATION 13 / HOLDOUT 14, and 26 of the 92 legacy-FIT-queue documents fall in T0 HOLDOUT. `labels_holdout.csv` has no data rows, and none of the 20 historical labels maps to a T0 HOLDOUT document. The raw T0.1 report says the HOLDOUT has '9 issuers completely unseen during development'; T0.1R's claim audit (58 claims) neither audits nor retracts it. Whether ARPipe development before T0 (2026-09-18) processed HOLDOUT documents is not established by the frozen record.",
+      "expected": "A single, defined meaning of 'held-out'/'unseen', and a stated position on pre-T0 exposure.",
+      "impact": "T0/T0.4 HOLDOUT is locked from T0.4 tuning and gold annotation; the frozen record does not support 'never processed by ARPipe'. No leakage evidence was found.",
+      "repair": "None. Absence of evidence is not treated as evidence of absence.",
+      "owner_phase": "Phase 3 (claims/scope)",
+      "bucket": "DEFERRED_P3",
+      "documentation_only": false,
+      "deferred_question": true
+    },
+    {
+      "id": "P2-27",
+      "area": "J HOLDOUT",
+      "artifact": "T0 challenge_coverage_manifest.csv; T0.1 manual_review_manifest.csv / manual_review_results.csv; T0.3A `devanagari_candidate`",
+      "commit": "23d6228 / b6b76d9 / 02bae11",
+      "evidence_class": "DETERMINISTIC_DERIVED",
+      "status": "UNVERIFIED",
+      "severity": "NON_BLOCKING",
+      "observed": "HOLDOUT documents took part in coverage-oriented selections, all before T0.4: the challenge set has 8 HOLDOUT documents (T0 documents it as overlapping and 'never an independent test set'); T0.1's 72-item manual-review queue has 26 HOLDOUT items, and the raw results labelled all 72 `MODEL_REVIEWED` by `gemini_assistant_model` with notes that only restate the detector's own fields (e.g. 'Model inspected: vector_grid=True, aligned_numeric_rows=1'); T0.1R re-labelled all 72 `NOT_REVIEWED` ('auto-relabelled from json snippet without model inspection'). The only Devanagari documents (2, one issuer) are both HOLDOUT (FIT 0, VALIDATION 0).",
+      "expected": "HOLDOUT used only as the T0.4 policy allows; queued reviews not executed on HOLDOUT.",
+      "impact": "No evidence that any HOLDOUT page was actually reviewed. Git cannot exclude content shown to an external model outside the recorded workflow. Executing the T0.1 review queue as-is would inspect 26 HOLDOUT items.",
+      "repair": "None.",
+      "owner_phase": "Phase 3/4 (do not execute the queue as-is)",
+      "bucket": "DEFERRED_P3",
+      "documentation_only": false,
+      "deferred_question": true
+    },
+    {
+      "id": "P2-28",
+      "area": "B/K Consistency",
+      "artifact": "Closure decision wording `CLOSED_FOR_GOLD_PHASE` (T0.4_final_closure_audit.md section 12; commit subject 63e3c04)",
+      "commit": "63e3c04",
+      "evidence_class": "DOCUMENTED_CLAIM",
+      "status": "CONSISTENT",
+      "severity": "NON_BLOCKING",
+      "observed": "The decision is defined by four closure conditions (vector_text_route, sampling_cell_inspection, sampling_metadata_provenance, held_out_terminology); the closure itself lists two observations to settle 'before oracle annotation'. The post-closure register (B1-B8) later lists eight open items. The label is accurate for its four conditions.",
+      "expected": "A closure label read within its stated scope.",
+      "impact": "'Closed for the gold phase' must not be read as 'Gold protocol specified'.",
+      "repair": "None.",
+      "owner_phase": "Phase 3 (wording)",
+      "bucket": "DEFERRED_P3",
+      "documentation_only": false,
+      "deferred_question": false
+    }
+  ],
+  "verified_safe": [
+    {
+      "id": "V01",
+      "area": "Lineage",
+      "statement": "All nine registered milestone commits exist as commit objects (with the P2-01 SHA correction); the range T0..closure has 14 commits including T0 and 13 after T0; 0 merge commits; linear ancestry; 5 unregistered intermediate commits (55e5075, 8042042, 937065e, 5089a0b inside T0.1R; f0e5805 inside T0.3A-R1)."
+    },
+    {
+      "id": "V02",
+      "area": "Lineage",
+      "statement": "Closure tree is 91ee231effb2f9ba5cef39d5c17059e3aace0996; each registered commit SHA commits to its tree (recorded in section 3). Branch tips still equal the registered commits: extraction-corpus-freeze 23d6228, t0.1-gap-audit b6b76d9, t0.1-reconcile 879762a, t0.2-robustness-gate ef2e8c5, t0.3a-document-coverage 02bae11, t0.3a-r1-taxonomy-extension ff030d9, t0.4-ocr-benchmark 63e3c04 (and origin/t0.4-* 63e3c04)."
+    },
+    {
+      "id": "V03",
+      "area": "Git objects",
+      "statement": "No replace refs, no grafts, not shallow, no alternates; `git fsck --full --no-dangling` exit 0. The E0 safety commits (dea3ae5, e8517ee, 58f79b85) are not ancestors of the closure; 916407d, d9f974b and the Phase-1 commits descend from it. Phase 1's E0 finding is outside the T0-T0.4 lineage."
+    },
+    {
+      "id": "V04",
+      "area": "Frozen artifacts",
+      "statement": "178 files were touched by the 14 commits; 0 pre-existing files were changed or deleted; 18 files were amended once, all inside their own stage (T0.1R internals: 2 configs, 1 test, 2 tools, 9 reconciled outputs; T0.4 audited tree: 2 docs, audit_t0_4_setup.py, README). No later stage altered an earlier stage's artifacts."
+    },
+    {
+      "id": "V05",
+      "area": "Hashes",
+      "statement": "155 of 156 recorded (path, sha256) pairs in frozen manifests match the Git blobs at 63e3c04: T0 hashes/*.sha256 (5), input_hashes.json x3 (36), raw_input_manifest (29), reconciliation_manifest (16), T0.2 manifest (17), T0.3A manifest (12), T0.3A-R1 manifest (19), config_hashes.json (12), setup_audit (2), benchmark_manifest source_hashes (6), dataset audit_config.sha256 (1). The single exception is P2-20."
+    },
+    {
+      "id": "V06",
+      "area": "Sampling",
+      "statement": "READ_ONLY_REPRODUCTION: the frozen builder run with output redirected to scratch reproduces benchmark_manifest.json (d1eb3042c82900e345541ef6b7afbba95a6d7d8dc2e7948e5d610eaf89912f15) and config_hashes.json (199c7d56c622e3e19fe58adadede2871ad4f2e3f459adb53f4a4fd8c816fd74f) byte for byte; sampling_spec.json hashes to 412e040e... as recorded. This is a deterministic repeat. A separate re-implementation written for this audit (code-informed, different code path) reproduces all 475 units on eight fields, and reproduces every closure count: 16,632 declared cells, 475 observed, 16,157 zero-availability, 82 singletons (stratum and split breakdowns), cell sizes 1/8/1,908, buckets 134/85/95/79, 401 multi-label pages, FIT 223 / VALIDATION 118 / HOLDOUT 134. The closure engine re-run in --check mode against 33ba76a exits 0."
+    },
+    {
+      "id": "V07",
+      "area": "Corpus",
+      "statement": "208 records = 194 present + 14 MISSING; 194 unique SHA-256 and 37,917 pages; documents 92/48/54 and issuers 18/9/9 (36) for FIT/VALIDATION/HOLDOUT; issuer-disjoint; development 60 inside FIT; roster 25 inside development; per-issuer document counts match issuer_split.csv; local PDF bytes match 194/194 recorded SHA-256."
+    },
+    {
+      "id": "V08",
+      "area": "Consistency",
+      "statement": "Totals 194 / 36 / 37,917 / 208 / 14 are stated consistently in the T0, T0.1, T0.1R, T0.3A-R1 and T0.4 summaries (no off-by-one strings). The acquisition decision is NO_ACQUISITION in T0.1R, T0.2, T0.3A, T0.3A-R1 and T0.4 (T0.2: acquisitions_currently_justified_count 0, pdf_acquisitions_executed 0)."
+    },
+    {
+      "id": "V09",
+      "area": "T0.3A-R1",
+      "statement": "The 33 non-era coverage rows and register records are identical to T0.3A (only `post_2015` justification text differs); era counts 58 + 136 = 194 documents and 6,863 + 31,054 = 37,917 pages; the R1 register in configs/ equals the dataset copy byte for byte."
+    },
+    {
+      "id": "V10",
+      "area": "Joins",
+      "statement": "Page numbering is 0-based and contiguous in all 194 documents; every T0.1 auxiliary key (52,478 + 29,476 + 2) resolves to a page-profile row; no off-by-one in the T0.4 join."
+    },
+    {
+      "id": "V11",
+      "area": "Evidence",
+      "statement": "All detector-derived T0.4 labels are CANDIDATE_PROXY (1,062 label-evidence entries) and only `pre_2015` is VALIDATED_METADATA (184); page-level T0.1 files are 100% NOT_REVIEWED; human_reviewed_count is 0. No proxy-to-truth promotion was found."
+    },
+    {
+      "id": "V12",
+      "area": "HOLDOUT",
+      "statement": "No HOLDOUT gold, annotation, engine output or benchmark result exists in the frozen tree: the roster is FIT-only with all 14 gold/blinding columns blank in 25 rows; no other CSV carries filled annotation columns; the oracle literal subset contains 0 HOLDOUT units and the spec restricts it to FIT and VALIDATION; all 134 Track-A and 54 Track-B HOLDOUT units are FINAL_HOLDOUT_LOCKED; all 475 image hashes are NOT_YET_RENDERED. T0.4 sampling includes HOLDOUT (134 units) by protocol ('predeclared and integrity-checked but not inspected for tuning'); it does not exclude it."
+    },
+    {
+      "id": "V13",
+      "area": "Tests",
+      "statement": "Deterministic repeat of the closure test claim: tests/t0_4 96 passed; the other tests/ suites 59 passed; arpipe/tests 185 passed, 17 skipped; total 340 passed + 17 skipped = 357 collected, equal to the closure record. The worktree stayed clean after every run."
+    },
+    {
+      "id": "V14",
+      "area": "B-register facts",
+      "statement": "Reproduced from frozen data: `legacy_font_candidate` equals `kind == broken_text` (803/803 pages, 20/20 units); hybrid 102 and blank 55 units; `native_clean_control` on 60 units and in 0 condition_labels; oracle subset 79 (FIT 52, VALIDATION 27) literal vs 121 (80/41) by stratum, of 341 FIT+VALIDATION units; first rank digit in 0-3 for 355/475 (74.7%) units and 50/79 (63.3%) of the literal subset, '0' for 249."
+    },
+    {
+      "id": "V15",
+      "area": "Routing",
+      "statement": "vector_text -> OCR is confirmed in code (NEEDS_OCR) and in closure section 1; scanned and broken_text -> OCR and digital -> text layer are consistent across code, comments and CLAUDE.md; the 14 default.yaml triage thresholds equal the triage.py constants."
+    },
+    {
+      "id": "V16",
+      "area": "Terminology",
+      "statement": "T0 role sets are coherent (development 60 inside FIT 92; annotation roster 25 inside development; challenge 45 documented as overlapping FIT 23 / VALIDATION 14 / HOLDOUT 8 and development 16). 'Unseen' does not occur in T0.4 scoped files; 'unobserved' is used only for coverage; the closure engine's terminology check passes on recomputation."
+    }
+  ],
+  "b1_b8": [
+    {
+      "id": "B1",
+      "item": "Legacy route / class-to-route map (`ORACLE_ROUTE_MAPPING_UNRESOLVED`)",
+      "frozen_evidence": "Verified: detector has no `legacy_font` kind; `legacy_font_candidate` is `kind == broken_text` (803/803, 20/20); broken_text is in NEEDS_OCR; the REMAP lane exists in T0.4 prose only. Closure observation 2 records the class-to-route gap for broken_text/REMAP. hybrid (102 units) and blank (55) have no ROUTING class.",
+      "faithfully_represented": "Yes. The frozen closure represents the legacy part (observation 2); hybrid/blank are recorded only in the post-closure register. The register's hybrid 'production route' follows CLAUDE.md prose, while NEEDS_OCR includes hybrid (P2-17).",
+      "contradiction_of_recorded_status": "None against the unresolved status.",
+      "classification": "REQUIRES AUTHOR DECISION. The T0.4-LF record holds an unadopted DOCUMENTED RECOMMENDATION (one class, OCR route)."
+    },
+    {
+      "id": "B2",
+      "item": "Route precedence for overlapping classes (`ROUTE_PRECEDENCE_UNRESOLVED`)",
+      "frozen_evidence": "Verified: only `sampling_stratum_priority` names both (`legacy_font_candidate` before `broken_text`), scoped to choosing a primary sampling stratum. No routing precedence is frozen. Closure section 5 attributes the empty `broken_text` stratum to corpus and priority order; the cause is predicate identity (P2-18).",
+      "faithfully_represented": "Yes for the register; the frozen closure is silent on precedence.",
+      "contradiction_of_recorded_status": "None.",
+      "classification": "REQUIRES AUTHOR DECISION (collapses into B1 if one class is chosen; that option is a documented recommendation, not a decision)."
+    },
+    {
+      "id": "B3",
+      "item": "Oracle subset reading of `native_clean_control`",
+      "frozen_evidence": "Verified: stratum only (0 of 475 units carry it as a label); 79 units literal vs 121 by stratum. The 22 hybrid units in the stratum (60 units, all splits) show it is not a clean-native set (P2-04). Closure observation 1 states both readings.",
+      "faithfully_represented": "Yes. Matches closure observation 1 ('Decide which reading is intended before oracle annotation').",
+      "contradiction_of_recorded_status": "None.",
+      "classification": "REQUIRES AUTHOR DECISION."
+    },
+    {
+      "id": "B4",
+      "item": "Oracle double-annotation rank undefined",
+      "frozen_evidence": "Verified: `double_annotation.rule` names no seed, key or encoding; the only frozen rank on units is the sampling `selection_rank` (minimum per cell), which yields 355/475 (74.7%) and 50/79 (63.3%) in 0-3 against `expected_fraction` 0.25. The closure does not mention it.",
+      "faithfully_represented": "Yes for the register; not represented in the frozen closure (post-closure finding).",
+      "contradiction_of_recorded_status": "None.",
+      "classification": "REQUIRES AUTHOR DECISION."
+    },
+    {
+      "id": "B5",
+      "item": "Oracle evidence policy vs distinguishing NATIVE from LEGACY",
+      "frozen_evidence": "Frozen text verified: `adjudication.allowed_evidence` = 'rendered page image plus the written route protocol'; primary-annotator evidence unspecified. The register's inference that a rendered image cannot separate NATIVE from LEGACY is a reasoned claim that no frozen experiment tests, and Phase 2 does not test it.",
+      "faithfully_represented": "Yes as a documented claim; its truth is UNVERIFIED here.",
+      "contradiction_of_recorded_status": "None.",
+      "classification": "OPEN METHODOLOGICAL QUESTION."
+    },
+    {
+      "id": "B6",
+      "item": "General double-annotation rate for PageGold and DocumentGold",
+      "frozen_evidence": "Verified: a double-annotation and adjudication rule exists only in `oracle_routing_spec.json`; the roster has one `annotator_id` column; PageGold provenance has an `adjudication_status` enum but no rate or slice rule; DocumentGold provenance is unconstrained (P2-19); the closure is silent.",
+      "faithfully_represented": "Yes.",
+      "contradiction_of_recorded_status": "None.",
+      "classification": "REQUIRES AUTHOR DECISION."
+    },
+    {
+      "id": "B7",
+      "item": "Reading-order reference unit",
+      "frozen_evidence": "Verified: `reading_order_pairs` are pairs of strings with no stated unit; `metrics_spec.json` unit is 'page_or_document_as_declared'; `common_output_schema.json` carries block_id and line_id, each possibly NOT_AVAILABLE; gold_schema has `lines` and `regions` but no blocks.",
+      "faithfully_represented": "Yes.",
+      "contradiction_of_recorded_status": "None.",
+      "classification": "REQUIRES AUTHOR DECISION."
+    },
+    {
+      "id": "B8",
+      "item": "HOLDOUT gold annotation authorization",
+      "frozen_evidence": "Verified: `holdout_policy` = `allowed_before_final_freeze: false`, three allowed uses (manifest predeclaration, schema validation, split-integrity audit), five forbidden uses; annotation is named in neither list. The register cites only the allowed-uses list; the `false` flag supports a default-deny reading, so both readings are textually available. No HOLDOUT annotation exists in the frozen tree; the legacy protocol permits blind holdout labelling but predates the split.",
+      "faithfully_represented": "Yes, with the nuance that the register omits the `allowed_before_final_freeze: false` flag.",
+      "contradiction_of_recorded_status": "None.",
+      "classification": "REQUIRES AUTHOR DECISION."
+    }
+  ],
+  "already_frozen_verified": [
+    "Oracle subset excludes HOLDOUT ('FIT and VALIDATION partitions only'; 0 HOLDOUT units under either reading).",
+    "vector_text -> OCR in the ACTUAL_ROUTING condition (closure section 1); digital -> text layer; scanned and broken_text (detector route) -> OCR.",
+    "Track-A unit key (document_id, page_number), Track-B unit key (document_id), the renderer contract (RGB PNG, 300 DPI, no preprocessing) and the NOT_YET_ANNOTATED / NOT_YET_RENDERED / INPUT_UNAVAILABLE sentinels."
+  ],
+  "open_questions": [
+    {
+      "id": "OQ1",
+      "class_": "OPEN_QUESTION",
+      "text": "B1-B8 (see the B1-B8 table). None is resolved by this audit."
+    },
+    {
+      "id": "OQ2",
+      "class_": "OPEN_QUESTION",
+      "text": "Whether ARPipe development before T0 processed or inspected the documents now in HOLDOUT (P2-26)."
+    },
+    {
+      "id": "OQ3",
+      "class_": "OPEN_QUESTION",
+      "text": "Which `legacy_font` predicate any later claim uses: 24-document detector-based, 56-document T0.1-based, or a future one (P2-07)."
+    },
+    {
+      "id": "OQ4",
+      "class_": "OPEN_QUESTION",
+      "text": "Whether the raw T0.1 statement '9 issuers completely unseen during development' can be supported (P2-26)."
+    },
+    {
+      "id": "OQ5",
+      "class_": "OPEN_QUESTION",
+      "text": "The meaning of `VALIDATED_METADATA` and a mapping between the five evidence vocabularies (P2-12)."
+    },
+    {
+      "id": "OQ6",
+      "class_": "OPEN_QUESTION",
+      "text": "Whether frozen amendments (P2-03, P2-08, P2-09, P2-10, P2-20) are to be made, and by which authorized task."
+    },
+    {
+      "id": "OQ7",
+      "class_": "OUT_OF_SCOPE",
+      "text": "Corpus sufficiency, population adequacy, acquisition necessity, Gold design optimality, OCR necessity or strategy, Legacy/REMAP status, and final thesis claims."
+    }
+  ],
+  "phase3_dependencies": [
+    "Cite T0.4 documents at the 63e3c04 blobs; the preregistration and P-X1 audit changed at 33ba76a (P2-02).",
+    "Do not quote the T0.3A/R1 sentence 'native digital documents (191 docs)' or the coverage-matrix `page_count` as condition pages (P2-03, P2-10).",
+    "State which predicate is meant by native, scanned, multi_column and legacy_font whenever a count is quoted (P2-04 to P2-07); use `representation_class`, not `condition_labels`, for page kind.",
+    "Describe the OCR-layer and TOC candidates by their implemented predicates, and keep every candidate labelled as a proxy that is not human-verified (P2-08, P2-09, P2-11, P2-13).",
+    "Do not present the 16,157 zero-availability cells as coverage gaps (P2-18); the definition of the figure is accurate.",
+    "Define 'unseen' and 'held-out' before any claim, and do not claim HOLDOUT was never processed by ARPipe (P2-26); do not execute the T0.1 manual-review queue on its 26 HOLDOUT items (P2-27).",
+    "Use the verified hash registry in the JSON record, not the Phase-1 hash table (P2-21).",
+    "Cite the B1-B8 register by commit (d9f974b, 916407d), not through the Phase-1 report (P2-22, P2-23).",
+    "Read `CLOSED_FOR_GOLD_PHASE` within its four-condition scope (P2-28).",
+    "The Devanagari coverage exists only in HOLDOUT (2 documents, 1 issuer); any Devanagari claim interacts with the HOLDOUT lock (P2-27)."
+  ],
+  "hash_verification": {
+    "frozen_manifest_pairs": 156,
+    "frozen_manifest_pairs_matching": 155,
+    "closure_report_scalar_hashes_checked": 4,
+    "closure_report_scalar_hashes_matching": 4,
+    "phase1_table_rows": 27,
+    "phase1_table_rows_matching": 17,
+    "unverified_hash_independent": [
+      "artifacts/t0_4/final_closure_audit.json:zero_availability_cells_sha256 (reproduced only by the frozen closure engine; content defined at tools/t0_4/closure.py:450-481)"
+    ],
+    "rows": [
+      {
+        "source": "dataset/corpus_freeze/hashes/challenge.sha256",
+        "path": "dataset/corpus_freeze/challenge_coverage_manifest.csv",
+        "recorded": "b7cdeb3d3d3c2d0b6492a7862cdf54d4c36e27389d8688a98614e0e0be31ba53",
+        "actual": "b7cdeb3d3d3c2d0b6492a7862cdf54d4c36e27389d8688a98614e0e0be31ba53",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_freeze/hashes/corpus_inventory.sha256",
+        "path": "dataset/corpus_freeze/corpus_inventory.csv",
+        "recorded": "93135febc51638ff3c6d2820e9198ed4eff3f647c68ec494b17213152b2bb2f7",
+        "actual": "93135febc51638ff3c6d2820e9198ed4eff3f647c68ec494b17213152b2bb2f7",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_freeze/hashes/development.sha256",
+        "path": "dataset/corpus_freeze/development_manifest.csv",
+        "recorded": "518a9c74e8e1d544d10392f0ce61c90e41f81548079708f50c6b7ac8e1d1867f",
+        "actual": "518a9c74e8e1d544d10392f0ce61c90e41f81548079708f50c6b7ac8e1d1867f",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_freeze/hashes/holdout.sha256",
+        "path": "dataset/corpus_freeze/holdout_manifest.csv",
+        "recorded": "a9cf459bc7f916d2c3a648ad54bd6bd6b24697c06fab48df16ebcd5f6e7fcdff",
+        "actual": "a9cf459bc7f916d2c3a648ad54bd6bd6b24697c06fab48df16ebcd5f6e7fcdff",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_freeze/hashes/validation.sha256",
+        "path": "dataset/corpus_freeze/validation_manifest.csv",
+        "recorded": "113b0658bb4973f36fbf61390b8d64273f64a0c801e199d1474870a42b44b631",
+        "actual": "113b0658bb4973f36fbf61390b8d64273f64a0c801e199d1474870a42b44b631",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "configs/audit_config.sha256",
+        "path": "configs/audit_config.json",
+        "recorded": "8e26bec124a34806fbfe0a0bcb941be15f59e6a56df3e1f92309e00a90d47598",
+        "actual": "a3a575cda1ec7345f3a9ba5544da67401ab01a3c6041a22719b032cbeaefdd7e",
+        "status": "MISMATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/audit_config.sha256",
+        "path": "dataset/corpus_gap_audit/audit_config.json",
+        "recorded": "65ed1a7e189b2d564ca01fe63246652e7b6a2c94d9e23083eabbe4e5da08bc77",
+        "actual": "65ed1a7e189b2d564ca01fe63246652e7b6a2c94d9e23083eabbe4e5da08bc77",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/input_hashes.json",
+        "path": "dataset/corpus_freeze/corpus_inventory.csv",
+        "recorded": "93135febc51638ff3c6d2820e9198ed4eff3f647c68ec494b17213152b2bb2f7",
+        "actual": "93135febc51638ff3c6d2820e9198ed4eff3f647c68ec494b17213152b2bb2f7",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/input_hashes.json",
+        "path": "dataset/corpus_freeze/page_profile.csv",
+        "recorded": "5bffb19654fe9b868e21ae8eab13543b3f46f9e5753bcc4563f98305fa781dff",
+        "actual": "5bffb19654fe9b868e21ae8eab13543b3f46f9e5753bcc4563f98305fa781dff",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/input_hashes.json",
+        "path": "dataset/corpus_freeze/issuer_split.csv",
+        "recorded": "016e720245577833e8313bb2ec4905b1fb47ba77d15916706b702df4ed1bcc2a",
+        "actual": "016e720245577833e8313bb2ec4905b1fb47ba77d15916706b702df4ed1bcc2a",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/input_hashes.json",
+        "path": "dataset/corpus_freeze/development_manifest.csv",
+        "recorded": "518a9c74e8e1d544d10392f0ce61c90e41f81548079708f50c6b7ac8e1d1867f",
+        "actual": "518a9c74e8e1d544d10392f0ce61c90e41f81548079708f50c6b7ac8e1d1867f",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/input_hashes.json",
+        "path": "dataset/corpus_freeze/validation_manifest.csv",
+        "recorded": "113b0658bb4973f36fbf61390b8d64273f64a0c801e199d1474870a42b44b631",
+        "actual": "113b0658bb4973f36fbf61390b8d64273f64a0c801e199d1474870a42b44b631",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/input_hashes.json",
+        "path": "dataset/corpus_freeze/holdout_manifest.csv",
+        "recorded": "a9cf459bc7f916d2c3a648ad54bd6bd6b24697c06fab48df16ebcd5f6e7fcdff",
+        "actual": "a9cf459bc7f916d2c3a648ad54bd6bd6b24697c06fab48df16ebcd5f6e7fcdff",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/input_hashes.json",
+        "path": "dataset/corpus_freeze/challenge_coverage_manifest.csv",
+        "recorded": "b7cdeb3d3d3c2d0b6492a7862cdf54d4c36e27389d8688a98614e0e0be31ba53",
+        "actual": "b7cdeb3d3d3c2d0b6492a7862cdf54d4c36e27389d8688a98614e0e0be31ba53",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/input_hashes.json",
+        "path": "dataset/corpus_freeze/annotation_roster.csv",
+        "recorded": "b864938920b9452076b4d0da991d52e137f9f9f2155e6ffdf0adff0e0dd4bb00",
+        "actual": "b864938920b9452076b4d0da991d52e137f9f9f2155e6ffdf0adff0e0dd4bb00",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/input_hashes.json",
+        "path": "dataset/corpus_freeze/diversity_matrix.csv",
+        "recorded": "236440f9b78ede9d46a02f179e4a2467f2fa85a21f3d699c91b32b69ee726c36",
+        "actual": "236440f9b78ede9d46a02f179e4a2467f2fa85a21f3d699c91b32b69ee726c36",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/input_hashes.json",
+        "path": "dataset/corpus_freeze/interaction_matrix.csv",
+        "recorded": "d3830431e36fc493c2d44861f2dca8a88cedb0a77a08c1333f34f33517ed0fd9",
+        "actual": "d3830431e36fc493c2d44861f2dca8a88cedb0a77a08c1333f34f33517ed0fd9",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/input_hashes.json",
+        "path": "dataset/corpus_freeze/rare_condition_register.csv",
+        "recorded": "6306befac8734f54ee2aeaf5d14d298572ebcd5679499585172c0fc665059730",
+        "actual": "6306befac8734f54ee2aeaf5d14d298572ebcd5679499585172c0fc665059730",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/input_hashes.json",
+        "path": "dataset/corpus_freeze/freeze_summary.json",
+        "recorded": "08677d7818511b5fbc49111bef5cb96f25eeac0dc5e6a04bf62b95f6b6a96cd1",
+        "actual": "08677d7818511b5fbc49111bef5cb96f25eeac0dc5e6a04bf62b95f6b6a96cd1",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/run_01/input_hashes.json",
+        "path": "dataset/corpus_freeze/corpus_inventory.csv",
+        "recorded": "93135febc51638ff3c6d2820e9198ed4eff3f647c68ec494b17213152b2bb2f7",
+        "actual": "93135febc51638ff3c6d2820e9198ed4eff3f647c68ec494b17213152b2bb2f7",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/run_01/input_hashes.json",
+        "path": "dataset/corpus_freeze/page_profile.csv",
+        "recorded": "5bffb19654fe9b868e21ae8eab13543b3f46f9e5753bcc4563f98305fa781dff",
+        "actual": "5bffb19654fe9b868e21ae8eab13543b3f46f9e5753bcc4563f98305fa781dff",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/run_01/input_hashes.json",
+        "path": "dataset/corpus_freeze/issuer_split.csv",
+        "recorded": "016e720245577833e8313bb2ec4905b1fb47ba77d15916706b702df4ed1bcc2a",
+        "actual": "016e720245577833e8313bb2ec4905b1fb47ba77d15916706b702df4ed1bcc2a",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/run_01/input_hashes.json",
+        "path": "dataset/corpus_freeze/development_manifest.csv",
+        "recorded": "518a9c74e8e1d544d10392f0ce61c90e41f81548079708f50c6b7ac8e1d1867f",
+        "actual": "518a9c74e8e1d544d10392f0ce61c90e41f81548079708f50c6b7ac8e1d1867f",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/run_01/input_hashes.json",
+        "path": "dataset/corpus_freeze/validation_manifest.csv",
+        "recorded": "113b0658bb4973f36fbf61390b8d64273f64a0c801e199d1474870a42b44b631",
+        "actual": "113b0658bb4973f36fbf61390b8d64273f64a0c801e199d1474870a42b44b631",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/run_01/input_hashes.json",
+        "path": "dataset/corpus_freeze/holdout_manifest.csv",
+        "recorded": "a9cf459bc7f916d2c3a648ad54bd6bd6b24697c06fab48df16ebcd5f6e7fcdff",
+        "actual": "a9cf459bc7f916d2c3a648ad54bd6bd6b24697c06fab48df16ebcd5f6e7fcdff",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/run_01/input_hashes.json",
+        "path": "dataset/corpus_freeze/challenge_coverage_manifest.csv",
+        "recorded": "b7cdeb3d3d3c2d0b6492a7862cdf54d4c36e27389d8688a98614e0e0be31ba53",
+        "actual": "b7cdeb3d3d3c2d0b6492a7862cdf54d4c36e27389d8688a98614e0e0be31ba53",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/run_01/input_hashes.json",
+        "path": "dataset/corpus_freeze/annotation_roster.csv",
+        "recorded": "b864938920b9452076b4d0da991d52e137f9f9f2155e6ffdf0adff0e0dd4bb00",
+        "actual": "b864938920b9452076b4d0da991d52e137f9f9f2155e6ffdf0adff0e0dd4bb00",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/run_01/input_hashes.json",
+        "path": "dataset/corpus_freeze/diversity_matrix.csv",
+        "recorded": "236440f9b78ede9d46a02f179e4a2467f2fa85a21f3d699c91b32b69ee726c36",
+        "actual": "236440f9b78ede9d46a02f179e4a2467f2fa85a21f3d699c91b32b69ee726c36",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/run_01/input_hashes.json",
+        "path": "dataset/corpus_freeze/interaction_matrix.csv",
+        "recorded": "d3830431e36fc493c2d44861f2dca8a88cedb0a77a08c1333f34f33517ed0fd9",
+        "actual": "d3830431e36fc493c2d44861f2dca8a88cedb0a77a08c1333f34f33517ed0fd9",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/run_01/input_hashes.json",
+        "path": "dataset/corpus_freeze/rare_condition_register.csv",
+        "recorded": "6306befac8734f54ee2aeaf5d14d298572ebcd5679499585172c0fc665059730",
+        "actual": "6306befac8734f54ee2aeaf5d14d298572ebcd5679499585172c0fc665059730",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/run_01/input_hashes.json",
+        "path": "dataset/corpus_freeze/freeze_summary.json",
+        "recorded": "08677d7818511b5fbc49111bef5cb96f25eeac0dc5e6a04bf62b95f6b6a96cd1",
+        "actual": "08677d7818511b5fbc49111bef5cb96f25eeac0dc5e6a04bf62b95f6b6a96cd1",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/run_02/input_hashes.json",
+        "path": "dataset/corpus_freeze/corpus_inventory.csv",
+        "recorded": "93135febc51638ff3c6d2820e9198ed4eff3f647c68ec494b17213152b2bb2f7",
+        "actual": "93135febc51638ff3c6d2820e9198ed4eff3f647c68ec494b17213152b2bb2f7",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/run_02/input_hashes.json",
+        "path": "dataset/corpus_freeze/page_profile.csv",
+        "recorded": "5bffb19654fe9b868e21ae8eab13543b3f46f9e5753bcc4563f98305fa781dff",
+        "actual": "5bffb19654fe9b868e21ae8eab13543b3f46f9e5753bcc4563f98305fa781dff",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/run_02/input_hashes.json",
+        "path": "dataset/corpus_freeze/issuer_split.csv",
+        "recorded": "016e720245577833e8313bb2ec4905b1fb47ba77d15916706b702df4ed1bcc2a",
+        "actual": "016e720245577833e8313bb2ec4905b1fb47ba77d15916706b702df4ed1bcc2a",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/run_02/input_hashes.json",
+        "path": "dataset/corpus_freeze/development_manifest.csv",
+        "recorded": "518a9c74e8e1d544d10392f0ce61c90e41f81548079708f50c6b7ac8e1d1867f",
+        "actual": "518a9c74e8e1d544d10392f0ce61c90e41f81548079708f50c6b7ac8e1d1867f",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/run_02/input_hashes.json",
+        "path": "dataset/corpus_freeze/validation_manifest.csv",
+        "recorded": "113b0658bb4973f36fbf61390b8d64273f64a0c801e199d1474870a42b44b631",
+        "actual": "113b0658bb4973f36fbf61390b8d64273f64a0c801e199d1474870a42b44b631",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/run_02/input_hashes.json",
+        "path": "dataset/corpus_freeze/holdout_manifest.csv",
+        "recorded": "a9cf459bc7f916d2c3a648ad54bd6bd6b24697c06fab48df16ebcd5f6e7fcdff",
+        "actual": "a9cf459bc7f916d2c3a648ad54bd6bd6b24697c06fab48df16ebcd5f6e7fcdff",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/run_02/input_hashes.json",
+        "path": "dataset/corpus_freeze/challenge_coverage_manifest.csv",
+        "recorded": "b7cdeb3d3d3c2d0b6492a7862cdf54d4c36e27389d8688a98614e0e0be31ba53",
+        "actual": "b7cdeb3d3d3c2d0b6492a7862cdf54d4c36e27389d8688a98614e0e0be31ba53",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/run_02/input_hashes.json",
+        "path": "dataset/corpus_freeze/annotation_roster.csv",
+        "recorded": "b864938920b9452076b4d0da991d52e137f9f9f2155e6ffdf0adff0e0dd4bb00",
+        "actual": "b864938920b9452076b4d0da991d52e137f9f9f2155e6ffdf0adff0e0dd4bb00",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/run_02/input_hashes.json",
+        "path": "dataset/corpus_freeze/diversity_matrix.csv",
+        "recorded": "236440f9b78ede9d46a02f179e4a2467f2fa85a21f3d699c91b32b69ee726c36",
+        "actual": "236440f9b78ede9d46a02f179e4a2467f2fa85a21f3d699c91b32b69ee726c36",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/run_02/input_hashes.json",
+        "path": "dataset/corpus_freeze/interaction_matrix.csv",
+        "recorded": "d3830431e36fc493c2d44861f2dca8a88cedb0a77a08c1333f34f33517ed0fd9",
+        "actual": "d3830431e36fc493c2d44861f2dca8a88cedb0a77a08c1333f34f33517ed0fd9",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/run_02/input_hashes.json",
+        "path": "dataset/corpus_freeze/rare_condition_register.csv",
+        "recorded": "6306befac8734f54ee2aeaf5d14d298572ebcd5679499585172c0fc665059730",
+        "actual": "6306befac8734f54ee2aeaf5d14d298572ebcd5679499585172c0fc665059730",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/run_02/input_hashes.json",
+        "path": "dataset/corpus_freeze/freeze_summary.json",
+        "recorded": "08677d7818511b5fbc49111bef5cb96f25eeac0dc5e6a04bf62b95f6b6a96cd1",
+        "actual": "08677d7818511b5fbc49111bef5cb96f25eeac0dc5e6a04bf62b95f6b6a96cd1",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/reconciled/raw_input_manifest.json",
+        "path": "configs/t0_1r/input_allowlist.json",
+        "recorded": "65a10ae8c30237e8a3e9debedd6eae13328965e1cef0584c0a2506687889caf0",
+        "actual": "65a10ae8c30237e8a3e9debedd6eae13328965e1cef0584c0a2506687889caf0",
+        "status": "MATCH",
+        "note": "source_commit=5089a0b441e460cc279432e9cbc15fc0a060e33a"
+      },
+      {
+        "source": "dataset/corpus_gap_audit/reconciled/raw_input_manifest.json",
+        "path": "configs/t0_1r/reconciliation_rules.json",
+        "recorded": "9dbbec3e8d5565a3d29114e1bcb46b613c187a8017832b00f2ff9d984ae4cdd9",
+        "actual": "9dbbec3e8d5565a3d29114e1bcb46b613c187a8017832b00f2ff9d984ae4cdd9",
+        "status": "MATCH",
+        "note": "source_commit=5089a0b441e460cc279432e9cbc15fc0a060e33a"
+      },
+      {
+        "source": "dataset/corpus_gap_audit/reconciled/raw_input_manifest.json",
+        "path": "configs/t0_1r/reviewer_expectations.json",
+        "recorded": "c1286cde18df7efb3e68b78c9bcaf41a6888d5718d1136bbbe2944e124b03b26",
+        "actual": "c1286cde18df7efb3e68b78c9bcaf41a6888d5718d1136bbbe2944e124b03b26",
+        "status": "MATCH",
+        "note": "source_commit=5089a0b441e460cc279432e9cbc15fc0a060e33a"
+      },
+      {
+        "source": "dataset/corpus_gap_audit/reconciled/raw_input_manifest.json",
+        "path": "dataset/corpus_freeze/corpus_inventory.csv",
+        "recorded": "93135febc51638ff3c6d2820e9198ed4eff3f647c68ec494b17213152b2bb2f7",
+        "actual": "93135febc51638ff3c6d2820e9198ed4eff3f647c68ec494b17213152b2bb2f7",
+        "status": "MATCH",
+        "note": "source_commit=23d62286c4b807607b29a4dc14940179f90e3c0d"
+      },
+      {
+        "source": "dataset/corpus_gap_audit/reconciled/raw_input_manifest.json",
+        "path": "dataset/corpus_freeze/diversity_matrix.csv",
+        "recorded": "236440f9b78ede9d46a02f179e4a2467f2fa85a21f3d699c91b32b69ee726c36",
+        "actual": "236440f9b78ede9d46a02f179e4a2467f2fa85a21f3d699c91b32b69ee726c36",
+        "status": "MATCH",
+        "note": "source_commit=23d62286c4b807607b29a4dc14940179f90e3c0d"
+      },
+      {
+        "source": "dataset/corpus_gap_audit/reconciled/raw_input_manifest.json",
+        "path": "dataset/corpus_freeze/freeze_summary.json",
+        "recorded": "08677d7818511b5fbc49111bef5cb96f25eeac0dc5e6a04bf62b95f6b6a96cd1",
+        "actual": "08677d7818511b5fbc49111bef5cb96f25eeac0dc5e6a04bf62b95f6b6a96cd1",
+        "status": "MATCH",
+        "note": "source_commit=23d62286c4b807607b29a4dc14940179f90e3c0d"
+      },
+      {
+        "source": "dataset/corpus_gap_audit/reconciled/raw_input_manifest.json",
+        "path": "dataset/corpus_freeze/issuer_split.csv",
+        "recorded": "016e720245577833e8313bb2ec4905b1fb47ba77d15916706b702df4ed1bcc2a",
+        "actual": "016e720245577833e8313bb2ec4905b1fb47ba77d15916706b702df4ed1bcc2a",
+        "status": "MATCH",
+        "note": "source_commit=23d62286c4b807607b29a4dc14940179f90e3c0d"
+      },
+      {
+        "source": "dataset/corpus_gap_audit/reconciled/raw_input_manifest.json",
+        "path": "dataset/corpus_gap_audit/audit_config.json",
+        "recorded": "65ed1a7e189b2d564ca01fe63246652e7b6a2c94d9e23083eabbe4e5da08bc77",
+        "actual": "65ed1a7e189b2d564ca01fe63246652e7b6a2c94d9e23083eabbe4e5da08bc77",
+        "status": "MATCH",
+        "note": "source_commit=b6b76d964e78edce37b3d42e3668450526ee4bb7"
+      },
+      {
+        "source": "dataset/corpus_gap_audit/reconciled/raw_input_manifest.json",
+        "path": "dataset/corpus_gap_audit/condition_document_map.csv",
+        "recorded": "6738d428b476d22b17ccb025dca601c0748e6fb54c0417bdb23acb0dffa76d74",
+        "actual": "6738d428b476d22b17ccb025dca601c0748e6fb54c0417bdb23acb0dffa76d74",
+        "status": "MATCH",
+        "note": "source_commit=b6b76d964e78edce37b3d42e3668450526ee4bb7"
+      },
+      {
+        "source": "dataset/corpus_gap_audit/reconciled/raw_input_manifest.json",
+        "path": "dataset/corpus_gap_audit/condition_page_map.csv",
+        "recorded": "651bafe46c4c139edd39399ef45b89a100114ae04c69d0c278cc11822ddd572b",
+        "actual": "651bafe46c4c139edd39399ef45b89a100114ae04c69d0c278cc11822ddd572b",
+        "status": "MATCH",
+        "note": "source_commit=b6b76d964e78edce37b3d42e3668450526ee4bb7"
+      },
+      {
+        "source": "dataset/corpus_gap_audit/reconciled/raw_input_manifest.json",
+        "path": "dataset/corpus_gap_audit/duplicate_text_candidates.csv",
+        "recorded": "f59a76833181df876f5f25cf262e079399892b485852d34a25669e47df56aaa5",
+        "actual": "f59a76833181df876f5f25cf262e079399892b485852d34a25669e47df56aaa5",
+        "status": "MATCH",
+        "note": "source_commit=b6b76d964e78edce37b3d42e3668450526ee4bb7"
+      },
+      {
+        "source": "dataset/corpus_gap_audit/reconciled/raw_input_manifest.json",
+        "path": "dataset/corpus_gap_audit/environment.json",
+        "recorded": "7f9d6939faaafc7d141bc73b51d4fdafc455c092be55b7c76ea87b9b95017ef3",
+        "actual": "7f9d6939faaafc7d141bc73b51d4fdafc455c092be55b7c76ea87b9b95017ef3",
+        "status": "MATCH",
+        "note": "source_commit=b6b76d964e78edce37b3d42e3668450526ee4bb7"
+      },
+      {
+        "source": "dataset/corpus_gap_audit/reconciled/raw_input_manifest.json",
+        "path": "dataset/corpus_gap_audit/gap_audit_document.csv",
+        "recorded": "f6d426819daea219f551fc610646d836a702ef771e3d513a36b33941c71ddd5d",
+        "actual": "f6d426819daea219f551fc610646d836a702ef771e3d513a36b33941c71ddd5d",
+        "status": "MATCH",
+        "note": "source_commit=b6b76d964e78edce37b3d42e3668450526ee4bb7"
+      },
+      {
+        "source": "dataset/corpus_gap_audit/reconciled/raw_input_manifest.json",
+        "path": "dataset/corpus_gap_audit/gap_audit_report.md",
+        "recorded": "e947eb7f90babe8182f44e13fca104d788fee17525cc19b4f11b20b8b79af8bc",
+        "actual": "e947eb7f90babe8182f44e13fca104d788fee17525cc19b4f11b20b8b79af8bc",
+        "status": "MATCH",
+        "note": "source_commit=b6b76d964e78edce37b3d42e3668450526ee4bb7"
+      },
+      {
+        "source": "dataset/corpus_gap_audit/reconciled/raw_input_manifest.json",
+        "path": "dataset/corpus_gap_audit/gap_audit_summary.json",
+        "recorded": "fc402a63fa947a5aaf0bf6ef52e56aacc8c409962edabb895f53ec5241532dfe",
+        "actual": "fc402a63fa947a5aaf0bf6ef52e56aacc8c409962edabb895f53ec5241532dfe",
+        "status": "MATCH",
+        "note": "source_commit=b6b76d964e78edce37b3d42e3668450526ee4bb7"
+      },
+      {
+        "source": "dataset/corpus_gap_audit/reconciled/raw_input_manifest.json",
+        "path": "dataset/corpus_gap_audit/gap_summary.csv",
+        "recorded": "408a2cd32f7badbabe437d196736ce665ae85dd975f6c380262f008f8cbcdc61",
+        "actual": "408a2cd32f7badbabe437d196736ce665ae85dd975f6c380262f008f8cbcdc61",
+        "status": "MATCH",
+        "note": "source_commit=b6b76d964e78edce37b3d42e3668450526ee4bb7"
+      },
+      {
+        "source": "dataset/corpus_gap_audit/reconciled/raw_input_manifest.json",
+        "path": "dataset/corpus_gap_audit/header_footer_candidates.csv",
+        "recorded": "17966d00311f6e354301b0b001209151c55d7ad8ea36761989d6ad455637773f",
+        "actual": "17966d00311f6e354301b0b001209151c55d7ad8ea36761989d6ad455637773f",
+        "status": "MATCH",
+        "note": "source_commit=b6b76d964e78edce37b3d42e3668450526ee4bb7"
+      },
+      {
+        "source": "dataset/corpus_gap_audit/reconciled/raw_input_manifest.json",
+        "path": "dataset/corpus_gap_audit/input_hashes.json",
+        "recorded": "aa561b527e0a0d088476cc50bb9b5c238a82696ff5889f44d758321b8ecd768c",
+        "actual": "aa561b527e0a0d088476cc50bb9b5c238a82696ff5889f44d758321b8ecd768c",
+        "status": "MATCH",
+        "note": "source_commit=b6b76d964e78edce37b3d42e3668450526ee4bb7"
+      },
+      {
+        "source": "dataset/corpus_gap_audit/reconciled/raw_input_manifest.json",
+        "path": "dataset/corpus_gap_audit/interaction_gap_matrix.csv",
+        "recorded": "d7fd7bab38f7065342f43ada1c75e1554eb22c29ca247258665cddddbe20ce9f",
+        "actual": "d7fd7bab38f7065342f43ada1c75e1554eb22c29ca247258665cddddbe20ce9f",
+        "status": "MATCH",
+        "note": "source_commit=b6b76d964e78edce37b3d42e3668450526ee4bb7"
+      },
+      {
+        "source": "dataset/corpus_gap_audit/reconciled/raw_input_manifest.json",
+        "path": "dataset/corpus_gap_audit/language_candidates.csv",
+        "recorded": "f326c73a3001799b2f8cbeeca25e031da5bdad2e0b4aa6bcfba70295386eec76",
+        "actual": "f326c73a3001799b2f8cbeeca25e031da5bdad2e0b4aa6bcfba70295386eec76",
+        "status": "MATCH",
+        "note": "source_commit=b6b76d964e78edce37b3d42e3668450526ee4bb7"
+      },
+      {
+        "source": "dataset/corpus_gap_audit/reconciled/raw_input_manifest.json",
+        "path": "dataset/corpus_gap_audit/manual_review_manifest.csv",
+        "recorded": "d97a450a1bc336aeddc1789339ffce4fc391d19cb1da8bec5f9f53a4229e4989",
+        "actual": "d97a450a1bc336aeddc1789339ffce4fc391d19cb1da8bec5f9f53a4229e4989",
+        "status": "MATCH",
+        "note": "source_commit=b6b76d964e78edce37b3d42e3668450526ee4bb7"
+      },
+      {
+        "source": "dataset/corpus_gap_audit/reconciled/raw_input_manifest.json",
+        "path": "dataset/corpus_gap_audit/manual_review_results.csv",
+        "recorded": "7d479a5a6fd7c465766733db8693afc25f3e423d3d76faefa31ba4291c2dcd32",
+        "actual": "7d479a5a6fd7c465766733db8693afc25f3e423d3d76faefa31ba4291c2dcd32",
+        "status": "MATCH",
+        "note": "source_commit=b6b76d964e78edce37b3d42e3668450526ee4bb7"
+      },
+      {
+        "source": "dataset/corpus_gap_audit/reconciled/raw_input_manifest.json",
+        "path": "dataset/corpus_gap_audit/mdna_candidate_complexity.csv",
+        "recorded": "0e07c926b1eb053aa85d7bf824ca3b6b77465050c4e86882ad3a36cec52eb826",
+        "actual": "0e07c926b1eb053aa85d7bf824ca3b6b77465050c4e86882ad3a36cec52eb826",
+        "status": "MATCH",
+        "note": "source_commit=b6b76d964e78edce37b3d42e3668450526ee4bb7"
+      },
+      {
+        "source": "dataset/corpus_gap_audit/reconciled/raw_input_manifest.json",
+        "path": "dataset/corpus_gap_audit/methodology.md",
+        "recorded": "71d632f5177dab0e882bf8c4e261af156140cf1e96528ba7edbfc6c44c3122ec",
+        "actual": "71d632f5177dab0e882bf8c4e261af156140cf1e96528ba7edbfc6c44c3122ec",
+        "status": "MATCH",
+        "note": "source_commit=b6b76d964e78edce37b3d42e3668450526ee4bb7"
+      },
+      {
+        "source": "dataset/corpus_gap_audit/reconciled/raw_input_manifest.json",
+        "path": "dataset/corpus_gap_audit/structure_candidates.csv",
+        "recorded": "6b028c323cdfe7733ace0b01b522d917d9ba1bdc2bccba8db90f95f1f59b4272",
+        "actual": "6b028c323cdfe7733ace0b01b522d917d9ba1bdc2bccba8db90f95f1f59b4272",
+        "status": "MATCH",
+        "note": "source_commit=b6b76d964e78edce37b3d42e3668450526ee4bb7"
+      },
+      {
+        "source": "dataset/corpus_gap_audit/reconciled/raw_input_manifest.json",
+        "path": "dataset/corpus_gap_audit/table_candidates.csv",
+        "recorded": "8402dbf5a1d06bcde5801d635c398341ef2a77774f3c92a286df09602b502a3c",
+        "actual": "8402dbf5a1d06bcde5801d635c398341ef2a77774f3c92a286df09602b502a3c",
+        "status": "MATCH",
+        "note": "source_commit=b6b76d964e78edce37b3d42e3668450526ee4bb7"
+      },
+      {
+        "source": "dataset/corpus_gap_audit/reconciled/raw_input_manifest.json",
+        "path": "dataset/corpus_gap_audit/toc_offset_candidates.csv",
+        "recorded": "aa5252e21b899227c84fec088998b4192d781752a6975b6938652ec1bbaaedb8",
+        "actual": "aa5252e21b899227c84fec088998b4192d781752a6975b6938652ec1bbaaedb8",
+        "status": "MATCH",
+        "note": "source_commit=b6b76d964e78edce37b3d42e3668450526ee4bb7"
+      },
+      {
+        "source": "dataset/corpus_gap_audit/reconciled/raw_input_manifest.json",
+        "path": "tools/apply_model_review.py",
+        "recorded": "6e0dc3fb479ef1a5e82792787bc597cdf512a990ae271e8734e53efe25c65e6b",
+        "actual": "6e0dc3fb479ef1a5e82792787bc597cdf512a990ae271e8734e53efe25c65e6b",
+        "status": "MATCH",
+        "note": "source_commit=b6b76d964e78edce37b3d42e3668450526ee4bb7"
+      },
+      {
+        "source": "dataset/corpus_gap_audit/reconciled/raw_input_manifest.json",
+        "path": "tools/audit_corpus_gaps.py",
+        "recorded": "1174dca349e9b26c201d79ca99074fa98a2915532a1c0c52dab8f68bdfb5f398",
+        "actual": "1174dca349e9b26c201d79ca99074fa98a2915532a1c0c52dab8f68bdfb5f398",
+        "status": "MATCH",
+        "note": "source_commit=b6b76d964e78edce37b3d42e3668450526ee4bb7"
+      },
+      {
+        "source": "dataset/corpus_gap_audit/reconciled/reconciliation_manifest.json",
+        "path": "configs/t0_1r/input_allowlist.json",
+        "recorded": "65a10ae8c30237e8a3e9debedd6eae13328965e1cef0584c0a2506687889caf0",
+        "actual": "65a10ae8c30237e8a3e9debedd6eae13328965e1cef0584c0a2506687889caf0",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/reconciled/reconciliation_manifest.json",
+        "path": "configs/t0_1r/reconciliation_rules.json",
+        "recorded": "9dbbec3e8d5565a3d29114e1bcb46b613c187a8017832b00f2ff9d984ae4cdd9",
+        "actual": "9dbbec3e8d5565a3d29114e1bcb46b613c187a8017832b00f2ff9d984ae4cdd9",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/reconciled/reconciliation_manifest.json",
+        "path": "configs/t0_1r/reviewer_expectations.json",
+        "recorded": "c1286cde18df7efb3e68b78c9bcaf41a6888d5718d1136bbbe2944e124b03b26",
+        "actual": "c1286cde18df7efb3e68b78c9bcaf41a6888d5718d1136bbbe2944e124b03b26",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/reconciled/reconciliation_manifest.json",
+        "path": "dataset/corpus_gap_audit/reconciled/acquisition_decision.csv",
+        "recorded": "b7dcaaaef4bd105ae0b33a79303e735afc45745aef7aaaac9f75e84b1e7f4216",
+        "actual": "b7dcaaaef4bd105ae0b33a79303e735afc45745aef7aaaac9f75e84b1e7f4216",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/reconciled/reconciliation_manifest.json",
+        "path": "dataset/corpus_gap_audit/reconciled/claim_audit.csv",
+        "recorded": "2870383817f981eb5145e43a97a9a33231549698b1277ec7cbb87a6e5182bef0",
+        "actual": "2870383817f981eb5145e43a97a9a33231549698b1277ec7cbb87a6e5182bef0",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/reconciled/reconciliation_manifest.json",
+        "path": "dataset/corpus_gap_audit/reconciled/condition_document_map_reconciled.csv",
+        "recorded": "755d94cc7b7748359477cd31128373d0111d9fe1d11c6dede8a688d32644ae1c",
+        "actual": "755d94cc7b7748359477cd31128373d0111d9fe1d11c6dede8a688d32644ae1c",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/reconciled/reconciliation_manifest.json",
+        "path": "dataset/corpus_gap_audit/reconciled/condition_page_map_reconciled.csv",
+        "recorded": "325c58127386d0c4877e177db43b13cb5c1b179bb61992dc7a9e7a61fee970fa",
+        "actual": "325c58127386d0c4877e177db43b13cb5c1b179bb61992dc7a9e7a61fee970fa",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/reconciled/reconciliation_manifest.json",
+        "path": "dataset/corpus_gap_audit/reconciled/gap_audit_document_reconciled.csv",
+        "recorded": "990f91e422e4f3992fb1ed3ebfeb8249ac8d666b0813391a7def18c3f28c98c0",
+        "actual": "990f91e422e4f3992fb1ed3ebfeb8249ac8d666b0813391a7def18c3f28c98c0",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/reconciled/reconciliation_manifest.json",
+        "path": "dataset/corpus_gap_audit/reconciled/gap_audit_report_reconciled.md",
+        "recorded": "a1f7ff8f22227310ba2a77a4456706a36aa34c61b6aed1ad6c668b8fcceb75ba",
+        "actual": "a1f7ff8f22227310ba2a77a4456706a36aa34c61b6aed1ad6c668b8fcceb75ba",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/reconciled/reconciliation_manifest.json",
+        "path": "dataset/corpus_gap_audit/reconciled/gap_audit_summary_reconciled.json",
+        "recorded": "b3273cceb2c45c683ea80e596696b0401d00fb75bf8232dc3514edd06fbf4366",
+        "actual": "b3273cceb2c45c683ea80e596696b0401d00fb75bf8232dc3514edd06fbf4366",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/reconciled/reconciliation_manifest.json",
+        "path": "dataset/corpus_gap_audit/reconciled/gap_summary_reconciled.csv",
+        "recorded": "1562982d65846cf4ea89eaf35aa4a2bf4524a16fddd2cfd76c85a042dbc4113a",
+        "actual": "1562982d65846cf4ea89eaf35aa4a2bf4524a16fddd2cfd76c85a042dbc4113a",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/reconciled/reconciliation_manifest.json",
+        "path": "dataset/corpus_gap_audit/reconciled/interaction_gap_matrix_reconciled.csv",
+        "recorded": "27b765abaf8f6f59e675661bd8f645bb1d097804accc63f756eb5dd1e3f2ed42",
+        "actual": "27b765abaf8f6f59e675661bd8f645bb1d097804accc63f756eb5dd1e3f2ed42",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/reconciled/reconciliation_manifest.json",
+        "path": "dataset/corpus_gap_audit/reconciled/manual_review_results_reconciled.csv",
+        "recorded": "bbd230b99f132ce788182d1baa718d89584dd2eeea26a048dc2a0911040be23f",
+        "actual": "bbd230b99f132ce788182d1baa718d89584dd2eeea26a048dc2a0911040be23f",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/reconciled/reconciliation_manifest.json",
+        "path": "dataset/corpus_gap_audit/reconciled/methodology_reconciled.md",
+        "recorded": "7c20fc439a8bec94e793932cd33d41e2c16b951ef0f11409ebd576fe35e1c64e",
+        "actual": "7c20fc439a8bec94e793932cd33d41e2c16b951ef0f11409ebd576fe35e1c64e",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/reconciled/reconciliation_manifest.json",
+        "path": "dataset/corpus_gap_audit/reconciled/raw_input_manifest.json",
+        "recorded": "b630ba9b7f288d9061e01c39af3ffaa97fdfe174230b4c14e6168a44ad754c59",
+        "actual": "b630ba9b7f288d9061e01c39af3ffaa97fdfe174230b4c14e6168a44ad754c59",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/reconciled/reconciliation_manifest.json",
+        "path": "dataset/corpus_gap_audit/reconciled/t0_t01_reconciliation.csv",
+        "recorded": "9b66e89d27091fe779a8b70521d81d0d0c36f5491c047770d5b4eb1dc0b67449",
+        "actual": "9b66e89d27091fe779a8b70521d81d0d0c36f5491c047770d5b4eb1dc0b67449",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/t0_2_robustness_gate/t0_2_immutable_input_manifest.json",
+        "path": "configs/t0_1r/input_allowlist.json",
+        "recorded": "65a10ae8c30237e8a3e9debedd6eae13328965e1cef0584c0a2506687889caf0",
+        "actual": "65a10ae8c30237e8a3e9debedd6eae13328965e1cef0584c0a2506687889caf0",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/t0_2_robustness_gate/t0_2_immutable_input_manifest.json",
+        "path": "configs/t0_1r/reconciliation_rules.json",
+        "recorded": "9dbbec3e8d5565a3d29114e1bcb46b613c187a8017832b00f2ff9d984ae4cdd9",
+        "actual": "9dbbec3e8d5565a3d29114e1bcb46b613c187a8017832b00f2ff9d984ae4cdd9",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/t0_2_robustness_gate/t0_2_immutable_input_manifest.json",
+        "path": "configs/t0_1r/reviewer_expectations.json",
+        "recorded": "c1286cde18df7efb3e68b78c9bcaf41a6888d5718d1136bbbe2944e124b03b26",
+        "actual": "c1286cde18df7efb3e68b78c9bcaf41a6888d5718d1136bbbe2944e124b03b26",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/t0_2_robustness_gate/t0_2_immutable_input_manifest.json",
+        "path": "dataset/corpus_freeze/corpus_inventory.csv",
+        "recorded": "93135febc51638ff3c6d2820e9198ed4eff3f647c68ec494b17213152b2bb2f7",
+        "actual": "93135febc51638ff3c6d2820e9198ed4eff3f647c68ec494b17213152b2bb2f7",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/t0_2_robustness_gate/t0_2_immutable_input_manifest.json",
+        "path": "dataset/corpus_freeze/issuer_split.csv",
+        "recorded": "016e720245577833e8313bb2ec4905b1fb47ba77d15916706b702df4ed1bcc2a",
+        "actual": "016e720245577833e8313bb2ec4905b1fb47ba77d15916706b702df4ed1bcc2a",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/t0_2_robustness_gate/t0_2_immutable_input_manifest.json",
+        "path": "dataset/corpus_gap_audit/duplicate_text_candidates.csv",
+        "recorded": "f59a76833181df876f5f25cf262e079399892b485852d34a25669e47df56aaa5",
+        "actual": "f59a76833181df876f5f25cf262e079399892b485852d34a25669e47df56aaa5",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/t0_2_robustness_gate/t0_2_immutable_input_manifest.json",
+        "path": "dataset/corpus_gap_audit/reconciled/acquisition_decision.csv",
+        "recorded": "b7dcaaaef4bd105ae0b33a79303e735afc45745aef7aaaac9f75e84b1e7f4216",
+        "actual": "b7dcaaaef4bd105ae0b33a79303e735afc45745aef7aaaac9f75e84b1e7f4216",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/t0_2_robustness_gate/t0_2_immutable_input_manifest.json",
+        "path": "dataset/corpus_gap_audit/reconciled/claim_audit.csv",
+        "recorded": "2870383817f981eb5145e43a97a9a33231549698b1277ec7cbb87a6e5182bef0",
+        "actual": "2870383817f981eb5145e43a97a9a33231549698b1277ec7cbb87a6e5182bef0",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/t0_2_robustness_gate/t0_2_immutable_input_manifest.json",
+        "path": "dataset/corpus_gap_audit/reconciled/condition_document_map_reconciled.csv",
+        "recorded": "755d94cc7b7748359477cd31128373d0111d9fe1d11c6dede8a688d32644ae1c",
+        "actual": "755d94cc7b7748359477cd31128373d0111d9fe1d11c6dede8a688d32644ae1c",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/t0_2_robustness_gate/t0_2_immutable_input_manifest.json",
+        "path": "dataset/corpus_gap_audit/reconciled/condition_page_map_reconciled.csv",
+        "recorded": "325c58127386d0c4877e177db43b13cb5c1b179bb61992dc7a9e7a61fee970fa",
+        "actual": "325c58127386d0c4877e177db43b13cb5c1b179bb61992dc7a9e7a61fee970fa",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/t0_2_robustness_gate/t0_2_immutable_input_manifest.json",
+        "path": "dataset/corpus_gap_audit/reconciled/gap_audit_document_reconciled.csv",
+        "recorded": "990f91e422e4f3992fb1ed3ebfeb8249ac8d666b0813391a7def18c3f28c98c0",
+        "actual": "990f91e422e4f3992fb1ed3ebfeb8249ac8d666b0813391a7def18c3f28c98c0",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/t0_2_robustness_gate/t0_2_immutable_input_manifest.json",
+        "path": "dataset/corpus_gap_audit/reconciled/gap_audit_report_reconciled.md",
+        "recorded": "a1f7ff8f22227310ba2a77a4456706a36aa34c61b6aed1ad6c668b8fcceb75ba",
+        "actual": "a1f7ff8f22227310ba2a77a4456706a36aa34c61b6aed1ad6c668b8fcceb75ba",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/t0_2_robustness_gate/t0_2_immutable_input_manifest.json",
+        "path": "dataset/corpus_gap_audit/reconciled/gap_audit_summary_reconciled.json",
+        "recorded": "b3273cceb2c45c683ea80e596696b0401d00fb75bf8232dc3514edd06fbf4366",
+        "actual": "b3273cceb2c45c683ea80e596696b0401d00fb75bf8232dc3514edd06fbf4366",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/t0_2_robustness_gate/t0_2_immutable_input_manifest.json",
+        "path": "dataset/corpus_gap_audit/reconciled/gap_summary_reconciled.csv",
+        "recorded": "1562982d65846cf4ea89eaf35aa4a2bf4524a16fddd2cfd76c85a042dbc4113a",
+        "actual": "1562982d65846cf4ea89eaf35aa4a2bf4524a16fddd2cfd76c85a042dbc4113a",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/t0_2_robustness_gate/t0_2_immutable_input_manifest.json",
+        "path": "dataset/corpus_gap_audit/reconciled/interaction_gap_matrix_reconciled.csv",
+        "recorded": "27b765abaf8f6f59e675661bd8f645bb1d097804accc63f756eb5dd1e3f2ed42",
+        "actual": "27b765abaf8f6f59e675661bd8f645bb1d097804accc63f756eb5dd1e3f2ed42",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/t0_2_robustness_gate/t0_2_immutable_input_manifest.json",
+        "path": "dataset/corpus_gap_audit/reconciled/methodology_reconciled.md",
+        "recorded": "7c20fc439a8bec94e793932cd33d41e2c16b951ef0f11409ebd576fe35e1c64e",
+        "actual": "7c20fc439a8bec94e793932cd33d41e2c16b951ef0f11409ebd576fe35e1c64e",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/t0_2_robustness_gate/t0_2_immutable_input_manifest.json",
+        "path": "dataset/corpus_gap_audit/toc_offset_candidates.csv",
+        "recorded": "aa5252e21b899227c84fec088998b4192d781752a6975b6938652ec1bbaaedb8",
+        "actual": "aa5252e21b899227c84fec088998b4192d781752a6975b6938652ec1bbaaedb8",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/t0_3a_document_coverage/t0_3a_immutable_input_manifest.json",
+        "path": "configs/t0_3a/taxonomy_register.json",
+        "recorded": "0fbe3030eb03c4d4f4dafb338713f592f84f753936aca6c60f4a3fbeed7c6efb",
+        "actual": "0fbe3030eb03c4d4f4dafb338713f592f84f753936aca6c60f4a3fbeed7c6efb",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/t0_3a_document_coverage/t0_3a_immutable_input_manifest.json",
+        "path": "dataset/corpus_freeze/corpus_inventory.csv",
+        "recorded": "93135febc51638ff3c6d2820e9198ed4eff3f647c68ec494b17213152b2bb2f7",
+        "actual": "93135febc51638ff3c6d2820e9198ed4eff3f647c68ec494b17213152b2bb2f7",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/t0_3a_document_coverage/t0_3a_immutable_input_manifest.json",
+        "path": "dataset/corpus_freeze/issuer_split.csv",
+        "recorded": "016e720245577833e8313bb2ec4905b1fb47ba77d15916706b702df4ed1bcc2a",
+        "actual": "016e720245577833e8313bb2ec4905b1fb47ba77d15916706b702df4ed1bcc2a",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/t0_3a_document_coverage/t0_3a_immutable_input_manifest.json",
+        "path": "dataset/corpus_gap_audit/reconciled/acquisition_decision.csv",
+        "recorded": "b7dcaaaef4bd105ae0b33a79303e735afc45745aef7aaaac9f75e84b1e7f4216",
+        "actual": "b7dcaaaef4bd105ae0b33a79303e735afc45745aef7aaaac9f75e84b1e7f4216",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/t0_3a_document_coverage/t0_3a_immutable_input_manifest.json",
+        "path": "dataset/corpus_gap_audit/reconciled/claim_audit.csv",
+        "recorded": "2870383817f981eb5145e43a97a9a33231549698b1277ec7cbb87a6e5182bef0",
+        "actual": "2870383817f981eb5145e43a97a9a33231549698b1277ec7cbb87a6e5182bef0",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/t0_3a_document_coverage/t0_3a_immutable_input_manifest.json",
+        "path": "dataset/corpus_gap_audit/reconciled/gap_audit_document_reconciled.csv",
+        "recorded": "990f91e422e4f3992fb1ed3ebfeb8249ac8d666b0813391a7def18c3f28c98c0",
+        "actual": "990f91e422e4f3992fb1ed3ebfeb8249ac8d666b0813391a7def18c3f28c98c0",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/t0_3a_document_coverage/t0_3a_immutable_input_manifest.json",
+        "path": "dataset/corpus_gap_audit/reconciled/gap_audit_report_reconciled.md",
+        "recorded": "a1f7ff8f22227310ba2a77a4456706a36aa34c61b6aed1ad6c668b8fcceb75ba",
+        "actual": "a1f7ff8f22227310ba2a77a4456706a36aa34c61b6aed1ad6c668b8fcceb75ba",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/t0_3a_document_coverage/t0_3a_immutable_input_manifest.json",
+        "path": "dataset/corpus_gap_audit/reconciled/gap_audit_summary_reconciled.json",
+        "recorded": "b3273cceb2c45c683ea80e596696b0401d00fb75bf8232dc3514edd06fbf4366",
+        "actual": "b3273cceb2c45c683ea80e596696b0401d00fb75bf8232dc3514edd06fbf4366",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/t0_3a_document_coverage/t0_3a_immutable_input_manifest.json",
+        "path": "dataset/corpus_gap_audit/reconciled/gap_summary_reconciled.csv",
+        "recorded": "1562982d65846cf4ea89eaf35aa4a2bf4524a16fddd2cfd76c85a042dbc4113a",
+        "actual": "1562982d65846cf4ea89eaf35aa4a2bf4524a16fddd2cfd76c85a042dbc4113a",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/t0_3a_document_coverage/t0_3a_immutable_input_manifest.json",
+        "path": "dataset/corpus_gap_audit/reconciled/interaction_gap_matrix_reconciled.csv",
+        "recorded": "27b765abaf8f6f59e675661bd8f645bb1d097804accc63f756eb5dd1e3f2ed42",
+        "actual": "27b765abaf8f6f59e675661bd8f645bb1d097804accc63f756eb5dd1e3f2ed42",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/t0_3a_document_coverage/t0_3a_immutable_input_manifest.json",
+        "path": "dataset/corpus_gap_audit/t0_2_robustness_gate/t0_2_claim_dependency_map.csv",
+        "recorded": "0a8a7bf77a1994d29ae6d22d2a05b7eb56221b9cb92f73038b983e27a07217eb",
+        "actual": "0a8a7bf77a1994d29ae6d22d2a05b7eb56221b9cb92f73038b983e27a07217eb",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/t0_3a_document_coverage/t0_3a_immutable_input_manifest.json",
+        "path": "dataset/corpus_gap_audit/t0_2_robustness_gate/t0_2_robustness_gate.csv",
+        "recorded": "7d6219cae656e97538205c1b4bb5999dfef9c6df8d8254dd7ce4aaf36d63de3c",
+        "actual": "7d6219cae656e97538205c1b4bb5999dfef9c6df8d8254dd7ce4aaf36d63de3c",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/t0_3a_r1_document_coverage/t0_3a_r1_immutable_input_manifest.json",
+        "path": "configs/t0_3a/taxonomy_register.json",
+        "recorded": "0fbe3030eb03c4d4f4dafb338713f592f84f753936aca6c60f4a3fbeed7c6efb",
+        "actual": "0fbe3030eb03c4d4f4dafb338713f592f84f753936aca6c60f4a3fbeed7c6efb",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/t0_3a_r1_document_coverage/t0_3a_r1_immutable_input_manifest.json",
+        "path": "configs/t0_3a_r1/taxonomy_register.json",
+        "recorded": "1be25b1f5f7b52249122cd7e29a8ed1f105f35ef8fff5d607dcf45c24df7de10",
+        "actual": "1be25b1f5f7b52249122cd7e29a8ed1f105f35ef8fff5d607dcf45c24df7de10",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/t0_3a_r1_document_coverage/t0_3a_r1_immutable_input_manifest.json",
+        "path": "dataset/corpus_freeze/corpus_inventory.csv",
+        "recorded": "93135febc51638ff3c6d2820e9198ed4eff3f647c68ec494b17213152b2bb2f7",
+        "actual": "93135febc51638ff3c6d2820e9198ed4eff3f647c68ec494b17213152b2bb2f7",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/t0_3a_r1_document_coverage/t0_3a_r1_immutable_input_manifest.json",
+        "path": "dataset/corpus_freeze/issuer_split.csv",
+        "recorded": "016e720245577833e8313bb2ec4905b1fb47ba77d15916706b702df4ed1bcc2a",
+        "actual": "016e720245577833e8313bb2ec4905b1fb47ba77d15916706b702df4ed1bcc2a",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/t0_3a_r1_document_coverage/t0_3a_r1_immutable_input_manifest.json",
+        "path": "dataset/corpus_gap_audit/reconciled/acquisition_decision.csv",
+        "recorded": "b7dcaaaef4bd105ae0b33a79303e735afc45745aef7aaaac9f75e84b1e7f4216",
+        "actual": "b7dcaaaef4bd105ae0b33a79303e735afc45745aef7aaaac9f75e84b1e7f4216",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/t0_3a_r1_document_coverage/t0_3a_r1_immutable_input_manifest.json",
+        "path": "dataset/corpus_gap_audit/reconciled/claim_audit.csv",
+        "recorded": "2870383817f981eb5145e43a97a9a33231549698b1277ec7cbb87a6e5182bef0",
+        "actual": "2870383817f981eb5145e43a97a9a33231549698b1277ec7cbb87a6e5182bef0",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/t0_3a_r1_document_coverage/t0_3a_r1_immutable_input_manifest.json",
+        "path": "dataset/corpus_gap_audit/reconciled/gap_audit_document_reconciled.csv",
+        "recorded": "990f91e422e4f3992fb1ed3ebfeb8249ac8d666b0813391a7def18c3f28c98c0",
+        "actual": "990f91e422e4f3992fb1ed3ebfeb8249ac8d666b0813391a7def18c3f28c98c0",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/t0_3a_r1_document_coverage/t0_3a_r1_immutable_input_manifest.json",
+        "path": "dataset/corpus_gap_audit/reconciled/gap_audit_report_reconciled.md",
+        "recorded": "a1f7ff8f22227310ba2a77a4456706a36aa34c61b6aed1ad6c668b8fcceb75ba",
+        "actual": "a1f7ff8f22227310ba2a77a4456706a36aa34c61b6aed1ad6c668b8fcceb75ba",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/t0_3a_r1_document_coverage/t0_3a_r1_immutable_input_manifest.json",
+        "path": "dataset/corpus_gap_audit/reconciled/gap_audit_summary_reconciled.json",
+        "recorded": "b3273cceb2c45c683ea80e596696b0401d00fb75bf8232dc3514edd06fbf4366",
+        "actual": "b3273cceb2c45c683ea80e596696b0401d00fb75bf8232dc3514edd06fbf4366",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/t0_3a_r1_document_coverage/t0_3a_r1_immutable_input_manifest.json",
+        "path": "dataset/corpus_gap_audit/reconciled/gap_summary_reconciled.csv",
+        "recorded": "1562982d65846cf4ea89eaf35aa4a2bf4524a16fddd2cfd76c85a042dbc4113a",
+        "actual": "1562982d65846cf4ea89eaf35aa4a2bf4524a16fddd2cfd76c85a042dbc4113a",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/t0_3a_r1_document_coverage/t0_3a_r1_immutable_input_manifest.json",
+        "path": "dataset/corpus_gap_audit/reconciled/interaction_gap_matrix_reconciled.csv",
+        "recorded": "27b765abaf8f6f59e675661bd8f645bb1d097804accc63f756eb5dd1e3f2ed42",
+        "actual": "27b765abaf8f6f59e675661bd8f645bb1d097804accc63f756eb5dd1e3f2ed42",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/t0_3a_r1_document_coverage/t0_3a_r1_immutable_input_manifest.json",
+        "path": "dataset/corpus_gap_audit/t0_2_robustness_gate/t0_2_claim_dependency_map.csv",
+        "recorded": "0a8a7bf77a1994d29ae6d22d2a05b7eb56221b9cb92f73038b983e27a07217eb",
+        "actual": "0a8a7bf77a1994d29ae6d22d2a05b7eb56221b9cb92f73038b983e27a07217eb",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/t0_3a_r1_document_coverage/t0_3a_r1_immutable_input_manifest.json",
+        "path": "dataset/corpus_gap_audit/t0_2_robustness_gate/t0_2_robustness_gate.csv",
+        "recorded": "7d6219cae656e97538205c1b4bb5999dfef9c6df8d8254dd7ce4aaf36d63de3c",
+        "actual": "7d6219cae656e97538205c1b4bb5999dfef9c6df8d8254dd7ce4aaf36d63de3c",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/t0_3a_r1_document_coverage/t0_3a_r1_immutable_input_manifest.json",
+        "path": "dataset/corpus_gap_audit/t0_3a_document_coverage/t0_3a_audit_plan.md",
+        "recorded": "252b31826155053f004c2b69051f068c34f960f8eb4d06545e6d27580192bc09",
+        "actual": "252b31826155053f004c2b69051f068c34f960f8eb4d06545e6d27580192bc09",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/t0_3a_r1_document_coverage/t0_3a_r1_immutable_input_manifest.json",
+        "path": "dataset/corpus_gap_audit/t0_3a_document_coverage/t0_3a_category_document_map.csv",
+        "recorded": "e15576b4bec2c178e016df27d08964cce7ec34be37162d49f1e70235cbcc2d78",
+        "actual": "e15576b4bec2c178e016df27d08964cce7ec34be37162d49f1e70235cbcc2d78",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/t0_3a_r1_document_coverage/t0_3a_r1_immutable_input_manifest.json",
+        "path": "dataset/corpus_gap_audit/t0_3a_document_coverage/t0_3a_coverage_matrix.csv",
+        "recorded": "0b11fa7d876776bcaf0570b9b43fc1b9bf7a86cd011833eedcf713e2cb662f71",
+        "actual": "0b11fa7d876776bcaf0570b9b43fc1b9bf7a86cd011833eedcf713e2cb662f71",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/t0_3a_r1_document_coverage/t0_3a_r1_immutable_input_manifest.json",
+        "path": "dataset/corpus_gap_audit/t0_3a_document_coverage/t0_3a_gap_register.csv",
+        "recorded": "39db08b14f90c20a8d639f4965c1aa9c4ddca19f7a0839f6ea1af7c97752d310",
+        "actual": "39db08b14f90c20a8d639f4965c1aa9c4ddca19f7a0839f6ea1af7c97752d310",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/t0_3a_r1_document_coverage/t0_3a_r1_immutable_input_manifest.json",
+        "path": "dataset/corpus_gap_audit/t0_3a_document_coverage/t0_3a_immutable_input_manifest.json",
+        "recorded": "ceaccd9537639d8eb7f907bd6d5ce84d7628909ab157f007ac5cbd9807f74f3a",
+        "actual": "ceaccd9537639d8eb7f907bd6d5ce84d7628909ab157f007ac5cbd9807f74f3a",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "dataset/corpus_gap_audit/t0_3a_r1_document_coverage/t0_3a_r1_immutable_input_manifest.json",
+        "path": "dataset/corpus_gap_audit/t0_3a_document_coverage/t0_3a_summary.json",
+        "recorded": "c8e8916c9baf4aec9e6916877ab77df2021a589a3a2269a9faa4d0eb01305417",
+        "actual": "c8e8916c9baf4aec9e6916877ab77df2021a589a3a2269a9faa4d0eb01305417",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "artifacts/t0_4/config_hashes.json",
+        "path": "configs/t0_4/benchmark_config.json",
+        "recorded": "79727cddfb28e13544edeef4e35ea43897f4e521cf8ca62e2c447e1a90c0c6af",
+        "actual": "79727cddfb28e13544edeef4e35ea43897f4e521cf8ca62e2c447e1a90c0c6af",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "artifacts/t0_4/config_hashes.json",
+        "path": "configs/t0_4/benchmark_manifest_schema.json",
+        "recorded": "3748fa145a3bb0667cc68dd1c3ac1c910cd3c5ea9b0b8d572c6460ea5bb05ac5",
+        "actual": "3748fa145a3bb0667cc68dd1c3ac1c910cd3c5ea9b0b8d572c6460ea5bb05ac5",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "artifacts/t0_4/config_hashes.json",
+        "path": "configs/t0_4/common_output_schema.json",
+        "recorded": "7648ea43aa0e06a5bab8d35ac19385cce2607d2ea09772e27bcaf50c81b871af",
+        "actual": "7648ea43aa0e06a5bab8d35ac19385cce2607d2ea09772e27bcaf50c81b871af",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "artifacts/t0_4/config_hashes.json",
+        "path": "configs/t0_4/efficiency_schema.json",
+        "recorded": "089bf6de4d6de0ec64c49f19498e626bb8c5eaa579dfdbe2ea68bdc9a6a5ef42",
+        "actual": "089bf6de4d6de0ec64c49f19498e626bb8c5eaa579dfdbe2ea68bdc9a6a5ef42",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "artifacts/t0_4/config_hashes.json",
+        "path": "configs/t0_4/engine_registry.json",
+        "recorded": "74575cac2e96c71e01b006f258310362fbce1a05e5c899a0007542e7ccb4ed5e",
+        "actual": "74575cac2e96c71e01b006f258310362fbce1a05e5c899a0007542e7ccb4ed5e",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "artifacts/t0_4/config_hashes.json",
+        "path": "configs/t0_4/failure_taxonomy.json",
+        "recorded": "78fb43f16e8d679b868b2b6600c3ad213ae1df5e5f4c0b7c8b8a37319ebcbc25",
+        "actual": "78fb43f16e8d679b868b2b6600c3ad213ae1df5e5f4c0b7c8b8a37319ebcbc25",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "artifacts/t0_4/config_hashes.json",
+        "path": "configs/t0_4/future_results_schema.json",
+        "recorded": "538c498ff8c6ceda2f85cb92acf0e5bfe7a948cd6174db1729af1f6d599a5e66",
+        "actual": "538c498ff8c6ceda2f85cb92acf0e5bfe7a948cd6174db1729af1f6d599a5e66",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "artifacts/t0_4/config_hashes.json",
+        "path": "configs/t0_4/gold_schema.json",
+        "recorded": "e8b33a4a0e04da72c3572604ca3f82677920617607abe266717975ee3cc65247",
+        "actual": "e8b33a4a0e04da72c3572604ca3f82677920617607abe266717975ee3cc65247",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "artifacts/t0_4/config_hashes.json",
+        "path": "configs/t0_4/metrics_spec.json",
+        "recorded": "d7590bebe271163f2ad341cace35f4749754cf22da3018cef32b12ad09c66336",
+        "actual": "d7590bebe271163f2ad341cace35f4749754cf22da3018cef32b12ad09c66336",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "artifacts/t0_4/config_hashes.json",
+        "path": "configs/t0_4/oracle_routing_spec.json",
+        "recorded": "d5aa91eb161cc04eb06fd20edc5941e88e9dcdcc70c71d17e2c259d3a625fbc3",
+        "actual": "d5aa91eb161cc04eb06fd20edc5941e88e9dcdcc70c71d17e2c259d3a625fbc3",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "artifacts/t0_4/config_hashes.json",
+        "path": "configs/t0_4/raw_output_schema.json",
+        "recorded": "bdbc512abe729c8401462223b2b540d997838ab897f369360cb3956b1939a781",
+        "actual": "bdbc512abe729c8401462223b2b540d997838ab897f369360cb3956b1939a781",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "artifacts/t0_4/config_hashes.json",
+        "path": "configs/t0_4/sampling_spec.json",
+        "recorded": "412e040e9bcdc3915110906cd66d38a025e3aaad3f1f12bf31bf32327e17375c",
+        "actual": "412e040e9bcdc3915110906cd66d38a025e3aaad3f1f12bf31bf32327e17375c",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "artifacts/t0_4/setup_audit.json",
+        "path": "artifacts/t0_4/benchmark_manifest.json",
+        "recorded": "d1eb3042c82900e345541ef6b7afbba95a6d7d8dc2e7948e5d610eaf89912f15",
+        "actual": "d1eb3042c82900e345541ef6b7afbba95a6d7d8dc2e7948e5d610eaf89912f15",
+        "status": "MATCH",
+        "note": "manifest_sha256"
+      },
+      {
+        "source": "artifacts/t0_4/setup_audit.json",
+        "path": "artifacts/t0_4/benchmark_manifest.json",
+        "recorded": "d1eb3042c82900e345541ef6b7afbba95a6d7d8dc2e7948e5d610eaf89912f15",
+        "actual": "d1eb3042c82900e345541ef6b7afbba95a6d7d8dc2e7948e5d610eaf89912f15",
+        "status": "MATCH",
+        "note": "deterministic_repeat_sha256"
+      },
+      {
+        "source": "artifacts/t0_4/benchmark_manifest.json:source_hashes",
+        "path": "dataset/corpus_freeze/corpus_inventory.csv",
+        "recorded": "93135febc51638ff3c6d2820e9198ed4eff3f647c68ec494b17213152b2bb2f7",
+        "actual": "93135febc51638ff3c6d2820e9198ed4eff3f647c68ec494b17213152b2bb2f7",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "artifacts/t0_4/benchmark_manifest.json:source_hashes",
+        "path": "dataset/corpus_freeze/issuer_split.csv",
+        "recorded": "016e720245577833e8313bb2ec4905b1fb47ba77d15916706b702df4ed1bcc2a",
+        "actual": "016e720245577833e8313bb2ec4905b1fb47ba77d15916706b702df4ed1bcc2a",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "artifacts/t0_4/benchmark_manifest.json:source_hashes",
+        "path": "dataset/corpus_freeze/page_profile.csv",
+        "recorded": "5bffb19654fe9b868e21ae8eab13543b3f46f9e5753bcc4563f98305fa781dff",
+        "actual": "5bffb19654fe9b868e21ae8eab13543b3f46f9e5753bcc4563f98305fa781dff",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "artifacts/t0_4/benchmark_manifest.json:source_hashes",
+        "path": "dataset/corpus_gap_audit/condition_page_map.csv",
+        "recorded": "651bafe46c4c139edd39399ef45b89a100114ae04c69d0c278cc11822ddd572b",
+        "actual": "651bafe46c4c139edd39399ef45b89a100114ae04c69d0c278cc11822ddd572b",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "artifacts/t0_4/benchmark_manifest.json:source_hashes",
+        "path": "dataset/corpus_gap_audit/language_candidates.csv",
+        "recorded": "f326c73a3001799b2f8cbeeca25e031da5bdad2e0b4aa6bcfba70295386eec76",
+        "actual": "f326c73a3001799b2f8cbeeca25e031da5bdad2e0b4aa6bcfba70295386eec76",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "artifacts/t0_4/benchmark_manifest.json:source_hashes",
+        "path": "dataset/corpus_gap_audit/table_candidates.csv",
+        "recorded": "8402dbf5a1d06bcde5801d635c398341ef2a77774f3c92a286df09602b502a3c",
+        "actual": "8402dbf5a1d06bcde5801d635c398341ef2a77774f3c92a286df09602b502a3c",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "PHASE1_report_table",
+        "path": "dataset/corpus_freeze/corpus_inventory.csv",
+        "recorded": "93135febc51638ff3c6d2820e9198ed4eff3f647c68ec494b17213152b2bb2f7",
+        "actual": "93135febc51638ff3c6d2820e9198ed4eff3f647c68ec494b17213152b2bb2f7",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "PHASE1_report_table",
+        "path": "dataset/corpus_freeze/development_manifest.csv",
+        "recorded": "518a9c74e8e1d544d10392f0ce61c90e41f81548079708f50c6b7ac8e1d1867f",
+        "actual": "518a9c74e8e1d544d10392f0ce61c90e41f81548079708f50c6b7ac8e1d1867f",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "PHASE1_report_table",
+        "path": "dataset/corpus_freeze/validation_manifest.csv",
+        "recorded": "113b0658bb4973f36fbf61390b8d64273f64a0c801e199d1474870a42b44b631",
+        "actual": "113b0658bb4973f36fbf61390b8d64273f64a0c801e199d1474870a42b44b631",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "PHASE1_report_table",
+        "path": "dataset/corpus_freeze/holdout_manifest.csv",
+        "recorded": "a9cf459bc7f916d2c3a648ad54bd6bd6b24697c06fab48df16ebcd5f6e7fcdff",
+        "actual": "a9cf459bc7f916d2c3a648ad54bd6bd6b24697c06fab48df16ebcd5f6e7fcdff",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "PHASE1_report_table",
+        "path": "dataset/corpus_freeze/challenge_coverage_manifest.csv",
+        "recorded": "b7cdeb3d3d3c2d0b6492a7862cdf54d4c36e27389d8688a98614e0e0be31ba53",
+        "actual": "b7cdeb3d3d3c2d0b6492a7862cdf54d4c36e27389d8688a98614e0e0be31ba53",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "PHASE1_report_table",
+        "path": "dataset/corpus_freeze/freeze_summary.json",
+        "recorded": "08677d7818511b5fbc49111bef5cb96f25eeac0dc5e6a04bf62b95f6b6a96cd1",
+        "actual": "08677d7818511b5fbc49111bef5cb96f25eeac0dc5e6a04bf62b95f6b6a96cd1",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "PHASE1_report_table",
+        "path": "dataset/corpus_freeze/issuer_split.csv",
+        "recorded": "016e720272b5c00e6fe5757d544ff3791a852899479b18361665427145712c9c",
+        "actual": "016e720245577833e8313bb2ec4905b1fb47ba77d15916706b702df4ed1bcc2a",
+        "status": "MISMATCH",
+        "note": ""
+      },
+      {
+        "source": "PHASE1_report_table",
+        "path": "dataset/corpus_freeze/diversity_matrix.csv",
+        "recorded": "236440f9b78ede9d46a02f179e4a2467f2fa85a21f3d699c91b32b69ee726c36",
+        "actual": "236440f9b78ede9d46a02f179e4a2467f2fa85a21f3d699c91b32b69ee726c36",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "PHASE1_report_table",
+        "path": "dataset/corpus_freeze/page_profile.csv",
+        "recorded": "5bffb1965e646200257ad766b44a49c4f1c1f7743513ca4df35a72517855d050",
+        "actual": "5bffb19654fe9b868e21ae8eab13543b3f46f9e5753bcc4563f98305fa781dff",
+        "status": "MISMATCH",
+        "note": ""
+      },
+      {
+        "source": "PHASE1_report_table",
+        "path": "dataset/corpus_gap_audit/audit_config.json",
+        "recorded": "5c1815fe56b9cceb77826274092ff3b34208a0d4949fbbeae8fb5bf8471c9ba9",
+        "actual": "65ed1a7e189b2d564ca01fe63246652e7b6a2c94d9e23083eabbe4e5da08bc77",
+        "status": "MISMATCH",
+        "note": ""
+      },
+      {
+        "source": "PHASE1_report_table",
+        "path": "dataset/corpus_gap_audit/gap_audit_document.csv",
+        "recorded": "6ae4a07aa1b88e1003732ee34680879c5950d8c0ee74b6df3346d03541ce1f8f",
+        "actual": "f6d426819daea219f551fc610646d836a702ef771e3d513a36b33941c71ddd5d",
+        "status": "MISMATCH",
+        "note": ""
+      },
+      {
+        "source": "PHASE1_report_table",
+        "path": "dataset/corpus_gap_audit/condition_page_map.csv",
+        "recorded": "651bafe4a169bfeeb5003c2a93412d29b0a1d48c9035171701aaec5ddb7be047",
+        "actual": "651bafe46c4c139edd39399ef45b89a100114ae04c69d0c278cc11822ddd572b",
+        "status": "MISMATCH",
+        "note": ""
+      },
+      {
+        "source": "PHASE1_report_table",
+        "path": "dataset/corpus_gap_audit/table_candidates.csv",
+        "recorded": "8402dbf515dbb9cf112a6fe12a818449c253c5eebf995874c7df8b1d97746401",
+        "actual": "8402dbf5a1d06bcde5801d635c398341ef2a77774f3c92a286df09602b502a3c",
+        "status": "MISMATCH",
+        "note": ""
+      },
+      {
+        "source": "PHASE1_report_table",
+        "path": "dataset/corpus_gap_audit/language_candidates.csv",
+        "recorded": "f326c73a81f33f6dfdd7d983c2670e28d5d1c5a93822d6be206e23612d7c07b4",
+        "actual": "f326c73a3001799b2f8cbeeca25e031da5bdad2e0b4aa6bcfba70295386eec76",
+        "status": "MISMATCH",
+        "note": ""
+      },
+      {
+        "source": "PHASE1_report_table",
+        "path": "dataset/corpus_gap_audit/manual_review_manifest.csv",
+        "recorded": "e99f06df1a070cc575510619570776785ae6574f836968a5146bf705c7554f67",
+        "actual": "d97a450a1bc336aeddc1789339ffce4fc391d19cb1da8bec5f9f53a4229e4989",
+        "status": "MISMATCH",
+        "note": ""
+      },
+      {
+        "source": "PHASE1_report_table",
+        "path": "dataset/corpus_gap_audit/manual_review_results.csv",
+        "recorded": "2e08a655291b29a674e14cfbc3dfa1aa5ebbc03b30617b0785197825d1947b01",
+        "actual": "7d479a5a6fd7c465766733db8693afc25f3e423d3d76faefa31ba4291c2dcd32",
+        "status": "MISMATCH",
+        "note": ""
+      },
+      {
+        "source": "PHASE1_report_table",
+        "path": "dataset/corpus_gap_audit/toc_offset_candidates.csv",
+        "recorded": "82b43b67ce7b43b0ce9e3bcfc99ea7db1b22e7ae84a9e52c9ae25c3f3a186450",
+        "actual": "aa5252e21b899227c84fec088998b4192d781752a6975b6938652ec1bbaaedb8",
+        "status": "MISMATCH",
+        "note": ""
+      },
+      {
+        "source": "PHASE1_report_table",
+        "path": "dataset/corpus_gap_audit/reconciled/raw_input_manifest.json",
+        "recorded": "b630ba9b7f288d9061e01c39af3ffaa97fdfe174230b4c14e6168a44ad754c59",
+        "actual": "b630ba9b7f288d9061e01c39af3ffaa97fdfe174230b4c14e6168a44ad754c59",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "PHASE1_report_table",
+        "path": "dataset/corpus_gap_audit/reconciled/acquisition_decision.csv",
+        "recorded": "b7dcaaaef4bd105ae0b33a79303e735afc45745aef7aaaac9f75e84b1e7f4216",
+        "actual": "b7dcaaaef4bd105ae0b33a79303e735afc45745aef7aaaac9f75e84b1e7f4216",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "PHASE1_report_table",
+        "path": "dataset/corpus_gap_audit/reconciled/claim_audit.csv",
+        "recorded": "2870383817f981eb5145e43a97a9a33231549698b1277ec7cbb87a6e5182bef0",
+        "actual": "2870383817f981eb5145e43a97a9a33231549698b1277ec7cbb87a6e5182bef0",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "PHASE1_report_table",
+        "path": "dataset/corpus_gap_audit/reconciled/gap_audit_document_reconciled.csv",
+        "recorded": "990f91e422e4f3992fb1ed3ebfeb8249ac8d666b0813391a7def18c3f28c98c0",
+        "actual": "990f91e422e4f3992fb1ed3ebfeb8249ac8d666b0813391a7def18c3f28c98c0",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "PHASE1_report_table",
+        "path": "dataset/corpus_gap_audit/reconciled/manual_review_results_reconciled.csv",
+        "recorded": "bbd230b99f132ce788182d1baa718d89584dd2eeea26a048dc2a0911040be23f",
+        "actual": "bbd230b99f132ce788182d1baa718d89584dd2eeea26a048dc2a0911040be23f",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "PHASE1_report_table",
+        "path": "dataset/corpus_gap_audit/reconciled/gap_audit_summary_reconciled.json",
+        "recorded": "b3273cceb2c45c683ea80e596696b0401d00fb75bf8232dc3514edd06fbf4366",
+        "actual": "b3273cceb2c45c683ea80e596696b0401d00fb75bf8232dc3514edd06fbf4366",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "PHASE1_report_table",
+        "path": "configs/t0_4/benchmark_config.json",
+        "recorded": "79727cddfb28e13544edeef4e35ea43897f4e521cf8ca62e2c447e1a90c0c6af",
+        "actual": "79727cddfb28e13544edeef4e35ea43897f4e521cf8ca62e2c447e1a90c0c6af",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "PHASE1_report_table",
+        "path": "configs/t0_4/sampling_spec.json",
+        "recorded": "412e040e9bcdc3915110906cd66d38a025e3aaad3f1f12bf31bf32327e17375c",
+        "actual": "412e040e9bcdc3915110906cd66d38a025e3aaad3f1f12bf31bf32327e17375c",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "PHASE1_report_table",
+        "path": "artifacts/t0_4/benchmark_manifest.json",
+        "recorded": "d1eb3042c82900e345541ef6b7afbba95a6d7d8dc2e7948e5d610eaf89912f15",
+        "actual": "d1eb3042c82900e345541ef6b7afbba95a6d7d8dc2e7948e5d610eaf89912f15",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "PHASE1_report_table",
+        "path": "artifacts/t0_4/final_closure_audit.json",
+        "recorded": "96cc089d95cc72d82614d7dc8d909720699cfb444998b4e2c36ba0bb7df7a98e",
+        "actual": "96cc089d95cc72d82614d7dc8d909720699cfb444998b4e2c36ba0bb7df7a98e",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "closure record file (recorded in closure report section 11)",
+        "path": "artifacts/t0_4/final_closure_audit.json",
+        "recorded": "96cc089d95cc72d82614d7dc8d909720699cfb444998b4e2c36ba0bb7df7a98e",
+        "actual": "96cc089d95cc72d82614d7dc8d909720699cfb444998b4e2c36ba0bb7df7a98e",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "closure report `sampling_manifest_hash`",
+        "path": "artifacts/t0_4/benchmark_manifest.json",
+        "recorded": "d1eb3042c82900e345541ef6b7afbba95a6d7d8dc2e7948e5d610eaf89912f15",
+        "actual": "d1eb3042c82900e345541ef6b7afbba95a6d7d8dc2e7948e5d610eaf89912f15",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "closure report `sampling_config_hash`",
+        "path": "configs/t0_4/sampling_spec.json",
+        "recorded": "412e040e9bcdc3915110906cd66d38a025e3aaad3f1f12bf31bf32327e17375c",
+        "actual": "412e040e9bcdc3915110906cd66d38a025e3aaad3f1f12bf31bf32327e17375c",
+        "status": "MATCH",
+        "note": ""
+      },
+      {
+        "source": "closure report `corpus_manifest_hash`",
+        "path": "dataset/corpus_freeze/corpus_inventory.csv",
+        "recorded": "93135febc51638ff3c6d2820e9198ed4eff3f647c68ec494b17213152b2bb2f7",
+        "actual": "93135febc51638ff3c6d2820e9198ed4eff3f647c68ec494b17213152b2bb2f7",
+        "status": "MATCH",
+        "note": ""
+      }
+    ]
+  },
+  "closure_tree_blob_sha256": {
+    ".gitignore": "706d338f3ad91152284a4da8eb9d6381373ecdf9eed56f5e85fe472f21c084b4",
+    "PIPELINE_STATUS.md": "84ce69afdb5e25758e6dbc5ce4e35e88f77ad51595bcb493d86575f0ad7d740a",
+    "arpipe.ps1": "0261d6d2f12dfb2ba7da91e06029b278d590ecbbabfe60971fa2b5d632d295f9",
+    "arpipe/CLAUDE.md": "0af8dbf9cc78fa702135b3cbf987f695009632f65eb61e283822f0e8bdac8a94",
+    "arpipe/README.md": "964ac96fa02a6031d1440bfc4e97d759113485a94b6707cf8ff62471d23c3712",
+    "arpipe/__init__.py": "3942d5b3558f3e75c9eeca9222b4384bcca5503c9c825fcff70fc99dc10c1d82",
+    "arpipe/cli.py": "69c9d4519b7f3ba42c316f5395a9a2e21eb77053718458376ff32e6b7cbb48bb",
+    "arpipe/companies.csv": "cc1c2e0666d5777ee3f07bb6abb20ae44ba3e4bfd991dc90325539032ca86341",
+    "arpipe/config.py": "93aba31b53d4173bde3ad322bd5625416eca29e86b89887461f5bc2c7d760c7c",
+    "arpipe/configs/default.yaml": "1ab406c607eac5c9799d5b5ac89b8c42f56bde8659f9f6214de5063d5bd3cb85",
+    "arpipe/configs/eval_protocol.md": "b45ca6ac379c5053d9f4268d6ed40a9f246a28557fc771edad6385a9bef73cbd",
+    "arpipe/discover.py": "bdfbe34ff572fc263e3cbd75dcd9081062619314d893f1d495989a3e9a66bca8",
+    "arpipe/eval_report.md": "05a26ebd1eda21ce6594f32e90365f84882e2ccf59186e278c27b4a8e302b1ea",
+    "arpipe/evaluate.py": "6e1c1b9ba6ef1e1c103d0882515f1c81fccceffd16bee5a18a8776b51457d057",
+    "arpipe/fetch.py": "37e298b47ab4ddb30b4c27f39c49fa092a872c7394a8588f4cdc9e6afd33fa76",
+    "arpipe/labeller.py": "cd11a9752fad97049264b4d938bc99bc0dfbf63e92f6b7404d4e2ec5caff2eec",
+    "arpipe/models.py": "7d8dbc4a1196cab812374d287a918f7dc60bd24359c89a4d82bb98c3cc37d2cd",
+    "arpipe/ocr.py": "5b6c4092549f59155e50a9170503899558701e8695d6e91eb5f07ee1558aea13",
+    "arpipe/patterns.py": "0166ed14baa4ed46fc55e8726c3449be29eda200ed6ade06846e8b7a14e507b5",
+    "arpipe/pilot_reports.jsonl": "c773a391af94716ba0dd7d573963c2e8a33026012d2d9941c4768a006cdae619",
+    "arpipe/pipeline.py": "66ecf6cfa0d8a7ea46c928fbf646fbb06c4f5687a33e46555438e976bf76060d",
+    "arpipe/preflight.py": "5dc81b5223453abe2acfe3c0511decd0f36c40fee786ef112d60d9f19e482e49",
+    "arpipe/reports_sample.jsonl": "6c1cc994edfd749a6fdc8cda11ddf38f9389f9641e0bfc5ae36ff3ce007e5c2a",
+    "arpipe/requirements.txt": "c2db8f0845394eebc6564f1191253e67c3bf6257cb6180a21debf47614ebe608",
+    "arpipe/segment.py": "e90c67b7d334fe896029a2960dc49b1782f1a1b9f692f0be9feec73890de96ba",
+    "arpipe/store.py": "41f4f4aa3d38cf8a2485fac362d202f96c87294e5f6be4b09e06061075ff6d02",
+    "arpipe/tests/make_fixtures.py": "ca233ddfd8c5c1682c094e38f533045efe06e7081233df649a344c2c31081063",
+    "arpipe/tests/test_column_cut.py": "448d434253f263de5ce8f014c4807ac5b18940519e1a24a2ebb2ddeca2fc0e17",
+    "arpipe/tests/test_config.py": "6858ed9f5bdff687aed81216e8576a8181c0fb7ab09209673810a905b50b1a1e",
+    "arpipe/tests/test_discover.py": "8835977dcc0c283911e9e74c57acd8fc850c0440829c58d3bb1fdef24562bb8a",
+    "arpipe/tests/test_evaluate.py": "bab55988b3462ecd84767d52e702804ee0d9f7be86798670460f924760143353",
+    "arpipe/tests/test_labeller.py": "ebd7ad63c86668ebb3b9a540d753b68b8fd461cdd54094111b4d4d8d80bc88b1",
+    "arpipe/tests/test_pipeline.py": "85e558d95d96274efa82c28f1a624a76f01ec5ac40a26d0a056602d5ca395f06",
+    "arpipe/tests/test_pm1_orderqc.py": "5d5ba30ef365dc32bf23878fcfd8c895f4d7c1756fffb694461af8a0e3e23020",
+    "arpipe/tests/test_pm2_pagegrain_native_vs_ocr.py": "aa54ab7044130be8dd512438dce11214ed838f0aa7f6306fae43d762827cc1c5",
+    "arpipe/tests/test_preflight.py": "dd3c97a85d0a6431b5aa3a93facd1a89759d6aa0c259e482dd074ed8b22578ba",
+    "arpipe/textlayer.py": "ee5e60fcee63e3e6534ab9182e81b42a5f9140094b976732d7071653d80e798a",
+    "arpipe/to_label.csv": "5b65e1edd5718890d1fed79ee4bb2beaf203649586a782f542d41350c7e05e08",
+    "arpipe/triage.py": "17e5a4ad79e0442e5978a9981a9fca2474740a0d07371fae1dfc6df39d4134bd",
+    "arpipe/universe.py": "c2e5463515b1179d052c6fb46e1cc6454a9e3a498beb29cf80e2c7799004e69d",
+    "arpipe/verify.py": "29dd0a415d58874a53e01d52c8b802ad2f9fb550eb2c2a50efa9525f780f4b63",
+    "artifacts/t0_4/benchmark_manifest.json": "d1eb3042c82900e345541ef6b7afbba95a6d7d8dc2e7948e5d610eaf89912f15",
+    "artifacts/t0_4/config_hashes.json": "199c7d56c622e3e19fe58adadede2871ad4f2e3f459adb53f4a4fd8c816fd74f",
+    "artifacts/t0_4/final_closure_audit.json": "96cc089d95cc72d82614d7dc8d909720699cfb444998b4e2c36ba0bb7df7a98e",
+    "artifacts/t0_4/setup_audit.json": "f883ff9fea99b91d4a9e19335891512ec6b60280c1a0db15c25f3234ff87bbc2",
+    "cohort_companies.csv": "5f2d8078b9367c23aaf0cdd096f1cd0c819c321d4e3eb648a10019deaa2eb71b",
+    "cohort_fetch_manifest.jsonl": "d242cf51e15d8a4cf542e899d3bab703e0b35030b68d60f49d555957be9da9e1",
+    "companies.csv": "cc1c2e0666d5777ee3f07bb6abb20ae44ba3e4bfd991dc90325539032ca86341",
+    "configs/audit_config.json": "a3a575cda1ec7345f3a9ba5544da67401ab01a3c6041a22719b032cbeaefdd7e",
+    "configs/audit_config.sha256": "912f60587ba2bc3de15ccd9048b10d3e43e6fd24b186d2a2cf4f7028cdcf6221",
+    "configs/eval_protocol.md": "b45ca6ac379c5053d9f4268d6ed40a9f246a28557fc771edad6385a9bef73cbd",
+    "configs/t0_1r/input_allowlist.json": "65a10ae8c30237e8a3e9debedd6eae13328965e1cef0584c0a2506687889caf0",
+    "configs/t0_1r/reconciliation_rules.json": "9dbbec3e8d5565a3d29114e1bcb46b613c187a8017832b00f2ff9d984ae4cdd9",
+    "configs/t0_1r/reviewer_expectations.json": "c1286cde18df7efb3e68b78c9bcaf41a6888d5718d1136bbbe2944e124b03b26",
+    "configs/t0_3a/taxonomy_register.json": "0fbe3030eb03c4d4f4dafb338713f592f84f753936aca6c60f4a3fbeed7c6efb",
+    "configs/t0_3a_r1/taxonomy_register.json": "1be25b1f5f7b52249122cd7e29a8ed1f105f35ef8fff5d607dcf45c24df7de10",
+    "configs/t0_4/benchmark_config.json": "79727cddfb28e13544edeef4e35ea43897f4e521cf8ca62e2c447e1a90c0c6af",
+    "configs/t0_4/benchmark_manifest_schema.json": "3748fa145a3bb0667cc68dd1c3ac1c910cd3c5ea9b0b8d572c6460ea5bb05ac5",
+    "configs/t0_4/common_output_schema.json": "7648ea43aa0e06a5bab8d35ac19385cce2607d2ea09772e27bcaf50c81b871af",
+    "configs/t0_4/efficiency_schema.json": "089bf6de4d6de0ec64c49f19498e626bb8c5eaa579dfdbe2ea68bdc9a6a5ef42",
+    "configs/t0_4/engine_registry.json": "74575cac2e96c71e01b006f258310362fbce1a05e5c899a0007542e7ccb4ed5e",
+    "configs/t0_4/failure_taxonomy.json": "78fb43f16e8d679b868b2b6600c3ad213ae1df5e5f4c0b7c8b8a37319ebcbc25",
+    "configs/t0_4/future_results_schema.json": "538c498ff8c6ceda2f85cb92acf0e5bfe7a948cd6174db1729af1f6d599a5e66",
+    "configs/t0_4/gold_schema.json": "e8b33a4a0e04da72c3572604ca3f82677920617607abe266717975ee3cc65247",
+    "configs/t0_4/metrics_spec.json": "d7590bebe271163f2ad341cace35f4749754cf22da3018cef32b12ad09c66336",
+    "configs/t0_4/oracle_routing_spec.json": "d5aa91eb161cc04eb06fd20edc5941e88e9dcdcc70c71d17e2c259d3a625fbc3",
+    "configs/t0_4/raw_output_schema.json": "bdbc512abe729c8401462223b2b540d997838ab897f369360cb3956b1939a781",
+    "configs/t0_4/sampling_spec.json": "412e040e9bcdc3915110906cd66d38a025e3aaad3f1f12bf31bf32327e17375c",
+    "dataset/corpus_freeze/annotation_roster.csv": "b864938920b9452076b4d0da991d52e137f9f9f2155e6ffdf0adff0e0dd4bb00",
+    "dataset/corpus_freeze/challenge_coverage_manifest.csv": "b7cdeb3d3d3c2d0b6492a7862cdf54d4c36e27389d8688a98614e0e0be31ba53",
+    "dataset/corpus_freeze/corpus_inventory.csv": "93135febc51638ff3c6d2820e9198ed4eff3f647c68ec494b17213152b2bb2f7",
+    "dataset/corpus_freeze/development_manifest.csv": "518a9c74e8e1d544d10392f0ce61c90e41f81548079708f50c6b7ac8e1d1867f",
+    "dataset/corpus_freeze/diversity_matrix.csv": "236440f9b78ede9d46a02f179e4a2467f2fa85a21f3d699c91b32b69ee726c36",
+    "dataset/corpus_freeze/freeze_protocol.md": "1770825472820cd22c469728bfa506921c2543748b1a6ae9474df58a44f65a6b",
+    "dataset/corpus_freeze/freeze_summary.json": "08677d7818511b5fbc49111bef5cb96f25eeac0dc5e6a04bf62b95f6b6a96cd1",
+    "dataset/corpus_freeze/hashes/challenge.sha256": "8a57773654fe474c9d1ac088501d15a25840fdc261990796640e479d37df5fe6",
+    "dataset/corpus_freeze/hashes/corpus_inventory.sha256": "044f1414645cc0ee64cd08f84a6a6a2330f6322289073d39f3f8e9fe201ef7fa",
+    "dataset/corpus_freeze/hashes/development.sha256": "b9cd4e18972c8df51c5b891c57828ab5a2b383b97ea2ad1f137168ca86f26364",
+    "dataset/corpus_freeze/hashes/holdout.sha256": "7772f930f78fbb72ea13c2b08dbb71bd702f77623d886865d9c617db8c6e816a",
+    "dataset/corpus_freeze/hashes/validation.sha256": "179f678c1ac7a84fdfcfd866dd674fa7457b995f02355218c06ebf9fc885988e",
+    "dataset/corpus_freeze/holdout_manifest.csv": "a9cf459bc7f916d2c3a648ad54bd6bd6b24697c06fab48df16ebcd5f6e7fcdff",
+    "dataset/corpus_freeze/interaction_matrix.csv": "d3830431e36fc493c2d44861f2dca8a88cedb0a77a08c1333f34f33517ed0fd9",
+    "dataset/corpus_freeze/issuer_split.csv": "016e720245577833e8313bb2ec4905b1fb47ba77d15916706b702df4ed1bcc2a",
+    "dataset/corpus_freeze/page_profile.csv": "5bffb19654fe9b868e21ae8eab13543b3f46f9e5753bcc4563f98305fa781dff",
+    "dataset/corpus_freeze/rare_condition_register.csv": "6306befac8734f54ee2aeaf5d14d298572ebcd5679499585172c0fc665059730",
+    "dataset/corpus_freeze/stratification_report.md": "b28b7029d30fa5602ddc1d5390bbdaf28456e4d6e4ca456a5b446d10e007f9a7",
+    "dataset/corpus_freeze/validation_manifest.csv": "113b0658bb4973f36fbf61390b8d64273f64a0c801e199d1474870a42b44b631",
+    "dataset/corpus_gap_audit/audit_config.json": "65ed1a7e189b2d564ca01fe63246652e7b6a2c94d9e23083eabbe4e5da08bc77",
+    "dataset/corpus_gap_audit/audit_config.sha256": "032fbe356b25480263574752b95a37c7ee9f397133ccdfa0fa5b51c99d746f27",
+    "dataset/corpus_gap_audit/condition_document_map.csv": "6738d428b476d22b17ccb025dca601c0748e6fb54c0417bdb23acb0dffa76d74",
+    "dataset/corpus_gap_audit/condition_page_map.csv": "651bafe46c4c139edd39399ef45b89a100114ae04c69d0c278cc11822ddd572b",
+    "dataset/corpus_gap_audit/duplicate_text_candidates.csv": "f59a76833181df876f5f25cf262e079399892b485852d34a25669e47df56aaa5",
+    "dataset/corpus_gap_audit/environment.json": "7f9d6939faaafc7d141bc73b51d4fdafc455c092be55b7c76ea87b9b95017ef3",
+    "dataset/corpus_gap_audit/gap_audit_document.csv": "f6d426819daea219f551fc610646d836a702ef771e3d513a36b33941c71ddd5d",
+    "dataset/corpus_gap_audit/gap_audit_report.md": "e947eb7f90babe8182f44e13fca104d788fee17525cc19b4f11b20b8b79af8bc",
+    "dataset/corpus_gap_audit/gap_audit_summary.json": "fc402a63fa947a5aaf0bf6ef52e56aacc8c409962edabb895f53ec5241532dfe",
+    "dataset/corpus_gap_audit/gap_summary.csv": "408a2cd32f7badbabe437d196736ce665ae85dd975f6c380262f008f8cbcdc61",
+    "dataset/corpus_gap_audit/header_footer_candidates.csv": "17966d00311f6e354301b0b001209151c55d7ad8ea36761989d6ad455637773f",
+    "dataset/corpus_gap_audit/input_hashes.json": "aa561b527e0a0d088476cc50bb9b5c238a82696ff5889f44d758321b8ecd768c",
+    "dataset/corpus_gap_audit/interaction_gap_matrix.csv": "d7fd7bab38f7065342f43ada1c75e1554eb22c29ca247258665cddddbe20ce9f",
+    "dataset/corpus_gap_audit/language_candidates.csv": "f326c73a3001799b2f8cbeeca25e031da5bdad2e0b4aa6bcfba70295386eec76",
+    "dataset/corpus_gap_audit/manual_review_manifest.csv": "d97a450a1bc336aeddc1789339ffce4fc391d19cb1da8bec5f9f53a4229e4989",
+    "dataset/corpus_gap_audit/manual_review_results.csv": "7d479a5a6fd7c465766733db8693afc25f3e423d3d76faefa31ba4291c2dcd32",
+    "dataset/corpus_gap_audit/mdna_candidate_complexity.csv": "0e07c926b1eb053aa85d7bf824ca3b6b77465050c4e86882ad3a36cec52eb826",
+    "dataset/corpus_gap_audit/methodology.md": "71d632f5177dab0e882bf8c4e261af156140cf1e96528ba7edbfc6c44c3122ec",
+    "dataset/corpus_gap_audit/reconciled/acquisition_decision.csv": "b7dcaaaef4bd105ae0b33a79303e735afc45745aef7aaaac9f75e84b1e7f4216",
+    "dataset/corpus_gap_audit/reconciled/claim_audit.csv": "2870383817f981eb5145e43a97a9a33231549698b1277ec7cbb87a6e5182bef0",
+    "dataset/corpus_gap_audit/reconciled/condition_document_map_reconciled.csv": "755d94cc7b7748359477cd31128373d0111d9fe1d11c6dede8a688d32644ae1c",
+    "dataset/corpus_gap_audit/reconciled/condition_page_map_reconciled.csv": "325c58127386d0c4877e177db43b13cb5c1b179bb61992dc7a9e7a61fee970fa",
+    "dataset/corpus_gap_audit/reconciled/gap_audit_document_reconciled.csv": "990f91e422e4f3992fb1ed3ebfeb8249ac8d666b0813391a7def18c3f28c98c0",
+    "dataset/corpus_gap_audit/reconciled/gap_audit_report_reconciled.md": "a1f7ff8f22227310ba2a77a4456706a36aa34c61b6aed1ad6c668b8fcceb75ba",
+    "dataset/corpus_gap_audit/reconciled/gap_audit_summary_reconciled.json": "b3273cceb2c45c683ea80e596696b0401d00fb75bf8232dc3514edd06fbf4366",
+    "dataset/corpus_gap_audit/reconciled/gap_summary_reconciled.csv": "1562982d65846cf4ea89eaf35aa4a2bf4524a16fddd2cfd76c85a042dbc4113a",
+    "dataset/corpus_gap_audit/reconciled/interaction_gap_matrix_reconciled.csv": "27b765abaf8f6f59e675661bd8f645bb1d097804accc63f756eb5dd1e3f2ed42",
+    "dataset/corpus_gap_audit/reconciled/manual_review_results_reconciled.csv": "bbd230b99f132ce788182d1baa718d89584dd2eeea26a048dc2a0911040be23f",
+    "dataset/corpus_gap_audit/reconciled/methodology_reconciled.md": "7c20fc439a8bec94e793932cd33d41e2c16b951ef0f11409ebd576fe35e1c64e",
+    "dataset/corpus_gap_audit/reconciled/raw_input_manifest.json": "b630ba9b7f288d9061e01c39af3ffaa97fdfe174230b4c14e6168a44ad754c59",
+    "dataset/corpus_gap_audit/reconciled/reconciliation_manifest.json": "70acb52e59c5654aca8cabb864e1aecb2b405b0bedd327a538728ad61bafe44a",
+    "dataset/corpus_gap_audit/reconciled/run_metadata.json": "bc05086d8a65806d2d81e1b0cb97e17c691e3f1d55608781dafb854f211bce33",
+    "dataset/corpus_gap_audit/reconciled/t0_t01_reconciliation.csv": "9b66e89d27091fe779a8b70521d81d0d0c36f5491c047770d5b4eb1dc0b67449",
+    "dataset/corpus_gap_audit/run_01/audit_config.json": "65ed1a7e189b2d564ca01fe63246652e7b6a2c94d9e23083eabbe4e5da08bc77",
+    "dataset/corpus_gap_audit/run_01/audit_config.sha256": "032fbe356b25480263574752b95a37c7ee9f397133ccdfa0fa5b51c99d746f27",
+    "dataset/corpus_gap_audit/run_01/condition_document_map.csv": "6738d428b476d22b17ccb025dca601c0748e6fb54c0417bdb23acb0dffa76d74",
+    "dataset/corpus_gap_audit/run_01/condition_page_map.csv": "651bafe46c4c139edd39399ef45b89a100114ae04c69d0c278cc11822ddd572b",
+    "dataset/corpus_gap_audit/run_01/duplicate_text_candidates.csv": "f59a76833181df876f5f25cf262e079399892b485852d34a25669e47df56aaa5",
+    "dataset/corpus_gap_audit/run_01/environment.json": "7f9d6939faaafc7d141bc73b51d4fdafc455c092be55b7c76ea87b9b95017ef3",
+    "dataset/corpus_gap_audit/run_01/gap_audit_document.csv": "f6d426819daea219f551fc610646d836a702ef771e3d513a36b33941c71ddd5d",
+    "dataset/corpus_gap_audit/run_01/gap_audit_summary.json": "fc402a63fa947a5aaf0bf6ef52e56aacc8c409962edabb895f53ec5241532dfe",
+    "dataset/corpus_gap_audit/run_01/gap_summary.csv": "408a2cd32f7badbabe437d196736ce665ae85dd975f6c380262f008f8cbcdc61",
+    "dataset/corpus_gap_audit/run_01/header_footer_candidates.csv": "17966d00311f6e354301b0b001209151c55d7ad8ea36761989d6ad455637773f",
+    "dataset/corpus_gap_audit/run_01/input_hashes.json": "aa561b527e0a0d088476cc50bb9b5c238a82696ff5889f44d758321b8ecd768c",
+    "dataset/corpus_gap_audit/run_01/interaction_gap_matrix.csv": "d7fd7bab38f7065342f43ada1c75e1554eb22c29ca247258665cddddbe20ce9f",
+    "dataset/corpus_gap_audit/run_01/language_candidates.csv": "f326c73a3001799b2f8cbeeca25e031da5bdad2e0b4aa6bcfba70295386eec76",
+    "dataset/corpus_gap_audit/run_01/manual_review_manifest.csv": "d97a450a1bc336aeddc1789339ffce4fc391d19cb1da8bec5f9f53a4229e4989",
+    "dataset/corpus_gap_audit/run_01/manual_review_results.csv": "d97a450a1bc336aeddc1789339ffce4fc391d19cb1da8bec5f9f53a4229e4989",
+    "dataset/corpus_gap_audit/run_01/mdna_candidate_complexity.csv": "0e07c926b1eb053aa85d7bf824ca3b6b77465050c4e86882ad3a36cec52eb826",
+    "dataset/corpus_gap_audit/run_01/structure_candidates.csv": "6b028c323cdfe7733ace0b01b522d917d9ba1bdc2bccba8db90f95f1f59b4272",
+    "dataset/corpus_gap_audit/run_01/table_candidates.csv": "8402dbf5a1d06bcde5801d635c398341ef2a77774f3c92a286df09602b502a3c",
+    "dataset/corpus_gap_audit/run_01/toc_offset_candidates.csv": "aa5252e21b899227c84fec088998b4192d781752a6975b6938652ec1bbaaedb8",
+    "dataset/corpus_gap_audit/run_02/audit_config.json": "65ed1a7e189b2d564ca01fe63246652e7b6a2c94d9e23083eabbe4e5da08bc77",
+    "dataset/corpus_gap_audit/run_02/audit_config.sha256": "032fbe356b25480263574752b95a37c7ee9f397133ccdfa0fa5b51c99d746f27",
+    "dataset/corpus_gap_audit/run_02/condition_document_map.csv": "6738d428b476d22b17ccb025dca601c0748e6fb54c0417bdb23acb0dffa76d74",
+    "dataset/corpus_gap_audit/run_02/condition_page_map.csv": "651bafe46c4c139edd39399ef45b89a100114ae04c69d0c278cc11822ddd572b",
+    "dataset/corpus_gap_audit/run_02/duplicate_text_candidates.csv": "f59a76833181df876f5f25cf262e079399892b485852d34a25669e47df56aaa5",
+    "dataset/corpus_gap_audit/run_02/environment.json": "17e6f19055e4788bc49bdc2779d314da52fe2d04be23db1fe175947023462de7",
+    "dataset/corpus_gap_audit/run_02/gap_audit_document.csv": "f6d426819daea219f551fc610646d836a702ef771e3d513a36b33941c71ddd5d",
+    "dataset/corpus_gap_audit/run_02/gap_audit_summary.json": "fc402a63fa947a5aaf0bf6ef52e56aacc8c409962edabb895f53ec5241532dfe",
+    "dataset/corpus_gap_audit/run_02/gap_summary.csv": "408a2cd32f7badbabe437d196736ce665ae85dd975f6c380262f008f8cbcdc61",
+    "dataset/corpus_gap_audit/run_02/header_footer_candidates.csv": "17966d00311f6e354301b0b001209151c55d7ad8ea36761989d6ad455637773f",
+    "dataset/corpus_gap_audit/run_02/input_hashes.json": "aa561b527e0a0d088476cc50bb9b5c238a82696ff5889f44d758321b8ecd768c",
+    "dataset/corpus_gap_audit/run_02/interaction_gap_matrix.csv": "d7fd7bab38f7065342f43ada1c75e1554eb22c29ca247258665cddddbe20ce9f",
+    "dataset/corpus_gap_audit/run_02/language_candidates.csv": "f326c73a3001799b2f8cbeeca25e031da5bdad2e0b4aa6bcfba70295386eec76",
+    "dataset/corpus_gap_audit/run_02/manual_review_manifest.csv": "d97a450a1bc336aeddc1789339ffce4fc391d19cb1da8bec5f9f53a4229e4989",
+    "dataset/corpus_gap_audit/run_02/manual_review_results.csv": "d97a450a1bc336aeddc1789339ffce4fc391d19cb1da8bec5f9f53a4229e4989",
+    "dataset/corpus_gap_audit/run_02/mdna_candidate_complexity.csv": "0e07c926b1eb053aa85d7bf824ca3b6b77465050c4e86882ad3a36cec52eb826",
+    "dataset/corpus_gap_audit/run_02/structure_candidates.csv": "6b028c323cdfe7733ace0b01b522d917d9ba1bdc2bccba8db90f95f1f59b4272",
+    "dataset/corpus_gap_audit/run_02/table_candidates.csv": "8402dbf5a1d06bcde5801d635c398341ef2a77774f3c92a286df09602b502a3c",
+    "dataset/corpus_gap_audit/run_02/toc_offset_candidates.csv": "aa5252e21b899227c84fec088998b4192d781752a6975b6938652ec1bbaaedb8",
+    "dataset/corpus_gap_audit/structure_candidates.csv": "6b028c323cdfe7733ace0b01b522d917d9ba1bdc2bccba8db90f95f1f59b4272",
+    "dataset/corpus_gap_audit/t0_2_robustness_gate/t0_2_acquisition_triggers.json": "87280621564570f8b79797a48ff0304df6aef2a378785d4ed8b308ac1224e5ed",
+    "dataset/corpus_gap_audit/t0_2_robustness_gate/t0_2_audit_plan.md": "cea8109df1c57210ddcde1cd392c6020cc7e4688cceac26589e001af10ef1ca2",
+    "dataset/corpus_gap_audit/t0_2_robustness_gate/t0_2_audit_trace.csv": "5346e73e87daa7ff3e97579ae6153dca206111bbbc914e06c3afeff3d153c0ad",
+    "dataset/corpus_gap_audit/t0_2_robustness_gate/t0_2_claim_dependency_map.csv": "0a8a7bf77a1994d29ae6d22d2a05b7eb56221b9cb92f73038b983e27a07217eb",
+    "dataset/corpus_gap_audit/t0_2_robustness_gate/t0_2_decision_register.csv": "482bf75ebe42303bcdd114c2eb302da83e66110b526708dbb9d1a2dcddcaf0ad",
+    "dataset/corpus_gap_audit/t0_2_robustness_gate/t0_2_immutable_input_manifest.json": "172c734888cc0de28b0ef23c7b00b62d86fe557cd961e016e3c1a38415b4c06c",
+    "dataset/corpus_gap_audit/t0_2_robustness_gate/t0_2_robustness_gate.csv": "7d6219cae656e97538205c1b4bb5999dfef9c6df8d8254dd7ce4aaf36d63de3c",
+    "dataset/corpus_gap_audit/t0_2_robustness_gate/t0_2_summary.json": "c95f5c721ceeeefaf978d59c3b0cec9f89940972b8e17c3e904727981dc3dfc5",
+    "dataset/corpus_gap_audit/t0_3a_document_coverage/t0_3a_audit_plan.md": "252b31826155053f004c2b69051f068c34f960f8eb4d06545e6d27580192bc09",
+    "dataset/corpus_gap_audit/t0_3a_document_coverage/t0_3a_category_document_map.csv": "e15576b4bec2c178e016df27d08964cce7ec34be37162d49f1e70235cbcc2d78",
+    "dataset/corpus_gap_audit/t0_3a_document_coverage/t0_3a_coverage_matrix.csv": "0b11fa7d876776bcaf0570b9b43fc1b9bf7a86cd011833eedcf713e2cb662f71",
+    "dataset/corpus_gap_audit/t0_3a_document_coverage/t0_3a_gap_register.csv": "39db08b14f90c20a8d639f4965c1aa9c4ddca19f7a0839f6ea1af7c97752d310",
+    "dataset/corpus_gap_audit/t0_3a_document_coverage/t0_3a_immutable_input_manifest.json": "ceaccd9537639d8eb7f907bd6d5ce84d7628909ab157f007ac5cbd9807f74f3a",
+    "dataset/corpus_gap_audit/t0_3a_document_coverage/t0_3a_summary.json": "c8e8916c9baf4aec9e6916877ab77df2021a589a3a2269a9faa4d0eb01305417",
+    "dataset/corpus_gap_audit/t0_3a_r1_document_coverage/t0_3a_r1_audit_plan.md": "2008fc57345128445aafb18bfa437ad353f9aa7c777b3cce2ea4942ed6bf89a1",
+    "dataset/corpus_gap_audit/t0_3a_r1_document_coverage/t0_3a_r1_category_document_map.csv": "e15576b4bec2c178e016df27d08964cce7ec34be37162d49f1e70235cbcc2d78",
+    "dataset/corpus_gap_audit/t0_3a_r1_document_coverage/t0_3a_r1_coverage_matrix.csv": "0b11fa7d876776bcaf0570b9b43fc1b9bf7a86cd011833eedcf713e2cb662f71",
+    "dataset/corpus_gap_audit/t0_3a_r1_document_coverage/t0_3a_r1_gap_register.csv": "dc68f13dcbc3425d888ea28f80de9d2bf1712871ff845d67c0d842ed185b56b4",
+    "dataset/corpus_gap_audit/t0_3a_r1_document_coverage/t0_3a_r1_immutable_input_manifest.json": "cf7c83310d475ac45c4eecf650f7f8cad42a82c0de97e053e7d95c470d2ae8cb",
+    "dataset/corpus_gap_audit/t0_3a_r1_document_coverage/t0_3a_r1_summary.json": "57a78f9be9bc5e3db0c22a2c040aea4702f8c41847a261fc2ea7b4787330c7cb",
+    "dataset/corpus_gap_audit/t0_3a_r1_document_coverage/t0_3a_r1_taxonomy_register.json": "1be25b1f5f7b52249122cd7e29a8ed1f105f35ef8fff5d607dcf45c24df7de10",
+    "dataset/corpus_gap_audit/table_candidates.csv": "8402dbf5a1d06bcde5801d635c398341ef2a77774f3c92a286df09602b502a3c",
+    "dataset/corpus_gap_audit/toc_offset_candidates.csv": "aa5252e21b899227c84fec088998b4192d781752a6975b6938652ec1bbaaedb8",
+    "docs/experiments/T0.4_final_closure_audit.md": "8c22f645e51b6b319b492692606c530a42fb00acee073cf13684701198804013",
+    "docs/experiments/T0.4_ocr_benchmark_preregistration.md": "6314105d261b5f80419e8116fd2fd6d8f85668e680a8ba7a177437766b5d106d",
+    "docs/experiments/T0.4_p-x1_reuse_audit.md": "931c1e787dbd2fb08c994f79771ab874e756d452d4610c06b93851107f79beea",
+    "eval_holdout_log.csv": "2cb7bb876b81b7b67a02dbcab6a7b365943479fb535331899e901699133809cd",
+    "eval_report.md": "26c0dd7f40882fba1ffbbbd52ff6eb1c55278e329ae64eb04bbe1ef692df2521",
+    "eval_report_fit.md": "26c0dd7f40882fba1ffbbbd52ff6eb1c55278e329ae64eb04bbe1ef692df2521",
+    "eval_report_holdout.md": "05960c109f475a3db3b9d5104a42dd001bb08474c74909480d85c7d015d3b871",
+    "eval_report_honest.md": "26c0dd7f40882fba1ffbbbd52ff6eb1c55278e329ae64eb04bbe1ef692df2521",
+    "labels.csv": "9f89890febfbf7db080f04b5a854d31565a388b19a435d98ebbacf7b54c3e12e",
+    "labels_fit.csv": "08832d1abb0f355874ba44270c9e7d1498d7af96a77eb61f587d416bafe36f94",
+    "labels_fit_queue.csv": "435ba9e7fedae02ef9c88246d62d530c68b364164357147cd805fe85208c9d76",
+    "labels_holdout.csv": "5fe64cfce6b1890df73d396458470b63581312153e5ee55296f080914afcba16",
+    "labels_holdout_queue.csv": "785df22e5e9210e65582be107c80d0755fcc8f624b6cef5f21208d64b99dc797",
+    "live_eval_report.md": "4719adff77faee70e02a6210b2c7f23a7f1aa2d7a71c00cdce2f812f862445f2",
+    "reports/pattern_audit.md": "cd2ddff8477982c8cefdbaf1909905666efc918434d4769c4cd0a0ccb78116bc",
+    "reports/pm1_baseline.json": "fc4bb4f2249acffa669e9d8abfb8ac4c811c0c82d8d765c5a9af6e90803f860d",
+    "reports/pm1_orderqc_raw.json": "6402631fc9822b31b4627c5ee150201a5172cd7aaea5d17ac1239549897c7809",
+    "reports/pm1_per_page_orphan.json": "158787ca1f36422545f67bf782dc03956efe1a1135a937f77a830ae0b215894f",
+    "reports/pm1_per_page_orphan.md": "9a7050cad52ea2772990e516afa87c73170a8b8d9a5ab141d8fb99dd483995a8",
+    "reports/pm1_regression_result.json": "0b57a6270c177db6d747b26b2201d28ffd0416a635bcc3925bd09c0859461573",
+    "reports/pm2_pagegrain_native_vs_ocr.json": "44d89b54db202203c1ca59e639ae4ac415becfac98bbef8693f1c9966cc1deb2",
+    "reports/pm2_pagegrain_native_vs_ocr.md": "052da7679ea800d73903a3af7fe050b6064e7d3ad23f6bcf3ff9f6f3719b350f",
+    "reports/pm2_pagegrain_native_vs_ocr.png": "cdf995aafab47ab90da40cb3f004247e4ec2c9b443e7b9c6afcc995158df8bee",
+    "tests/__init__.py": "06be1817b230d74198dcb9b1e11efa647c4c02acb932cd563c9906e9efd13ba4",
+    "tests/conftest.py": "928c70258607bcfe3ab2665b8a06d983106e9973644b420c84b278e4a4eb38fd",
+    "tests/t0_1/__init__.py": "43a66505d4e485bc97d16e28cafec9be7742079890c7dbe8c9fed40d38c24ff5",
+    "tests/t0_1/test_audit_corpus_gaps.py": "d34b0bb09f752bbd2cdf94600ac14337062e8aa5c7c48680437ebe6c13d709d2",
+    "tests/t0_1/test_t0_1_reconciliation.py": "3320793ae1baf620d1e12c2a45e655c7f32ffb0a4fa9779212a734842cf2ef54",
+    "tests/t0_2/__init__.py": "5d8cae8804e43a5519df7a56c8d33cc2dbe55a223214543e70697813685932ea",
+    "tests/t0_2/test_t0_2_robustness_gate.py": "dc281127ac526edf1c1253c612aa83f713d1753fe83313276480a1debb2fdb68",
+    "tests/t0_3a/__init__.py": "12aca7114b9c736bdcd9b72db59d17dfe4a6526cd00b2fc032192f143093a8d7",
+    "tests/t0_3a/test_t0_3a_document_coverage.py": "1f332feb7933f1ed8ad05957d14a85c05dfe5705750b93aa0cf7c0011ace2c00",
+    "tests/t0_3a_r1/__init__.py": "4c7cd7d06adf33888905e1a273f06cf617560e9f12a135c304849194915d2ec0",
+    "tests/t0_3a_r1/test_t0_3a_r1_document_coverage.py": "cf1ced1d7631df259d7e3b5f426eb8ea4a68c8284ce540eb9faaa81929373ab5",
+    "tests/t0_4/__init__.py": "484fa797a590ce8b611fb29329b5cec98bbe71ce989df1713403696f82940fb5",
+    "tests/t0_4/test_t0_4_closure_record.py": "4828a979fc56bb895e7c55991facb3e81fc7a823c337cd10ef9c6b5cd178cade",
+    "tests/t0_4/test_t0_4_final_closure.py": "9248ad1ad473c396f55a9af01fce33fec9bf6a26f4cedac1e8a2fc9687fb90c8",
+    "tests/t0_4/test_t0_4_setup.py": "391b6654a609026a939301a0fd21c0a37f0ba593dff6e027423b33a64c41c82a",
+    "to_label.csv": "a087bbd86be02e6f85d0f61b88c29800aeb777696fb7f58185e51ced2f53d9db",
+    "tools/apply_model_review.py": "6e0dc3fb479ef1a5e82792787bc597cdf512a990ae271e8734e53efe25c65e6b",
+    "tools/audit_corpus_gap_reproducibility.py": "824499fe0f7a3c3d251034d4b0eed22049d38ebdf39158c2022ad049f1200cd8",
+    "tools/audit_corpus_gaps.py": "1174dca349e9b26c201d79ca99074fa98a2915532a1c0c52dab8f68bdfb5f398",
+    "tools/audit_freeze_reproducibility.py": "e19cf7493461e5804591f6bc2958b53c7cb4b410015c14cec591c3418b270150",
+    "tools/audit_reconciled_report.py": "4273352168d128934cb2657d0ed10f36f29b12e462e0582a4c036a105c9b1ef1",
+    "tools/audit_t0_1_reconciliation.py": "f7925e8b868b1785ef8cc5333fcc58fef8026e2b42d952ee0f1b3471b38f7fc3",
+    "tools/audit_t0_2_robustness_gate.py": "5741207ded57c3f2e6b1bfb1f73057f77b0efb42713c529957cf9f3a757c2ed9",
+    "tools/audit_t0_3a_document_coverage.py": "2ccafd1781f53702997ff1784f2cb461afa30656b5346bd372dbe129b550210a",
+    "tools/audit_t0_3a_r1_document_coverage.py": "f096232164dae5a0faab712475ec8e3074bed20f670d2632067ac69e3c16cce5",
+    "tools/audit_t0_4_final_closure.py": "4903e0e51a66122d950b490ef59e52fc3287f03203aca0cd0b1adc8af8238be6",
+    "tools/audit_t0_4_setup.py": "fbe7fcfcb2d301ce9aa850b4230c0fd29d88863a862b3efd6839671bca9854f0",
+    "tools/build_t0_4_manifest.py": "a22725abd731a3887e0f6249a296843e55217ade731e55fff0dcf84c14cf906e",
+    "tools/check_reading_order_invariance.py": "2bb680841a53652fe119b3fe4492eb723cbadf31fd2e29cbbb81cf586b758634",
+    "tools/check_toc_offset.py": "b3db46fb267edf239ac9bd34ee1ee586d4480d13c96ac40a02a18ae73bad934f",
+    "tools/freeze_extraction_corpus.py": "7bc1d088a7b0e20f360c0493eef2f08f550c52b58bfa2d20988b7be685256efa",
+    "tools/pm1_build_baseline.py": "763eabc814c6ab2bd69b3d6d41aa20cd16fef2b7a44b02cc305b8ec2bc80938a",
+    "tools/pm1_regression_check.py": "35ae47a5d15ff6886aff012b0c77ca6f0ebde51dfe3e362b9890f81aef60fc34",
+    "tools/pm1_run_corpus.py": "51d4a7626a4355f0eceff274dd1d8e27925bb10ee1d63d4586ff6c8276de85e8",
+    "tools/pm2_pagegrain_native_vs_ocr.py": "e2054971bcc3488ba943b1f7529aa213c2ca46d6bc26319d716a5d5c266d02e3",
+    "tools/reconcile_t0_1.py": "79188a7a4a0078a12e0a0061e878b3ec3bef4dc10510b1ea097d26a725c6b8a3",
+    "tools/run_t0_2_robustness_gate.py": "0d611b7834ad5b44cfd08d4acd86e55a20981a1004a9face9d4cdbb64377ef15",
+    "tools/run_t0_3a_document_coverage.py": "28a43ab524d035b020acb25da216e37ba583944f9dc4e1fe3d1b9916ec5514b3",
+    "tools/run_t0_3a_r1_document_coverage.py": "cc0f5f662d6183f12b1e1eabb8631ace9c2177ab1798183bec1d1a157007f7ed",
+    "tools/seed_historical_labels.py": "d6cd46e58397066aa65b79e537639d145b154f8b6c9ff8cc51755c50270753d7",
+    "tools/select_labelling_cohort.py": "1137dc06d90211999cd19acfa928e455b088732fccde4b420223660db8238960",
+    "tools/t0_4/README.md": "795d086cb32c355a0ebcfcf9246b2b1a0f15213bac18cc99f1b4a6901ef90f80",
+    "tools/t0_4/__init__.py": "74ec6aabe7d1f67aab2eea74d278e42611d8c35ec4f261b1ff76c12e09872473",
+    "tools/t0_4/adapter.py": "47e28878158b0705873c41f160e5b43e77ae5003a373eb8a5afb3a3b551d002b",
+    "tools/t0_4/closure.py": "03cbeb494993b0923974203e4993f7773365f142fe207834a1b057f2fec14e81",
+    "tools/t0_4/core.py": "174ed2811e0ffe63cb66ae595ab1c0ac78a71a59f21862ae3035caa2af5ad2c6",
+    "tools/t0_4/renderer.py": "f7a8f646914569e8f359bef4a056f673282541a79ebf6ec53d2db5369cb8e13e"
+  },
+  "reproductions": [
+    {
+      "label": "READ_ONLY_REPRODUCTION",
+      "kind": "DETERMINISTIC_REPEAT",
+      "what": "tools/build_t0_4_manifest.py with --output/--config-hashes redirected to scratch",
+      "result": "benchmark_manifest.json d1eb3042c82900e345541ef6b7afbba95a6d7d8dc2e7948e5d610eaf89912f15 and config_hashes.json 199c7d56c622e3e19fe58adadede2871ad4f2e3f459adb53f4a4fd8c816fd74f byte-identical"
+    },
+    {
+      "label": "READ_ONLY_REPRODUCTION",
+      "kind": "DETERMINISTIC_REPEAT",
+      "what": "tools/audit_t0_4_final_closure.py --audited-commit 33ba76acf9da13d25027e39414e724dfa1170b59 --check",
+      "result": "exit 0; recomputation equals artifacts/t0_4/final_closure_audit.json"
+    },
+    {
+      "label": "READ_ONLY_REPRODUCTION",
+      "kind": "CODE_INFORMED_REIMPLEMENTATION",
+      "what": "docs/experiments/phase2_foundation_integrity/scripts/reproduce_sampling.py",
+      "result": "475/475 units and 8 fields equal to the frozen manifest; closure counts reproduced"
+    },
+    {
+      "label": "READ_ONLY_REPRODUCTION",
+      "kind": "DETERMINISTIC_REPEAT",
+      "what": "pytest tests/t0_4 (96), tests other than t0_4 (59), arpipe/tests (185 passed, 17 skipped)",
+      "result": "340 passed + 17 skipped = 357 collected; worktree clean after each run"
+    }
+  ],
+  "other_worktrees": {
+    "pre_existing_worktrees_compared": 27,
+    "differences_from_baseline": 0,
+    "worktrees_added_by_phase2": 1
+  }
+}
