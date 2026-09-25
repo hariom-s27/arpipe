@@ -19,7 +19,7 @@ from __future__ import annotations
 
 import math
 import statistics
-from typing import Iterable
+from typing import Any, Iterable
 
 import pymupdf  # PyMuPDF
 
