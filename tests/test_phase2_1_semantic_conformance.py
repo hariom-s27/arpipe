@@ -36,6 +36,16 @@ R1_ALLOWED_PRODUCTION_PATHS = {
     "arpipe/store.py",  # A4: write_span parameter and behavior only.
 }
 
+# T0.4 Amendment 01 (docs/identity/T0_4_AMENDMENT_01.md), section 6: exact-path admission of
+# the amendment record and of its enforcement and expected-failure registration. The
+# original T0.4 guards are not touched. The record is also inside the ^docs/identity/
+# directory pattern below; it is listed here by exact path because the amendment requires that.
+T0_4_AMENDMENT_01_ADMITTED_PATHS = {
+    "docs/identity/T0_4_AMENDMENT_01.md",  # the amendment record.
+    "tests/test_t0_4_amendment_01.py",  # exact-set, byte-identity and registration tests.
+    "conftest.py",  # strict expected-failure registration for three original T0.4 guards.
+}
+
 ALLOWED_PHASE2_1_PATTERNS = [
     re.compile(r"^docs/experiments/PHASE2\.1_.*\.md$"),
     re.compile(r"^tests/test_phase2_1_semantic_conformance\.py$"),
@@ -50,6 +60,8 @@ ALLOWED_PHASE2_1_PATTERNS = [
     re.compile(r"^docs/phase4/"),  # A5: directory absent at BASE_COMMIT.
     re.compile(r"^docs/decisions/"),  # A5: directory absent at BASE_COMMIT.
     re.compile(r"^docs/identity/"),  # A5: directory absent at BASE_COMMIT.
+    # T0.4 Amendment 01: exact paths only.
+    *(re.compile(rf"^{re.escape(path)}$") for path in T0_4_AMENDMENT_01_ADMITTED_PATHS),
 ]
 
 
