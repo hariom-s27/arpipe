@@ -86,6 +86,23 @@ class OcrPage:
     meta: dict = field(default_factory=dict)
 
 
+class OcrEngineUnavailable(RuntimeError):
+    """Raised when OCR was needed but could not be attempted at all - the
+    binary is missing, cannot be invoked, or a required language pack is not
+    installed. This is an infrastructure failure, not a quality-gate failure:
+    a rung that runs and produces poor-quality text must NOT raise this (that
+    is normal escalation to the next rung). It exists specifically so that
+    (P-B5) a missing Tesseract binary/language pack propagates as a loud,
+    typed error instead of being swallowed into an empty OcrPage that later
+    looks indistinguishable from "this document has no MD&A"."""
+
+    def __init__(self, page_no: int, trail: list[str], detail: str):
+        self.page_no = page_no
+        self.trail = list(trail)
+        self.detail = detail
+        super().__init__(detail)
+
+
 class OcrBackend(abc.ABC):
     name = "base"
 
