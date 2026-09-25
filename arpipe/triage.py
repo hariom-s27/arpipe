@@ -25,6 +25,8 @@ import pymupdf  # PyMuPDF
 
 from .models import DocProfile, PageKind, PageProfile, Script
 from .patterns import DEVANAGARI_RE, INDIC_BLOCKS_RE, MOJIBAKE_RE
+from .verify import (_ALPHA_WORD_RE, _COMMON_ENGLISH_WORDS,
+                     WRONG_LANGUAGE_MIN_TOKENS)
 
 # --- tunable thresholds ---------------------------------------------------
 # All thresholds provisional until re-fit against the labelled 300.
@@ -243,6 +245,15 @@ def profile_page(page: pymupdf.Page) -> PageProfile:
 
     kind = _classify(n_chars, text_area, image_area, mojibake_ratio, n_drawings)
 
+    script_meta = _compute_page_script_meta(
+        page_no=page.number,
+        text=text,
+        n_chars=n_chars,
+        kind=kind,
+        script=script,
+        mojibake_ratio=mojibake_ratio,
+    )
+
     return PageProfile(
         page_no=page.number,
         kind=kind,
@@ -256,7 +267,66 @@ def profile_page(page: pymupdf.Page) -> PageProfile:
         mojibake_ratio=round(mojibake_ratio, 5),
         dpi_estimate=dpi,
         rotation=page.rotation,
+        script_meta=script_meta,
     )
+
+
+def _compute_page_script_meta(
+    page_no: int,
+    text: str,
+    n_chars: int,
+    kind: PageKind,
+    script: Script,
+    mojibake_ratio: float,
+) -> dict[str, Any]:
+    """Derive page-level script/language telemetry reusing existing triage signals."""
+    if not text.strip() or kind in (PageKind.BLANK, PageKind.SCANNED, PageKind.VECTOR_TEXT):
+        devanagari_frac = None
+        english_word_frac = None
+        dominant_script = "unknown"
+        script_confidence = "unknown"
+    else:
+        devanagari_frac = round(len(DEVANAGARI_RE.findall(text)) / len(text), 4)
+        words = _ALPHA_WORD_RE.findall(text)
+        lower_words = [w.lower() for w in words if len(w) >= 2]
+        if len(lower_words) >= WRONG_LANGUAGE_MIN_TOKENS:
+            english_word_frac = round(
+                sum(1 for w in lower_words if w in _COMMON_ENGLISH_WORDS) / len(lower_words), 4
+            )
+        else:
+            english_word_frac = None
+
+        if script == Script.LATIN:
+            dominant_script = "english"
+        elif script == Script.DEVANAGARI:
+            dominant_script = "devanagari"
+        elif script == Script.MIXED:
+            dominant_script = "bilingual"
+        elif script == Script.OTHER_INDIC:
+            dominant_script = "other"
+        else:
+            dominant_script = "unknown"
+
+        if dominant_script == "unknown":
+            script_confidence = "unknown"
+        elif kind == PageKind.BROKEN_TEXT or mojibake_ratio > MAX_MOJIBAKE_RATIO:
+            script_confidence = "low"
+        elif kind == PageKind.DIGITAL and n_chars >= MIN_CHARS_DENSE:
+            script_confidence = "high"
+        elif kind == PageKind.HYBRID or n_chars >= MIN_CHARS_PER_PAGE:
+            script_confidence = "medium"
+        else:
+            script_confidence = "low"
+
+    return {
+        "page_no": page_no,
+        "devanagari_frac": devanagari_frac,
+        "english_word_frac": english_word_frac,
+        "legacy_font_suspected": "unknown",
+        "dominant_script": dominant_script,
+        "script_confidence": script_confidence,
+        "measurement_source": "existing_triage_telemetry",
+    }
 
 
 def _classify(n_chars: int, text_area: float, image_area: float,
@@ -320,6 +390,8 @@ def profile_document(path: str, max_pages: int | None = None) -> DocProfile:
             bilingual = 0.08 <= frac_indic <= 0.92
             dominant = Script.LATIN if frac_indic < 0.5 else Script.DEVANAGARI
 
+        script_map = [p.script_meta for p in pages if p.script_meta is not None]
+
         import hashlib
         with open(path, "rb") as fh:
             sha = hashlib.sha256(fh.read()).hexdigest()
@@ -328,6 +400,7 @@ def profile_document(path: str, max_pages: int | None = None) -> DocProfile:
             sha256=sha, n_pages=doc.page_count, pages=pages, doc_kind=doc_kind,
             frac_needing_ocr=round(frac, 4), has_outline=bool(outline),
             outline_titles=outline, bilingual=bilingual, dominant_script=dominant,
+            script_map=script_map,
         )
     finally:
         doc.close()
