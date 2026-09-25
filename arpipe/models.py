@@ -35,6 +35,7 @@ class Confidence(str, enum.Enum):
     MEDIUM = "medium"
     LOW = "low"
     FAILED = "failed"
+    QUARANTINE = "quarantine"   # wrong-language risk (P34) - never in the research corpus
 
 
 @dc.dataclass(slots=True)
@@ -91,6 +92,7 @@ class StoredDoc:
     # How the human-facing tree got its copy of the blob, filled by store.write_year.
     # "hardlink" (free) | "symlink" (needs privilege on Windows) | "copy" (costs disk).
     link_mode: str | None = None
+    script_map: list[dict[str, Any]] | None = None
 
 
 @dc.dataclass(slots=True)
@@ -107,6 +109,7 @@ class PageProfile:
     mojibake_ratio: float
     dpi_estimate: int | None = None
     rotation: int = 0
+    script_meta: dict[str, Any] | None = None
 
 
 @dc.dataclass(slots=True)
@@ -120,6 +123,7 @@ class DocProfile:
     outline_titles: list[tuple[int, str, int]] = dc.field(default_factory=list)  # (level,title,page)
     bilingual: bool = False
     dominant_script: Script = Script.LATIN
+    script_map: list[dict[str, Any]] = dc.field(default_factory=list)
 
 
 @dc.dataclass(slots=True)
@@ -139,6 +143,11 @@ class MDASpan:
     supporters: int = 0
     terminator_match: dict[str, Any] | None = None  # P5: diagnostic info on terminator match
     toc_offset: dict[str, Any] | None = None        # P6: folio-to-physical offset diagnostics
+    # P-B2 Phase 1: observational script telemetry of the body text after this
+    # candidate's heading, attached by segment.annotate_body_script() once the
+    # candidates are built, scored, ranked and arbitrated. No score, supporter
+    # count, ranking, filter, arbiter, boundary or grade reads it.
+    body_script: dict[str, Any] | None = None
 
 
 @dc.dataclass(slots=True)
