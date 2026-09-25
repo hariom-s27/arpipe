@@ -1,0 +1,16 @@
+{
+  "document_id": "INE007A01025_2017",
+  "phase": "primary",
+  "pdf_sha256": "eef4c6eec79325d71fcf4e4808347f30f0947430425c49376debec4bf3e6ffac",
+  "completed": true,
+  "confidence": "low",
+  "span_path": "companies/CRISIL_LIMITED__INE007A01025/2017/mda.txt",
+  "reasons": [
+    "year_unproven",
+    "source_shredded",
+    "span_truncated"
+  ],
+  "errors": [],
+  "duration_seconds": 6.820541900000535,
+  "candidate_import": "D:\\sem_iitk\\sem9\\thesis\\sep_week1\\r1-final-evidence\\candidate-a\\arpipe\\__init__.py"
+}

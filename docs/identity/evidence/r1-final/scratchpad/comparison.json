@@ -1,0 +1,98 @@
+{
+ "thresholds_equal": true,
+ "needs_ocr_kinds_equal": true,
+ "thresholds_after_configure": {
+  "MIN_CHARS_PER_PAGE": 120,
+  "MIN_CHARS_DENSE": 600,
+  "MAX_MOJIBAKE_RATIO": 0.02,
+  "BIG_IMAGE_AREA_FRAC": 0.55,
+  "HYBRID_IMAGE_AREA_FRAC": 0.25,
+  "BLANK_CHARS": 15,
+  "VECTOR_PATH_TEXT_THRESHOLD": 400,
+  "COLUMN_HIST_BINS": 120,
+  "GUTTER_MIN_RUN_FRAC": 0.025,
+  "GUTTER_PEAK_THRESHOLD": 0.15,
+  "GUTTER_SEARCH_LO": 0.15,
+  "GUTTER_SEARCH_HI": 0.85,
+  "DOC_SCANNED_FRAC": 0.85,
+  "DOC_DIGITAL_FRAC": 0.05
+ },
+ "needs_ocr_kinds": [
+  "broken_text",
+  "hybrid",
+  "scanned",
+  "vector_text"
+ ],
+ "governing": {
+  "FIT": {
+   "documents": 60,
+   "pages": 12652,
+   "ocr_doc_matches": 60,
+   "kind_matches": 12652,
+   "ocr_page_matches": 12652
+  },
+  "VALIDATION": {
+   "documents": 48,
+   "pages": 8298,
+   "ocr_doc_matches": 48,
+   "kind_matches": 8298,
+   "ocr_page_matches": 8298
+  },
+  "total_documents": 108,
+  "total_pages": 20950,
+  "pagekind_matches": 20950,
+  "pagekind_mismatches": 0,
+  "ocr_page_matches": 20950,
+  "ocr_page_mismatches": 0,
+  "ocr_set_document_matches": 108,
+  "ocr_set_document_mismatches": 0,
+  "document_errors": [],
+  "structural_mismatches": [],
+  "kind_mismatch_list": [],
+  "ocr_page_mismatch_list": [],
+  "ocr_doc_mismatch_list": [],
+  "supplementary_all_fields_except_script_meta_identical_pages": 20950,
+  "supplementary_field_mismatch_pages": 0,
+  "supplementary_field_mismatch_sample": []
+ },
+ "secondary_page_profile": {
+  "physical_page_convention": "0-based",
+  "min_physical_page": 0,
+  "profile_rows_for_fit_validation": 20950,
+  "candidate": {
+   "FIT": {
+    "pages": 12652,
+    "matches": 12652
+   },
+   "VALIDATION": {
+    "pages": 8298,
+    "matches": 8298
+   },
+   "matches": 20950,
+   "mismatches": 0,
+   "confusion_page_profile_to_run": {},
+   "page_count_disagreements": [],
+   "pages_without_profile_row": 0,
+   "profile_rows_without_page": 0,
+   "mismatch_list": []
+  },
+  "base": {
+   "FIT": {
+    "pages": 12652,
+    "matches": 12652
+   },
+   "VALIDATION": {
+    "pages": 8298,
+    "matches": 8298
+   },
+   "matches": 20950,
+   "mismatches": 0,
+   "confusion_page_profile_to_run": {},
+   "page_count_disagreements": [],
+   "pages_without_profile_row": 0,
+   "profile_rows_without_page": 0,
+   "mismatch_list": []
+  },
+  "candidate_and_base_mismatch_sets_identical": true
+ }
+}

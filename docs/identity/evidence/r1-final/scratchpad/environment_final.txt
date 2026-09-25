@@ -1,0 +1,162 @@
+### python
+3.14.3 (tags/v3.14.3:323c59a, Feb  3 2026, 16:04:56) [MSC v.1944 64 bit (AMD64)]
+D:\sem_iitk\sem9\thesis\sep_week1\arpipe-0.1.0\arpipe\.venv\Scripts\python.exe
+Windows-11-10.0.26200-SP0
+10.0.26200
+AMD64
+### os (cmd ver)
+Microsoft Windows [Version 10.0.26200.9550]
+### tesseract --version
+tesseract v5.4.0.20240606
+ leptonica-1.84.1
+  libgif 5.2.1 : libjpeg 8d (libjpeg-turbo 3.0.1) : libpng 1.6.43 : libtiff 4.6.0 : zlib 1.3 : libwebp 1.4.0 : libopenjp2 2.5.2
+ Found AVX2
+ Found AVX
+ Found FMA
+ Found SSE4.1
+ Found libarchive 3.7.4 zlib/1.3.1 liblzma/5.6.1 bz2lib/1.0.8 liblz4/1.9.4 libzstd/1.5.6
+### tesseract --list-langs
+List of available languages in "C:\Program Files\Tesseract-OCR/tessdata/" (3):
+eng
+hin
+osd
+### pip freeze (venv, PYTHONPATH unset)
+annotated-types==0.8.0
+anyio==4.15.1
+certifi==2026.7.22
+cffi==2.1.1
+charset-normalizer==3.5.1
+colorama==0.4.6
+cryptography==50.0.1
+defusedxml==0.7.1
+fonttools==4.64.0
+fpdf2==2.8.8
+h11==0.16.0
+httpcore==1.0.9
+httpx==0.28.1
+idna==3.19
+img2pdf==0.6.3
+iniconfig==2.3.0
+lxml==6.1.3
+markdown-it-py==4.2.0
+mdurl==0.1.2
+numpy==2.5.3
+ocrmypdf==17.11.0
+packaging==26.3
+pandas==3.0.5
+pdfminer.six==20260107
+pdfplumber==0.11.10
+pi_heif==1.4.0
+pikepdf==10.13.0.post1
+pillow==12.3.0
+pluggy==1.6.0
+pyarrow==25.0.1
+pycparser==3.0
+pydantic==2.13.5
+pydantic_core==2.46.5
+Pygments==2.21.0
+pymupdf==1.28.2
+pypdf==6.18.0
+pypdfium2==5.13.0
+pytesseract==0.3.13
+pytest==9.1.1
+python-dateutil==2.9.0.post0
+PyYAML==6.0.3
+RapidFuzz==3.14.6
+rich==15.0.0
+six==1.17.0
+tenacity==9.1.4
+typing-inspection==0.4.4
+typing_extensions==4.16.0
+tzdata==2026.3
+uharfbuzz==0.56.1
+### pip freeze (venv + PYTHONPATH=test-deps)
+annotated-types==0.8.0
+anyio==4.15.1
+attrs==26.1.0
+certifi==2026.7.22
+cffi==2.1.1
+charset-normalizer==3.5.1
+colorama==0.4.6
+cryptography==50.0.1
+defusedxml==0.7.1
+fonttools==4.64.0
+fpdf2==2.8.8
+h11==0.16.0
+httpcore==1.0.9
+httpx==0.28.1
+idna==3.19
+img2pdf==0.6.3
+iniconfig==2.3.0
+jsonschema==4.26.0
+jsonschema-specifications==2025.9.1
+lxml==6.1.3
+markdown-it-py==4.2.0
+mdurl==0.1.2
+numpy==2.5.3
+ocrmypdf==17.11.0
+packaging==26.3
+pandas==3.0.5
+pdfminer.six==20260107
+pdfplumber==0.11.10
+pi_heif==1.4.0
+pikepdf==10.13.0.post1
+pillow==12.3.0
+pluggy==1.6.0
+pyarrow==25.0.1
+pycparser==3.0
+pydantic==2.13.5
+pydantic_core==2.46.5
+Pygments==2.21.0
+pymupdf==1.28.2
+pypdf==6.18.0
+pypdfium2==5.13.0
+pytesseract==0.3.13
+pytest==9.1.1
+python-dateutil==2.9.0.post0
+PyYAML==6.0.3
+RapidFuzz==3.14.6
+referencing==0.37.0
+rich==15.0.0
+rpds-py==2026.6.3
+six==1.17.0
+tenacity==9.1.4
+typing-inspection==0.4.4
+typing_extensions==4.16.0
+tzdata==2026.3
+uharfbuzz==0.56.1
+### arpipe/requirements.txt (tracked, unchanged vs T0.4 base)
+# core
+pymupdf>=1.24          # PDF object model, rendering, outline  (AGPL - see NOTE)
+pdfplumber>=0.11       # word/table geometry where PyMuPDF is awkward
+pypdf>=4.0             # pure-python fallback for damaged files
+httpx>=0.27            # HTTP/2 client for the exchange APIs
+rapidfuzz>=3.9         # company-name matching
+tenacity>=8.2          # retry policy
+pandas>=2.2            # manifests / audit
+pyarrow>=16            # parquet snapshots
+pyyaml>=6              # configuration loader
+
+
+# test runner used by the README test command
+pytest>=8
+
+# ocr - local rungs
+pytesseract>=0.3.10    # needs system `tesseract-ocr` + language packs
+ocrmypdf>=16           # optional: writes a permanent text layer back
+Pillow>=10.3
+numpy>=1.26
+
+# ocr - optional cloud rung
+# boto3>=1.34          # AWS Textract  (English/Latin scripts only)
+# google-cloud-documentai>=2.29
+
+# optional: self-hosted document VLM served over an OpenAI-compatible API
+# vllm>=0.6            # or sglang; serves PaddleOCR-VL / MinerU2.5 / olmOCR-2
+
+# NOTE on licensing: PyMuPDF is AGPL-3.0 (commercial licence available from
+# Artifex). If that is a problem, pypdfium2 (BSD/Apache) covers rendering and
+# text extraction, and pdfplumber/pdfminer.six (MIT) covers geometry, at some
+# cost in speed. Camelot/Tabula are MIT/BSD. Tesseract is Apache-2.0.
+# MinerU, PaddleOCR-VL and olmOCR-2 are Apache-2.0; Chandra is OpenRAIL-M
+# (check the field-of-use terms before commercial deployment).

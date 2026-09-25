@@ -1,0 +1,266 @@
+{
+  "company_id": "INE003B01014",
+  "fy_end": 2013,
+  "sha256": "ac45a5735528f6231356054269077496160bddd78b616fa01823bcf778e232a1",
+  "ok": true,
+  "confidence": "medium",
+  "span": {
+    "start_page": 17,
+    "end_page": 17,
+    "start_char": null,
+    "end_char": null,
+    "method": "heading+trimmed",
+    "heading_text": "MANAGEMENT DISCUSSION & ANALYSIS",
+    "terminator_text": "AUDITOR'S REPORT",
+    "score": 0.9062962962962964,
+    "supporters": 1,
+    "terminator_match": {
+      "text": "AUDITOR'S REPORT",
+      "page": 18,
+      "line_index": 62,
+      "y_frac": 0.134,
+      "shape_ok": true,
+      "font_signal": "all_caps"
+    },
+    "toc_offset": null,
+    "body_script": null
+  },
+  "verification": {
+    "company_ok": true,
+    "year_ok": true,
+    "company_evidence": [
+      "isin:INE003B01014",
+      "isin:exact_match",
+      "name:Inter State Oil Carrier Ltd:100"
+    ],
+    "year_evidence": [
+      "modal_fy:2013:w25"
+    ],
+    "name_similarity": 100.0,
+    "cin_found": null,
+    "isin_found": "INE003B01014",
+    "isin_found_on_page": 15,
+    "isins_seen": [
+      "INE003B01014"
+    ],
+    "fy_found": 2013,
+    "notes": [],
+    "era_signals_in_document": {
+      "mandated_ratios": false,
+      "brsr": false,
+      "br_report": false,
+      "ind_as": false,
+      "companies_act_2013": false,
+      "csr": false
+    }
+  },
+  "path": "companies/INTER_STATE_OIL_CARRIER_LTD__INE003B01014/2013/mda.txt",
+  "n_words": 508,
+  "ocr_pages": 0,
+  "ocr_engine": null,
+  "supporters": 1,
+  "method_candidates": [
+    [
+      "heading",
+      17,
+      17,
+      0.846
+    ],
+    [
+      "heading_text",
+      17,
+      17,
+      0.61
+    ],
+    [
+      "body_score",
+      12,
+      17,
+      0.463
+    ]
+  ],
+  "total_pages": 53,
+  "mda_page_count": 1,
+  "words_per_page": 508.0,
+  "terminator_match": {
+    "text": "AUDITOR'S REPORT",
+    "page": 18,
+    "line_index": 62,
+    "y_frac": 0.134,
+    "shape_ok": true,
+    "font_signal": "all_caps"
+  },
+  "toc_offset": {
+    "solved": null,
+    "confidence": 0.0,
+    "samples_used": 0,
+    "modal_agreement": 0.0,
+    "method": "not_run"
+  },
+  "qc": {
+    "n_words": 508,
+    "n_chars": 3339,
+    "alpha_ratio": 0.81,
+    "digit_ratio": 0.011,
+    "avg_word_len": 5.53,
+    "long_token_frac": 0.0,
+    "ratio_cues": 0,
+    "ratio_cues_in_span": 0,
+    "leaks": [],
+    "too_short": false,
+    "too_long": false,
+    "looks_like_tables": false,
+    "orphan_start_frac": 0.0,
+    "dangling_end_frac": 0.0,
+    "orphan_starts": 0,
+    "dangling_ends": 0,
+    "n_paragraphs": 24,
+    "orphan_basis": "prose_only",
+    "orphan_gate_version": "p17.1",
+    "orphan_gate_max": 0.03,
+    "diag": {
+      "candidates": [
+        [
+          "heading",
+          17,
+          17,
+          0.846
+        ],
+        [
+          "heading_text",
+          17,
+          17,
+          0.61
+        ],
+        [
+          "body_score",
+          12,
+          17,
+          0.463
+        ]
+      ],
+      "toc_offset": {
+        "solved": null,
+        "confidence": 0.0,
+        "samples_used": 0,
+        "modal_agreement": 0.0,
+        "method": "not_run"
+      },
+      "outline_validation": {},
+      "supporters": 1,
+      "candidate_span_words": 508,
+      "span_words": 508
+    },
+    "doc_kind": "digital",
+    "terminator_match": {
+      "text": "AUDITOR'S REPORT",
+      "page": 18,
+      "line_index": 62,
+      "y_frac": 0.134,
+      "shape_ok": true,
+      "font_signal": "all_caps"
+    },
+    "toc_offset": {
+      "solved": null,
+      "confidence": 0.0,
+      "samples_used": 0,
+      "modal_agreement": 0.0,
+      "method": "not_run"
+    },
+    "frac_needing_ocr": 0.0,
+    "bilingual": false,
+    "n_pages": 53,
+    "ocr_stats": [],
+    "ocr_sec_total": 0.0,
+    "ocr_sec_mean": 0.0,
+    "index_sample": {},
+    "pdf_producer": "GPL Ghostscript 8.64",
+    "column_cut_fire_frac": 0.0,
+    "furniture_blocks_removed": 0,
+    "furniture_strings": [],
+    "orphan_start_frac_pages": [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      0.0,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    "orphan_start_frac_pages_min_paragraphs": 2,
+    "n_words_note": "prose only; tables/charts in mda_blocks.json",
+    "blocks_quarantined": 0,
+    "words_quarantined": 0,
+    "wrong_language": {
+      "wrong_language_risk": false,
+      "devanagari_frac": 0.0,
+      "devanagari_hit": false,
+      "legacy_font_hit": false,
+      "windows_scored": 2,
+      "windows_fired": 0,
+      "worst_window": {
+        "offset": 0,
+        "fired": false,
+        "english_word_frac": 0.5966,
+        "long_word_frac": 0.3488,
+        "rare_punct_freq": 0.0035,
+        "high_codepoint_freq": 0.0,
+        "digit_embedded_frac": 0.0
+      }
+    },
+    "bilingual_heading_page": {
+      "bilingual_heading_page": false,
+      "heading_match": true,
+      "devanagari_frac": 0.0
+    }
+  },
+  "reasons": [],
+  "errors": [],
+  "pipeline_version": "0.1.0"
+}

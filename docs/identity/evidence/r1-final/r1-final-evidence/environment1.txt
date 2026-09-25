@@ -1,0 +1,71 @@
+Traceback (most recent call last):
+  File "C:\Program Files\Python314\Lib\importlib\metadata\__init__.py", line 407, in from_name
+    return next(iter(cls.discover(name=name)))
+StopIteration
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+3.14.3 (tags/v3.14.3:323c59a, Feb  3 2026, 16:04:56) [MSC v.1944 64 bit (AMD64)]
+D:\sem_iitk\sem9\thesis\sep_week1\arpipe-0.1.0\arpipe\.venv\Scripts\python.exe
+  File "<string>", line 1, in <module>
+    import sys,importlib.metadata as m; print(sys.version); print(sys.executable); print('jsonschema',m.version('jsonschema'))
+                                                                                                      ~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Program Files\Python314\Lib\importlib\metadata\__init__.py", line 987, in version
+    return distribution(distribution_name).version
+           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\Python314\Lib\importlib\metadata\__init__.py", line 960, in distribution
+    return Distribution.from_name(distribution_name)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\Python314\Lib\importlib\metadata\__init__.py", line 409, in from_name
+    raise PackageNotFoundError(name)
+importlib.metadata.PackageNotFoundError: No package metadata was found for jsonschema
+annotated-types==0.8.0
+anyio==4.15.1
+certifi==2026.7.22
+cffi==2.1.1
+charset-normalizer==3.5.1
+colorama==0.4.6
+cryptography==50.0.1
+defusedxml==0.7.1
+fonttools==4.64.0
+fpdf2==2.8.8
+h11==0.16.0
+httpcore==1.0.9
+httpx==0.28.1
+idna==3.19
+img2pdf==0.6.3
+iniconfig==2.3.0
+lxml==6.1.3
+markdown-it-py==4.2.0
+mdurl==0.1.2
+numpy==2.5.3
+ocrmypdf==17.11.0
+packaging==26.3
+pandas==3.0.5
+pdfminer.six==20260107
+pdfplumber==0.11.10
+pi_heif==1.4.0
+pikepdf==10.13.0.post1
+pillow==12.3.0
+pluggy==1.6.0
+pyarrow==25.0.1
+pycparser==3.0
+pydantic==2.13.5
+pydantic_core==2.46.5
+Pygments==2.21.0
+pymupdf==1.28.2
+pypdf==6.18.0
+pypdfium2==5.13.0
+pytesseract==0.3.13
+pytest==9.1.1
+python-dateutil==2.9.0.post0
+PyYAML==6.0.3
+RapidFuzz==3.14.6
+rich==15.0.0
+six==1.17.0
+tenacity==9.1.4
+typing-inspection==0.4.4
+typing_extensions==4.16.0
+tzdata==2026.3
+uharfbuzz==0.56.1

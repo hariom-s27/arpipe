@@ -1,0 +1,261 @@
+{
+  "company_id": "INE004C01028",
+  "fy_end": 2025,
+  "sha256": "0f1522f3a2dd3ea093d24f6896b42186b7c8e31218edba71d2149e1af38cff2b",
+  "ok": true,
+  "confidence": "medium",
+  "span": {
+    "start_page": 22,
+    "end_page": 25,
+    "start_char": null,
+    "end_char": null,
+    "method": "heading+trimmed",
+    "heading_text": "B. Management Discussion And Analysis Report",
+    "terminator_text": "SECRETARIAL AUDIT REPORT",
+    "score": 0.7019741686441503,
+    "supporters": 1,
+    "terminator_match": {
+      "text": "SECRETARIAL AUDIT REPORT",
+      "page": 26,
+      "line_index": 11,
+      "y_frac": 0.13,
+      "shape_ok": true,
+      "font_signal": "larger"
+    },
+    "toc_offset": null,
+    "body_script": null
+  },
+  "verification": {
+    "company_ok": true,
+    "year_ok": true,
+    "company_evidence": [
+      "cin:L46695DN1996PLC000116",
+      "name:Gujarat Cotex Ltd:100"
+    ],
+    "year_evidence": [
+      "modal_fy:2025:w29"
+    ],
+    "name_similarity": 100.0,
+    "cin_found": "L46695DN1996PLC000116",
+    "isin_found": null,
+    "isin_found_on_page": null,
+    "isins_seen": [],
+    "fy_found": 2025,
+    "notes": [],
+    "era_signals_in_document": {
+      "mandated_ratios": true,
+      "brsr": false,
+      "br_report": false,
+      "ind_as": true,
+      "companies_act_2013": true,
+      "csr": true
+    }
+  },
+  "path": "companies/GUJARAT_COTEX_LTD__INE004C01028/2025/mda.txt",
+  "n_words": 1292,
+  "ocr_pages": 0,
+  "ocr_engine": null,
+  "supporters": 1,
+  "method_candidates": [
+    [
+      "heading",
+      22,
+      25,
+      0.642
+    ],
+    [
+      "body_score",
+      22,
+      24,
+      0.632
+    ]
+  ],
+  "total_pages": 60,
+  "mda_page_count": 4,
+  "words_per_page": 323.0,
+  "terminator_match": {
+    "text": "SECRETARIAL AUDIT REPORT",
+    "page": 26,
+    "line_index": 11,
+    "y_frac": 0.13,
+    "shape_ok": true,
+    "font_signal": "larger"
+  },
+  "toc_offset": {
+    "solved": null,
+    "confidence": 0.0,
+    "samples_used": 0,
+    "modal_agreement": 0.0,
+    "method": "not_run"
+  },
+  "qc": {
+    "n_words": 1292,
+    "n_chars": 8231,
+    "alpha_ratio": 0.769,
+    "digit_ratio": 0.03,
+    "avg_word_len": 5.31,
+    "long_token_frac": 0.0,
+    "ratio_cues": 4,
+    "ratio_cues_in_span": 4,
+    "leaks": [],
+    "too_short": false,
+    "too_long": false,
+    "looks_like_tables": false,
+    "orphan_start_frac": 0.011,
+    "dangling_end_frac": 0.044,
+    "orphan_starts": 1,
+    "dangling_ends": 4,
+    "n_paragraphs": 91,
+    "orphan_basis": "prose_only",
+    "orphan_gate_version": "p17.1",
+    "orphan_gate_max": 0.03,
+    "diag": {
+      "candidates": [
+        [
+          "heading",
+          22,
+          25,
+          0.642
+        ],
+        [
+          "body_score",
+          22,
+          24,
+          0.632
+        ]
+      ],
+      "toc_offset": {
+        "solved": null,
+        "confidence": 0.0,
+        "samples_used": 0,
+        "modal_agreement": 0.0,
+        "method": "not_run"
+      },
+      "outline_validation": {},
+      "supporters": 1,
+      "candidate_span_words": 1320,
+      "span_words": 1320
+    },
+    "doc_kind": "digital",
+    "terminator_match": {
+      "text": "SECRETARIAL AUDIT REPORT",
+      "page": 26,
+      "line_index": 11,
+      "y_frac": 0.13,
+      "shape_ok": true,
+      "font_signal": "larger"
+    },
+    "toc_offset": {
+      "solved": null,
+      "confidence": 0.0,
+      "samples_used": 0,
+      "modal_agreement": 0.0,
+      "method": "not_run"
+    },
+    "frac_needing_ocr": 0.0333,
+    "bilingual": false,
+    "n_pages": 60,
+    "ocr_stats": [],
+    "ocr_sec_total": 0.0,
+    "ocr_sec_mean": 0.0,
+    "index_sample": {},
+    "pdf_producer": "Nitro Reader 5  (5. 5. 9. 2)",
+    "column_cut_fire_frac": 0.0,
+    "furniture_blocks_removed": 0,
+    "furniture_strings": [],
+    "orphan_start_frac_pages": [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      0.0333,
+      0.0,
+      0.0,
+      0.0,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    "orphan_start_frac_pages_min_paragraphs": 2,
+    "n_words_note": "prose only; tables/charts in mda_blocks.json",
+    "blocks_quarantined": 1,
+    "words_quarantined": 17,
+    "wrong_language": {
+      "wrong_language_risk": false,
+      "devanagari_frac": 0.0,
+      "devanagari_hit": false,
+      "legacy_font_hit": false,
+      "windows_scored": 5,
+      "windows_fired": 0,
+      "worst_window": {
+        "offset": 8000,
+        "fired": false,
+        "english_word_frac": 0.3929,
+        "long_word_frac": 0.3571,
+        "rare_punct_freq": 0.0173,
+        "high_codepoint_freq": 0.0,
+        "digit_embedded_frac": 0.0
+      }
+    },
+    "bilingual_heading_page": {
+      "bilingual_heading_page": false,
+      "heading_match": true,
+      "devanagari_frac": 0.0
+    }
+  },
+  "reasons": [
+    "source_shredded",
+    "span_truncated"
+  ],
+  "errors": [],
+  "pipeline_version": "0.1.0"
+}

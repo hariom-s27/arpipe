@@ -1,0 +1,68 @@
+[r1-resume-2-final 24b8e00] fix(r1): restore quarantine span suppression (A4)
+ 1 file changed, 19 insertions(+), 6 deletions(-)
+24b8e000f23d18faabd16f828bd20eeb5328ddf7
+ab9666b032a5838be3ae3a24a58aae68a4fd46b0
+fix(r1): restore quarantine span suppression (A4)
+diff --git a/tests/test_phase2_1_semantic_conformance.py b/tests/test_phase2_1_semantic_conformance.py
+index 9e2c165..6db7704 100644
+--- a/tests/test_phase2_1_semantic_conformance.py
++++ b/tests/test_phase2_1_semantic_conformance.py
+@@ -9,7 +9,7 @@ Verifies:
+    PENDING_AUTHOR_DECISION and DOWNSTREAM_EXECUTION_AUTHORIZED must be NO.
+ 4. Strict historical immutability allowlist: all modified files between base
+    commit 03a63f5 and current state must match approved Phase-2.1 paths.
+-5. Zero modifications to arpipe/, dataset/, and configs/t0_4/.
++5. Zero frozen-path modifications; only the four A1-A4 production exceptions.
+ 6. Explicit zero-cell classification procedure (unclassified == 0).
+ 7. Conditional amendment rule: NO FORMAL T0.4 AMENDMENT REQUIRED when no
+    author decision is adopted.
+@@ -28,6 +28,14 @@ import pytest
+ BASE_COMMIT = "03a63f5d7d79bac6a0bab0ffc33af42004e78935"
+ REPO_ROOT = Path(__file__).resolve().parent.parent
+ 
++# D6/Q6 amendment A5 admits only the production paths authorized by A1-A4.
++R1_ALLOWED_PRODUCTION_PATHS = {
++    "arpipe/models.py",  # A1: required/observed model provider fields.
++    "arpipe/triage.py",  # A2: script telemetry; classifier remains unchanged.
++    "arpipe/ocr.py",  # A3: OcrEngineUnavailable class only.
++    "arpipe/store.py",  # A4: write_span parameter and behavior only.
++}
++
+ ALLOWED_PHASE2_1_PATTERNS = [
+     re.compile(r"^docs/experiments/PHASE2\.1_.*\.md$"),
+     re.compile(r"^tests/test_phase2_1_semantic_conformance\.py$"),
+@@ -35,6 +43,13 @@ ALLOWED_PHASE2_1_PATTERNS = [
+     re.compile(r"^tools/check_doc_hashes\.py$"),
+     re.compile(r"^tools/check_doc_hashes_allowlist\.json$"),
+     re.compile(r"^tests/test_check_doc_hashes\.py$"),
++    # A5: exact production exceptions; all other arpipe paths remain frozen.
++    *(re.compile(rf"^{re.escape(path)}$") for path in R1_ALLOWED_PRODUCTION_PATHS),
++    re.compile(r"^tests/test_import_smoke\.py$"),  # A5; R1 section 8.6.
++    re.compile(r"^docs/phase3/"),  # A5: directory absent at BASE_COMMIT.
++    re.compile(r"^docs/phase4/"),  # A5: directory absent at BASE_COMMIT.
++    re.compile(r"^docs/decisions/"),  # A5: directory absent at BASE_COMMIT.
++    re.compile(r"^docs/identity/"),  # A5: directory absent at BASE_COMMIT.
+ ]
+ 
+ 
+@@ -196,8 +211,8 @@ def test_conditional_t0_4_amendment_rule() -> None:
+ def test_historical_immutability_strict_allowlist() -> None:
+     """Verify that all modified and untracked files match the Phase-2.1 allowlist.
+ 
+-    Any change to historical files, production arpipe/, dataset/, or configs/t0_4/
+-    fails immediately.
++    Changes outside the original allowlist and exact A5 exceptions fail.
++    Frozen dataset, T0.4 config, and T0.4 artifact paths remain zero-change.
+     """
+     # Check diff against base commit
+     cmd = ["git", "-C", str(REPO_ROOT), "diff", "--name-only", BASE_COMMIT]
+@@ -216,6 +231,8 @@ def test_historical_immutability_strict_allowlist() -> None:
+         assert matched, f"Path {path} violates historical immutability allowlist!"
+ 
+     # Explicit zero-change directory assertions
+-    for restricted in ["arpipe/", "dataset/", "configs/t0_4/"]:
++    for restricted in ["arpipe/", "dataset/", "configs/t0_4/", "artifacts/t0_4/"]:
+         restricted_diff = [p for p in all_changed if p.startswith(restricted)]
++        if restricted == "arpipe/":  # A5: only A1-A4 exact paths are excepted.
++            restricted_diff = [p for p in restricted_diff if p not in R1_ALLOWED_PRODUCTION_PATHS]
+         assert len(restricted_diff) == 0, f"Unauthorized changes detected in {restricted}: {restricted_diff}"

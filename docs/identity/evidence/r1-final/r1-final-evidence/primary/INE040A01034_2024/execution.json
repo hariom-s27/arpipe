@@ -1,0 +1,15 @@
+{
+  "document_id": "INE040A01034_2024",
+  "phase": "primary",
+  "pdf_sha256": "fcd7ef37de26997fed3bcf2b7cfb9eb90f08d4e2617f5f3f967a1ac621c2a73e",
+  "completed": true,
+  "confidence": "medium",
+  "span_path": "companies/HDFC_BANK_LIMITED__INE040A01034/2024/mda.txt",
+  "reasons": [
+    "section_leak",
+    "span_truncated"
+  ],
+  "errors": [],
+  "duration_seconds": 14.166758299994399,
+  "candidate_import": "D:\\sem_iitk\\sem9\\thesis\\sep_week1\\r1-final-evidence\\candidate-a\\arpipe\\__init__.py"
+}

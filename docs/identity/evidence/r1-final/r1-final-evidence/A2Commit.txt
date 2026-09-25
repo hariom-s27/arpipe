@@ -1,0 +1,34 @@
+A2: every protected function/assignment remains byte-identical; candidate matches audited E0 triage blob exactly.
+[r1-resume-2-final ca1498f] fix(r1): restore observed script telemetry provider (A2)
+ 1 file changed, 73 insertions(+)
+ca1498f75f14495bfc6ec829ef2b5ef728da2d3d
+d5513859a5315800a7b6c68711756798129ab8ee
+fix(r1): restore observed script telemetry provider (A2)
+diff --git a/arpipe/ocr.py b/arpipe/ocr.py
+index 636a5ad..505fa5e 100644
+--- a/arpipe/ocr.py
++++ b/arpipe/ocr.py
+@@ -86,6 +86,23 @@ class OcrPage:
+     meta: dict = field(default_factory=dict)
+ 
+ 
++class OcrEngineUnavailable(RuntimeError):
++    """Raised when OCR was needed but could not be attempted at all - the
++    binary is missing, cannot be invoked, or a required language pack is not
++    installed. This is an infrastructure failure, not a quality-gate failure:
++    a rung that runs and produces poor-quality text must NOT raise this (that
++    is normal escalation to the next rung). It exists specifically so that
++    (P-B5) a missing Tesseract binary/language pack propagates as a loud,
++    typed error instead of being swallowed into an empty OcrPage that later
++    looks indistinguishable from "this document has no MD&A"."""
++
++    def __init__(self, page_no: int, trail: list[str], detail: str):
++        self.page_no = page_no
++        self.trail = list(trail)
++        self.detail = detail
++        super().__init__(detail)
++
++
+ class OcrBackend(abc.ABC):
+     name = "base"
+ 

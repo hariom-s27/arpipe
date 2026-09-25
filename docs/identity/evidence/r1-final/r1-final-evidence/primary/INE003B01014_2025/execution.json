@@ -1,0 +1,15 @@
+{
+  "document_id": "INE003B01014_2025",
+  "phase": "primary",
+  "pdf_sha256": "7788c26d0d47f50c0256c1d486f996777e29cb18c9e14b616e3c81a40a0cd169",
+  "completed": true,
+  "confidence": "medium",
+  "span_path": "companies/INTER_STATE_OIL_CARRIER_LTD__INE003B01014/2025/mda.txt",
+  "reasons": [
+    "source_shredded",
+    "span_truncated"
+  ],
+  "errors": [],
+  "duration_seconds": 2.080722300001071,
+  "candidate_import": "D:\\sem_iitk\\sem9\\thesis\\sep_week1\\r1-final-evidence\\candidate-a\\arpipe\\__init__.py"
+}

@@ -1,0 +1,259 @@
+{
+  "company_id": "INE001F01019",
+  "fy_end": 2024,
+  "sha256": "be99894412fec2286577b6347fd4a6f6800470ccf44b5a905db3b2db4aa54e38",
+  "ok": false,
+  "confidence": "low",
+  "span": {
+    "start_page": 18,
+    "end_page": 18,
+    "start_char": null,
+    "end_char": null,
+    "method": "heading+trimmed",
+    "heading_text": "MANAGEMENT DISCUSSIONS AND ANALYSIS",
+    "terminator_text": "SECRETARIAL AUDIT REPORT FOR THE",
+    "score": 0.6200000000000001,
+    "supporters": 0,
+    "terminator_match": {
+      "text": "SECRETARIAL AUDIT REPORT FOR THE",
+      "page": 19,
+      "line_index": 3,
+      "y_frac": 0.129,
+      "shape_ok": true,
+      "font_signal": "bold"
+    },
+    "toc_offset": null,
+    "body_script": null
+  },
+  "verification": {
+    "company_ok": true,
+    "year_ok": true,
+    "company_evidence": [
+      "cin:L27109PB1973PLC003358",
+      "isin:INE001F01019",
+      "isin:exact_match",
+      "name:Modern Steels Limited:100"
+    ],
+    "year_evidence": [
+      "modal_fy:2024:w37"
+    ],
+    "name_similarity": 100.0,
+    "cin_found": "L27109PB1973PLC003358",
+    "isin_found": "INE001F01019",
+    "isin_found_on_page": 28,
+    "isins_seen": [
+      "INE001F01019"
+    ],
+    "fy_found": 2024,
+    "notes": [
+      "mandated ratios table absent from document (disclosure finding for fy_end=2024 >= 2020)"
+    ],
+    "era_signals_in_document": {
+      "mandated_ratios": false,
+      "brsr": false,
+      "br_report": false,
+      "ind_as": true,
+      "companies_act_2013": true,
+      "csr": true
+    }
+  },
+  "path": "companies/MODERN_STEELS_LIMITED__INE001F01019/2024/mda.txt",
+  "n_words": 448,
+  "ocr_pages": 0,
+  "ocr_engine": null,
+  "supporters": 0,
+  "method_candidates": [
+    [
+      "heading",
+      18,
+      18,
+      0.62
+    ],
+    [
+      "body_score",
+      14,
+      14,
+      0.338
+    ]
+  ],
+  "total_pages": 52,
+  "mda_page_count": 1,
+  "words_per_page": 448.0,
+  "terminator_match": {
+    "text": "SECRETARIAL AUDIT REPORT FOR THE",
+    "page": 19,
+    "line_index": 3,
+    "y_frac": 0.129,
+    "shape_ok": true,
+    "font_signal": "bold"
+  },
+  "toc_offset": {
+    "solved": 12,
+    "confidence": 0.845,
+    "samples_used": 21,
+    "modal_agreement": 0.905,
+    "method": "margin_folio_mode"
+  },
+  "qc": {
+    "n_words": 448,
+    "n_chars": 2916,
+    "alpha_ratio": 0.789,
+    "digit_ratio": 0.024,
+    "avg_word_len": 5.45,
+    "long_token_frac": 0.0,
+    "ratio_cues": 0,
+    "ratio_cues_in_span": 0,
+    "leaks": [],
+    "too_short": false,
+    "too_long": false,
+    "looks_like_tables": false,
+    "orphan_start_frac": 0.0435,
+    "dangling_end_frac": 0.0,
+    "orphan_starts": 1,
+    "dangling_ends": 0,
+    "n_paragraphs": 23,
+    "orphan_basis": "prose_only",
+    "orphan_gate_version": "p17.1",
+    "orphan_gate_max": 0.03,
+    "diag": {
+      "candidates": [
+        [
+          "heading",
+          18,
+          18,
+          0.62
+        ],
+        [
+          "body_score",
+          14,
+          14,
+          0.338
+        ]
+      ],
+      "toc_offset": {
+        "solved": 12,
+        "confidence": 0.845,
+        "samples_used": 21,
+        "modal_agreement": 0.905,
+        "method": "margin_folio_mode"
+      },
+      "outline_validation": {},
+      "supporters": 0,
+      "candidate_span_words": 448,
+      "span_words": 448
+    },
+    "doc_kind": "digital",
+    "terminator_match": {
+      "text": "SECRETARIAL AUDIT REPORT FOR THE",
+      "page": 19,
+      "line_index": 3,
+      "y_frac": 0.129,
+      "shape_ok": true,
+      "font_signal": "bold"
+    },
+    "toc_offset": {
+      "solved": 12,
+      "confidence": 0.845,
+      "samples_used": 21,
+      "modal_agreement": 0.905,
+      "method": "margin_folio_mode"
+    },
+    "frac_needing_ocr": 0.02,
+    "bilingual": false,
+    "n_pages": 52,
+    "ocr_stats": [],
+    "ocr_sec_total": 0.0,
+    "ocr_sec_mean": 0.0,
+    "index_sample": {},
+    "pdf_producer": "iLovePDF",
+    "column_cut_fire_frac": 1.0,
+    "furniture_blocks_removed": 0,
+    "furniture_strings": [],
+    "orphan_start_frac_pages": [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      0.0435,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    "orphan_start_frac_pages_min_paragraphs": 2,
+    "n_words_note": "prose only; tables/charts in mda_blocks.json",
+    "blocks_quarantined": 0,
+    "words_quarantined": 0,
+    "wrong_language": {
+      "wrong_language_risk": false,
+      "devanagari_frac": 0.0,
+      "devanagari_hit": false,
+      "legacy_font_hit": false,
+      "windows_scored": 2,
+      "windows_fired": 0,
+      "worst_window": {
+        "offset": 0,
+        "fired": false,
+        "english_word_frac": 0.6267,
+        "long_word_frac": 0.3478,
+        "rare_punct_freq": 0.005,
+        "high_codepoint_freq": 0.0,
+        "digit_embedded_frac": 0.0
+      }
+    },
+    "bilingual_heading_page": {
+      "bilingual_heading_page": false,
+      "heading_match": true,
+      "devanagari_frac": 0.0
+    }
+  },
+  "reasons": [
+    "source_shredded",
+    "span_truncated"
+  ],
+  "errors": [],
+  "pipeline_version": "0.1.0"
+}

@@ -1,0 +1,12 @@
+{
+  "document_id": "INE003B01014_2013",
+  "phase": "primary",
+  "pdf_sha256": "ac45a5735528f6231356054269077496160bddd78b616fa01823bcf778e232a1",
+  "completed": true,
+  "confidence": "medium",
+  "span_path": "companies/INTER_STATE_OIL_CARRIER_LTD__INE003B01014/2013/mda.txt",
+  "reasons": [],
+  "errors": [],
+  "duration_seconds": 1.2738741000066511,
+  "candidate_import": "D:\\sem_iitk\\sem9\\thesis\\sep_week1\\r1-final-evidence\\candidate-a\\arpipe\\__init__.py"
+}

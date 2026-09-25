@@ -1,0 +1,16 @@
+{
+  "document_id": "INE008A01015_2024",
+  "phase": "smoke-a",
+  "pdf_sha256": "f79ba9e881edaa6cfb4a5b2b620e06ef589bc49d8d292000c0a1fc3571b0bdf2",
+  "completed": true,
+  "confidence": "quarantine",
+  "span_path": null,
+  "reasons": [
+    "source_shredded",
+    "span_truncated",
+    "WRONG_LANGUAGE_RISK"
+  ],
+  "errors": [],
+  "duration_seconds": 16.9258567999932,
+  "candidate_import": "D:\\sem_iitk\\sem9\\thesis\\sep_week1\\r1-final-evidence\\candidate-a\\arpipe\\__init__.py"
+}

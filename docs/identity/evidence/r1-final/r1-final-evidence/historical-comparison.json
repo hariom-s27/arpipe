@@ -1,0 +1,915 @@
+{
+  "mode": "historical",
+  "documents_compared": 58,
+  "fully_comparable_documents": 0,
+  "fully_comparable_exact_matches": 0,
+  "exact_on_all_available_comparable_fields": 57,
+  "documents_with_differences": 1,
+  "field_counts": {
+    "located": {
+      "EXACT": 58
+    },
+    "start_page": {
+      "EXACT": 57,
+      "DIFFERENT": 1
+    },
+    "end_page": {
+      "EXACT": 58
+    },
+    "grade": {
+      "EXACT": 57,
+      "DIFFERENT": 1
+    },
+    "span_path_nullness": {
+      "EXACT": 58
+    },
+    "per_page_kind": {
+      "UNAVAILABLE_BOTH": 58
+    },
+    "script_map": {
+      "EXACT": 58
+    }
+  },
+  "documents": [
+    {
+      "document_id": "INE001F01019_2012",
+      "field_results": {
+        "located": "EXACT",
+        "start_page": "EXACT",
+        "end_page": "EXACT",
+        "grade": "EXACT",
+        "span_path_nullness": "EXACT",
+        "per_page_kind": "UNAVAILABLE_BOTH",
+        "script_map": "EXACT"
+      },
+      "comparable_fields": 6,
+      "differences": {},
+      "attribution": null
+    },
+    {
+      "document_id": "INE001F01019_2013",
+      "field_results": {
+        "located": "EXACT",
+        "start_page": "EXACT",
+        "end_page": "EXACT",
+        "grade": "EXACT",
+        "span_path_nullness": "EXACT",
+        "per_page_kind": "UNAVAILABLE_BOTH",
+        "script_map": "EXACT"
+      },
+      "comparable_fields": 6,
+      "differences": {},
+      "attribution": null
+    },
+    {
+      "document_id": "INE001F01019_2017",
+      "field_results": {
+        "located": "EXACT",
+        "start_page": "EXACT",
+        "end_page": "EXACT",
+        "grade": "EXACT",
+        "span_path_nullness": "EXACT",
+        "per_page_kind": "UNAVAILABLE_BOTH",
+        "script_map": "EXACT"
+      },
+      "comparable_fields": 6,
+      "differences": {},
+      "attribution": null
+    },
+    {
+      "document_id": "INE001F01019_2018",
+      "field_results": {
+        "located": "EXACT",
+        "start_page": "EXACT",
+        "end_page": "EXACT",
+        "grade": "EXACT",
+        "span_path_nullness": "EXACT",
+        "per_page_kind": "UNAVAILABLE_BOTH",
+        "script_map": "EXACT"
+      },
+      "comparable_fields": 6,
+      "differences": {},
+      "attribution": null
+    },
+    {
+      "document_id": "INE001F01019_2024",
+      "field_results": {
+        "located": "EXACT",
+        "start_page": "EXACT",
+        "end_page": "EXACT",
+        "grade": "EXACT",
+        "span_path_nullness": "EXACT",
+        "per_page_kind": "UNAVAILABLE_BOTH",
+        "script_map": "EXACT"
+      },
+      "comparable_fields": 6,
+      "differences": {},
+      "attribution": null
+    },
+    {
+      "document_id": "INE002A01018_2013",
+      "field_results": {
+        "located": "EXACT",
+        "start_page": "EXACT",
+        "end_page": "EXACT",
+        "grade": "EXACT",
+        "span_path_nullness": "EXACT",
+        "per_page_kind": "UNAVAILABLE_BOTH",
+        "script_map": "EXACT"
+      },
+      "comparable_fields": 6,
+      "differences": {},
+      "attribution": null
+    },
+    {
+      "document_id": "INE002A01018_2018",
+      "field_results": {
+        "located": "EXACT",
+        "start_page": "EXACT",
+        "end_page": "EXACT",
+        "grade": "EXACT",
+        "span_path_nullness": "EXACT",
+        "per_page_kind": "UNAVAILABLE_BOTH",
+        "script_map": "EXACT"
+      },
+      "comparable_fields": 6,
+      "differences": {},
+      "attribution": null
+    },
+    {
+      "document_id": "INE002A01018_2025",
+      "field_results": {
+        "located": "EXACT",
+        "start_page": "EXACT",
+        "end_page": "EXACT",
+        "grade": "EXACT",
+        "span_path_nullness": "EXACT",
+        "per_page_kind": "UNAVAILABLE_BOTH",
+        "script_map": "EXACT"
+      },
+      "comparable_fields": 6,
+      "differences": {},
+      "attribution": null
+    },
+    {
+      "document_id": "INE003B01014_2013",
+      "field_results": {
+        "located": "EXACT",
+        "start_page": "EXACT",
+        "end_page": "EXACT",
+        "grade": "EXACT",
+        "span_path_nullness": "EXACT",
+        "per_page_kind": "UNAVAILABLE_BOTH",
+        "script_map": "EXACT"
+      },
+      "comparable_fields": 6,
+      "differences": {},
+      "attribution": null
+    },
+    {
+      "document_id": "INE003B01014_2024",
+      "field_results": {
+        "located": "EXACT",
+        "start_page": "EXACT",
+        "end_page": "EXACT",
+        "grade": "EXACT",
+        "span_path_nullness": "EXACT",
+        "per_page_kind": "UNAVAILABLE_BOTH",
+        "script_map": "EXACT"
+      },
+      "comparable_fields": 6,
+      "differences": {},
+      "attribution": null
+    },
+    {
+      "document_id": "INE003B01014_2025",
+      "field_results": {
+        "located": "EXACT",
+        "start_page": "EXACT",
+        "end_page": "EXACT",
+        "grade": "EXACT",
+        "span_path_nullness": "EXACT",
+        "per_page_kind": "UNAVAILABLE_BOTH",
+        "script_map": "EXACT"
+      },
+      "comparable_fields": 6,
+      "differences": {},
+      "attribution": null
+    },
+    {
+      "document_id": "INE004C01028_2017",
+      "field_results": {
+        "located": "EXACT",
+        "start_page": "EXACT",
+        "end_page": "EXACT",
+        "grade": "EXACT",
+        "span_path_nullness": "EXACT",
+        "per_page_kind": "UNAVAILABLE_BOTH",
+        "script_map": "EXACT"
+      },
+      "comparable_fields": 6,
+      "differences": {},
+      "attribution": null
+    },
+    {
+      "document_id": "INE004C01028_2025",
+      "field_results": {
+        "located": "EXACT",
+        "start_page": "EXACT",
+        "end_page": "EXACT",
+        "grade": "EXACT",
+        "span_path_nullness": "EXACT",
+        "per_page_kind": "UNAVAILABLE_BOTH",
+        "script_map": "EXACT"
+      },
+      "comparable_fields": 6,
+      "differences": {},
+      "attribution": null
+    },
+    {
+      "document_id": "INE004E01016_2012",
+      "field_results": {
+        "located": "EXACT",
+        "start_page": "EXACT",
+        "end_page": "EXACT",
+        "grade": "EXACT",
+        "span_path_nullness": "EXACT",
+        "per_page_kind": "UNAVAILABLE_BOTH",
+        "script_map": "EXACT"
+      },
+      "comparable_fields": 6,
+      "differences": {},
+      "attribution": null
+    },
+    {
+      "document_id": "INE004E01016_2024",
+      "field_results": {
+        "located": "EXACT",
+        "start_page": "EXACT",
+        "end_page": "EXACT",
+        "grade": "EXACT",
+        "span_path_nullness": "EXACT",
+        "per_page_kind": "UNAVAILABLE_BOTH",
+        "script_map": "EXACT"
+      },
+      "comparable_fields": 6,
+      "differences": {},
+      "attribution": null
+    },
+    {
+      "document_id": "INE004Z01011_2025",
+      "field_results": {
+        "located": "EXACT",
+        "start_page": "EXACT",
+        "end_page": "EXACT",
+        "grade": "EXACT",
+        "span_path_nullness": "EXACT",
+        "per_page_kind": "UNAVAILABLE_BOTH",
+        "script_map": "EXACT"
+      },
+      "comparable_fields": 6,
+      "differences": {},
+      "attribution": null
+    },
+    {
+      "document_id": "INE007A01025_2013",
+      "field_results": {
+        "located": "EXACT",
+        "start_page": "EXACT",
+        "end_page": "EXACT",
+        "grade": "EXACT",
+        "span_path_nullness": "EXACT",
+        "per_page_kind": "UNAVAILABLE_BOTH",
+        "script_map": "EXACT"
+      },
+      "comparable_fields": 6,
+      "differences": {},
+      "attribution": null
+    },
+    {
+      "document_id": "INE007A01025_2017",
+      "field_results": {
+        "located": "EXACT",
+        "start_page": "EXACT",
+        "end_page": "EXACT",
+        "grade": "EXACT",
+        "span_path_nullness": "EXACT",
+        "per_page_kind": "UNAVAILABLE_BOTH",
+        "script_map": "EXACT"
+      },
+      "comparable_fields": 6,
+      "differences": {},
+      "attribution": null
+    },
+    {
+      "document_id": "INE007A01025_2018",
+      "field_results": {
+        "located": "EXACT",
+        "start_page": "EXACT",
+        "end_page": "EXACT",
+        "grade": "EXACT",
+        "span_path_nullness": "EXACT",
+        "per_page_kind": "UNAVAILABLE_BOTH",
+        "script_map": "EXACT"
+      },
+      "comparable_fields": 6,
+      "differences": {},
+      "attribution": null
+    },
+    {
+      "document_id": "INE007A01025_2024",
+      "field_results": {
+        "located": "EXACT",
+        "start_page": "EXACT",
+        "end_page": "EXACT",
+        "grade": "EXACT",
+        "span_path_nullness": "EXACT",
+        "per_page_kind": "UNAVAILABLE_BOTH",
+        "script_map": "EXACT"
+      },
+      "comparable_fields": 6,
+      "differences": {},
+      "attribution": null
+    },
+    {
+      "document_id": "INE008A01015_2012",
+      "field_results": {
+        "located": "EXACT",
+        "start_page": "EXACT",
+        "end_page": "EXACT",
+        "grade": "EXACT",
+        "span_path_nullness": "EXACT",
+        "per_page_kind": "UNAVAILABLE_BOTH",
+        "script_map": "EXACT"
+      },
+      "comparable_fields": 6,
+      "differences": {},
+      "attribution": null
+    },
+    {
+      "document_id": "INE008A01015_2017",
+      "field_results": {
+        "located": "EXACT",
+        "start_page": "EXACT",
+        "end_page": "EXACT",
+        "grade": "EXACT",
+        "span_path_nullness": "EXACT",
+        "per_page_kind": "UNAVAILABLE_BOTH",
+        "script_map": "EXACT"
+      },
+      "comparable_fields": 6,
+      "differences": {},
+      "attribution": null
+    },
+    {
+      "document_id": "INE008A01015_2024",
+      "field_results": {
+        "located": "EXACT",
+        "start_page": "EXACT",
+        "end_page": "EXACT",
+        "grade": "EXACT",
+        "span_path_nullness": "EXACT",
+        "per_page_kind": "UNAVAILABLE_BOTH",
+        "script_map": "EXACT"
+      },
+      "comparable_fields": 6,
+      "differences": {},
+      "attribution": null
+    },
+    {
+      "document_id": "INE00E101023_2024",
+      "field_results": {
+        "located": "EXACT",
+        "start_page": "EXACT",
+        "end_page": "EXACT",
+        "grade": "EXACT",
+        "span_path_nullness": "EXACT",
+        "per_page_kind": "UNAVAILABLE_BOTH",
+        "script_map": "EXACT"
+      },
+      "comparable_fields": 6,
+      "differences": {},
+      "attribution": null
+    },
+    {
+      "document_id": "INE00FF01025_2025",
+      "field_results": {
+        "located": "EXACT",
+        "start_page": "EXACT",
+        "end_page": "EXACT",
+        "grade": "EXACT",
+        "span_path_nullness": "EXACT",
+        "per_page_kind": "UNAVAILABLE_BOTH",
+        "script_map": "EXACT"
+      },
+      "comparable_fields": 6,
+      "differences": {},
+      "attribution": null
+    },
+    {
+      "document_id": "INE00LO01017_2024",
+      "field_results": {
+        "located": "EXACT",
+        "start_page": "EXACT",
+        "end_page": "EXACT",
+        "grade": "EXACT",
+        "span_path_nullness": "EXACT",
+        "per_page_kind": "UNAVAILABLE_BOTH",
+        "script_map": "EXACT"
+      },
+      "comparable_fields": 6,
+      "differences": {},
+      "attribution": null
+    },
+    {
+      "document_id": "INE00LO01017_2025",
+      "field_results": {
+        "located": "EXACT",
+        "start_page": "DIFFERENT",
+        "end_page": "EXACT",
+        "grade": "DIFFERENT",
+        "span_path_nullness": "EXACT",
+        "per_page_kind": "UNAVAILABLE_BOTH",
+        "script_map": "EXACT"
+      },
+      "comparable_fields": 6,
+      "differences": {
+        "start_page": {
+          "historical": 15,
+          "candidate": 16,
+          "delta": 1
+        },
+        "grade": {
+          "historical": "medium",
+          "candidate": "high"
+        }
+      },
+      "attribution": "UNATTRIBUTED"
+    },
+    {
+      "document_id": "INE040A01034_2012",
+      "field_results": {
+        "located": "EXACT",
+        "start_page": "EXACT",
+        "end_page": "EXACT",
+        "grade": "EXACT",
+        "span_path_nullness": "EXACT",
+        "per_page_kind": "UNAVAILABLE_BOTH",
+        "script_map": "EXACT"
+      },
+      "comparable_fields": 6,
+      "differences": {},
+      "attribution": null
+    },
+    {
+      "document_id": "INE040A01034_2013",
+      "field_results": {
+        "located": "EXACT",
+        "start_page": "EXACT",
+        "end_page": "EXACT",
+        "grade": "EXACT",
+        "span_path_nullness": "EXACT",
+        "per_page_kind": "UNAVAILABLE_BOTH",
+        "script_map": "EXACT"
+      },
+      "comparable_fields": 6,
+      "differences": {},
+      "attribution": null
+    },
+    {
+      "document_id": "INE040A01034_2017",
+      "field_results": {
+        "located": "EXACT",
+        "start_page": "EXACT",
+        "end_page": "EXACT",
+        "grade": "EXACT",
+        "span_path_nullness": "EXACT",
+        "per_page_kind": "UNAVAILABLE_BOTH",
+        "script_map": "EXACT"
+      },
+      "comparable_fields": 6,
+      "differences": {},
+      "attribution": null
+    },
+    {
+      "document_id": "INE040A01034_2018",
+      "field_results": {
+        "located": "EXACT",
+        "start_page": "EXACT",
+        "end_page": "EXACT",
+        "grade": "EXACT",
+        "span_path_nullness": "EXACT",
+        "per_page_kind": "UNAVAILABLE_BOTH",
+        "script_map": "EXACT"
+      },
+      "comparable_fields": 6,
+      "differences": {},
+      "attribution": null
+    },
+    {
+      "document_id": "INE040A01034_2024",
+      "field_results": {
+        "located": "EXACT",
+        "start_page": "EXACT",
+        "end_page": "EXACT",
+        "grade": "EXACT",
+        "span_path_nullness": "EXACT",
+        "per_page_kind": "UNAVAILABLE_BOTH",
+        "script_map": "EXACT"
+      },
+      "comparable_fields": 6,
+      "differences": {},
+      "attribution": null
+    },
+    {
+      "document_id": "INE081A01020_2012",
+      "field_results": {
+        "located": "EXACT",
+        "start_page": "EXACT",
+        "end_page": "EXACT",
+        "grade": "EXACT",
+        "span_path_nullness": "EXACT",
+        "per_page_kind": "UNAVAILABLE_BOTH",
+        "script_map": "EXACT"
+      },
+      "comparable_fields": 6,
+      "differences": {},
+      "attribution": null
+    },
+    {
+      "document_id": "INE081A01020_2013",
+      "field_results": {
+        "located": "EXACT",
+        "start_page": "EXACT",
+        "end_page": "EXACT",
+        "grade": "EXACT",
+        "span_path_nullness": "EXACT",
+        "per_page_kind": "UNAVAILABLE_BOTH",
+        "script_map": "EXACT"
+      },
+      "comparable_fields": 6,
+      "differences": {},
+      "attribution": null
+    },
+    {
+      "document_id": "INE081A01020_2017",
+      "field_results": {
+        "located": "EXACT",
+        "start_page": "EXACT",
+        "end_page": "EXACT",
+        "grade": "EXACT",
+        "span_path_nullness": "EXACT",
+        "per_page_kind": "UNAVAILABLE_BOTH",
+        "script_map": "EXACT"
+      },
+      "comparable_fields": 6,
+      "differences": {},
+      "attribution": null
+    },
+    {
+      "document_id": "INE081A01020_2018",
+      "field_results": {
+        "located": "EXACT",
+        "start_page": "EXACT",
+        "end_page": "EXACT",
+        "grade": "EXACT",
+        "span_path_nullness": "EXACT",
+        "per_page_kind": "UNAVAILABLE_BOTH",
+        "script_map": "EXACT"
+      },
+      "comparable_fields": 6,
+      "differences": {},
+      "attribution": null
+    },
+    {
+      "document_id": "INE081A01020_2024",
+      "field_results": {
+        "located": "EXACT",
+        "start_page": "EXACT",
+        "end_page": "EXACT",
+        "grade": "EXACT",
+        "span_path_nullness": "EXACT",
+        "per_page_kind": "UNAVAILABLE_BOTH",
+        "script_map": "EXACT"
+      },
+      "comparable_fields": 6,
+      "differences": {},
+      "attribution": null
+    },
+    {
+      "document_id": "INE081A01020_2025",
+      "field_results": {
+        "located": "EXACT",
+        "start_page": "EXACT",
+        "end_page": "EXACT",
+        "grade": "EXACT",
+        "span_path_nullness": "EXACT",
+        "per_page_kind": "UNAVAILABLE_BOTH",
+        "script_map": "EXACT"
+      },
+      "comparable_fields": 6,
+      "differences": {},
+      "attribution": null
+    },
+    {
+      "document_id": "INE151A01013_2012",
+      "field_results": {
+        "located": "EXACT",
+        "start_page": "EXACT",
+        "end_page": "EXACT",
+        "grade": "EXACT",
+        "span_path_nullness": "EXACT",
+        "per_page_kind": "UNAVAILABLE_BOTH",
+        "script_map": "EXACT"
+      },
+      "comparable_fields": 6,
+      "differences": {},
+      "attribution": null
+    },
+    {
+      "document_id": "INE151A01013_2017",
+      "field_results": {
+        "located": "EXACT",
+        "start_page": "EXACT",
+        "end_page": "EXACT",
+        "grade": "EXACT",
+        "span_path_nullness": "EXACT",
+        "per_page_kind": "UNAVAILABLE_BOTH",
+        "script_map": "EXACT"
+      },
+      "comparable_fields": 6,
+      "differences": {},
+      "attribution": null
+    },
+    {
+      "document_id": "INE151A01013_2018",
+      "field_results": {
+        "located": "EXACT",
+        "start_page": "EXACT",
+        "end_page": "EXACT",
+        "grade": "EXACT",
+        "span_path_nullness": "EXACT",
+        "per_page_kind": "UNAVAILABLE_BOTH",
+        "script_map": "EXACT"
+      },
+      "comparable_fields": 6,
+      "differences": {},
+      "attribution": null
+    },
+    {
+      "document_id": "INE191H01014_2012",
+      "field_results": {
+        "located": "EXACT",
+        "start_page": "EXACT",
+        "end_page": "EXACT",
+        "grade": "EXACT",
+        "span_path_nullness": "EXACT",
+        "per_page_kind": "UNAVAILABLE_BOTH",
+        "script_map": "EXACT"
+      },
+      "comparable_fields": 6,
+      "differences": {},
+      "attribution": null
+    },
+    {
+      "document_id": "INE191H01014_2013",
+      "field_results": {
+        "located": "EXACT",
+        "start_page": "EXACT",
+        "end_page": "EXACT",
+        "grade": "EXACT",
+        "span_path_nullness": "EXACT",
+        "per_page_kind": "UNAVAILABLE_BOTH",
+        "script_map": "EXACT"
+      },
+      "comparable_fields": 6,
+      "differences": {},
+      "attribution": null
+    },
+    {
+      "document_id": "INE191H01014_2018",
+      "field_results": {
+        "located": "EXACT",
+        "start_page": "EXACT",
+        "end_page": "EXACT",
+        "grade": "EXACT",
+        "span_path_nullness": "EXACT",
+        "per_page_kind": "UNAVAILABLE_BOTH",
+        "script_map": "EXACT"
+      },
+      "comparable_fields": 6,
+      "differences": {},
+      "attribution": null
+    },
+    {
+      "document_id": "INE191H01014_2024",
+      "field_results": {
+        "located": "EXACT",
+        "start_page": "EXACT",
+        "end_page": "EXACT",
+        "grade": "EXACT",
+        "span_path_nullness": "EXACT",
+        "per_page_kind": "UNAVAILABLE_BOTH",
+        "script_map": "EXACT"
+      },
+      "comparable_fields": 6,
+      "differences": {},
+      "attribution": null
+    },
+    {
+      "document_id": "INE191H01014_2025",
+      "field_results": {
+        "located": "EXACT",
+        "start_page": "EXACT",
+        "end_page": "EXACT",
+        "grade": "EXACT",
+        "span_path_nullness": "EXACT",
+        "per_page_kind": "UNAVAILABLE_BOTH",
+        "script_map": "EXACT"
+      },
+      "comparable_fields": 6,
+      "differences": {},
+      "attribution": null
+    },
+    {
+      "document_id": "INE192B01031_2012",
+      "field_results": {
+        "located": "EXACT",
+        "start_page": "EXACT",
+        "end_page": "EXACT",
+        "grade": "EXACT",
+        "span_path_nullness": "EXACT",
+        "per_page_kind": "UNAVAILABLE_BOTH",
+        "script_map": "EXACT"
+      },
+      "comparable_fields": 6,
+      "differences": {},
+      "attribution": null
+    },
+    {
+      "document_id": "INE192B01031_2017",
+      "field_results": {
+        "located": "EXACT",
+        "start_page": "EXACT",
+        "end_page": "EXACT",
+        "grade": "EXACT",
+        "span_path_nullness": "EXACT",
+        "per_page_kind": "UNAVAILABLE_BOTH",
+        "script_map": "EXACT"
+      },
+      "comparable_fields": 6,
+      "differences": {},
+      "attribution": null
+    },
+    {
+      "document_id": "INE761H01022_2013",
+      "field_results": {
+        "located": "EXACT",
+        "start_page": "EXACT",
+        "end_page": "EXACT",
+        "grade": "EXACT",
+        "span_path_nullness": "EXACT",
+        "per_page_kind": "UNAVAILABLE_BOTH",
+        "script_map": "EXACT"
+      },
+      "comparable_fields": 6,
+      "differences": {},
+      "attribution": null
+    },
+    {
+      "document_id": "INE761H01022_2017",
+      "field_results": {
+        "located": "EXACT",
+        "start_page": "EXACT",
+        "end_page": "EXACT",
+        "grade": "EXACT",
+        "span_path_nullness": "EXACT",
+        "per_page_kind": "UNAVAILABLE_BOTH",
+        "script_map": "EXACT"
+      },
+      "comparable_fields": 6,
+      "differences": {},
+      "attribution": null
+    },
+    {
+      "document_id": "INE761H01022_2018",
+      "field_results": {
+        "located": "EXACT",
+        "start_page": "EXACT",
+        "end_page": "EXACT",
+        "grade": "EXACT",
+        "span_path_nullness": "EXACT",
+        "per_page_kind": "UNAVAILABLE_BOTH",
+        "script_map": "EXACT"
+      },
+      "comparable_fields": 6,
+      "differences": {},
+      "attribution": null
+    },
+    {
+      "document_id": "INE761H01022_2024",
+      "field_results": {
+        "located": "EXACT",
+        "start_page": "EXACT",
+        "end_page": "EXACT",
+        "grade": "EXACT",
+        "span_path_nullness": "EXACT",
+        "per_page_kind": "UNAVAILABLE_BOTH",
+        "script_map": "EXACT"
+      },
+      "comparable_fields": 6,
+      "differences": {},
+      "attribution": null
+    },
+    {
+      "document_id": "INE797F01020_2012",
+      "field_results": {
+        "located": "EXACT",
+        "start_page": "EXACT",
+        "end_page": "EXACT",
+        "grade": "EXACT",
+        "span_path_nullness": "EXACT",
+        "per_page_kind": "UNAVAILABLE_BOTH",
+        "script_map": "EXACT"
+      },
+      "comparable_fields": 6,
+      "differences": {},
+      "attribution": null
+    },
+    {
+      "document_id": "INE797F01020_2013",
+      "field_results": {
+        "located": "EXACT",
+        "start_page": "EXACT",
+        "end_page": "EXACT",
+        "grade": "EXACT",
+        "span_path_nullness": "EXACT",
+        "per_page_kind": "UNAVAILABLE_BOTH",
+        "script_map": "EXACT"
+      },
+      "comparable_fields": 6,
+      "differences": {},
+      "attribution": null
+    },
+    {
+      "document_id": "INE797F01020_2017",
+      "field_results": {
+        "located": "EXACT",
+        "start_page": "EXACT",
+        "end_page": "EXACT",
+        "grade": "EXACT",
+        "span_path_nullness": "EXACT",
+        "per_page_kind": "UNAVAILABLE_BOTH",
+        "script_map": "EXACT"
+      },
+      "comparable_fields": 6,
+      "differences": {},
+      "attribution": null
+    },
+    {
+      "document_id": "INE797F01020_2018",
+      "field_results": {
+        "located": "EXACT",
+        "start_page": "EXACT",
+        "end_page": "EXACT",
+        "grade": "EXACT",
+        "span_path_nullness": "EXACT",
+        "per_page_kind": "UNAVAILABLE_BOTH",
+        "script_map": "EXACT"
+      },
+      "comparable_fields": 6,
+      "differences": {},
+      "attribution": null
+    },
+    {
+      "document_id": "INE797F01020_2024",
+      "field_results": {
+        "located": "EXACT",
+        "start_page": "EXACT",
+        "end_page": "EXACT",
+        "grade": "EXACT",
+        "span_path_nullness": "EXACT",
+        "per_page_kind": "UNAVAILABLE_BOTH",
+        "script_map": "EXACT"
+      },
+      "comparable_fields": 6,
+      "differences": {},
+      "attribution": null
+    },
+    {
+      "document_id": "INE797F01020_2025",
+      "field_results": {
+        "located": "EXACT",
+        "start_page": "EXACT",
+        "end_page": "EXACT",
+        "grade": "EXACT",
+        "span_path_nullness": "EXACT",
+        "per_page_kind": "UNAVAILABLE_BOTH",
+        "script_map": "EXACT"
+      },
+      "comparable_fields": 6,
+      "differences": {},
+      "attribution": null
+    }
+  ]
+}
