@@ -114,7 +114,8 @@ def write_year(root: str, company_name: str, doc: StoredDoc,
                page_texts: dict[int, str] | None = None,
                mda_blocks: list[dict] | None = None,
                blob_path: str | None = None,
-               store_root: str | None = None) -> str:
+               store_root: str | None = None,
+               write_span: bool = True) -> str:
     d = year_dir(root, company_name, doc.company_id, doc.fy_end)
     os.makedirs(d, exist_ok=True)
     blob_path = blob_path or doc.path
@@ -127,11 +128,23 @@ def write_year(root: str, company_name: str, doc: StoredDoc,
             doc.path = rel_to_root(blob_path, store_root)
         except ValueError:
             pass
-    # mda.txt path, relative to the dataset root so the manifest and mda.json
-    # stay valid if the tree is moved. Set BEFORE mda.json is serialised.
-    result.path = rel_to_root(os.path.join(d, "mda.txt"), root)
-    with open(os.path.join(d, "mda.txt"), "w", encoding="utf-8") as fh:
-        fh.write(mda_text)
+    # P34: a quarantined row (write_span=False, e.g. WRONG_LANGUAGE_RISK) does
+    # not put its span text in the research corpus at all - mda.txt is not
+    # created, and result.path stays null so mda.json cannot point at prose
+    # that isn't there. mda.json / document.json are still written below with
+    # the full diagnosis (rule 3: failures produce rows, never absences).
+    if write_span:
+        # mda.txt path, relative to the dataset root so the manifest and
+        # mda.json stay valid if the tree is moved. Set BEFORE mda.json is
+        # serialised.
+        result.path = rel_to_root(os.path.join(d, "mda.txt"), root)
+        with open(os.path.join(d, "mda.txt"), "w", encoding="utf-8") as fh:
+            fh.write(mda_text)
+    else:
+        result.path = None
+        stale = os.path.join(d, "mda.txt")
+        if os.path.exists(stale):
+            os.remove(stale)
     # P18: tables and charts lifted out of the prose. Always written (even
     # empty) so a downstream reader can tell "no tables" from "not processed".
     with open(os.path.join(d, "mda_blocks.json"), "w", encoding="utf-8") as fh:
