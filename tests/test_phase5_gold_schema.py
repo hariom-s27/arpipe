@@ -143,3 +143,100 @@ def test_gold_schema_accepts_exactly_three_synthetic_records() -> None:
     assert len(SYNTHETIC_RECORDS) == 3
     for record in SYNTHETIC_RECORDS:
         validator.validate(record)
+
+
+# P5-A.1 additions below deliberately leave the v0 test and its three fixtures above
+# unchanged. The v0.1 records re-express the same synthetic cases under the new schema.
+V0_1_SCHEMA_PATH = REPO_ROOT / "docs" / "phase5" / "gold_schema_v0_1.json"
+
+
+def _v0_1_records() -> list[dict[str, object]]:
+    import copy
+
+    records = copy.deepcopy(SYNTHETIC_RECORDS)
+    for record in records:
+        record.pop("alternative_span_type")
+        provenance = record["structured_provenance"]
+        assert isinstance(provenance, dict)
+        provenance["viewer_page_convention"] = (
+            "VIEWER_PHYSICAL_1_BASED_STORED_ZERO_BASED"
+        )
+        provenance["search_usable"] = True
+        if record["presence_state"] == "PRESENT":
+            record["presence_reason_code"] = "BODY_QUALIFYING_TITLE"
+    return records
+
+
+def _v0_1_validator() -> Draft202012Validator:
+    schema = json.loads(V0_1_SCHEMA_PATH.read_text(encoding="utf-8"))
+    Draft202012Validator.check_schema(schema)
+    return Draft202012Validator(schema, format_checker=FormatChecker())
+
+
+def test_gold_schema_v0_1_accepts_three_reexpressed_synthetic_records() -> None:
+    records = _v0_1_records()
+    assert len(records) == 3
+    validator = _v0_1_validator()
+    for record in records:
+        validator.validate(record)
+
+
+def _must_fail_records() -> list[dict[str, object]]:
+    import copy
+
+    valid = _v0_1_records()
+    invalid: list[dict[str, object]] = []
+
+    present_without_span = copy.deepcopy(valid[0])
+    present_without_span["primary_span"] = None
+    invalid.append(present_without_span)
+
+    absent_with_span = copy.deepcopy(valid[0])
+    absent_with_span["presence_state"] = "ABSENT"
+    absent_with_span["presence_reason_code"] = "NOT_AN_ANNUAL_REPORT"
+    invalid.append(absent_with_span)
+
+    ambiguous_without_admissible_span = copy.deepcopy(valid[1])
+    ambiguous_without_admissible_span["admissible_spans"] = []
+    invalid.append(ambiguous_without_admissible_span)
+
+    raw_with_adjudication_field = copy.deepcopy(valid[0])
+    raw_with_adjudication_field["adjudication_reason"] = "not allowed on RAW"
+    invalid.append(raw_with_adjudication_field)
+
+    adjudicated_without_raw_refs = copy.deepcopy(valid[2])
+    adjudicated_without_raw_refs["structured_provenance"].pop(
+        "raw_record_sha256_refs"
+    )
+    invalid.append(adjudicated_without_raw_refs)
+
+    malformed_hash = copy.deepcopy(valid[0])
+    malformed_hash["source_pdf_sha256"] = "not-a-sha256"
+    invalid.append(malformed_hash)
+
+    malformed_timestamp = copy.deepcopy(valid[0])
+    malformed_timestamp["timestamps"]["started_at"] = "yesterday"
+    invalid.append(malformed_timestamp)
+
+    malformed_document_id = copy.deepcopy(valid[0])
+    malformed_document_id["document_id"] = "SYNTHETIC DOCUMENT/INVALID"
+    invalid.append(malformed_document_id)
+
+    annexure_without_identity = copy.deepcopy(valid[0])
+    annexure_without_identity["flags"] = ["annexure"]
+    annexure_without_identity["gap_pages"] = []
+    invalid.append(annexure_without_identity)
+
+    gap_without_noncontiguous_flag = copy.deepcopy(valid[0])
+    gap_without_noncontiguous_flag["flags"] = []
+    invalid.append(gap_without_noncontiguous_flag)
+
+    return invalid
+
+
+def test_gold_schema_v0_1_rejects_all_must_fail_records() -> None:
+    validator = _v0_1_validator()
+    records = _must_fail_records()
+    assert len(records) >= 6
+    for index, record in enumerate(records):
+        assert list(validator.iter_errors(record)), f"must-fail record {index} passed"

@@ -1,0 +1,192 @@
+# ARPipe Gold method v0.1 changelog
+
+**Document status:** `DRAFT_PENDING_PILOT`
+
+**Execution date:** 2026-09-27
+
+## 1. Identity and history
+
+**VERIFIED.** Repository: `https://github.com/hariom-s27/arpipe.git`; branch:
+`phase5-a1`; base: `e1432222451ed5cb7c455436545e06e204c2269f`; R1 runnable identity:
+`28a67b63d890d8407fa9738a71ae37ad63148b73`. The start-state `arpipe/` diff between R1
+and the base exited 0.
+
+**VERIFIED.** `origin/phase5-gold-method-v01` historically points to the v0 commit
+`e1432222451ed5cb7c455436545e06e204c2269f`: it was created on 2026-09-26 by pushing the
+v0 branch under the v01 alias, and PR #30 merged that v0 tree to main. It is not evidence
+that P5-A.1 ran. This task did not delete, retarget, rewrite, or force-push that branch.
+
+## 2. v0 preservation and v0.1 outputs
+
+**VERIFIED.** Before/after Git blob hashes are identical for every predecessor:
+
+| v0 path | before hash | after hash |
+|---|---|---|
+| `docs/phase5/GOLD_PROTOCOL_v0.md` | `8d37ff5298e7e5e90f3a0229d5dff6df64892ea0` | `8d37ff5298e7e5e90f3a0229d5dff6df64892ea0` |
+| `docs/phase5/SAP_v0.md` | `d4c6eb3c1d3877e65ed9b6dde2bdf8ee3eb01821` | `d4c6eb3c1d3877e65ed9b6dde2bdf8ee3eb01821` |
+| `docs/phase5/GOLD_SCHEMA_v0.md` | `6f0b7307f81e987cb84b533473ecd5b161d93243` | `6f0b7307f81e987cb84b533473ecd5b161d93243` |
+| `docs/phase5/gold_schema_v0.json` | `abf683c81510cbff532702526b028457850823e9` | `abf683c81510cbff532702526b028457850823e9` |
+| `docs/phase5/DOCUMENTGOLD_SELECTOR_v0.md` | `0aad500df19c2c7b458a07e6345f4cd4e78d6396` | `0aad500df19c2c7b458a07e6345f4cd4e78d6396` |
+| `docs/phase5/PILOT_PLAN_v0.md` | `f3ea14a59ff4a124e636c6fc4abee16e183e6349` | `f3ea14a59ff4a124e636c6fc4abee16e183e6349` |
+| `docs/decisions/C1_D1_LEVEL_C_AMENDMENT_DRAFT.md` | `ca45dff344629e7c08cb8a17d88c1093520deb22` | `ca45dff344629e7c08cb8a17d88c1093520deb22` |
+
+**VERIFIED.** Created: `GOLD_PROTOCOL_v0_1.md`, `SAP_v0_1.md`,
+`GOLD_SCHEMA_v0_1.md`, `gold_schema_v0_1.json`,
+`DOCUMENTGOLD_SELECTOR_v0_1.md`, `PILOT_PLAN_v0_1.md`,
+`CORPUS_FRAME_CHECK_v0.md`, this changelog,
+`docs/decisions/C1_D1_LEVEL_C_AMENDMENT_DRAFT_v0_1.md`,
+`tools/phase5/documentgold_selector.py`, and
+`tests/test_phase5_documentgold_selector.py`; extended the existing schema test and the
+single authorized allowlist.
+
+## 3. Attachment 1 crosswalk
+
+| Item | Status | File(s) | Reason / result |
+|---|---|---|---|
+| M1 | `APPLIED` | SAP, amendment | **PROPOSED.** Explicit `NOT_LOCATED`, `NO_OUTPUT`, full 2×3 and failure-penalized 2×2. |
+| M2 | `APPLIED` | SAP, amendment | **SOURCED.** Issuer-weighted mean added with Q6 quotation and zero-eligible count. |
+| M3 | `APPLIED` | Protocol, schema, pilot | **PROPOSED.** Viewer 1-based entry; tool stores/scored 0-based. |
+| M4 | `APPLIED` | Protocol, pilot | **PROPOSED.** Annotator title list separated from method-owner evidence ledger. |
+| M5 | `APPLIED` | Pilot, frame check | **DERIVED.** Pilot pool is 32 non-DEVELOPMENT FIT docs / 16 issuers. |
+| N1 | `APPLIED` | Protocol, frame check | **PROPOSED.** Replaced by correction C1; prevalence remains unknown. |
+| N2 | `APPLIED` | Pilot | **PROPOSED.** DEVELOPMENT counts cannot be represented as FIT prevalence. |
+| N3 | `APPLIED` | Protocol, SAP, schema | **PROPOSED.** Added `NOT_AN_ANNUAL_REPORT`. |
+| N4 | `APPLIED` | SAP | **PROPOSED.** Phase 7 FIT/VALIDATION; HOLDOUT Gold inside Phase 14. |
+| N5 | `APPLIED` | Protocol, SAP | **PROPOSED.** A1 declares FIT Gold role, unsigned. |
+| N6 | `APPLIED` | Protocol, SAP | **PROPOSED.** A2 declares VALIDATION role, unsigned. |
+| P1 | `APPLIED` | Protocol, schema | **PROPOSED.** PRESENT reasons reduced to basis; structures use flags. |
+| P2 | `APPLIED` | Protocol | **PROPOSED.** `unclear_start` requires two plausible starts. |
+| P3 | `APPLIED` | Protocol | **PROPOSED.** Next sibling is same/higher level; two examples added. |
+| P4 | `APPLIED` | Protocol | **PROPOSED.** Added new ABSENT reason. |
+| P5 | `APPLIED` | Protocol | **PROPOSED.** A-priori bilingual note/training option. |
+| P6 | `APPLIED` | Protocol | **PROPOSED.** Title/evidence separation and exclusions. |
+| P7 | `APPLIED` | Protocol, schema | **PROPOSED.** Search cannot establish absence; usability logged. |
+| P8 | `APPLIED` | Protocol, SAP | **PROPOSED.** Author-memory limit and B-only sensitivity. |
+| P9 | `APPLIED` | Protocol, schema | **PROPOSED.** Own-record supersession only before comparison. |
+| P10 | `APPLIED` | Protocol | **PROPOSED.** Viewer/version/physical-page setting due at freeze. |
+| S1 | `APPLIED` | SAP | **PROPOSED.** 2×3 plus collapsed 2×2. |
+| S2 | `APPLIED` | SAP | **PROPOSED.** Issuer-weighted sensitivity. |
+| S3 | `APPLIED` | SAP | **PROPOSED.** B-only raw-Gold sensitivity. |
+| S4 | `APPLIED` | SAP | **PROPOSED.** PABAK accompanies kappa and count table. |
+| S5 | `APPLIED` | SAP | **PROPOSED.** Presence-unresolvable/NOT_LOCATED optimistic value 1. |
+| S6 | `APPLIED` | SAP | **PROPOSED.** Non-contiguous hull scoring stated. |
+| S7 | `APPLIED` | SAP | **PROPOSED.** Alternative-overlap descriptive count. |
+| S8 | `APPLIED` | SAP | **PROPOSED.** LODR/Companies Act rationale and FY check. |
+| S9 | `APPLIED` | SAP | **PROPOSED.** Development-partition use section. |
+| G1 | `APPLIED` | JSON schema, schema doc | **PROPOSED.** Alternatives are typed objects. |
+| G2 | `APPLIED` | schema test | **VERIFIED.** Ten must-fail synthetic records. |
+| G3 | `APPLIED` | JSON schema, schema test | **VERIFIED.** FormatChecker lacked date-time; explicit pattern added. |
+| G4 | `APPLIED` | JSON schema | **PROPOSED.** Gap/hull, annexure/identity, embedded/parent links. |
+| G5 | `APPLIED` | JSON schema | **PROPOSED.** Selector-compatible document-ID pattern. |
+| G6 | `APPLIED` | JSON schema | **PROPOSED.** Required viewer convention and optional 1-based audit fields. |
+| G7 | `APPLIED` | JSON schema | **PROPOSED.** Added absent reason enum. |
+| D1 | `APPLIED` | selector doc/code | **PROPOSED.** 32-byte salt commit–reveal. |
+| D2 | `APPLIED` | selector doc/code, SAP | **PROPOSED.** Parameter supports 1/2; A3 remains unsigned. |
+| D3 | `APPLIED` | selector code/test, guard | **VERIFIED.** Pure implementation, invented roster only. |
+| T1 | `APPLIED` | pilot | **DERIVED.** 32-doc non-DEVELOPMENT frame. |
+| T2 | `APPLIED` | pilot | **PROPOSED.** Corrected by C2: reconciled T0.1 CANDIDATE map; bilingual retained. |
+| T3 | `APPLIED` | pilot | **PROPOSED.** P5-T tool-build prerequisite. |
+| T4 | `APPLIED` | pilot | **PROPOSED.** Soft revision/block triggers predeclared. |
+| T5 | `APPLIED` | pilot | **PROPOSED.** Workload range and timing replacement. |
+| C1-D1 fix 1 | `APPLIED` | amendment | **PROPOSED.** Presence semantics and NOT_LOCATED. |
+| C1-D1 fix 2 | `APPLIED` | amendment | **PROPOSED.** Issuer weighting. |
+| C1-D1 fix 3 | `APPLIED` | amendment | **PROPOSED.** “If no row…” wording. |
+| C1-D1 fix 4 | `APPLIED` | amendment | **PROPOSED.** Source line numbers only in annex. |
+| C1-D1 fix 5 | `APPLIED` | amendment | **PROPOSED.** No evidence labels inside signing block. |
+| K1 validity ordering | `APPLIED` | SAP/amendment | **PROPOSED.** Duplicate→identity→quarantine→boundaries; no repair. |
+| K2 inclusive IoU | `APPLIED` | SAP/amendment | **PROPOSED.** Formula and worked value retained. |
+| K3 type-7 quantiles | `APPLIED` | SAP | **PROPOSED.** Definition retained. |
+| K4 rerun rule | `APPLIED` | SAP | **SOURCED.** Any output byte defeats no-output condition. |
+| K5 adjudicator barrier | `APPLIED` | Protocol | **SOURCED.** Ratified barrier preserved. |
+| K6 selector normalization/domain | `APPLIED` | selector | **PROPOSED.** Normalization/rejections retained; salted domain v2. |
+| K7 census/open interval | `APPLIED` | SAP | **PROPOSED.** Census retained; method remains open. |
+| K8 no invented titles/blindness | `APPLIED` | Protocol | **VERIFIED.** No title or prohibited heading source consulted. |
+
+**VERIFIED.** Review items not applied: none. No item was rejected as wrong after applying
+the prompt's explicit C1–C12 corrections.
+
+## 4. Attachment 2 crosswalk
+
+| Item | Status | File(s) | Result |
+|---|---|---|---|
+| A-M1 | `APPLIED` | SAP/amendment | **VERIFIED.** Existing model fields cited at lines 176 and 194–195. |
+| A-M2 | `APPLIED` | SAP/amendment | **SOURCED.** Q6 quote and issuer mean. |
+| A-M3 | `APPLIED` | Protocol/schema/pilot | **PROPOSED.** 1-based input, 0-based storage. |
+| A-M4 | `APPLIED` | Protocol | **PROPOSED.** Annotator list only; evidence ledger excluded. |
+| A-M5 | `APPLIED` | Pilot/frame check | **DERIVED.** 32/16 frame; PILOT and RETEST specified, not drawn. |
+| B-N1 | `APPLIED` | Protocol | **PROPOSED.** Applied as corrected C1, not attachment's false premise. |
+| B-N3 | `APPLIED` | Protocol/SAP/schema | **PROPOSED.** New reason present. |
+| B-N5/N6 | `APPLIED` | Protocol/SAP | **PROPOSED.** A1–A5 unsigned lines. |
+| C item fixes | `APPLIED` | package | **VERIFIED.** P1–P10, S3–S9, G1–G7, D1–D3, T2–T5, amendment 1–5 implemented. |
+| D(a) byte check | `APPLIED` | frame check | **VERIFIED.** 32/32 exist and hash-match; byte hashing only. |
+| D(b) frame candidates | `APPLIED` | frame check | **DERIVED.** Two FIT STUB candidates; no HOLDOUT rows. |
+| E allowlist | `APPLIED` | semantic guard | **VERIFIED.** Exactly selector module and test added. |
+| F versioning | `APPLIED` | package | **VERIFIED.** v0 preserved; v0.1 names/statuses used. |
+
+## 5. Prompt corrections C1–C12
+
+| Correction | Status | Override recorded |
+|---|---|---|
+| C1 | `APPLIED` | **PROPOSED.** Overrides both attachments' “no Devanagari” claim with unknown prevalence, IDBI evidence, exact Rule-3 wording. |
+| C2 | `APPLIED` | **PROPOSED.** Overrides T2 source/drop-bilingual text; uses reconciled CANDIDATE map and keeps bilingual/legacy tokens. |
+| C3 | `APPLIED` | **DERIVED.** Exact 32-doc/16-issuer roster; disjoint slices only specified. |
+| C4 | `APPLIED` | **VERIFIED.** Restricted metadata read and hash-only PDF check; two candidates recorded. |
+| C5 | `APPLIED` | **SOURCED.** Exact provenance wording, intake gate, observable conditions, added exclusions. |
+| C6 | `APPLIED` | **PROPOSED.** Open interval, C1-D1, A1–A5, viewer pin, exposure inventory recorded. |
+| C7 | `APPLIED` | **VERIFIED.** `span` and `mda_not_located` existing representation cited. |
+| C8 | `APPLIED` | **VERIFIED.** Original v0 test retained; v0.1 valid/negative tests added; explicit timestamp pattern route. |
+| C9 | `APPLIED` | **VERIFIED.** Pure salted selector; synthetic test only; no real draw/salt. |
+| C10 | `APPLIED` | **VERIFIED.** One guard edit with two exact patterns and required comment. |
+| C11 | `APPLIED` | **SOURCED.** All Q7 edge rules preserved with P1–P3 operational refinements. |
+| C12 | `APPLIED` | **SOURCED.** SAP copies the ratified disclosure byte-for-byte and never uses the prohibited shorthand. |
+
+## 6. Governance preservation and open decisions
+
+| Decision | Preservation |
+|---|---|
+| Q1b | **SOURCED.** Development stays FIT/VALIDATION; no post-freeze system change. |
+| Q2 | **SOURCED.** HOLDOUT headline; VALIDATION development check; FIT rules/pilot. |
+| Q3 | **SOURCED.** Separate annotator/reviewer/seal holder/adjudicator roles. |
+| Q4/B6 | **SOURCED.** Full HOLDOUT double annotation, VALIDATION overlap, immutable raw records. |
+| Q5/B8 | **SOURCED.** Prediction-first seal, blind Gold, one score, no-output rerun only. |
+| Q6 | **SOURCED.** Failure-inclusive IoU, separate presence, ambiguity sensitivity. |
+| Q7 | **SOURCED.** Edge rules and stored/scored 0-based physical pages. |
+| Q8 | **SOURCED.** Census, issuer distribution, leave-one-out, interval sensitivity only. |
+| Q9 | **SOURCED.** Exact exposure wording; no historically-clean claim. |
+| Q10/B1 | **SOURCED.** Climate recipe/C4 deferred; broken-text→OCR and diagnostic legacy preserved. |
+| CC-4 | **SOURCED.** Fixed primary and secondary endpoint family preserved. |
+
+**PROPOSED.** Open decisions: (a) interval method—author before HOLDOUT scoring, not a
+PILOT blocker; (b) C1-D1 signature—author at method freeze; (c) A1–A5—author at method
+freeze/before selector commitment; (d) viewer name/version/physical-page setting—method
+freeze; (e) exposure inventory—before publication, not P5-A.1 or PILOT. AUTHOR and DATE
+remain blank where required.
+
+## 7. Blindness, tests, and frozen paths
+
+**VERIFIED.** Prohibited paths listed in the run prompt were not opened or searched. No
+HOLDOUT row was read. The only PDF operation was SHA-256 byte hashing of the 32 permitted
+non-DEVELOPMENT FIT files. No P5-B artifact was copied or inspected.
+
+**VERIFIED.** Baseline full suite: `412 passed, 17 skipped, 3 xfailed, 0 failed`.
+Focused executable checks after implementation: `14 passed`. Final full suite:
+`425 passed, 17 skipped, 3 xfailed, 0 failed, 0 unexpected xpass`.
+
+**VERIFIED.** Changed paths are limited to the required v0.1 files, the new pure selector
+and its synthetic test, additions to the existing schema test, and the exact semantic-
+guard admission. Frozen `arpipe/`, `dataset/`, `configs/`, `artifacts/t0_4/`,
+`tools/t0_4/`, `tests/t0_4/`, governance, `conftest.py`, and requirements are unchanged.
+
+**VERIFIED.** `python tools/check_doc_hashes.py`: 10 claims checked, 0 unallowed
+failures. `git diff --check`: clean. End-state R1 `arpipe/` comparison: exit 0. Frozen-
+path comparison: exit 0. Recomputed v0 blob hashes equal the before values in section 2.
+
+## 8. Non-actions and final identity handling
+
+**VERIFIED.** No annotation, Gold creation, PILOT/RETEST, selector draw, salt generation,
+P5-B work, VALIDATION work, HOLDOUT work, scoring, C1 result, or C4 work occurred. No new
+governance ledger or snapshot was created.
+
+**PROPOSED.** To preserve the mandated one-commit history, the final commit SHA, push
+result, and remote SHA are reported in the execution report after the commit/push rather
+than added here through a second commit.
