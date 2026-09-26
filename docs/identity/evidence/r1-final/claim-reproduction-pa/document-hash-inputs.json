@@ -1,0 +1,204 @@
+{
+  "EXECUTION_COMMIT": "28a67b63d890d8407fa9738a71ae37ad63148b73",
+  "PUBLICATION_CLASSIFICATION": "PUBLIC_SAFE",
+  "allowed_failure": "A mismatch may be ALLOWED-FAIL if its key is in the allowlist; this execution used an empty allowlist and had none.",
+  "allowlist_exceptions": [],
+  "derived_entry_manifest_sha256": "bc313386f72e6570a3e6f96476777a67124412f98e48434575c10291dcb7892c",
+  "manifest_recipe": "SHA-256 of UTF-8 json.dumps(recognized_manifest_entries, sort_keys=True, separators=(',', ':')); no trailing newline",
+  "one_check": "One recognized Markdown table row with Verified Git SHA-256, Source commit and Source path columns, a full 40-hex commit and 64-hex hash.",
+  "pass": "SHA-256 of exact git cat-file blob bytes at the cited commit:path equals the recorded full SHA-256.",
+  "recognized_manifest_entries": [
+    {
+      "document": "docs/experiments/PHASE2.1_PROVENANCE_CORRECTIONS.md",
+      "git_blob_bytes": 9558,
+      "git_blob_sha256": "016e720245577833e8313bb2ec4905b1fb47ba77d15916706b702df4ed1bcc2a",
+      "line_number": 63,
+      "matches": true,
+      "recorded_sha256": "016e720245577833e8313bb2ec4905b1fb47ba77d15916706b702df4ed1bcc2a",
+      "source_commit": "63e3c047a09044d9c3bd9c61e3b56a01612f3d11",
+      "source_path": "dataset/corpus_freeze/issuer_split.csv"
+    },
+    {
+      "document": "docs/experiments/PHASE2.1_PROVENANCE_CORRECTIONS.md",
+      "git_blob_bytes": 5295239,
+      "git_blob_sha256": "5bffb19654fe9b868e21ae8eab13543b3f46f9e5753bcc4563f98305fa781dff",
+      "line_number": 64,
+      "matches": true,
+      "recorded_sha256": "5bffb19654fe9b868e21ae8eab13543b3f46f9e5753bcc4563f98305fa781dff",
+      "source_commit": "63e3c047a09044d9c3bd9c61e3b56a01612f3d11",
+      "source_path": "dataset/corpus_freeze/page_profile.csv"
+    },
+    {
+      "document": "docs/experiments/PHASE2.1_PROVENANCE_CORRECTIONS.md",
+      "git_blob_bytes": 3041,
+      "git_blob_sha256": "65ed1a7e189b2d564ca01fe63246652e7b6a2c94d9e23083eabbe4e5da08bc77",
+      "line_number": 65,
+      "matches": true,
+      "recorded_sha256": "65ed1a7e189b2d564ca01fe63246652e7b6a2c94d9e23083eabbe4e5da08bc77",
+      "source_commit": "63e3c047a09044d9c3bd9c61e3b56a01612f3d11",
+      "source_path": "dataset/corpus_gap_audit/audit_config.json"
+    },
+    {
+      "document": "docs/experiments/PHASE2.1_PROVENANCE_CORRECTIONS.md",
+      "git_blob_bytes": 78351,
+      "git_blob_sha256": "f6d426819daea219f551fc610646d836a702ef771e3d513a36b33941c71ddd5d",
+      "line_number": 66,
+      "matches": true,
+      "recorded_sha256": "f6d426819daea219f551fc610646d836a702ef771e3d513a36b33941c71ddd5d",
+      "source_commit": "63e3c047a09044d9c3bd9c61e3b56a01612f3d11",
+      "source_path": "dataset/corpus_gap_audit/gap_audit_document.csv"
+    },
+    {
+      "document": "docs/experiments/PHASE2.1_PROVENANCE_CORRECTIONS.md",
+      "git_blob_bytes": 5236341,
+      "git_blob_sha256": "651bafe46c4c139edd39399ef45b89a100114ae04c69d0c278cc11822ddd572b",
+      "line_number": 67,
+      "matches": true,
+      "recorded_sha256": "651bafe46c4c139edd39399ef45b89a100114ae04c69d0c278cc11822ddd572b",
+      "source_commit": "63e3c047a09044d9c3bd9c61e3b56a01612f3d11",
+      "source_path": "dataset/corpus_gap_audit/condition_page_map.csv"
+    },
+    {
+      "document": "docs/experiments/PHASE2.1_PROVENANCE_CORRECTIONS.md",
+      "git_blob_bytes": 2379009,
+      "git_blob_sha256": "8402dbf5a1d06bcde5801d635c398341ef2a77774f3c92a286df09602b502a3c",
+      "line_number": 68,
+      "matches": true,
+      "recorded_sha256": "8402dbf5a1d06bcde5801d635c398341ef2a77774f3c92a286df09602b502a3c",
+      "source_commit": "63e3c047a09044d9c3bd9c61e3b56a01612f3d11",
+      "source_path": "dataset/corpus_gap_audit/table_candidates.csv"
+    },
+    {
+      "document": "docs/experiments/PHASE2.1_PROVENANCE_CORRECTIONS.md",
+      "git_blob_bytes": 246,
+      "git_blob_sha256": "f326c73a3001799b2f8cbeeca25e031da5bdad2e0b4aa6bcfba70295386eec76",
+      "line_number": 69,
+      "matches": true,
+      "recorded_sha256": "f326c73a3001799b2f8cbeeca25e031da5bdad2e0b4aa6bcfba70295386eec76",
+      "source_commit": "63e3c047a09044d9c3bd9c61e3b56a01612f3d11",
+      "source_path": "dataset/corpus_gap_audit/language_candidates.csv"
+    },
+    {
+      "document": "docs/experiments/PHASE2.1_PROVENANCE_CORRECTIONS.md",
+      "git_blob_bytes": 27304,
+      "git_blob_sha256": "d97a450a1bc336aeddc1789339ffce4fc391d19cb1da8bec5f9f53a4229e4989",
+      "line_number": 70,
+      "matches": true,
+      "recorded_sha256": "d97a450a1bc336aeddc1789339ffce4fc391d19cb1da8bec5f9f53a4229e4989",
+      "source_commit": "63e3c047a09044d9c3bd9c61e3b56a01612f3d11",
+      "source_path": "dataset/corpus_gap_audit/manual_review_manifest.csv"
+    },
+    {
+      "document": "docs/experiments/PHASE2.1_PROVENANCE_CORRECTIONS.md",
+      "git_blob_bytes": 34654,
+      "git_blob_sha256": "7d479a5a6fd7c465766733db8693afc25f3e423d3d76faefa31ba4291c2dcd32",
+      "line_number": 71,
+      "matches": true,
+      "recorded_sha256": "7d479a5a6fd7c465766733db8693afc25f3e423d3d76faefa31ba4291c2dcd32",
+      "source_commit": "63e3c047a09044d9c3bd9c61e3b56a01612f3d11",
+      "source_path": "dataset/corpus_gap_audit/manual_review_results.csv"
+    },
+    {
+      "document": "docs/experiments/PHASE2.1_PROVENANCE_CORRECTIONS.md",
+      "git_blob_bytes": 4332,
+      "git_blob_sha256": "aa5252e21b899227c84fec088998b4192d781752a6975b6938652ec1bbaaedb8",
+      "line_number": 72,
+      "matches": true,
+      "recorded_sha256": "aa5252e21b899227c84fec088998b4192d781752a6975b6938652ec1bbaaedb8",
+      "source_commit": "63e3c047a09044d9c3bd9c61e3b56a01612f3d11",
+      "source_path": "dataset/corpus_gap_audit/toc_offset_candidates.csv"
+    }
+  ],
+  "scanned_documents": [
+    {
+      "INPUT_ARTIFACT_SOURCE_COMMIT": "28a67b63d890d8407fa9738a71ae37ad63148b73",
+      "bytes": 19682,
+      "git_blob_sha256": "1ef4d8f6f3ebe61a65be70dc08cb80ad23713be3e221c13bc02ba72e89e5be11",
+      "git_path": "docs/experiments/PHASE2.1_B1_B8_DECISION_REGISTER.md",
+      "last_change_commit": "ebf9e11b936687d4ab2a4f53058ef458cd2b68a2",
+      "path": "D:\\sem_iitk\\sem9\\thesis\\sep_week1\\r1-final\\docs\\experiments\\PHASE2.1_B1_B8_DECISION_REGISTER.md",
+      "recognized_hash_claims": 0,
+      "sha256": "1ef4d8f6f3ebe61a65be70dc08cb80ad23713be3e221c13bc02ba72e89e5be11",
+      "working_bytes_equal_git_blob": true
+    },
+    {
+      "INPUT_ARTIFACT_SOURCE_COMMIT": "28a67b63d890d8407fa9738a71ae37ad63148b73",
+      "bytes": 11452,
+      "git_blob_sha256": "9d03f40ad7a371a0a0191ffacc2b2a76120cd91d38a44fa1c96354921332f4fe",
+      "git_path": "docs/experiments/PHASE2.1_CHANGE_LEDGER.md",
+      "last_change_commit": "af89939b603217c05b78b0a1dc9789204b70ab17",
+      "path": "D:\\sem_iitk\\sem9\\thesis\\sep_week1\\r1-final\\docs\\experiments\\PHASE2.1_CHANGE_LEDGER.md",
+      "recognized_hash_claims": 0,
+      "sha256": "9d03f40ad7a371a0a0191ffacc2b2a76120cd91d38a44fa1c96354921332f4fe",
+      "working_bytes_equal_git_blob": true
+    },
+    {
+      "INPUT_ARTIFACT_SOURCE_COMMIT": "28a67b63d890d8407fa9738a71ae37ad63148b73",
+      "bytes": 3562,
+      "git_blob_sha256": "fbb4e5b993068e555b52533aca363ef43e632be4f0388fb62a32ee11e80a5ae3",
+      "git_path": "docs/experiments/PHASE2.1_CLOSEOUT.md",
+      "last_change_commit": "1b64a33b5725dd8e7f273f35f60e9cda589fddf8",
+      "path": "D:\\sem_iitk\\sem9\\thesis\\sep_week1\\r1-final\\docs\\experiments\\PHASE2.1_CLOSEOUT.md",
+      "recognized_hash_claims": 0,
+      "sha256": "fbb4e5b993068e555b52533aca363ef43e632be4f0388fb62a32ee11e80a5ae3",
+      "working_bytes_equal_git_blob": true
+    },
+    {
+      "INPUT_ARTIFACT_SOURCE_COMMIT": "28a67b63d890d8407fa9738a71ae37ad63148b73",
+      "bytes": 18306,
+      "git_blob_sha256": "f083e699df12d38e732757823f689609515760b223997e9bcb7d31d0e18c8f9e",
+      "git_path": "docs/experiments/PHASE2.1_FOUNDATION_NORMALIZATION.md",
+      "last_change_commit": "a45a6406b9f30e0822d847c2df289652f6ca83b8",
+      "path": "D:\\sem_iitk\\sem9\\thesis\\sep_week1\\r1-final\\docs\\experiments\\PHASE2.1_FOUNDATION_NORMALIZATION.md",
+      "recognized_hash_claims": 0,
+      "sha256": "f083e699df12d38e732757823f689609515760b223997e9bcb7d31d0e18c8f9e",
+      "working_bytes_equal_git_blob": true
+    },
+    {
+      "INPUT_ARTIFACT_SOURCE_COMMIT": "28a67b63d890d8407fa9738a71ae37ad63148b73",
+      "bytes": 28494,
+      "git_blob_sha256": "671e4ba50d804d23f3548b2cb8c855779366b746466a79fcbaa2e6ebce317a3f",
+      "git_path": "docs/experiments/PHASE2.1_FOUNDATION_SEMANTIC_MAP.md",
+      "last_change_commit": "813ba5badd75021263f0433d23ff217f6d764719",
+      "path": "D:\\sem_iitk\\sem9\\thesis\\sep_week1\\r1-final\\docs\\experiments\\PHASE2.1_FOUNDATION_SEMANTIC_MAP.md",
+      "recognized_hash_claims": 0,
+      "sha256": "671e4ba50d804d23f3548b2cb8c855779366b746466a79fcbaa2e6ebce317a3f",
+      "working_bytes_equal_git_blob": true
+    },
+    {
+      "INPUT_ARTIFACT_SOURCE_COMMIT": "28a67b63d890d8407fa9738a71ae37ad63148b73",
+      "bytes": 18032,
+      "git_blob_sha256": "7634e5f9736a5807ff01c68cb12ad007cbd53358b11ec76c6f2e82cd61539a36",
+      "git_path": "docs/experiments/PHASE2.1_PROVENANCE_CORRECTIONS.md",
+      "last_change_commit": "af89939b603217c05b78b0a1dc9789204b70ab17",
+      "path": "D:\\sem_iitk\\sem9\\thesis\\sep_week1\\r1-final\\docs\\experiments\\PHASE2.1_PROVENANCE_CORRECTIONS.md",
+      "recognized_hash_claims": 10,
+      "sha256": "7634e5f9736a5807ff01c68cb12ad007cbd53358b11ec76c6f2e82cd61539a36",
+      "working_bytes_equal_git_blob": true
+    }
+  ],
+  "scope": "Ten hash assertions in one provenance document, not ten PDFs. This is documentation-to-Git-blob integrity checking, not a historical provenance proof or current corpus validation.",
+  "scripts_and_allowlist": [
+    {
+      "INPUT_ARTIFACT_SOURCE_COMMIT": "28a67b63d890d8407fa9738a71ae37ad63148b73",
+      "bytes": 6642,
+      "git_blob_sha256": "75fae87742838632ef6770183127626138f9363c4ec1bfeca8069eb56d451996",
+      "git_path": "tools/check_doc_hashes.py",
+      "last_change_commit": "24520ce623037fde7c3b0a9d0d4e5f8fc5618831",
+      "path": "D:\\sem_iitk\\sem9\\thesis\\sep_week1\\r1-final\\tools\\check_doc_hashes.py",
+      "sha256": "75fae87742838632ef6770183127626138f9363c4ec1bfeca8069eb56d451996",
+      "working_bytes_equal_git_blob": true
+    },
+    {
+      "INPUT_ARTIFACT_SOURCE_COMMIT": "28a67b63d890d8407fa9738a71ae37ad63148b73",
+      "bytes": 347,
+      "git_blob_sha256": "99856b9961248da643ab2818d6b1fa48044472bf1e5902cf353644197f21a0ec",
+      "git_path": "tools/check_doc_hashes_allowlist.json",
+      "last_change_commit": "24520ce623037fde7c3b0a9d0d4e5f8fc5618831",
+      "path": "D:\\sem_iitk\\sem9\\thesis\\sep_week1\\r1-final\\tools\\check_doc_hashes_allowlist.json",
+      "sha256": "99856b9961248da643ab2818d6b1fa48044472bf1e5902cf353644197f21a0ec",
+      "working_bytes_equal_git_blob": true
+    }
+  ],
+  "unallowed_failure": "A mismatching or unreadable cited blob whose document::source_commit::source_path key is absent from the allowlist."
+}

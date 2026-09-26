@@ -1,0 +1,24 @@
+{
+  "PUBLICATION_CLASSIFICATION": "PUBLIC_SAFE",
+  "archive_operation_performed": false,
+  "limitations": [
+    "Private original captures remain local, not durable.",
+    "Raw capture environment source hash was of normalized text; exact-byte hash is separately corrected in public metadata without modifying original captures or results."
+  ],
+  "new_worktree_created": false,
+  "original_private_captures_retained_locally": true,
+  "pytest_temporary_directories_removed": true,
+  "restored_HEAD": "2a42b97bdc09297eba92ae6a46cd6e7365a0e54a",
+  "restored_status_porcelain": "",
+  "review": {
+    "all_claim_artifact_references_hash_verified": true,
+    "corpus_or_fixture_pdfs_copied": false,
+    "private_transcript_contents_copied": false,
+    "production_paths_unchanged": true,
+    "public_content_inspection": "Complete streams, nonpass details, XML structures/test records, JSON metadata and helper source inspected. Only reproduction metadata, repository code identifiers, commands and relevant paths/versions are published.",
+    "public_hostname_occurrences": 0,
+    "xml_counts_independently_reparsed": true
+  },
+  "timestamp_utc": "2026-09-26T00:49:05.433701+00:00",
+  "worktree_restored_to_branch": "r1-final"
+}
