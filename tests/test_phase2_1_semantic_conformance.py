@@ -75,8 +75,12 @@ ALLOWED_PHASE2_1_PATTERNS = [
     re.compile(r"^tests/test_import_smoke\.py$"),  # A5; R1 section 8.6.
     re.compile(r"^docs/phase3/"),  # A5: directory absent at BASE_COMMIT.
     re.compile(r"^docs/phase4/"),  # A5: directory absent at BASE_COMMIT.
+    # Phase 5 method protocols are the normal mechanism authorized by
+    # docs/governance/CURRENT_DECISIONS.md decision 0c.
+    re.compile(r"^docs/phase5/"),
     re.compile(r"^docs/decisions/"),  # A5: directory absent at BASE_COMMIT.
     re.compile(r"^docs/identity/"),  # A5: directory absent at BASE_COMMIT.
+    re.compile(r"^tests/test_phase5_gold_schema\.py$"),  # Phase 5 synthetic schema check.
     # Exact governance-closeout paths; no directory-wide exception.
     *(re.compile(rf"^{re.escape(path)}$") for path in GOVERNANCE_CLOSEOUT_ADMITTED_PATHS),
     # T0.4 Amendment 01: exact paths only.

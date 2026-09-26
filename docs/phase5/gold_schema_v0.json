@@ -1,0 +1,334 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://arpipe.local/schemas/gold_schema_v0.json",
+  "title": "ARPipe DocumentGold raw and adjudicated record v0",
+  "description": "DRAFT_PENDING_PILOT",
+  "oneOf": [
+    {"$ref": "#/$defs/rawRecord"},
+    {"$ref": "#/$defs/adjudicatedRecord"}
+  ],
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "page": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "span": {
+      "type": "object",
+      "required": ["start_page", "end_page"],
+      "properties": {
+        "start_page": {"$ref": "#/$defs/page"},
+        "end_page": {"$ref": "#/$defs/page"}
+      },
+      "additionalProperties": false
+    },
+    "commonRecord": {
+      "type": "object",
+      "required": [
+        "record_type",
+        "document_id",
+        "source_pdf_sha256",
+        "annotator_role",
+        "presence_state",
+        "presence_reason_code",
+        "primary_span",
+        "alternative_spans",
+        "alternative_span_type",
+        "gap_pages",
+        "flags",
+        "ambiguity_code",
+        "admissible_spans",
+        "parent_section",
+        "annexure_identity",
+        "boundary_evidence",
+        "timestamps",
+        "aids_used",
+        "structured_provenance",
+        "protocol_version_hash"
+      ],
+      "properties": {
+        "record_type": {"enum": ["RAW", "ADJUDICATED"]},
+        "document_id": {"type": "string", "minLength": 1, "maxLength": 256},
+        "source_pdf_sha256": {"$ref": "#/$defs/sha256"},
+        "annotator_role": {
+          "enum": ["ANNOTATOR_A", "ANNOTATOR_B", "ADJUDICATED_RECORD"]
+        },
+        "presence_state": {"enum": ["PRESENT", "ABSENT", "AMBIGUOUS"]},
+        "presence_reason_code": {
+          "enum": [
+            "BODY_QUALIFYING_TITLE",
+            "MULTIPLE_SPANS_PRIMARY_SELECTED",
+            "BILINGUAL_ENGLISH_PRIMARY",
+            "NONCONTIGUOUS_HULL",
+            "EMBEDDED_SUBSECTION",
+            "ANNEXURE",
+            "UNCLEAR_START_RULE_APPLIED",
+            "UNCLEAR_END_MIXED_PAGE_INCLUDED",
+            "CONDITIONAL_TITLE_CONTEXT_MET",
+            "NO_QUALIFYING_BODY_SECTION",
+            "TOC_ONLY",
+            "POINTER_ONLY",
+            "CONFUSABLE_SECTION_ONLY",
+            "PRESENCE_UNRESOLVABLE",
+            "START_UNRESOLVABLE",
+            "END_UNRESOLVABLE",
+            "SPAN_UNRESOLVABLE",
+            "TITLE_CONTEXT_UNRESOLVABLE"
+          ]
+        },
+        "primary_span": {
+          "oneOf": [
+            {"$ref": "#/$defs/span"},
+            {"type": "null"}
+          ]
+        },
+        "alternative_spans": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/span"}
+        },
+        "alternative_span_type": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "OTHER_ENGLISH_COPY",
+              "HINDI_COPY",
+              "OTHER_LANGUAGE_COPY",
+              "OTHER_BODY_OCCURRENCE",
+              "SUBSTANTIVE_START_ALTERNATIVE",
+              "BOUNDARY_ALTERNATIVE"
+            ]
+          }
+        },
+        "gap_pages": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/page"},
+          "uniqueItems": true
+        },
+        "flags": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "multiple_spans",
+              "bilingual",
+              "bilingual_interleaved",
+              "noncontiguous_hull",
+              "embedded_in_directors_report",
+              "annexure",
+              "unclear_start",
+              "unclear_end",
+              "mixed_end_page",
+              "conditional_title",
+              "legacy_or_corrupted_boundary_heading"
+            ]
+          },
+          "uniqueItems": true
+        },
+        "ambiguity_code": {
+          "enum": [
+            "NONE",
+            "PRESENCE_UNRESOLVABLE",
+            "START_UNRESOLVABLE",
+            "END_UNRESOLVABLE",
+            "SPAN_UNRESOLVABLE",
+            "TITLE_CONTEXT_UNRESOLVABLE"
+          ]
+        },
+        "admissible_spans": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/span"},
+          "uniqueItems": true
+        },
+        "parent_section": {"type": ["string", "null"], "maxLength": 512},
+        "annexure_identity": {"type": ["string", "null"], "maxLength": 512},
+        "boundary_evidence": {
+          "type": "object",
+          "required": [
+            "heading_start_page",
+            "substantive_start_page",
+            "last_content_page",
+            "next_section_heading_page",
+            "mixed_end_page"
+          ],
+          "properties": {
+            "heading_start_page": {
+              "oneOf": [{"$ref": "#/$defs/page"}, {"type": "null"}]
+            },
+            "substantive_start_page": {
+              "oneOf": [{"$ref": "#/$defs/page"}, {"type": "null"}]
+            },
+            "last_content_page": {
+              "oneOf": [{"$ref": "#/$defs/page"}, {"type": "null"}]
+            },
+            "next_section_heading_page": {
+              "oneOf": [{"$ref": "#/$defs/page"}, {"type": "null"}]
+            },
+            "mixed_end_page": {
+              "oneOf": [{"$ref": "#/$defs/page"}, {"type": "null"}]
+            }
+          },
+          "additionalProperties": false
+        },
+        "timestamps": {
+          "type": "object",
+          "required": ["started_at", "completed_at"],
+          "properties": {
+            "started_at": {"type": "string", "format": "date-time"},
+            "completed_at": {"type": "string", "format": "date-time"}
+          },
+          "additionalProperties": false
+        },
+        "aids_used": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "PDF_VIEWER",
+              "THUMBNAILS",
+              "IN_PDF_SEARCH",
+              "BOOKMARKS",
+              "ZOOM_ROTATE",
+              "PAGE_COUNT_DISPLAY"
+            ]
+          },
+          "uniqueItems": true
+        },
+        "structured_provenance": {
+          "type": "object",
+          "required": [
+            "annotation_workspace_id",
+            "viewer_name",
+            "viewer_version",
+            "physical_page_count",
+            "search_queries",
+            "bookmark_pages",
+            "flag_pages",
+            "source_pdf_hash_verified",
+            "no_repository_access_attested",
+            "no_system_output_access_attested"
+          ],
+          "properties": {
+            "annotation_workspace_id": {"type": "string", "minLength": 1},
+            "viewer_name": {"type": "string", "minLength": 1},
+            "viewer_version": {"type": "string", "minLength": 1},
+            "physical_page_count": {"type": "integer", "minimum": 1},
+            "search_queries": {"type": "array", "items": {"type": "string"}},
+            "bookmark_pages": {
+              "type": "array",
+              "items": {"$ref": "#/$defs/page"},
+              "uniqueItems": true
+            },
+            "flag_pages": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "array",
+                "items": {"$ref": "#/$defs/page"},
+                "uniqueItems": true
+              }
+            },
+            "visible_parent_heading": {"type": ["string", "null"]},
+            "conditional_title_context": {"type": ["string", "null"]},
+            "source_pdf_hash_verified": {"const": true},
+            "no_repository_access_attested": {"const": true},
+            "no_system_output_access_attested": {"const": true},
+            "raw_record_sha256_refs": {
+              "type": "array",
+              "items": {"$ref": "#/$defs/sha256"},
+              "minItems": 2,
+              "maxItems": 2,
+              "uniqueItems": true
+            }
+          },
+          "additionalProperties": false
+        },
+        "protocol_version_hash": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "presenceRules": {
+      "allOf": [
+        {
+          "if": {"properties": {"presence_state": {"const": "PRESENT"}}},
+          "then": {
+            "properties": {
+              "primary_span": {"$ref": "#/$defs/span"},
+              "ambiguity_code": {"const": "NONE"},
+              "admissible_spans": {"maxItems": 0}
+            }
+          }
+        },
+        {
+          "if": {"properties": {"presence_state": {"const": "ABSENT"}}},
+          "then": {
+            "properties": {
+              "primary_span": {"type": "null"},
+              "alternative_spans": {"maxItems": 0},
+              "alternative_span_type": {"maxItems": 0},
+              "gap_pages": {"maxItems": 0},
+              "ambiguity_code": {"const": "NONE"},
+              "admissible_spans": {"maxItems": 0}
+            }
+          }
+        },
+        {
+          "if": {"properties": {"presence_state": {"const": "AMBIGUOUS"}}},
+          "then": {
+            "properties": {
+              "primary_span": {"type": "null"},
+              "ambiguity_code": {"not": {"const": "NONE"}},
+              "admissible_spans": {"minItems": 1}
+            }
+          }
+        }
+      ]
+    },
+    "rawRecord": {
+      "title": "Immutable raw Annotator A or B record",
+      "allOf": [
+        {"$ref": "#/$defs/commonRecord"},
+        {"$ref": "#/$defs/presenceRules"},
+        {
+          "properties": {
+            "record_type": {"const": "RAW"},
+            "annotator_role": {"enum": ["ANNOTATOR_A", "ANNOTATOR_B"]},
+            "structured_provenance": {
+              "not": {"required": ["raw_record_sha256_refs"]}
+            }
+          }
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "adjudicatedRecord": {
+      "title": "Adjudicated record created after independent A/B records",
+      "allOf": [
+        {"$ref": "#/$defs/commonRecord"},
+        {"$ref": "#/$defs/presenceRules"},
+        {
+          "required": [
+            "adjudication_status",
+            "adjudication_reason",
+            "adjudicator_role"
+          ],
+          "properties": {
+            "record_type": {"const": "ADJUDICATED"},
+            "annotator_role": {"const": "ADJUDICATED_RECORD"},
+            "structured_provenance": {
+              "required": ["raw_record_sha256_refs"]
+            },
+            "adjudication_status": {
+              "enum": [
+                "AGREEMENT_CONFIRMED",
+                "DISAGREEMENT_RESOLVED",
+                "AMBIGUITY_PRESERVED"
+              ]
+            },
+            "adjudication_reason": {"type": "string", "minLength": 1},
+            "adjudicator_role": {"const": "SEPARATE_ADJUDICATOR"}
+          }
+        }
+      ],
+      "unevaluatedProperties": false
+    }
+  }
+}
