@@ -1,0 +1,163 @@
+{
+  "EXECUTION_COMMIT": "28a67b63d890d8407fa9738a71ae37ad63148b73",
+  "artifact_count": 25,
+  "artifacts": [
+    {
+      "bytes": 10600,
+      "classification": "PUBLIC_SAFE",
+      "path": "capture.py",
+      "sha256": "2c1bb890902acdf704031dbecb33514b3f79724aeb2fbb18810f34a5ea20d570"
+    },
+    {
+      "bytes": 13922,
+      "classification": "PUBLIC_SAFE",
+      "path": "claim-a-observed.json",
+      "sha256": "65025e831a92e0a681ac0722c3ce8484fe5fff777caa7858601873dcd01f6303"
+    },
+    {
+      "bytes": 7179,
+      "classification": "PUBLIC_SAFE",
+      "path": "claim-a.json",
+      "sha256": "6c6ebbc2d0facb6f3d7bd95a93632cda42408142a335a098819a838f092ba9d8"
+    },
+    {
+      "bytes": 60853,
+      "classification": "PUBLIC_SAFE",
+      "path": "claim-a.junit.xml",
+      "sha256": "620cece21caaee3c14120e1c8bcd8a0e299066d04f889213a45782fb4370128d"
+    },
+    {
+      "bytes": 0,
+      "classification": "PUBLIC_SAFE",
+      "path": "claim-a.stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 1966,
+      "classification": "PUBLIC_SAFE",
+      "path": "claim-a.stdout.txt",
+      "sha256": "279927f31f05609dd8e8eacec078a4e72d016297a8dcc77e05ad048b48a7eb9a"
+    },
+    {
+      "bytes": 2969,
+      "classification": "PUBLIC_SAFE",
+      "path": "claim-b-observed.json",
+      "sha256": "878da27ab81c6997133615479d65368e108d618378e990ad0dbc0f95b15d425b"
+    },
+    {
+      "bytes": 8887,
+      "classification": "PUBLIC_SAFE",
+      "path": "claim-b.json",
+      "sha256": "c563b0e6e147fff8caada6adcb841c4bb88e3dcea95a73b529b99aeae78c5829"
+    },
+    {
+      "bytes": 9701,
+      "classification": "PUBLIC_SAFE",
+      "path": "claim-b.junit.xml",
+      "sha256": "2d095998f44085857fecd0d64f0280af37b5cceb327f1bee49f9934a729b6cd6"
+    },
+    {
+      "bytes": 0,
+      "classification": "PUBLIC_SAFE",
+      "path": "claim-b.stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 471,
+      "classification": "PUBLIC_SAFE",
+      "path": "claim-b.stdout.txt",
+      "sha256": "c32d14f0890aeb0d510b9375e4e2dd9e02fa05060f06448f9b653677ba9fd6c8"
+    },
+    {
+      "bytes": 5711,
+      "classification": "PUBLIC_SAFE",
+      "path": "claim-c.json",
+      "sha256": "8ce7014acf8718c5c9094477c95376845b8877dbb439ab1f5e309f3ac26803ed"
+    },
+    {
+      "bytes": 0,
+      "classification": "PUBLIC_SAFE",
+      "path": "claim-c.stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 1665,
+      "classification": "PUBLIC_SAFE",
+      "path": "claim-c.stdout.txt",
+      "sha256": "f4c218deed77d3641db641dbd89477582200d1cd4594db9035b175478851f717"
+    },
+    {
+      "bytes": 1249,
+      "classification": "PUBLIC_SAFE",
+      "path": "cleanup-and-review.json",
+      "sha256": "ff3722d4d03fe24474ca2e2ae0a2cc38dd8d8f732e7781aaa5d8ce0002ec4769"
+    },
+    {
+      "bytes": 11220,
+      "classification": "PUBLIC_SAFE",
+      "path": "document-hash-inputs.json",
+      "sha256": "9c958db3d8a347c4794f6f82166bf617401968c4fe94b46774670b212d959174"
+    },
+    {
+      "bytes": 4165,
+      "classification": "PUBLIC_SAFE",
+      "path": "environment.json",
+      "sha256": "fcd28c206b0084c0f99c2a947ebb25603049388dcc584ea8f522af64bf0e2022"
+    },
+    {
+      "bytes": 31035,
+      "classification": "PUBLIC_SAFE",
+      "path": "execution-inputs.json",
+      "sha256": "03e7f44e98e316a2db8541d1c890e5949e10e0bb07b02a07e8bbaa9ef8f913a9"
+    },
+    {
+      "bytes": 7849,
+      "classification": "PUBLIC_SAFE",
+      "path": "fixture-identity.json",
+      "sha256": "157e931d7da671b26e1fa4470068cd801ac822c2ac5ed2adaacf6db3180bda3d"
+    },
+    {
+      "bytes": 683,
+      "classification": "PUBLIC_SAFE",
+      "path": "fixture-manifest.sha256",
+      "sha256": "8d000afb95532ae00cf864174f526308339b030ebba5cc7b28c800ebe83e838c"
+    },
+    {
+      "bytes": 1632,
+      "classification": "PUBLIC_SAFE",
+      "path": "pa_observer.py",
+      "sha256": "9c7c7b4a2d7025ea2fc11ffc0e1a52cfc26287d8be7dc664ce3c4cd39abbfd4c"
+    },
+    {
+      "bytes": 16736,
+      "classification": "PUBLIC_SAFE",
+      "path": "package.py",
+      "sha256": "c8706ee9d52bf236a416bec19c6e78b2bbb1255c8fb69cdf2ba57f51e7bd9061"
+    },
+    {
+      "bytes": 5347,
+      "classification": "PUBLIC_SAFE",
+      "path": "private-artifact-inventory.json",
+      "sha256": "866f992f7c99f3865ffa040ee60b34ba6f2db477e2dda6d1d68246a5d7d4a018"
+    },
+    {
+      "bytes": 12656,
+      "classification": "PUBLIC_SAFE",
+      "path": "README.md",
+      "sha256": "a53ecd8eb950484026ddbd87ca5bc173d601223f72007c3c6707faf989428579"
+    },
+    {
+      "bytes": 3511,
+      "classification": "PUBLIC_SAFE",
+      "path": "worktree-identity.json",
+      "sha256": "8dff42c37e1642a8c2355a64f45897272c034f4cdff0cd668bbf23a999bc54a8"
+    }
+  ],
+  "manifest_classification": "PUBLIC_SAFE",
+  "policy": "Every published file is PUBLIC_SAFE. Raw private captures are not published. Manifest and companion excluded from artifact entries to avoid self-reference.",
+  "private_inventory": "private-artifact-inventory.json",
+  "reproduction_id": "P-A-R1-20260926",
+  "self_hash_companion": "artifact-manifest.sha256",
+  "self_hash_companion_classification": "PUBLIC_SAFE",
+  "total_artifact_bytes": 220007
+}

@@ -1,0 +1,196 @@
+=== nextRunStart ===
+
+D:/sem_iitk/sem9/thesis/sep_week1/r1-resume-2-final
+D:/sem_iitk/sem9/thesis/sep_week1/arpipe-0.1.0/.git
+origin	https://github.com/hariom-s27/arpipe.git (fetch)
+origin	https://github.com/hariom-s27/arpipe.git (push)
+warning: unable to access 'C:\Users\hario/.config/git/ignore': Permission denied
+warning: unable to access 'C:\Users\hario/.config/git/ignore': Permission denied
+r1-resume-2-final
+755c5519b9ab9484ab033685e563350a0cd0d685
+755c5519b9ab9484ab033685e563350a0cd0d685
+50769ffc6b5ec75919ddbab523db49cc1d80c223
+290cb0cdb2776cd1a7c063599cad0fff2d9aa935
+commit 755c5519b9ab9484ab033685e563350a0cd0d685
+Author:     Hariom Singh <harioms22@iitk.ac.in>
+AuthorDate: Thu Sep 24 05:12:48 2026 +0530
+Commit:     Hariom Singh <harioms22@iitk.ac.in>
+CommitDate: Thu Sep 24 05:12:48 2026 +0530
+
+    docs(decisions): establish D6 Q6 As-Is identity
+    
+    Records the author's resolution of D6/Q6, on which R1 halted.
+    
+    Selected identity: the reconstructed 2026-09-17 executed state
+    (Phase-4 committed production code union the E0 provider half).
+    No single commit SHA; adopted for R1 runnability purposes only.
+    
+    C2 remains RETAINED - CONDITIONAL, gate unmet, until the
+    2026-09-17 to 2026-09-20 provider drift is bounded.
+    File-level composition deferred to R1 under its own gate.
+    
+    No T0.4 amendment required. No production code changed.
+    
+    Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+fatal: Needed a single revision
+Path                                               
+----                                               
+D:\sem_iitk\sem9\thesis\sep_week1\r1-resume-2-final
+
+
+
+
+=== auditProtected0 ===
+Existing changed functions: ["profile_page", "profile_document"]
+Added functions: ["_compute_page_script_meta"]
+_classify BYTE_IDENTICAL
+configure BYTE_IDENTICAL
+detect_script BYTE_IDENTICAL
+ocr_page_numbers BYTE_IDENTICAL
+MIN_CHARS_PER_PAGE BYTE_IDENTICAL
+MIN_CHARS_DENSE BYTE_IDENTICAL
+MAX_MOJIBAKE_RATIO BYTE_IDENTICAL
+BIG_IMAGE_AREA_FRAC BYTE_IDENTICAL
+HYBRID_IMAGE_AREA_FRAC BYTE_IDENTICAL
+BLANK_CHARS BYTE_IDENTICAL
+VECTOR_PATH_TEXT_THRESHOLD BYTE_IDENTICAL
+COLUMN_HIST_BINS BYTE_IDENTICAL
+GUTTER_MIN_RUN_FRAC BYTE_IDENTICAL
+GUTTER_PEAK_THRESHOLD BYTE_IDENTICAL
+GUTTER_SEARCH_LO BYTE_IDENTICAL
+GUTTER_SEARCH_HI BYTE_IDENTICAL
+DOC_SCANNED_FRAC BYTE_IDENTICAL
+DOC_DIGITAL_FRAC BYTE_IDENTICAL
+NEEDS_OCR BYTE_IDENTICAL
+PageKind BYTE_IDENTICAL
+IMMUTABILITY_BASE docs/phase3/ ABSENT
+IMMUTABILITY_BASE docs/phase4/ ABSENT
+IMMUTABILITY_BASE docs/decisions/ ABSENT
+IMMUTABILITY_BASE docs/identity/ ABSENT
+
+def test_historical_immutability_strict_allowlist() -> None:
+    """Verify that all modified and untracked files match the Phase-2.1 allowlist.
+
+    Any change to historical files, production arpipe/, dataset/, or configs/t0_4/
+    fails immediately.
+    """
+    # Check diff against base commit
+    cmd = ["git", "-C", str(REPO_ROOT), "diff", "--name-only", BASE_COMMIT]
+    res = subprocess.run(cmd, capture_output=True, text=True, check=True)
+    committed_diff_files = [line.strip().replace("\\", "/") for line in res.stdout.splitlines() if line.strip()]
+
+    # Also check uncommitted/untracked status with -uall to expand directory entries
+    status_cmd = ["git", "-C", str(REPO_ROOT), "status", "--porcelain", "-uall"]
+    status_res = subprocess.run(status_cmd, capture_output=True, text=True, check=True)
+    working_files = [line[3:].strip().replace("\\", "/") for line in status_res.stdout.splitlines() if line.strip()]
+
+    all_changed = set(committed_diff_files + working_files)
+
+    for path in all_changed:
+        matched = any(pattern.match(path) for pattern in ALLOWED_PHASE2_1_PATTERNS)
+        assert matched, f"Path {path} violates historical immutability allowlist!"
+
+    # Explicit zero-change directory assertions
+    for restricted in ["arpipe/", "dataset/", "configs/t0_4/"]:
+        restricted_diff = [p for p in all_changed if p.startswith(restricted)]
+        assert len(restricted_diff) == 0, f"Unauthorized changes detected in {restricted}: {restricted_diff}"
+
+
+=== step1GateAndCheckpoint ===
+{"file": "models.py", "hunk": "@@ -35,6 +35,7 @@ class Confidence(str, enum.Enum):", "classification": "REQUIRED", "admission": "A1", "evidence": "Confidence.QUARANTINE; decision consumer citation and FIT IDBI 2024 quarantine"}
+{"file": "models.py", "hunk": "@@ -91,6 +92,7 @@ class StoredDoc:", "classification": "REQUIRED", "admission": "A1", "evidence": "StoredDoc.script_map; decision pipeline consumer citation"}
+{"file": "models.py", "hunk": "@@ -107,6 +109,7 @@ class PageProfile:", "classification": "OBSERVED", "admission": "A1/A2", "evidence": "PageProfile.script_meta; minimal provider backing observed script_map"}
+{"file": "models.py", "hunk": "@@ -120,6 +123,7 @@ class DocProfile:", "classification": "REQUIRED", "admission": "A1", "evidence": "DocProfile.script_map; decision pipeline consumer citation"}
+{"file": "models.py", "hunk": "@@ -139,6 +143,11 @@ class MDASpan:", "classification": "OBSERVED", "admission": "A1", "evidence": "MDASpan.body_script null in all 58 authorized FIT mda.json"}
+{"file": "ocr.py", "hunk": "@@ -86,6 +86,23 @@ class OcrPage:", "classification": "REQUIRED", "admission": "A3", "evidence": "Exception class required by committed consumer as recorded in D6/Q6"}
+{"file": "ocr.py", "hunk": "@@ -127,6 +144,9 @@ class TesseractBackend(OcrBackend):", "classification": "OTHER", "admission": "EXCLUDE", "evidence": "readiness cache"}
+{"file": "ocr.py", "hunk": "@@ -136,6 +156,50 @@ class TesseractBackend(OcrBackend):", "classification": "OTHER", "admission": "EXCLUDE", "evidence": "readiness checks and raises"}
+{"file": "ocr.py", "hunk": "@@ -150,6 +214,8 @@ class TesseractBackend(OcrBackend):", "classification": "OTHER", "admission": "EXCLUDE", "evidence": "readiness call"}
+{"file": "ocr.py", "hunk": "@@ -470,17 +536,37 @@ class Escalator:", "classification": "OTHER", "admission": "EXCLUDE", "evidence": "P-B5 escalation raise behavior"}
+{"file": "store.py", "hunk": "@@ -23,10 +23,16 @@ import os", "classification": "OTHER", "admission": "EXCLUDE", "evidence": "state imports"}
+{"file": "store.py", "hunk": "@@ -114,7 +120,8 @@ def write_year(root: str, company_name: str, doc: StoredDoc,", "classification": "REQUIRED", "admission": "A4", "evidence": "write_span parameter; recorded committed call site"}
+{"file": "store.py", "hunk": "@@ -127,11 +134,23 @@ def write_year(root: str, company_name: str, doc: StoredDoc,", "classification": "OBSERVED", "admission": "A4", "evidence": "span suppression and null path; FIT IDBI 2024; exact write_span implementation"}
+{"file": "store.py", "hunk": "@@ -177,12 +196,13 @@ def done_keys(root: str) -> set[tuple[str, int]]:", "classification": "OTHER", "admission": "EXCLUDE", "evidence": "snapshot rows parameter"}
+{"file": "store.py", "hunk": "@@ -201,3 +221,76 @@ def snapshot_parquet(root: str, out: str | None = None) -> str | None:", "classification": "OTHER", "admission": "EXCLUDE", "evidence": "state management functions"}
+{"file": "triage.py", "hunk": "@@ -25,6 +25,8 @@ import pymupdf  # PyMuPDF", "classification": "OBSERVED", "admission": "A2", "evidence": "imports needed by observed telemetry provider"}
+{"file": "triage.py", "hunk": "@@ -243,6 +245,15 @@ def profile_page(page: pymupdf.Page) -> PageProfile:", "classification": "OBSERVED", "admission": "A2", "evidence": "profile_page script metadata computation"}
+{"file": "triage.py", "hunk": "@@ -256,9 +267,68 @@ def profile_page(page: pymupdf.Page) -> PageProfile:", "classification": "OBSERVED", "admission": "A2", "evidence": "script_meta field and telemetry helper"}
+{"file": "triage.py", "hunk": "@@ -320,6 +390,8 @@ def profile_document(path: str, max_pages: int | None = None) -> DocProfile:", "classification": "REQUIRED", "admission": "A2", "evidence": "profile_document script_map assembly required to populate consumer field"}
+{"file": "triage.py", "hunk": "@@ -328,6 +400,7 @@ def profile_document(path: str, max_pages: int | None = None) -> DocProfile:", "classification": "REQUIRED", "admission": "A2", "evidence": "DocProfile script_map construction"}
+TELEMETRY_KEYS [{"keys": ["devanagari_frac", "dominant_script", "english_word_frac", "legacy_font_suspected", "measurement_source", "page_no", "script_confidence"], "count": 12540}]
+TELEMETRY_SOURCES {"existing_triage_telemetry": 12540}
+A2 historical page-kind comparison: NOT_COMPARABLE_HISTORICAL_ABSENCE; 58 documents checked, 0 comparable page rows; no page_profile.csv read required.
+warning: unable to access 'C:\Users\hario/.config/git/ignore': Permission denied
+warning: unable to access 'C:\Users\hario/.config/git/ignore': Permission denied
+755c5519b9ab9484ab033685e563350a0cd0d685
+290cb0cdb2776cd1a7c063599cad0fff2d9aa935
+arpipe/CLAUDE.md
+arpipe/README.md
+arpipe/__init__.py
+arpipe/cli.py
+arpipe/companies.csv
+arpipe/config.py
+arpipe/configs/default.yaml
+arpipe/configs/eval_protocol.md
+arpipe/discover.py
+arpipe/eval_report.md
+arpipe/evaluate.py
+arpipe/fetch.py
+arpipe/labeller.py
+arpipe/models.py
+arpipe/ocr.py
+arpipe/patterns.py
+arpipe/pilot_reports.jsonl
+arpipe/pipeline.py
+arpipe/preflight.py
+arpipe/reports_sample.jsonl
+arpipe/requirements.txt
+arpipe/segment.py
+arpipe/store.py
+arpipe/tests/make_fixtures.py
+arpipe/tests/test_column_cut.py
+arpipe/tests/test_config.py
+arpipe/tests/test_discover.py
+arpipe/tests/test_evaluate.py
+arpipe/tests/test_labeller.py
+arpipe/tests/test_pipeline.py
+arpipe/tests/test_pm1_orderqc.py
+arpipe/tests/test_pm2_pagegrain_native_vs_ocr.py
+arpipe/tests/test_preflight.py
+arpipe/textlayer.py
+arpipe/to_label.csv
+arpipe/triage.py
+arpipe/universe.py
+arpipe/verify.py
+configs/audit_config.json
+configs/audit_config.sha256
+configs/eval_protocol.md
+configs/phase2_1/semantic_fixtures.json
+configs/t0_1r/input_allowlist.json
+configs/t0_1r/reconciliation_rules.json
+configs/t0_1r/reviewer_expectations.json
+configs/t0_3a/taxonomy_register.json
+configs/t0_3a_r1/taxonomy_register.json
+configs/t0_4/benchmark_config.json
+configs/t0_4/benchmark_manifest_schema.json
+configs/t0_4/common_output_schema.json
+configs/t0_4/efficiency_schema.json
+configs/t0_4/engine_registry.json
+configs/t0_4/failure_taxonomy.json
+configs/t0_4/future_results_schema.json
+configs/t0_4/gold_schema.json
+configs/t0_4/metrics_spec.json
+configs/t0_4/oracle_routing_spec.json
+configs/t0_4/raw_output_schema.json
+configs/t0_4/sampling_spec.json
+
+
+=== FIT historical audit ===
+Warning: truncated output (original token count: 38072)
+Total output lines: 7
+
+COUNTS {"documents": 58, "nonempty_script_map": 58, "script_entries": 12540, "body_script_present": 58, "body_script_null": 58}
+ABSENT_BASELINE_DIRECTORY ["INE004E01016_2018", "INE00FF01025_2015"]
+DOCUMENT_SCHEMAS [{"keys": ["company_id", "fetched_at", "fy_end", "is_encrypted", "link_mode", "n_bytes", "n_pages", "path", "pdf_producer", "script_map", "sha256", "source", "url"], "count": 58}]
+KIND_FIELDS [["INE001F01019_2012", "mda/qc/doc_kind", "digital"], ["INE001F01019_2013", "mda/qc/doc_kind", "digital"], ["INE001F01019_2017", "mda/qc/doc_kind", "digital"], ["INE001F01019_2018", "mda/qc/doc_kind", "mixed"], ["INE001F01019_2024", "mda/qc/doc_kind", "digital"], ["INE002A01018_2013", "mda/qc/doc_kind", "digital"], ["INE002A01018_2018", "mda/qc/doc_kind", "scanned"], ["INE002A01018_2025", "mda/qc/doc_kind", "digital"], ["INE003B01014_2013", "mda/qc/doc_kind", "digital"], ["INE003B01014_2024", "mda/qc/doc_kind", "digital"], ["INE003B01014_2025", "mda/qc/doc_kind", "digital"], ["INE004C01028_2017", "mda/qc/doc_kind", "mixed"], ["INE004C01028_2025", "mda/qc/doc_kind", "digital"], ["INE004E01016_2012", "mda/qc/doc_kind", "digital"], ["INE004E01016_2024", "mda/qc/doc_kind", "digital"], ["INE004Z01011_2025", "mda/qc/doc_kind", "digital"], ["INE007A01025_2013", "mda/qc/doc_kind", "mixed"], ["INE007A01025_2017", "mda/qc/doc_kind", "digital"], ["INE007A01025_2018", "mda/qc/doc_kind", "digital"], ["INE007A01025_2024", "mda/qc/doc_kind", "digital"], ["INE008A01015_2012", "mda/qc/doc_kind", "mixed"], ["INE008A01015_2017", "mda/qc/doc_kind", "digital"], ["INE008A01015_2024", "mda/qc/doc_kind", "digital"], ["INE00E101023_2024", "mda/qc/doc_kind", "digital"], ["INE00FF01025_2025", "mda/qc/doc_kind", "digital"], ["INE00LO01017_2024", "mda/qc/doc_kind", "digital"], ["INE00LO01017_2025", "mda/qc/doc_kind", "digital"], ["INE040A01034_2012", "mda/qc/doc_kind", "digital"], ["INE040A01034_2013", "mda/qc/doc_kind", "mixed"], ["INE040A01034_2017", "mda/qc/doc_kind", "mixed"], ["INE040A01034_2018", "mda/qc/doc_kind", "mixed"], ["INE040A01034_2024", "mda/qc/doc_kind", "digital"], ["INE081A01020_2012", "mda/qc/doc_kind", "digital"], ["INE081A01020_2013", "mda/qc/doc_kind", "digital"], ["INE081A01020_2017", "mda/qc/doc_kind", "digital"], ["INE081A01020_2018", "mda/qc/doc_kind", "digital"], ["INE081A01020_2024", "mda/qc/doc_kind", "digital"], ["INE081A01020_2025", "mda/qc/doc_kind", "digital"], ["INE151A01013_2012", "mda/qc/doc_kind", "digital"], ["INE151A01013_2017", "mda/qc/doc_kind", "digital"], ["INE151A01013_2018", "mda/qc/doc_kind", "digital"], ["INE191H01014_2012", "mda/qc/doc_kind", "digital"], ["INE191H01014_2013", "mda/qc/doc_kind", "digital"], ["INE191H01014_2018", "mda/qc/doc_kind", "digital"], ["INE191H01014_2024", "mda/qc/doc_kind", "digital"], ["INE191H01014_2025", "mda/qc/doc_kind", "digital"], ["INE192B01031_2012", "mda/qc/doc_kind", "digital"], ["INE192B01031_2017", "mda/qc/doc_kind", "digital"], ["INE761H01022_2013", "mda/qc/doc_kind", "mixed"], ["INE761H01022_2017", "mda/qc/doc_kind", "digital"], ["INE761H01022_2018", "mda/qc/doc_kind", "digital"], ["INE761H01022_2024", "mda/qc/doc_kind", "digital"], ["INE797F01020_2012", "mda/qc/doc_kind", "digital"], ["INE797F01020_2013", "mda/qc/doc_kind", "mixed"], ["INE797F01020_2017", "mda/qc/doc_kind", "digital"], ["INE797F01020_2018", "mda/qc/doc_kind", "digital"], ["INE797F01020_2024", "mda/qc/doc_kind", "digital"], ["INE797F01020_2025", "mda/qc/doc_kind", "digital"]]
+QUARANTINE [{"document_id": "INE008A01015_2024", "confidence": "quarantine", "path": null, "reasons": ["source_shredded", "span_truncated", "WRONG_LANGUAGE_RISK"]}]

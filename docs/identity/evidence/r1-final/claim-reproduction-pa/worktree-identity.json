@@ -1,0 +1,67 @@
+{
+  "EXECUTION_COMMIT": "28a67b63d890d8407fa9738a71ae37ad63148b73",
+  "PUBLICATION_CLASSIFICATION": "PUBLIC_SAFE",
+  "execution_after": {
+    "HEAD": "28a67b63d890d8407fa9738a71ae37ad63148b73",
+    "branch": "DETACHED_HEAD",
+    "git_common_dir": "D:/sem_iitk/sem9/thesis/sep_week1/arpipe-0.1.0/.git",
+    "protected_working_file_manifest_sha256": "59086fc2b7fd41eeaeca44f8714a67aca9aad534f30381cd3486984b3952339e",
+    "repository": "D:\\sem_iitk\\sem9\\thesis\\sep_week1\\r1-final",
+    "status_porcelain": "",
+    "timestamp": "2026-09-26T00:39:30.784286+00:00",
+    "tree_hashes": {
+      "arpipe": "f6475922f2a6837c7e6a86cefb5fb30aef602e69",
+      "configs": "4b56d25b28c18132cb1fcf4f847e4582a195036a",
+      "dataset": "391fa1d25794008b1df1cd1e208382205f7ba743",
+      "tests": "1522aabd0c695cd3a5017729eb843cd22fab98df",
+      "tools": "64a0fdd69e078c1cd0a884b70da25c3d80ed874c"
+    },
+    "worktree": "D:\\sem_iitk\\sem9\\thesis\\sep_week1\\r1-final"
+  },
+  "execution_before": {
+    "HEAD": "28a67b63d890d8407fa9738a71ae37ad63148b73",
+    "branch": "DETACHED_HEAD",
+    "git_common_dir": "D:/sem_iitk/sem9/thesis/sep_week1/arpipe-0.1.0/.git",
+    "protected_working_file_manifest_sha256": "59086fc2b7fd41eeaeca44f8714a67aca9aad534f30381cd3486984b3952339e",
+    "repository": "D:\\sem_iitk\\sem9\\thesis\\sep_week1\\r1-final",
+    "status_porcelain": "",
+    "timestamp": "2026-09-26T00:37:49.810541+00:00",
+    "tree_hashes": {
+      "arpipe": "f6475922f2a6837c7e6a86cefb5fb30aef602e69",
+      "configs": "4b56d25b28c18132cb1fcf4f847e4582a195036a",
+      "dataset": "391fa1d25794008b1df1cd1e208382205f7ba743",
+      "tests": "1522aabd0c695cd3a5017729eb843cd22fab98df",
+      "tools": "64a0fdd69e078c1cd0a884b70da25c3d80ed874c"
+    },
+    "worktree": "D:\\sem_iitk\\sem9\\thesis\\sep_week1\\r1-final"
+  },
+  "initial": {
+    "HEAD": "2a42b97bdc09297eba92ae6a46cd6e7365a0e54a",
+    "branch": "r1-final",
+    "git_common_dir": "D:/sem_iitk/sem9/thesis/sep_week1/arpipe-0.1.0/.git",
+    "protected_working_file_manifest_sha256": "59086fc2b7fd41eeaeca44f8714a67aca9aad534f30381cd3486984b3952339e",
+    "repository": "D:\\sem_iitk\\sem9\\thesis\\sep_week1\\r1-final",
+    "status_porcelain": "",
+    "timestamp": "2026-09-26T00:37:12.942266+00:00",
+    "tree_hashes": {
+      "arpipe": "f6475922f2a6837c7e6a86cefb5fb30aef602e69",
+      "configs": "4b56d25b28c18132cb1fcf4f847e4582a195036a",
+      "dataset": "391fa1d25794008b1df1cd1e208382205f7ba743",
+      "tests": "1522aabd0c695cd3a5017729eb843cd22fab98df",
+      "tools": "64a0fdd69e078c1cd0a884b70da25c3d80ed874c"
+    },
+    "worktree": "D:\\sem_iitk\\sem9\\thesis\\sep_week1\\r1-final"
+  },
+  "initial_documentation_commit": "2a42b97bdc09297eba92ae6a46cd6e7365a0e54a",
+  "new_worktree_created": false,
+  "protected_working_files_unchanged_all_claims": true,
+  "reason": "Existing clean worktree safely supported temporary detached checkout; original branch retained for restoration.",
+  "statement": "No new worktree was necessary; reproduction was performed from the existing clean pinned worktree.",
+  "thesis_repository": {
+    "HEAD": "313f00b7e8c364c056a5a9d284ff843128419e21",
+    "branch": "main",
+    "path": "D:\\sem_iitk\\sem9\\thesis",
+    "role": "Not the execution repository. Historical private transcript read-only provenance source resides here.",
+    "status": "Pre-existing untracked nested worktrees/evidence directories; no thesis governance work performed."
+  }
+}

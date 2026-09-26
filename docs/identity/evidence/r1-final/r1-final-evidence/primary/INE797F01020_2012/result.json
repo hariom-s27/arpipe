@@ -1,0 +1,341 @@
+{
+  "company_id": "INE797F01020",
+  "fy_end": 2012,
+  "sha256": "b8939a3dff730b9112d76029ab17c09f2646e41ce40fd4c503cbc7dcc73393a7",
+  "ok": false,
+  "confidence": "low",
+  "span": {
+    "start_page": 23,
+    "end_page": 31,
+    "start_char": null,
+    "end_char": null,
+    "method": "heading+trimmed",
+    "heading_text": "Management Discussion & Analysis",
+    "terminator_text": "Directors\u2019 Report",
+    "score": 0.98,
+    "supporters": 1,
+    "terminator_match": {
+      "text": "Directors\u2019 Report",
+      "page": 32,
+      "line_index": 0,
+      "y_frac": 0.183,
+      "shape_ok": true,
+      "font_signal": "larger"
+    },
+    "toc_offset": null,
+    "body_script": null
+  },
+  "verification": {
+    "company_ok": true,
+    "year_ok": true,
+    "company_evidence": [
+      "isin:INE797F01012",
+      "name:Jubilant Foodworks Limited:100"
+    ],
+    "year_evidence": [
+      "modal_fy:2012:w49"
+    ],
+    "name_similarity": 100.0,
+    "cin_found": null,
+    "isin_found": "INE797F01012",
+    "isin_found_on_page": 42,
+    "isins_seen": [
+      "INE797F01012"
+    ],
+    "fy_found": 2012,
+    "notes": [
+      "ISIN mismatch: doc=INE797F01012 expected=INE797F01020"
+    ],
+    "era_signals_in_document": {
+      "mandated_ratios": false,
+      "brsr": false,
+      "br_report": false,
+      "ind_as": false,
+      "companies_act_2013": false,
+      "csr": true
+    }
+  },
+  "path": "companies/JUBILANT_FOODWORKS_LIMITED__INE797F01020/2012/mda.txt",
+  "n_words": 7185,
+  "ocr_pages": 0,
+  "ocr_engine": null,
+  "supporters": 1,
+  "method_candidates": [
+    [
+      "outline",
+      30,
+      31,
+      0.9
+    ],
+    [
+      "heading",
+      23,
+      31,
+      0.92
+    ],
+    [
+      "heading_text",
+      23,
+      31,
+      0.6
+    ],
+    [
+      "body_score",
+      31,
+      33,
+      0.382
+    ]
+  ],
+  "total_pages": 103,
+  "mda_page_count": 9,
+  "words_per_page": 798.3,
+  "terminator_match": {
+    "text": "Directors\u2019 Report",
+    "page": 32,
+    "line_index": 0,
+    "y_frac": 0.183,
+    "shape_ok": true,
+    "font_signal": "larger"
+  },
+  "toc_offset": {
+    "solved": null,
+    "confidence": 0.0,
+    "samples_used": 0,
+    "modal_agreement": 0.0,
+    "method": "not_run"
+  },
+  "qc": {
+    "n_words": 7185,
+    "n_chars": 46141,
+    "alpha_ratio": 0.799,
+    "digit_ratio": 0.015,
+    "avg_word_len": 5.39,
+    "long_token_frac": 0.0003,
+    "ratio_cues": 0,
+    "ratio_cues_in_span": 0,
+    "leaks": [],
+    "too_short": false,
+    "too_long": false,
+    "looks_like_tables": false,
+    "orphan_start_frac": 0.1038,
+    "dangling_end_frac": 0.0385,
+    "orphan_starts": 27,
+    "dangling_ends": 10,
+    "n_paragraphs": 260,
+    "orphan_basis": "prose_only",
+    "orphan_gate_version": "p17.1",
+    "orphan_gate_max": 0.03,
+    "diag": {
+      "candidates": [
+        [
+          "outline",
+          30,
+          31,
+          0.9
+        ],
+        [
+          "heading",
+          23,
+          31,
+          0.92
+        ],
+        [
+          "heading_text",
+          23,
+          31,
+          0.6
+        ],
+        [
+          "body_score",
+          31,
+          33,
+          0.382
+        ]
+      ],
+      "toc_offset": {
+        "solved": null,
+        "confidence": 0.0,
+        "samples_used": 0,
+        "modal_agreement": 0.0,
+        "method": "not_run"
+      },
+      "outline_validation": {
+        "proposed_start": 23,
+        "accepted_start": 30,
+        "walked": 7,
+        "outcome": "accepted_with_walk",
+        "reason": "prose_found_at_walk"
+      },
+      "supporters": 1,
+      "candidate_span_words": 7247,
+      "span_words": 7247
+    },
+    "doc_kind": "digital",
+    "terminator_match": {
+      "text": "Directors\u2019 Report",
+      "page": 32,
+      "line_index": 0,
+      "y_frac": 0.183,
+      "shape_ok": true,
+      "font_signal": "larger"
+    },
+    "toc_offset": {
+      "solved": null,
+      "confidence": 0.0,
+      "samples_used": 0,
+      "modal_agreement": 0.0,
+      "method": "not_run"
+    },
+    "frac_needing_ocr": 0.0485,
+    "bilingual": false,
+    "n_pages": 103,
+    "ocr_stats": [],
+    "ocr_sec_total": 0.0,
+    "ocr_sec_mean": 0.0,
+    "index_sample": {},
+    "pdf_producer": "Adobe Acrobat Pro 10.1.3",
+    "column_cut_fire_frac": 1.0,
+    "furniture_blocks_removed": 9,
+    "furniture_strings": [
+      "annual report -",
+      "jubilant foodworks limited"
+    ],
+    "orphan_start_frac_pages": [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      0.0,
+      0.0,
+      0.0,
+      0.1163,
+      0.0,
+      0.3729,
+      0.0,
+      0.0,
+      0.0,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    "orphan_start_frac_pages_min_paragraphs": 2,
+    "n_words_note": "prose only; tables/charts in mda_blocks.json",
+    "blocks_quarantined": 3,
+    "words_quarantined": 26,
+    "wrong_language": {
+      "wrong_language_risk": false,
+      "devanagari_frac": 0.0,
+      "devanagari_hit": false,
+      "legacy_font_hit": false,
+      "windows_scored": 24,
+      "windows_fired": 0,
+      "worst_window": {
+        "offset": 22000,
+        "fired": false,
+        "english_word_frac": 0.397,
+        "long_word_frac": 0.3074,
+        "rare_punct_freq": 0.007,
+        "high_codepoint_freq": 0.0,
+        "digit_embedded_frac": 0.0
+      }
+    },
+    "bilingual_heading_page": {
+      "bilingual_heading_page": false,
+      "heading_match": true,
+      "devanagari_frac": 0.0
+    }
+  },
+  "reasons": [
+    "source_shredded",
+    "span_truncated"
+  ],
+  "errors": [],
+  "pipeline_version": "0.1.0"
+}

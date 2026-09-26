@@ -1,0 +1,313 @@
+{
+  "company_id": "INE761H01022",
+  "fy_end": 2013,
+  "sha256": "e75eb3c9e6a3a73f18f96a2906419a4221c8e9406c713ca976cc82306110de45",
+  "ok": true,
+  "confidence": "medium",
+  "span": {
+    "start_page": 30,
+    "end_page": 34,
+    "start_char": null,
+    "end_char": null,
+    "method": "heading+trimmed",
+    "heading_text": "MANAGEMENT DISCUSSION AND ANALYSIS",
+    "terminator_text": "REPORT ON CORPORATE GOVERNANCE",
+    "score": 0.99,
+    "supporters": 2,
+    "terminator_match": {
+      "text": "REPORT ON CORPORATE GOVERNANCE",
+      "page": 35,
+      "line_index": 2,
+      "y_frac": 0.108,
+      "shape_ok": true,
+      "font_signal": "bold"
+    },
+    "toc_offset": null,
+    "body_script": null
+  },
+  "verification": {
+    "company_ok": true,
+    "year_ok": true,
+    "company_evidence": [
+      "isin:INE761H01022",
+      "isin:exact_match",
+      "name:Page Industries Limited:100"
+    ],
+    "year_evidence": [
+      "modal_fy:2013:w20"
+    ],
+    "name_similarity": 100.0,
+    "cin_found": null,
+    "isin_found": "INE761H01022",
+    "isin_found_on_page": 39,
+    "isins_seen": [
+      "INE761H01022"
+    ],
+    "fy_found": 2013,
+    "notes": [],
+    "era_signals_in_document": {
+      "mandated_ratios": false,
+      "brsr": false,
+      "br_report": false,
+      "ind_as": false,
+      "companies_act_2013": false,
+      "csr": true
+    }
+  },
+  "path": "companies/PAGE_INDUSTRIES_LIMITED__INE761H01022/2013/mda.txt",
+  "n_words": 1924,
+  "ocr_pages": 1,
+  "ocr_engine": "tesseract:eng",
+  "supporters": 2,
+  "method_candidates": [
+    [
+      "heading",
+      30,
+      34,
+      0.883
+    ],
+    [
+      "heading_text",
+      30,
+      34,
+      0.65
+    ],
+    [
+      "body_score",
+      30,
+      34,
+      0.628
+    ]
+  ],
+  "total_pages": 84,
+  "mda_page_count": 5,
+  "words_per_page": 384.8,
+  "terminator_match": {
+    "text": "REPORT ON CORPORATE GOVERNANCE",
+    "page": 35,
+    "line_index": 2,
+    "y_frac": 0.108,
+    "shape_ok": true,
+    "font_signal": "bold"
+  },
+  "toc_offset": {
+    "solved": null,
+    "confidence": 0.0,
+    "samples_used": 0,
+    "modal_agreement": 0.0,
+    "method": "not_run"
+  },
+  "qc": {
+    "n_words": 1924,
+    "n_chars": 12161,
+    "alpha_ratio": 0.781,
+    "digit_ratio": 0.026,
+    "avg_word_len": 5.27,
+    "long_token_frac": 0.0,
+    "ratio_cues": 0,
+    "ratio_cues_in_span": 0,
+    "leaks": [],
+    "too_short": false,
+    "too_long": false,
+    "looks_like_tables": false,
+    "orphan_start_frac": 0.0333,
+    "dangling_end_frac": 0.0667,
+    "orphan_starts": 3,
+    "dangling_ends": 6,
+    "n_paragraphs": 90,
+    "orphan_basis": "prose_only",
+    "orphan_gate_version": "p17.1",
+    "orphan_gate_max": 0.03,
+    "diag": {
+      "candidates": [
+        [
+          "heading",
+          30,
+          34,
+          0.883
+        ],
+        [
+          "heading_text",
+          30,
+          34,
+          0.65
+        ],
+        [
+          "body_score",
+          30,
+          34,
+          0.628
+        ]
+      ],
+      "toc_offset": {
+        "solved": null,
+        "confidence": 0.0,
+        "samples_used": 0,
+        "modal_agreement": 0.0,
+        "method": "not_run"
+      },
+      "outline_validation": {},
+      "supporters": 2,
+      "candidate_span_words": 1859,
+      "span_words": 1859
+    },
+    "doc_kind": "mixed",
+    "terminator_match": {
+      "text": "REPORT ON CORPORATE GOVERNANCE",
+      "page": 35,
+      "line_index": 2,
+      "y_frac": 0.108,
+      "shape_ok": true,
+      "font_signal": "bold"
+    },
+    "toc_offset": {
+      "solved": null,
+      "confidence": 0.0,
+      "samples_used": 0,
+      "modal_agreement": 0.0,
+      "method": "not_run"
+    },
+    "frac_needing_ocr": 0.1266,
+    "bilingual": false,
+    "n_pages": 84,
+    "ocr_stats": [
+      {
+        "page_no": 31,
+        "engine": "tesseract:eng",
+        "seconds": 1.909,
+        "words": 169,
+        "conf": 0.8615976331360947,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": true,
+        "trail": [
+          "tesseract:ok"
+        ]
+      }
+    ],
+    "ocr_sec_total": 1.91,
+    "ocr_sec_mean": 1.909,
+    "index_sample": {},
+    "pdf_producer": "Acrobat Distiller 5.0.5 (Windows)",
+    "column_cut_fire_frac": 1.0,
+    "furniture_blocks_removed": 0,
+    "furniture_strings": [],
+    "orphan_start_frac_pages": [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      0.0,
+      0.1053,
+      0.0,
+      0.0,
+      0.0625,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    "orphan_start_frac_pages_min_paragraphs": 2,
+    "n_words_note": "prose only; tables/charts in mda_blocks.json",
+    "blocks_quarantined": 3,
+    "words_quarantined": 99,
+    "wrong_language": {
+      "wrong_language_risk": false,
+      "devanagari_frac": 0.0,
+      "devanagari_hit": false,
+      "legacy_font_hit": false,
+      "windows_scored": 7,
+      "windows_fired": 0,
+      "worst_window": {
+        "offset": 12000,
+        "fired": false,
+        "english_word_frac": 0.5,
+        "long_word_frac": 0.4167,
+        "rare_punct_freq": 0.0,
+        "high_codepoint_freq": 0.0,
+        "digit_embedded_frac": 0.0
+      }
+    },
+    "bilingual_heading_page": {
+      "bilingual_heading_page": false,
+      "heading_match": true,
+      "devanagari_frac": 0.0
+    }
+  },
+  "reasons": [
+    "source_shredded"
+  ],
+  "errors": [],
+  "pipeline_version": "0.1.0"
+}

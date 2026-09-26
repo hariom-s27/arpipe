@@ -1,0 +1,12 @@
+{
+  "document_id": "INE001F01019_2017",
+  "phase": "smoke-a",
+  "pdf_sha256": "7d6c7f1dff985bd0ddb0e3f676f1673c0a0a73c9a8e5561ea362e0c5b00118cc",
+  "completed": true,
+  "confidence": "low",
+  "span_path": "companies/MODERN_STEELS_LIMITED__INE001F01019/2017/mda.txt",
+  "reasons": [],
+  "errors": [],
+  "duration_seconds": 0.939763899994432,
+  "candidate_import": "D:\\sem_iitk\\sem9\\thesis\\sep_week1\\r1-final-evidence\\candidate-a\\arpipe\\__init__.py"
+}

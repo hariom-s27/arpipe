@@ -1,0 +1,143 @@
+{
+  "EXECUTION_COMMIT": "28a67b63d890d8407fa9738a71ae37ad63148b73",
+  "INPUT_ARTIFACT_SOURCE_COMMIT": "28a67b63d890d8407fa9738a71ae37ad63148b73",
+  "PUBLICATION_CLASSIFICATION": "PUBLIC_SAFE",
+  "artifacts": [
+    {
+      "bytes": 4165,
+      "classification": "PUBLIC_SAFE",
+      "path": "environment.json",
+      "sha256": "fcd28c206b0084c0f99c2a947ebb25603049388dcc584ea8f522af64bf0e2022"
+    },
+    {
+      "bytes": 3511,
+      "classification": "PUBLIC_SAFE",
+      "path": "worktree-identity.json",
+      "sha256": "8dff42c37e1642a8c2355a64f45897272c034f4cdff0cd668bbf23a999bc54a8"
+    },
+    {
+      "bytes": 31035,
+      "classification": "PUBLIC_SAFE",
+      "path": "execution-inputs.json",
+      "sha256": "03e7f44e98e316a2db8541d1c890e5949e10e0bb07b02a07e8bbaa9ef8f913a9"
+    },
+    {
+      "bytes": 10600,
+      "classification": "PUBLIC_SAFE",
+      "path": "capture.py",
+      "sha256": "2c1bb890902acdf704031dbecb33514b3f79724aeb2fbb18810f34a5ea20d570"
+    },
+    {
+      "bytes": 1665,
+      "classification": "PUBLIC_SAFE",
+      "path": "claim-c.stdout.txt",
+      "sha256": "f4c218deed77d3641db641dbd89477582200d1cd4594db9035b175478851f717"
+    },
+    {
+      "bytes": 0,
+      "classification": "PUBLIC_SAFE",
+      "path": "claim-c.stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 11220,
+      "classification": "PUBLIC_SAFE",
+      "path": "document-hash-inputs.json",
+      "sha256": "9c958db3d8a347c4794f6f82166bf617401968c4fe94b46774670b212d959174"
+    }
+  ],
+  "claim_id": "C",
+  "classification": "REPRODUCED",
+  "command_argv": [
+    "D:\\sem_iitk\\sem9\\thesis\\sep_week1\\arpipe-0.1.0\\arpipe\\.venv\\Scripts\\python.exe",
+    "-B",
+    "tools/check_doc_hashes.py"
+  ],
+  "command_windows": "D:\\sem_iitk\\sem9\\thesis\\sep_week1\\arpipe-0.1.0\\arpipe\\.venv\\Scripts\\python.exe -B tools/check_doc_hashes.py",
+  "environment": {
+    "bytes": 4165,
+    "classification": "PUBLIC_SAFE",
+    "path": "environment.json",
+    "sha256": "fcd28c206b0084c0f99c2a947ebb25603049388dcc584ea8f522af64bf0e2022"
+  },
+  "execution_validity": {
+    "infrastructure_crash": false,
+    "script_completed": true
+  },
+  "exit_status": 0,
+  "expected_historical_result": {
+    "checks": 10,
+    "pass": 10,
+    "unallowed_failures": 0
+  },
+  "historical_equivalence": {
+    "exact_result_match": true,
+    "execution_is_historical_session": false
+  },
+  "historical_provenance": {
+    "INPUT_ARTIFACT_SOURCE_COMMIT": "2a42b97bdc09297eba92ae6a46cd6e7365a0e54a",
+    "basis": "Preserved contemporaneous command/output records and the documented recovery chain; not inferred solely from matching hashes.",
+    "production_effect": false,
+    "recovery_record": "docs/identity/R1_EVIDENCE_RECOVERY_REPORT.md",
+    "section": "11",
+    "transcript_sha256": "9352b967c0c6dc4d30b850420b2ac92da1773caf4113c6578fd9642e8055d217"
+  },
+  "historical_status": "TRANSCRIPT-ONLY",
+  "input_identity": {
+    "bytes": 11220,
+    "classification": "PUBLIC_SAFE",
+    "path": "document-hash-inputs.json",
+    "sha256": "9c958db3d8a347c4794f6f82166bf617401968c4fe94b46774670b212d959174"
+  },
+  "limitations": [
+    "Ten recognized hash claims across one document. Verifies cited Git blob integrity only; does not prove historical provenance or validate scientific outputs."
+  ],
+  "observed_result": {
+    "allowed_failures": 0,
+    "checks": 10,
+    "documents": 1,
+    "pass": 10,
+    "unallowed_failures": 0
+  },
+  "preservation_status": "PRESERVED_BUT_NOT_YET_DURABLE",
+  "protected_working_files_unchanged": true,
+  "reproduction_id": "P-A-R1-20260926",
+  "timestamp_end_utc": "2026-09-26T00:39:30.741182+00:00",
+  "timestamp_start_utc": "2026-09-26T00:39:29.967426+00:00",
+  "wall_seconds": 0.7727130999992369,
+  "working_directory": "D:\\sem_iitk\\sem9\\thesis\\sep_week1\\r1-final",
+  "worktree_state_after": {
+    "HEAD": "28a67b63d890d8407fa9738a71ae37ad63148b73",
+    "branch": "DETACHED_HEAD",
+    "git_common_dir": "D:/sem_iitk/sem9/thesis/sep_week1/arpipe-0.1.0/.git",
+    "protected_working_file_manifest_sha256": "59086fc2b7fd41eeaeca44f8714a67aca9aad534f30381cd3486984b3952339e",
+    "repository": "D:\\sem_iitk\\sem9\\thesis\\sep_week1\\r1-final",
+    "status_porcelain": "",
+    "timestamp": "2026-09-26T00:39:30.784286+00:00",
+    "tree_hashes": {
+      "arpipe": "f6475922f2a6837c7e6a86cefb5fb30aef602e69",
+      "configs": "4b56d25b28c18132cb1fcf4f847e4582a195036a",
+      "dataset": "391fa1d25794008b1df1cd1e208382205f7ba743",
+      "tests": "1522aabd0c695cd3a5017729eb843cd22fab98df",
+      "tools": "64a0fdd69e078c1cd0a884b70da25c3d80ed874c"
+    },
+    "worktree": "D:\\sem_iitk\\sem9\\thesis\\sep_week1\\r1-final"
+  },
+  "worktree_state_before": {
+    "HEAD": "28a67b63d890d8407fa9738a71ae37ad63148b73",
+    "branch": "DETACHED_HEAD",
+    "git_common_dir": "D:/sem_iitk/sem9/thesis/sep_week1/arpipe-0.1.0/.git",
+    "protected_working_file_manifest_sha256": "59086fc2b7fd41eeaeca44f8714a67aca9aad534f30381cd3486984b3952339e",
+    "repository": "D:\\sem_iitk\\sem9\\thesis\\sep_week1\\r1-final",
+    "status_porcelain": "",
+    "timestamp": "2026-09-26T00:39:28.888057+00:00",
+    "tree_hashes": {
+      "arpipe": "f6475922f2a6837c7e6a86cefb5fb30aef602e69",
+      "configs": "4b56d25b28c18132cb1fcf4f847e4582a195036a",
+      "dataset": "391fa1d25794008b1df1cd1e208382205f7ba743",
+      "tests": "1522aabd0c695cd3a5017729eb843cd22fab98df",
+      "tools": "64a0fdd69e078c1cd0a884b70da25c3d80ed874c"
+    },
+    "worktree": "D:\\sem_iitk\\sem9\\thesis\\sep_week1\\r1-final"
+  }
+}

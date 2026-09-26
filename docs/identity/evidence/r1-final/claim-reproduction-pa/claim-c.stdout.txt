@@ -1,0 +1,12 @@
+[PASS] docs/experiments/PHASE2.1_PROVENANCE_CORRECTIONS.md:63 dataset/corpus_freeze/issuer_split.csv@63e3c04 recorded=016e72024557 actual=016e72024557
+[PASS] docs/experiments/PHASE2.1_PROVENANCE_CORRECTIONS.md:64 dataset/corpus_freeze/page_profile.csv@63e3c04 recorded=5bffb19654fe actual=5bffb19654fe
+[PASS] docs/experiments/PHASE2.1_PROVENANCE_CORRECTIONS.md:65 dataset/corpus_gap_audit/audit_config.json@63e3c04 recorded=65ed1a7e189b actual=65ed1a7e189b
+[PASS] docs/experiments/PHASE2.1_PROVENANCE_CORRECTIONS.md:66 dataset/corpus_gap_audit/gap_audit_document.csv@63e3c04 recorded=f6d426819dae actual=f6d426819dae
+[PASS] docs/experiments/PHASE2.1_PROVENANCE_CORRECTIONS.md:67 dataset/corpus_gap_audit/condition_page_map.csv@63e3c04 recorded=651bafe46c4c actual=651bafe46c4c
+[PASS] docs/experiments/PHASE2.1_PROVENANCE_CORRECTIONS.md:68 dataset/corpus_gap_audit/table_candidates.csv@63e3c04 recorded=8402dbf5a1d0 actual=8402dbf5a1d0
+[PASS] docs/experiments/PHASE2.1_PROVENANCE_CORRECTIONS.md:69 dataset/corpus_gap_audit/language_candidates.csv@63e3c04 recorded=f326c73a3001 actual=f326c73a3001
+[PASS] docs/experiments/PHASE2.1_PROVENANCE_CORRECTIONS.md:70 dataset/corpus_gap_audit/manual_review_manifest.csv@63e3c04 recorded=d97a450a1bc3 actual=d97a450a1bc3
+[PASS] docs/experiments/PHASE2.1_PROVENANCE_CORRECTIONS.md:71 dataset/corpus_gap_audit/manual_review_results.csv@63e3c04 recorded=7d479a5a6fd7 actual=7d479a5a6fd7
+[PASS] docs/experiments/PHASE2.1_PROVENANCE_CORRECTIONS.md:72 dataset/corpus_gap_audit/toc_offset_candidates.csv@63e3c04 recorded=aa5252e21b89 actual=aa5252e21b89
+
+Checked 10 hash claim(s) across 1 doc(s); 0 unallowed failure(s).

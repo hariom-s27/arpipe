@@ -1,0 +1,60 @@
+scratch clone: /c/Users/hario/AppData/Local/Temp/claude/d--sem-iitk-sem9-thesis/948b3666-670c-4ce4-951f-ff0d9a9b4562/scratchpad/neg-clone   HEAD=e86d755acead1b4f5f1b744106a93c7585805d02
+candidate worktree HEAD (untouched)=e86d755acead1b4f5f1b744106a93c7585805d02
+
+=== CONTROL: enforcement tests in the unmodified scratch copy ===
+.................................................                        [100%]
+49 passed in 3.20s
+
+=== ROBUSTNESS CONTROL: same tests in a clone with core.autocrlf=true (CRLF working files, LF blobs) ===
+working-file CRLF check: 410
+.................................................                        [100%]
+49 passed in 2.52s
+
+=== NEGATIVE (i): flip exactly one byte of the protected _classify source ===
+changed exactly 1 byte at offset 13396 (file line 334, inside _classify lines 332-351)
+  before:     if n_chars < BLANK_CHARS and image_area < 0.05 and n_drawings < 20:
+  after:      if n_chars > BLANK_CHARS and image_area < 0.05 and n_drawings < 20:
+FAILED tests/test_t0_4_amendment_01.py::test_authorized_file_differs_from_base_only_by_its_authorized_hunks[arpipe/triage.py]
+FAILED tests/test_t0_4_amendment_01.py::test_protected_source_is_byte_identical_to_the_t0_4_base[triage._classify]
+2 failed, 47 passed in 2.36s
+
+=== NEGATIVE (ii-a): modify exactly one fifth arpipe/ path (arpipe/verify.py), COMMITTED ===
+changed 1 byte in arpipe/verify.py at offset 11: 'a' -> 'b'
+            f"unauthorized: {sorted(committed - AUTHORIZED_PATHS)}; missing: {sorted(AUTHORIZED_PATHS - committed)}"
+E       AssertionError: unauthorized: ['arpipe/verify.py']; missing: []
+FAILED tests/test_t0_4_amendment_01.py::test_arpipe_change_set_is_exactly_the_four_authorized_paths
+1 failed, 48 deselected in 0.09s
+
+=== NEGATIVE (ii-b): ADD one new fifth arpipe/ path (untracked file) ===
+>       assert not untracked, f"untracked files under arpipe/: {sorted(untracked)}"
+E       AssertionError: untracked files under arpipe/: ['arpipe/zz_fifth_path.py']
+FAILED tests/test_t0_4_amendment_01.py::test_arpipe_change_set_is_exactly_the_four_authorized_paths
+1 failed, 48 deselected in 0.15s
+
+=== NEGATIVE (ii-c): modify one fifth arpipe/ path, UNCOMMITTED ===
+>       assert working <= AUTHORIZED_PATHS, f"working tree changes outside A1-A4: {sorted(working - AUTHORIZED_PATHS)}"
+E       AssertionError: working tree changes outside A1-A4: ['arpipe/verify.py']
+FAILED tests/test_t0_4_amendment_01.py::test_arpipe_change_set_is_exactly_the_four_authorized_paths
+1 failed, 48 deselected in 0.14s
+
+=== EXTRA (iii): guard UNEXPECTEDLY PASSES (arpipe restored to the T0.4 base) -> must be XPASS(strict) failure ===
+[XPASS(strict)] T0.4 Amendment 01 (docs/identity/T0_4_AMENDMENT_01.md): the authorized A1-A4 reconstruction changes arpipe/models.py, arpipe/triage.py, arpipe/ocr.py and arpipe/store.py, which this or
+[XPASS(strict)] T0.4 Amendment 01 (docs/identity/T0_4_AMENDMENT_01.md): the authorized A1-A4 reconstruction changes arpipe/models.py, arpipe/triage.py, arpipe/ocr.py and arpipe/store.py, which this or
+[XPASS(strict)] T0.4 Amendment 01 (docs/identity/T0_4_AMENDMENT_01.md): the authorized A1-A4 reconstruction changes arpipe/models.py, arpipe/triage.py, arpipe/ocr.py and arpipe/store.py, which this or
+FAILED tests/t0_4/test_t0_4_setup.py::test_frozen_corpus_and_history_are_unchanged
+FAILED tests/t0_4/test_t0_4_setup.py::test_fail_closed_setup_audit_passes - [...
+FAILED tests/t0_4/test_t0_4_closure_record.py::test_frozen_inputs_are_unchanged_since_the_audited_commit
+3 failed in 2.89s
+
+=== EXTRA (iv): UNRELATED failure (fifth path also changed) -> guards must FAIL, not XFAIL ===
+FAILED tests/t0_4/test_t0_4_setup.py::test_frozen_corpus_and_history_are_unchanged
+FAILED tests/t0_4/test_t0_4_setup.py::test_fail_closed_setup_audit_passes - t...
+FAILED tests/t0_4/test_t0_4_closure_record.py::test_frozen_inputs_are_unchanged_since_the_audited_commit
+3 failed in 0.46s
+
+=== scratch clone final state (candidate worktree must be untouched) ===
+candidate HEAD after negatives: e86d755acead1b4f5f1b744106a93c7585805d02
+candidate status:
+ M tests/test_phase2_1_semantic_conformance.py
+?? conftest.py
+?? tests/test_t0_4_amendment_01.py

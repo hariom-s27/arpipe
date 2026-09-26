@@ -1,0 +1,89 @@
+{
+  "PUBLICATION_CLASSIFICATION": "PUBLIC_SAFE",
+  "artifacts": [
+    {
+      "INPUT_ARTIFACT_SOURCE_COMMIT": null,
+      "bytes": 42012,
+      "classification": "PRIVATE_ARCHIVE_REQUIRED",
+      "off_machine_archive_performed": false,
+      "path": "C:\\Users\\hario\\AppData\\Local\\Temp\\arpipe-pa-20260926\\claim-a-execution.json",
+      "reason": "Original environment capture includes unnecessary interpreter search-path inventory; compact public record retains execution identity, command, relevant environment and complete outcomes.",
+      "retention": "Local original execution capture only; not durable preservation.",
+      "sha256": "1edeb5a0e87d671922f2695e103985ba1c9eb392f3f2ecd157b4b5a46ee6e0f0"
+    },
+    {
+      "INPUT_ARTIFACT_SOURCE_COMMIT": null,
+      "bytes": 60877,
+      "classification": "PRIVATE_ARCHIVE_REQUIRED",
+      "off_machine_archive_performed": false,
+      "path": "C:\\Users\\hario\\AppData\\Local\\Temp\\arpipe-pa-20260926\\claim-a.xml",
+      "reason": "Raw JUnit includes the private machine hostname. Public derivative removes only that attribute; all other bytes and all test evidence are retained.",
+      "retention": "Local original execution capture only; not durable preservation.",
+      "sha256": "57374f8ca56611c347f7e9b725cb47c540614caf8e9a271395aeabd01cff49d1"
+    },
+    {
+      "INPUT_ARTIFACT_SOURCE_COMMIT": null,
+      "bytes": 337463,
+      "classification": "PRIVATE_ARCHIVE_REQUIRED",
+      "off_machine_archive_performed": false,
+      "path": "C:\\Users\\hario\\AppData\\Local\\Temp\\arpipe-pa-20260926\\claim-a-observer.json",
+      "reason": "Original observer includes unnecessary interpreter search-path inventory; complete test outcomes are retained in public JUnit and compact independent observer evidence.",
+      "retention": "Local original execution capture only; not durable preservation.",
+      "sha256": "f9b18186da3695161fec7e3d17f7c3a852275ed6c315d23a6d82b3470ffc8e0c"
+    },
+    {
+      "INPUT_ARTIFACT_SOURCE_COMMIT": null,
+      "bytes": 42679,
+      "classification": "PRIVATE_ARCHIVE_REQUIRED",
+      "off_machine_archive_performed": false,
+      "path": "C:\\Users\\hario\\AppData\\Local\\Temp\\arpipe-pa-20260926\\claim-b-execution.json",
+      "reason": "Original environment capture includes unnecessary interpreter search-path inventory; compact public record retains execution identity, command, relevant environment and complete outcomes.",
+      "retention": "Local original execution capture only; not durable preservation.",
+      "sha256": "1fe71c57364b0b5d71ff4f75e87681a941018dc16df20c306b6938595d786eeb"
+    },
+    {
+      "INPUT_ARTIFACT_SOURCE_COMMIT": null,
+      "bytes": 9725,
+      "classification": "PRIVATE_ARCHIVE_REQUIRED",
+      "off_machine_archive_performed": false,
+      "path": "C:\\Users\\hario\\AppData\\Local\\Temp\\arpipe-pa-20260926\\claim-b.xml",
+      "reason": "Raw JUnit includes the private machine hostname. Public derivative removes only that attribute; all other bytes and all test evidence are retained.",
+      "retention": "Local original execution capture only; not durable preservation.",
+      "sha256": "b787d36a66f717402816145ff9be932988526ac6d5583b64a66586516efcab0f"
+    },
+    {
+      "INPUT_ARTIFACT_SOURCE_COMMIT": null,
+      "bytes": 68264,
+      "classification": "PRIVATE_ARCHIVE_REQUIRED",
+      "off_machine_archive_performed": false,
+      "path": "C:\\Users\\hario\\AppData\\Local\\Temp\\arpipe-pa-20260926\\claim-b-observer.json",
+      "reason": "Original observer includes unnecessary interpreter search-path inventory; complete test outcomes are retained in public JUnit and compact independent observer evidence.",
+      "retention": "Local original execution capture only; not durable preservation.",
+      "sha256": "33647837cfb2fa09318aaca92d989a0611f42487b47093f2309bd8b1f608ebfe"
+    },
+    {
+      "INPUT_ARTIFACT_SOURCE_COMMIT": null,
+      "bytes": 41548,
+      "classification": "PRIVATE_ARCHIVE_REQUIRED",
+      "off_machine_archive_performed": false,
+      "path": "C:\\Users\\hario\\AppData\\Local\\Temp\\arpipe-pa-20260926\\claim-c-execution.json",
+      "reason": "Original environment capture includes unnecessary interpreter search-path inventory; compact public record retains execution identity, command, relevant environment and complete outcomes.",
+      "retention": "Local original execution capture only; not durable preservation.",
+      "sha256": "1c2e4c2b293d228d1e1ed2dcdeb2e6181e6028e4a59791fbd012617a24fc0e29"
+    }
+  ],
+  "excluded": [
+    {
+      "classification": "EXCLUDE",
+      "path": "C:\\Users\\hario\\AppData\\Local\\Temp\\claude\\d--sem-iitk-sem9-thesis\\948b3666-670c-4ce4-951f-ff0d9a9b4562\\scratchpad\\run-b\\arpipe\\fixtures",
+      "reason": "Original recovered synthetic PDF inputs retained in place; no PDFs are needed in the public evidence commit."
+    },
+    {
+      "classification": "EXCLUDE",
+      "path_pattern": "C:\\Users\\hario\\AppData\\Local\\Temp\\arpipe-pa-20260926\\claim-*-temp",
+      "reason": "Disposable pytest runtime files; remove after preserving results."
+    }
+  ],
+  "reproduction_id": "P-A-R1-20260926",
+  "scope": "Metadata only; no private contents published. No archive operation or archive destination approval implied."
+}

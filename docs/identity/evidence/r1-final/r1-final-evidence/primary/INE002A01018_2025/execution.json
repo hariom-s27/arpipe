@@ -1,0 +1,14 @@
+{
+  "document_id": "INE002A01018_2025",
+  "phase": "primary",
+  "pdf_sha256": "c46ac824ba00bc39d70f66fcaece42dc1af4e32dd91c2a9038fc443618ec2908",
+  "completed": true,
+  "confidence": "high",
+  "span_path": "companies/RELIANCE_INDUSTRIES_LIMITED__INE002A01018/2025/mda.txt",
+  "reasons": [
+    "span_truncated"
+  ],
+  "errors": [],
+  "duration_seconds": 8.749878299990087,
+  "candidate_import": "D:\\sem_iitk\\sem9\\thesis\\sep_week1\\r1-final-evidence\\candidate-a\\arpipe\\__init__.py"
+}

@@ -1,0 +1,15 @@
+............................................................s...ssssssss [ 16%]
+s.........s.................s....s..........s......s.................... [ 33%]
+..................ss.................................................... [ 50%]
+.................................................x...................... [ 66%]
+..................x.................................................x... [ 83%]
+.......................................................................  [100%]
+=========================== short test summary info ===========================
+XFAIL tests/t0_4/test_t0_4_closure_record.py::test_frozen_inputs_are_unchanged_since_the_audited_commit - T0.4 Amendment 01 (docs/identity/T0_4_AMENDMENT_01.md): the authorized A1-A4 reconstruction changes arpipe/models.py, arpipe/triage.py, arpipe/ocr.py and arpipe/store.py, which this original literal T0.4 path guard reports as the known freeze deviation
+XFAIL tests/t0_4/test_t0_4_setup.py::test_frozen_corpus_and_history_are_unchanged - T0.4 Amendment 01 (docs/identity/T0_4_AMENDMENT_01.md): the authorized A1-A4 reconstruction changes arpipe/models.py, arpipe/triage.py, arpipe/ocr.py and arpipe/store.py, which this original literal T0.4 path guard reports as the known freeze deviation
+XFAIL tests/t0_4/test_t0_4_setup.py::test_fail_closed_setup_audit_passes - T0.4 Amendment 01 (docs/identity/T0_4_AMENDMENT_01.md): the authorized A1-A4 reconstruction changes arpipe/models.py, arpipe/triage.py, arpipe/ocr.py and arpipe/store.py, which this original literal T0.4 path guard reports as the known freeze deviation
+SKIPPED [1] arpipe\tests\test_labeller.py:90: Stores not available for sampling test
+SKIPPED [13] arpipe\tests\test_pipeline.py:24: run tests/make_fixtures.py first
+SKIPPED [1] arpipe\tests\test_pipeline.py:258: live_store blobs not present
+SKIPPED [2] arpipe\tests\test_pm1_orderqc.py:31: run tests/make_fixtures.py first
+411 passed, 17 skipped, 3 xfailed in 59.60s

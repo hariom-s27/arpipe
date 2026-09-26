@@ -1,0 +1,93 @@
+{
+  "mode": "determinism",
+  "documents_compared": 4,
+  "fully_comparable_documents": 0,
+  "fully_comparable_exact_matches": 0,
+  "exact_on_all_available_comparable_fields": 4,
+  "documents_with_differences": 0,
+  "field_counts": {
+    "located": {
+      "EXACT": 4
+    },
+    "start_page": {
+      "EXACT": 4
+    },
+    "end_page": {
+      "EXACT": 4
+    },
+    "grade": {
+      "EXACT": 4
+    },
+    "span_path_nullness": {
+      "EXACT": 4
+    },
+    "per_page_kind": {
+      "UNAVAILABLE_BOTH": 4
+    },
+    "script_map": {
+      "EXACT": 4
+    }
+  },
+  "documents": [
+    {
+      "document_id": "INE001F01019_2012",
+      "field_results": {
+        "located": "EXACT",
+        "start_page": "EXACT",
+        "end_page": "EXACT",
+        "grade": "EXACT",
+        "span_path_nullness": "EXACT",
+        "per_page_kind": "UNAVAILABLE_BOTH",
+        "script_map": "EXACT"
+      },
+      "comparable_fields": 6,
+      "differences": {},
+      "attribution": null
+    },
+    {
+      "document_id": "INE001F01019_2013",
+      "field_results": {
+        "located": "EXACT",
+        "start_page": "EXACT",
+        "end_page": "EXACT",
+        "grade": "EXACT",
+        "span_path_nullness": "EXACT",
+        "per_page_kind": "UNAVAILABLE_BOTH",
+        "script_map": "EXACT"
+      },
+      "comparable_fields": 6,
+      "differences": {},
+      "attribution": null
+    },
+    {
+      "document_id": "INE001F01019_2017",
+      "field_results": {
+        "located": "EXACT",
+        "start_page": "EXACT",
+        "end_page": "EXACT",
+        "grade": "EXACT",
+        "span_path_nullness": "EXACT",
+        "per_page_kind": "UNAVAILABLE_BOTH",
+        "script_map": "EXACT"
+      },
+      "comparable_fields": 6,
+      "differences": {},
+      "attribution": null
+    },
+    {
+      "document_id": "INE008A01015_2024",
+      "field_results": {
+        "located": "EXACT",
+        "start_page": "EXACT",
+        "end_page": "EXACT",
+        "grade": "EXACT",
+        "span_path_nullness": "EXACT",
+        "per_page_kind": "UNAVAILABLE_BOTH",
+        "script_map": "EXACT"
+      },
+      "comparable_fields": 6,
+      "differences": {},
+      "attribution": null
+    }
+  ]
+}

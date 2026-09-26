@@ -1,0 +1,41 @@
+[r1-resume-2-final c779c2e] test(r1): admit exact reconstruction paths under A5
+ 1 file changed, 21 insertions(+), 4 deletions(-)
+c779c2e471ef8c3455c827de9ef571443f41911c
+24b8e000f23d18faabd16f828bd20eeb5328ddf7
+test(r1): admit exact reconstruction paths under A5
+diff --git a/tests/test_import_smoke.py b/tests/test_import_smoke.py
+new file mode 100644
+index 0000000..416d38e
+--- /dev/null
++++ b/tests/test_import_smoke.py
+@@ -0,0 +1,11 @@
++"""R1: the reconstructed package must import every discoverable module."""
++
++import importlib
++import pkgutil
++
++import arpipe
++
++
++def test_every_arpipe_module_imports() -> None:
++    for module in pkgutil.walk_packages(arpipe.__path__, prefix="arpipe."):
++        importlib.import_module(module.name)
+[r1-resume-2-final 588b6e6] test(r1): verify every arpipe module imports
+ 1 file changed, 11 insertions(+)
+ create mode 100644 tests/test_import_smoke.py
+588b6e60b20922e1f0986df492e370ac435c0747
+c779c2e471ef8c3455c827de9ef571443f41911c
+test(r1): verify every arpipe module imports
+M	arpipe/models.py
+M	arpipe/ocr.py
+M	arpipe/store.py
+M	arpipe/triage.py
+A	tests/test_import_smoke.py
+M	tests/test_phase2_1_semantic_conformance.py
+ arpipe/models.py                            |  9 ++++
+ arpipe/ocr.py                               | 17 +++++++
+ arpipe/store.py                             | 25 +++++++---
+ arpipe/triage.py                            | 73 +++++++++++++++++++++++++++++
+ tests/test_import_smoke.py                  | 11 +++++
+ tests/test_phase2_1_semantic_conformance.py | 25 ++++++++--
+ 6 files changed, 150 insertions(+), 10 deletions(-)

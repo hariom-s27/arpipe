@@ -1,0 +1,15 @@
+{
+  "document_id": "INE004E01016_2024",
+  "phase": "primary",
+  "pdf_sha256": "5df0bb9af53232cc35ffadba97d1ae74fcfbb6b05ba44e004f972287823b0203",
+  "completed": true,
+  "confidence": "low",
+  "span_path": "companies/SPAN_DIVERGENT_LIMITED__INE004E01016/2024/mda.txt",
+  "reasons": [
+    "source_shredded",
+    "span_truncated"
+  ],
+  "errors": [],
+  "duration_seconds": 4.535058599998592,
+  "candidate_import": "D:\\sem_iitk\\sem9\\thesis\\sep_week1\\r1-final-evidence\\candidate-a\\arpipe\\__init__.py"
+}

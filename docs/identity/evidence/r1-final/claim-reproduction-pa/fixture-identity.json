@@ -1,0 +1,130 @@
+{
+  "PUBLICATION_CLASSIFICATION": "PUBLIC_SAFE",
+  "deterministic_manifest_recipe": "SHA-256 of UTF-8 '<sha256>  <run-b-relative path>\\n' lines sorted by path",
+  "deterministic_manifest_sha256": "1c7c34827dab0c3f4312437618c1716837740bbb35dfb81bdb5b1cd9b7db3d93",
+  "file_count": 7,
+  "files": [
+    {
+      "INPUT_ARTIFACT_SOURCE_COMMIT": null,
+      "bytes": 34919,
+      "matches_preservation_manifest": true,
+      "path": "C:\\Users\\hario\\AppData\\Local\\Temp\\claude\\d--sem-iitk-sem9-thesis\\948b3666-670c-4ce4-951f-ff0d9a9b4562\\scratchpad\\run-b\\arpipe\\fixtures\\A_digital_outline.pdf",
+      "preserved_sha256": "8e7de8cc9b5e59194e2b1d6c62f5b553a692fc638c17f72863f9d9f7a23d28c8",
+      "relative_path": "arpipe/fixtures/A_digital_outline.pdf",
+      "sha256": "8e7de8cc9b5e59194e2b1d6c62f5b553a692fc638c17f72863f9d9f7a23d28c8"
+    },
+    {
+      "INPUT_ARTIFACT_SOURCE_COMMIT": null,
+      "bytes": 55032,
+      "matches_preservation_manifest": true,
+      "path": "C:\\Users\\hario\\AppData\\Local\\Temp\\claude\\d--sem-iitk-sem9-thesis\\948b3666-670c-4ce4-951f-ff0d9a9b4562\\scratchpad\\run-b\\arpipe\\fixtures\\B_twocol_toc.pdf",
+      "preserved_sha256": "91cba3003416ef8fd13749e1ce8652e7f62d94c704a6a50e2df1bc975e3a0064",
+      "relative_path": "arpipe/fixtures/B_twocol_toc.pdf",
+      "sha256": "91cba3003416ef8fd13749e1ce8652e7f62d94c704a6a50e2df1bc975e3a0064"
+    },
+    {
+      "INPUT_ARTIFACT_SOURCE_COMMIT": null,
+      "bytes": 50575391,
+      "matches_preservation_manifest": true,
+      "path": "C:\\Users\\hario\\AppData\\Local\\Temp\\claude\\d--sem-iitk-sem9-thesis\\948b3666-670c-4ce4-951f-ff0d9a9b4562\\scratchpad\\run-b\\arpipe\\fixtures\\C_scanned.pdf",
+      "preserved_sha256": "011444d5b2e35a7b4f0890c64c8f3d81296c79b86eaa73d0936bf4046b71dd70",
+      "relative_path": "arpipe/fixtures/C_scanned.pdf",
+      "sha256": "011444d5b2e35a7b4f0890c64c8f3d81296c79b86eaa73d0936bf4046b71dd70"
+    },
+    {
+      "INPUT_ARTIFACT_SOURCE_COMMIT": null,
+      "bytes": 33589,
+      "matches_preservation_manifest": true,
+      "path": "C:\\Users\\hario\\AppData\\Local\\Temp\\claude\\d--sem-iitk-sem9-thesis\\948b3666-670c-4ce4-951f-ff0d9a9b4562\\scratchpad\\run-b\\arpipe\\fixtures\\C_src.pdf",
+      "preserved_sha256": "524f31a3081b95c1323af95f13d6d4b1ee26b6ae9265cb62b62cf806307e499b",
+      "relative_path": "arpipe/fixtures/C_src.pdf",
+      "sha256": "524f31a3081b95c1323af95f13d6d4b1ee26b6ae9265cb62b62cf806307e499b"
+    },
+    {
+      "INPUT_ARTIFACT_SOURCE_COMMIT": null,
+      "bytes": 21768568,
+      "matches_preservation_manifest": true,
+      "path": "C:\\Users\\hario\\AppData\\Local\\Temp\\claude\\d--sem-iitk-sem9-thesis\\948b3666-670c-4ce4-951f-ff0d9a9b4562\\scratchpad\\run-b\\arpipe\\fixtures\\D_hybrid.pdf",
+      "preserved_sha256": "d0f94c2efd0fab80927aebaf9487d834c728ee10598842a8c41bfe1ccd26c91f",
+      "relative_path": "arpipe/fixtures/D_hybrid.pdf",
+      "sha256": "d0f94c2efd0fab80927aebaf9487d834c728ee10598842a8c41bfe1ccd26c91f"
+    },
+    {
+      "INPUT_ARTIFACT_SOURCE_COMMIT": null,
+      "bytes": 54997,
+      "matches_preservation_manifest": true,
+      "path": "C:\\Users\\hario\\AppData\\Local\\Temp\\claude\\d--sem-iitk-sem9-thesis\\948b3666-670c-4ce4-951f-ff0d9a9b4562\\scratchpad\\run-b\\arpipe\\fixtures\\D_src.pdf",
+      "preserved_sha256": "f68d01fb03512cbcc16e09515bbc03d42869d5eb4792a13f2fdb849c038d1063",
+      "relative_path": "arpipe/fixtures/D_src.pdf",
+      "sha256": "f68d01fb03512cbcc16e09515bbc03d42869d5eb4792a13f2fdb849c038d1063"
+    },
+    {
+      "INPUT_ARTIFACT_SOURCE_COMMIT": null,
+      "bytes": 34349,
+      "matches_preservation_manifest": true,
+      "path": "C:\\Users\\hario\\AppData\\Local\\Temp\\claude\\d--sem-iitk-sem9-thesis\\948b3666-670c-4ce4-951f-ff0d9a9b4562\\scratchpad\\run-b\\arpipe\\fixtures\\E_bilingual.pdf",
+      "preserved_sha256": "f21ae651bb87abbe9f0937c0f6d27eb82ad8cc15650d9be9e83744d622070be4",
+      "relative_path": "arpipe/fixtures/E_bilingual.pdf",
+      "sha256": "f21ae651bb87abbe9f0937c0f6d27eb82ad8cc15650d9be9e83744d622070be4"
+    }
+  ],
+  "fixture_directory": "C:\\Users\\hario\\AppData\\Local\\Temp\\claude\\d--sem-iitk-sem9-thesis\\948b3666-670c-4ce4-951f-ff0d9a9b4562\\scratchpad\\run-b\\arpipe\\fixtures",
+  "fixture_regenerated": false,
+  "historical_provenance": {
+    "basis": "Contemporaneous transcript identifies this run-b fixture build and exact two test files; preservation commit records each surviving fixture hash. Hashes alone do not establish provenance.",
+    "command_line": 703,
+    "command_timestamp_utc": "2026-09-25T20:29:07.786Z",
+    "output_line": 708,
+    "transcript_sha256": "9352b967c0c6dc4d30b850420b2ac92da1773caf4113c6578fd9642e8055d217"
+  },
+  "limitations": [
+    "Fixtures have no Git source commit; preserved manifest has a later source commit.",
+    "No contemporaneous per-fixture hash was recorded at the historical execution; preservation hashes postdate execution."
+  ],
+  "postexecution_byte_verification": {
+    "A_digital_outline.pdf": "8e7de8cc9b5e59194e2b1d6c62f5b553a692fc638c17f72863f9d9f7a23d28c8",
+    "B_twocol_toc.pdf": "91cba3003416ef8fd13749e1ce8652e7f62d94c704a6a50e2df1bc975e3a0064",
+    "C_scanned.pdf": "011444d5b2e35a7b4f0890c64c8f3d81296c79b86eaa73d0936bf4046b71dd70",
+    "C_src.pdf": "524f31a3081b95c1323af95f13d6d4b1ee26b6ae9265cb62b62cf806307e499b",
+    "D_hybrid.pdf": "d0f94c2efd0fab80927aebaf9487d834c728ee10598842a8c41bfe1ccd26c91f",
+    "D_src.pdf": "f68d01fb03512cbcc16e09515bbc03d42869d5eb4792a13f2fdb849c038d1063",
+    "E_bilingual.pdf": "f21ae651bb87abbe9f0937c0f6d27eb82ad8cc15650d9be9e83744d622070be4"
+  },
+  "postexecution_scripts_unchanged": true,
+  "preservation_manifest": {
+    "INPUT_ARTIFACT_SOURCE_COMMIT": "2a42b97bdc09297eba92ae6a46cd6e7365a0e54a",
+    "affects_production_code": false,
+    "path": "docs/identity/evidence/r1-final/tree-manifests/run-b.sha256",
+    "sha256": "52848e29071076c7893852c1ce0e88a04eac1795f387a91c6b5822d74b11017d"
+  },
+  "scripts": [
+    {
+      "INPUT_ARTIFACT_SOURCE_COMMIT": "28a67b63d890d8407fa9738a71ae37ad63148b73",
+      "bytes": 9200,
+      "git_blob_sha256": "ca233ddfd8c5c1682c094e38f533045efe06e7081233df649a344c2c31081063",
+      "git_path": "arpipe/tests/make_fixtures.py",
+      "path": "C:\\Users\\hario\\AppData\\Local\\Temp\\claude\\d--sem-iitk-sem9-thesis\\948b3666-670c-4ce4-951f-ff0d9a9b4562\\scratchpad\\run-b\\arpipe\\tests\\make_fixtures.py",
+      "sha256": "ca233ddfd8c5c1682c094e38f533045efe06e7081233df649a344c2c31081063",
+      "working_bytes_equal_git_blob": true
+    },
+    {
+      "INPUT_ARTIFACT_SOURCE_COMMIT": "28a67b63d890d8407fa9738a71ae37ad63148b73",
+      "bytes": 75977,
+      "git_blob_sha256": "85e558d95d96274efa82c28f1a624a76f01ec5ac40a26d0a056602d5ca395f06",
+      "git_path": "arpipe/tests/test_pipeline.py",
+      "path": "C:\\Users\\hario\\AppData\\Local\\Temp\\claude\\d--sem-iitk-sem9-thesis\\948b3666-670c-4ce4-951f-ff0d9a9b4562\\scratchpad\\run-b\\arpipe\\tests\\test_pipeline.py",
+      "sha256": "85e558d95d96274efa82c28f1a624a76f01ec5ac40a26d0a056602d5ca395f06",
+      "working_bytes_equal_git_blob": true
+    },
+    {
+      "INPUT_ARTIFACT_SOURCE_COMMIT": "28a67b63d890d8407fa9738a71ae37ad63148b73",
+      "bytes": 13084,
+      "git_blob_sha256": "5d5ba30ef365dc32bf23878fcfd8c895f4d7c1756fffb694461af8a0e3e23020",
+      "git_path": "arpipe/tests/test_pm1_orderqc.py",
+      "path": "C:\\Users\\hario\\AppData\\Local\\Temp\\claude\\d--sem-iitk-sem9-thesis\\948b3666-670c-4ce4-951f-ff0d9a9b4562\\scratchpad\\run-b\\arpipe\\tests\\test_pm1_orderqc.py",
+      "sha256": "5d5ba30ef365dc32bf23878fcfd8c895f4d7c1756fffb694461af8a0e3e23020",
+      "working_bytes_equal_git_blob": true
+    }
+  ],
+  "total_bytes": 72556845
+}

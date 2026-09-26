@@ -1,0 +1,248 @@
+{
+  "company_id": "INE001F01019",
+  "fy_end": 2012,
+  "sha256": "7ca96fce59cda07b884371a9af00365ccde511c33e5aaabb515b79df5e459dcb",
+  "ok": true,
+  "confidence": "medium",
+  "span": {
+    "start_page": 5,
+    "end_page": 6,
+    "start_char": null,
+    "end_char": null,
+    "method": "heading+trimmed",
+    "heading_text": "MANAGEMENT DISCUSSIONS AND ANALYSIS",
+    "terminator_text": "Annexure 'A' to Directors Report",
+    "score": 0.8600000000000001,
+    "supporters": 1,
+    "terminator_match": {
+      "text": "Annexure 'A' to Directors Report",
+      "page": 6,
+      "line_index": 65,
+      "y_frac": 0.496,
+      "shape_ok": true,
+      "font_signal": "title_case"
+    },
+    "toc_offset": null,
+    "body_script": null
+  },
+  "verification": {
+    "company_ok": true,
+    "year_ok": true,
+    "company_evidence": [
+      "isin:INE001F01019",
+      "isin:exact_match",
+      "name:Modern Steels Limited:100"
+    ],
+    "year_evidence": [
+      "modal_fy:2005:w3",
+      "expected_fy_supported:3"
+    ],
+    "name_similarity": 100.0,
+    "cin_found": null,
+    "isin_found": "INE001F01019",
+    "isin_found_on_page": 13,
+    "isins_seen": [
+      "INE001F01019"
+    ],
+    "fy_found": 2005,
+    "notes": [],
+    "era_signals_in_document": {
+      "mandated_ratios": false,
+      "brsr": false,
+      "br_report": false,
+      "ind_as": false,
+      "companies_act_2013": false,
+      "csr": false
+    }
+  },
+  "path": "companies/MODERN_STEELS_LIMITED__INE001F01019/2012/mda.txt",
+  "n_words": 1088,
+  "ocr_pages": 0,
+  "ocr_engine": null,
+  "supporters": 1,
+  "method_candidates": [
+    [
+      "heading",
+      5,
+      6,
+      0.8
+    ],
+    [
+      "body_score",
+      5,
+      6,
+      0.568
+    ]
+  ],
+  "total_pages": 43,
+  "mda_page_count": 2,
+  "words_per_page": 544.0,
+  "terminator_match": {
+    "text": "Annexure 'A' to Directors Report",
+    "page": 6,
+    "line_index": 65,
+    "y_frac": 0.496,
+    "shape_ok": true,
+    "font_signal": "title_case"
+  },
+  "toc_offset": {
+    "solved": null,
+    "confidence": 0.0,
+    "samples_used": 0,
+    "modal_agreement": 0.0,
+    "method": "not_run"
+  },
+  "qc": {
+    "n_words": 1088,
+    "n_chars": 7154,
+    "alpha_ratio": 0.796,
+    "digit_ratio": 0.014,
+    "avg_word_len": 5.51,
+    "long_token_frac": 0.0,
+    "ratio_cues": 0,
+    "ratio_cues_in_span": 0,
+    "leaks": [],
+    "too_short": false,
+    "too_long": false,
+    "looks_like_tables": false,
+    "orphan_start_frac": 0.0,
+    "dangling_end_frac": 0.033,
+    "orphan_starts": 0,
+    "dangling_ends": 3,
+    "n_paragraphs": 91,
+    "orphan_basis": "prose_only",
+    "orphan_gate_version": "p17.1",
+    "orphan_gate_max": 0.03,
+    "diag": {
+      "candidates": [
+        [
+          "heading",
+          5,
+          6,
+          0.8
+        ],
+        [
+          "body_score",
+          5,
+          6,
+          0.568
+        ]
+      ],
+      "toc_offset": {
+        "solved": null,
+        "confidence": 0.0,
+        "samples_used": 0,
+        "modal_agreement": 0.0,
+        "method": "not_run"
+      },
+      "outline_validation": {},
+      "supporters": 1,
+      "candidate_span_words": 1094,
+      "span_words": 1094
+    },
+    "doc_kind": "digital",
+    "terminator_match": {
+      "text": "Annexure 'A' to Directors Report",
+      "page": 6,
+      "line_index": 65,
+      "y_frac": 0.496,
+      "shape_ok": true,
+      "font_signal": "title_case"
+    },
+    "toc_offset": {
+      "solved": null,
+      "confidence": 0.0,
+      "samples_used": 0,
+      "modal_agreement": 0.0,
+      "method": "not_run"
+    },
+    "frac_needing_ocr": 0.0233,
+    "bilingual": false,
+    "n_pages": 43,
+    "ocr_stats": [],
+    "ocr_sec_total": 0.0,
+    "ocr_sec_mean": 0.0,
+    "index_sample": {},
+    "pdf_producer": "ABBYY FineReader 11",
+    "column_cut_fire_frac": 1.0,
+    "furniture_blocks_removed": 0,
+    "furniture_strings": [],
+    "orphan_start_frac_pages": [
+      null,
+      null,
+      null,
+      null,
+      null,
+      0.0,
+      0.0,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    "orphan_start_frac_pages_min_paragraphs": 2,
+    "n_words_note": "prose only; tables/charts in mda_blocks.json",
+    "blocks_quarantined": 1,
+    "words_quarantined": 6,
+    "wrong_language": {
+      "wrong_language_risk": false,
+      "devanagari_frac": 0.0,
+      "devanagari_hit": false,
+      "legacy_font_hit": false,
+      "windows_scored": 4,
+      "windows_fired": 0,
+      "worst_window": {
+        "offset": 2000,
+        "fired": false,
+        "english_word_frac": 0.4913,
+        "long_word_frac": 0.3414,
+        "rare_punct_freq": 0.004,
+        "high_codepoint_freq": 0.0,
+        "digit_embedded_frac": 0.0
+      }
+    },
+    "bilingual_heading_page": {
+      "bilingual_heading_page": false,
+      "heading_match": true,
+      "devanagari_frac": 0.0
+    }
+  },
+  "reasons": [
+    "year_unproven",
+    "span_truncated"
+  ],
+  "errors": [],
+  "pipeline_version": "0.1.0"
+}

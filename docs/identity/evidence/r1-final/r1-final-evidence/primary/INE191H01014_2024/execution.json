@@ -1,0 +1,14 @@
+{
+  "document_id": "INE191H01014_2024",
+  "phase": "primary",
+  "pdf_sha256": "b59ae03a8541538b39baae54453536722f03b6c4ebe9dc62208bd450ed901c2b",
+  "completed": true,
+  "confidence": "medium",
+  "span_path": "companies/PVR_INOX_LIMITED__INE191H01014/2024/mda.txt",
+  "reasons": [
+    "span_truncated"
+  ],
+  "errors": [],
+  "duration_seconds": 11.818721200004802,
+  "candidate_import": "D:\\sem_iitk\\sem9\\thesis\\sep_week1\\r1-final-evidence\\candidate-a\\arpipe\\__init__.py"
+}

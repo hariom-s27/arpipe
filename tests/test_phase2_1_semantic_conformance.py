@@ -5,8 +5,8 @@ Verifies:
 2. B4 double-annotation selector satisfies all hard validity requirements
    (determinism, injectivity, domain separation, fixed threshold, no rank reuse)
    without gating on sample rank uniformity.
-3. Strict recommendation-to-decision guard: all B1-B8 items must be
-   PENDING_AUTHOR_DECISION and DOWNSTREAM_EXECUTION_AUTHORIZED must be NO.
+3. Signed-ratification conformance: B1-B8 statuses must agree among the
+   register and semantic fixture while execution authorization remains NO.
 4. Strict historical immutability allowlist: all modified files between base
    commit 03a63f5 and current state must match approved Phase-2.1 paths.
 5. Zero frozen-path modifications; only the four A1-A4 production exceptions.
@@ -46,6 +46,23 @@ T0_4_AMENDMENT_01_ADMITTED_PATHS = {
     "conftest.py",  # strict expected-failure registration for three original T0.4 guards.
 }
 
+# The 2026-09-26 governance closeout admits only these exact new governance
+# records. The historical P-B documents in the snapshot directory are guarded
+# separately by byte-level SHA-256 comparisons in that directory's README.
+GOVERNANCE_CLOSEOUT_ADMITTED_PATHS = {
+    "docs/governance/AUTHOR_RATIFICATION_2026-09-26.md",
+    "docs/governance/CURRENT_DECISIONS.md",
+    "docs/governance/pb-snapshot-2026-09-26/README.md",
+    "docs/governance/pb-snapshot-2026-09-26/P-B_AUTHOR_DECISION_PACK.md",
+    "docs/governance/pb-snapshot-2026-09-26/P-B_CURRENT_AUTHOR_DECISIONS.md",
+    "docs/governance/pb-snapshot-2026-09-26/P-B_DECISION_ID_CROSSWALK.md",
+    "docs/governance/pb-snapshot-2026-09-26/P-B_DEPENDENCY_MAP.md",
+    "docs/governance/pb-snapshot-2026-09-26/P-B_FINAL_REPORT.md",
+    "docs/governance/pb-snapshot-2026-09-26/P-B_RATIFICATION_GAP_REGISTER.md",
+    "docs/governance/pb-snapshot-2026-09-26/P-B_SOURCE_COVERAGE_REGISTER.md",
+    "docs/governance/pb-snapshot-2026-09-26/P-B_SOURCE_MANIFEST.md",
+}
+
 ALLOWED_PHASE2_1_PATTERNS = [
     re.compile(r"^docs/experiments/PHASE2\.1_.*\.md$"),
     re.compile(r"^tests/test_phase2_1_semantic_conformance\.py$"),
@@ -60,6 +77,8 @@ ALLOWED_PHASE2_1_PATTERNS = [
     re.compile(r"^docs/phase4/"),  # A5: directory absent at BASE_COMMIT.
     re.compile(r"^docs/decisions/"),  # A5: directory absent at BASE_COMMIT.
     re.compile(r"^docs/identity/"),  # A5: directory absent at BASE_COMMIT.
+    # Exact governance-closeout paths; no directory-wide exception.
+    *(re.compile(rf"^{re.escape(path)}$") for path in GOVERNANCE_CLOSEOUT_ADMITTED_PATHS),
     # T0.4 Amendment 01: exact paths only.
     *(re.compile(rf"^{re.escape(path)}$") for path in T0_4_AMENDMENT_01_ADMITTED_PATHS),
 ]
@@ -73,6 +92,9 @@ def test_semantic_discrimination_fixtures_exist() -> None:
         data = json.load(f)
     assert data["schema_version"] == "2.1.0"
     assert len(data["fixtures"]["discrimination_rules"]) == 8
+    assert set(data["fixtures"]["b_decisions"]["items"]) == {
+        "B1", "B2", "B3", "B4", "B5", "B6", "B7", "B8"
+    }
 
 
 def test_b4_canonical_serialization_properties() -> None:
@@ -147,23 +169,44 @@ def test_b4_canonical_serialization_properties() -> None:
 
 
 def test_b1_to_b8_status_and_decision_guard() -> None:
-    """Verify B1-B8 decision statuses in documentation.
+    """Verify signed B1-B8 statuses agree between register and fixture.
 
     Rules:
-    1. Every B item must equal PENDING_AUTHOR_DECISION.
-    2. No recommendation may be converted to ADOPTED without an author ratification record.
-    3. DOWNSTREAM_EXECUTION_AUTHORIZED must be NO.
+    1. Each current register status equals the semantic fixture status.
+    2. Statuses use only the signed ratification vocabulary.
+    3. Ratification does not authorize downstream execution.
     """
     decision_reg = REPO_ROOT / "docs" / "experiments" / "PHASE2.1_B1_B8_DECISION_REGISTER.md"
     assert decision_reg.exists(), f"Missing {decision_reg}"
     text = decision_reg.read_text(encoding="utf-8")
 
-    # Verify all 8 items are explicitly PENDING_AUTHOR_DECISION
-    for item in ["B1", "B2", "B3", "B4", "B5", "B6", "B7", "B8"]:
-        pattern = rf"{item}.*?status.*?:.*?(PENDING_AUTHOR_DECISION|`PENDING_AUTHOR_DECISION`)"
-        assert re.search(pattern, text, re.IGNORECASE | re.DOTALL), (
-            f"{item} is not explicitly PENDING_AUTHOR_DECISION in register"
+    fixture_path = REPO_ROOT / "configs" / "phase2_1" / "semantic_fixtures.json"
+    fixture = json.loads(fixture_path.read_text(encoding="utf-8"))["fixtures"]["b_decisions"]
+    assert fixture["ratification_source"] == (
+        "docs/governance/AUTHOR_RATIFICATION_2026-09-26.md"
+    )
+    assert fixture["author"] == "Hariom Singh"
+    assert fixture["ratification_date"] == "2026-09-26"
+    assert fixture["execution_authorized"] is False
+
+    allowed_statuses = {"RATIFIED", "DEFERRED", "NOT_APPLICABLE"}
+    for item, expected in fixture["items"].items():
+        section = re.search(
+            rf"^### {item}\b(?P<body>.*?)(?=^### B[1-8]\b|^## |\Z)",
+            text,
+            re.MULTILINE | re.DOTALL,
         )
+        assert section, f"Missing current register section for {item}"
+        status = re.search(r"\*\*status:\*\* `([A-Z_]+)`", section.group("body"))
+        assert status, f"Missing status field for {item}"
+        assert status.group(1) == expected["status"]
+        assert status.group(1) in allowed_statuses
+        section_lower = section.group("body").lower()
+        if expected["status"] == "DEFERRED":
+            assert expected["reopen_trigger"].lower() in section_lower
+        if expected["status"] == "NOT_APPLICABLE":
+            assert expected["condition"].lower() in section_lower
+            assert expected["reopen_trigger"].lower() in section_lower
 
     # Verify downstream execution is NOT authorized
     assert "DOWNSTREAM_EXECUTION_AUTHORIZED = NO" in text
@@ -172,9 +215,10 @@ def test_b1_to_b8_status_and_decision_guard() -> None:
     assert "EXPERIMENT_X1_X7_AUTHORIZED = NO" in text
     assert "HOLDOUT_ACCESS_AUTHORIZED = NO" in text
 
-    # Guard: no occurrence of ADOPTED as an active status
+    # Guard: the obsolete unratified status vocabulary is not current.
     adopted_matches = re.findall(r"status:\s*ADOPTED", text, re.IGNORECASE)
     assert len(adopted_matches) == 0, f"Found un-ratified ADOPTED status in {decision_reg}"
+    assert "PENDING_AUTHOR_DECISION" not in text
 
 
 def test_b1_exact_formulation() -> None:
@@ -183,7 +227,7 @@ def test_b1_exact_formulation() -> None:
     text = decision_reg.read_text(encoding="utf-8")
 
     assert "broken_text → OCR" in text
-    assert "genuine legacy-font occurrence remains unresolved" in text
+    assert "Genuine legacy-font occurrence remains unresolved" in text
     assert "Do not create a production REMAP route" in text
     assert "Retain legacy as a separate forensic research attribute/track" in text
     assert "This does not establish that REMAP is useless" in text

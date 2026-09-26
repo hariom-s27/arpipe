@@ -1,0 +1,52 @@
+{
+  "PUBLICATION_CLASSIFICATION": "PUBLIC_SAFE",
+  "all_production_imports_from_pinned_worktree": true,
+  "arpipe_modules": {
+    "arpipe": "D:\\sem_iitk\\sem9\\thesis\\sep_week1\\r1-final\\arpipe\\__init__.py",
+    "arpipe.cli": "D:\\sem_iitk\\sem9\\thesis\\sep_week1\\r1-final\\arpipe\\cli.py",
+    "arpipe.config": "D:\\sem_iitk\\sem9\\thesis\\sep_week1\\r1-final\\arpipe\\config.py",
+    "arpipe.discover": "D:\\sem_iitk\\sem9\\thesis\\sep_week1\\r1-final\\arpipe\\discover.py",
+    "arpipe.fetch": "D:\\sem_iitk\\sem9\\thesis\\sep_week1\\r1-final\\arpipe\\fetch.py",
+    "arpipe.models": "D:\\sem_iitk\\sem9\\thesis\\sep_week1\\r1-final\\arpipe\\models.py",
+    "arpipe.ocr": "D:\\sem_iitk\\sem9\\thesis\\sep_week1\\r1-final\\arpipe\\ocr.py",
+    "arpipe.patterns": "D:\\sem_iitk\\sem9\\thesis\\sep_week1\\r1-final\\arpipe\\patterns.py",
+    "arpipe.pipeline": "D:\\sem_iitk\\sem9\\thesis\\sep_week1\\r1-final\\arpipe\\pipeline.py",
+    "arpipe.preflight": "D:\\sem_iitk\\sem9\\thesis\\sep_week1\\r1-final\\arpipe\\preflight.py",
+    "arpipe.segment": "D:\\sem_iitk\\sem9\\thesis\\sep_week1\\r1-final\\arpipe\\segment.py",
+    "arpipe.store": "D:\\sem_iitk\\sem9\\thesis\\sep_week1\\r1-final\\arpipe\\store.py",
+    "arpipe.textlayer": "D:\\sem_iitk\\sem9\\thesis\\sep_week1\\r1-final\\arpipe\\textlayer.py",
+    "arpipe.triage": "D:\\sem_iitk\\sem9\\thesis\\sep_week1\\r1-final\\arpipe\\triage.py",
+    "arpipe.universe": "D:\\sem_iitk\\sem9\\thesis\\sep_week1\\r1-final\\arpipe\\universe.py",
+    "arpipe.verify": "D:\\sem_iitk\\sem9\\thesis\\sep_week1\\r1-final\\arpipe\\verify.py"
+  },
+  "collected": 104,
+  "collection_errors": [],
+  "count_method": "pytest terminal reporter categories recorded by a read-only plugin; independent JUnit testcase parsing confirms pass/skip/xfail/fail/error; full report scan separately detects strict XPASS.",
+  "counts": {
+    "errors": 0,
+    "failed": 0,
+    "passed": 103,
+    "skipped": 1,
+    "xfailed": 0,
+    "xpassed": 0
+  },
+  "exitstatus": 0,
+  "junit_conversion": {
+    "only_change": "Removed one hostname attribute; all other bytes retained.",
+    "original_sha256": "b787d36a66f717402816145ff9be932988526ac6d5583b64a66586516efcab0f",
+    "public_sha256": "2d095998f44085857fecd0d64f0280af37b5cceb327f1bee49f9934a729b6cd6"
+  },
+  "nonpass_reports": [
+    {
+      "detail": "('C:\\\\Users\\\\hario\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\d--sem-iitk-sem9-thesis\\\\948b3666-670c-4ce4-951f-ff0d9a9b4562\\\\scratchpad\\\\run-b\\\\arpipe\\\\tests\\\\test_pipeline.py', 258, 'Skipped: live_store blobs not present')",
+      "duration_seconds": 0.00013010000111535192,
+      "nodeid": "::test_isin_extracted_on_live_store_blobs",
+      "outcome": "skipped",
+      "phase": "setup",
+      "wasxfail": null
+    }
+  ],
+  "original_observer_sha256": "33647837cfb2fa09318aaca92d989a0611f42487b47093f2309bd8b1f608ebfe",
+  "report_count": 311,
+  "strict_xpass_count": 0
+}

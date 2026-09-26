@@ -1,0 +1,7 @@
+[r1-resume-2-final d551385] fix(r1): restore authorized model provider fields (A1)
+ 1 file changed, 9 insertions(+)
+d5513859a5315800a7b6c68711756798129ab8ee
+755c5519b9ab9484ab033685e563350a0cd0d685
+fix(r1): restore authorized model provider fields (A1)
+ arpipe/triage.py | 73 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 73 insertions(+)

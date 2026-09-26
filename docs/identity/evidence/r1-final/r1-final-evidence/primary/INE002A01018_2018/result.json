@@ -1,0 +1,2057 @@
+{
+  "company_id": "INE002A01018",
+  "fy_end": 2018,
+  "sha256": "3c12799b657541213f47910b4326952652cdc6ee53ec593e8a959f933e2ae0f3",
+  "ok": false,
+  "confidence": "low",
+  "span": {
+    "start_page": 57,
+    "end_page": 128,
+    "start_char": null,
+    "end_char": null,
+    "method": "heading+refined+trimmed",
+    "heading_text": "Management\u2019s Discussion and Analysis",
+    "terminator_text": null,
+    "score": 0.7754901960784314,
+    "supporters": 0,
+    "terminator_match": null,
+    "toc_offset": null,
+    "body_script": null
+  },
+  "verification": {
+    "company_ok": true,
+    "year_ok": true,
+    "company_evidence": [
+      "name:Reliance Industries Limited:100"
+    ],
+    "year_evidence": [
+      "modal_fy:2017:w110",
+      "expected_fy_supported:107"
+    ],
+    "name_similarity": 100.0,
+    "cin_found": null,
+    "isin_found": null,
+    "isin_found_on_page": null,
+    "isins_seen": [],
+    "fy_found": 2017,
+    "notes": [],
+    "era_signals_in_document": {
+      "mandated_ratios": false,
+      "brsr": false,
+      "br_report": true,
+      "ind_as": false,
+      "companies_act_2013": true,
+      "csr": true
+    }
+  },
+  "path": "companies/RELIANCE_INDUSTRIES_LIMITED__INE002A01018/2018/mda.txt",
+  "n_words": 30481,
+  "ocr_pages": 107,
+  "ocr_engine": "tesseract:eng",
+  "supporters": 0,
+  "method_candidates": [
+    [
+      "heading",
+      57,
+      116,
+      0.775
+    ],
+    [
+      "heading_text",
+      129,
+      181,
+      0.6
+    ],
+    [
+      "body_score",
+      45,
+      165,
+      0.72
+    ]
+  ],
+  "total_pages": 447,
+  "mda_page_count": 72,
+  "words_per_page": 423.3,
+  "terminator_match": null,
+  "toc_offset": {
+    "solved": null,
+    "confidence": 0.0,
+    "samples_used": 0,
+    "modal_agreement": 0.0,
+    "method": "not_run"
+  },
+  "qc": {
+    "n_words": 30481,
+    "n_chars": 208217,
+    "alpha_ratio": 0.798,
+    "digit_ratio": 0.019,
+    "avg_word_len": 5.77,
+    "long_token_frac": 0.0002,
+    "ratio_cues": 0,
+    "ratio_cues_in_span": 0,
+    "leaks": [],
+    "too_short": false,
+    "too_long": false,
+    "looks_like_tables": false,
+    "orphan_start_frac": 0.0383,
+    "dangling_end_frac": 0.1749,
+    "orphan_starts": 70,
+    "dangling_ends": 320,
+    "n_paragraphs": 1830,
+    "orphan_basis": "prose_only",
+    "orphan_gate_version": "p17.1",
+    "orphan_gate_max": 0.03,
+    "diag": {
+      "candidates": [
+        [
+          "heading",
+          57,
+          116,
+          0.775
+        ],
+        [
+          "heading_text",
+          129,
+          181,
+          0.6
+        ],
+        [
+          "body_score",
+          45,
+          165,
+          0.72
+        ]
+      ],
+      "toc_offset": {
+        "solved": null,
+        "confidence": 0.0,
+        "samples_used": 0,
+        "modal_agreement": 0.0,
+        "method": "not_run"
+      },
+      "outline_validation": {},
+      "supporters": 0,
+      "candidate_span_words": 8051,
+      "span_words": 8051,
+      "index_sample": {
+        "mode": "stride",
+        "pages_sampled": 60,
+        "pages_total": 447,
+        "stride": 6,
+        "cost_pages": 60
+      }
+    },
+    "doc_kind": "scanned",
+    "terminator_match": null,
+    "toc_offset": {
+      "solved": null,
+      "confidence": 0.0,
+      "samples_used": 0,
+      "modal_agreement": 0.0,
+      "method": "not_run"
+    },
+    "frac_needing_ocr": 0.8881,
+    "bilingual": false,
+    "n_pages": 447,
+    "ocr_stats": [
+      {
+        "page_no": 1,
+        "engine": "tesseract:eng",
+        "seconds": 6.325,
+        "words": 0,
+        "conf": null,
+        "degenerate": false,
+        "ocr_geometry": "flat",
+        "column_cut": false,
+        "trail": [
+          "tesseract:too_few_words"
+        ]
+      },
+      {
+        "page_no": 2,
+        "engine": "tesseract:eng",
+        "seconds": 8.76,
+        "words": 407,
+        "conf": 0.9525307125307125,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": true,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 3,
+        "engine": "tesseract:eng",
+        "seconds": 7.249,
+        "words": 364,
+        "conf": 0.9156868131868131,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": true,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 4,
+        "engine": "tesseract:eng",
+        "seconds": 6.951,
+        "words": 272,
+        "conf": 0.8680882352941177,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": true,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 5,
+        "engine": "tesseract:eng",
+        "seconds": 2.188,
+        "words": 226,
+        "conf": 0.9011504424778761,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": true,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 6,
+        "engine": "tesseract:eng",
+        "seconds": 1.406,
+        "words": 217,
+        "conf": 0.8606912442396313,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": true,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 7,
+        "engine": "tesseract:eng",
+        "seconds": 1.835,
+        "words": 205,
+        "conf": 0.8761463414634146,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": true,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 8,
+        "engine": "tesseract:eng",
+        "seconds": 4.212,
+        "words": 742,
+        "conf": 0.9313477088948787,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": false,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 9,
+        "engine": "tesseract:eng",
+        "seconds": 5.047,
+        "words": 802,
+        "conf": 0.9397132169576059,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": true,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 10,
+        "engine": "tesseract:eng",
+        "seconds": 4.875,
+        "words": 859,
+        "conf": 0.9325261932479627,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": true,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 11,
+        "engine": "tesseract:eng",
+        "seconds": 4.062,
+        "words": 702,
+        "conf": 0.9437464387464388,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": true,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 18,
+        "engine": "tesseract:eng",
+        "seconds": 1.39,
+        "words": 195,
+        "conf": 0.8652307692307692,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": false,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 24,
+        "engine": "tesseract:eng",
+        "seconds": 1.481,
+        "words": 191,
+        "conf": 0.8835078534031413,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": true,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 30,
+        "engine": "tesseract:eng",
+        "seconds": 1.847,
+        "words": 230,
+        "conf": 0.9013913043478261,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": true,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 33,
+        "engine": "tesseract:eng",
+        "seconds": 2.995,
+        "words": 401,
+        "conf": 0.8953865336658354,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": true,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 36,
+        "engine": "tesseract:eng",
+        "seconds": 2.335,
+        "words": 274,
+        "conf": 0.9074452554744525,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": true,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 39,
+        "engine": "tesseract:eng",
+        "seconds": 1.846,
+        "words": 196,
+        "conf": 0.8738775510204081,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": true,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 42,
+        "engine": "tesseract:eng",
+        "seconds": 4.392,
+        "words": 530,
+        "conf": 0.8556037735849057,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": true,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 45,
+        "engine": "tesseract:eng",
+        "seconds": 3.344,
+        "words": 517,
+        "conf": 0.9320116054158608,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": true,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 48,
+        "engine": "tesseract:eng",
+        "seconds": 3.627,
+        "words": 479,
+        "conf": 0.9187682672233821,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": true,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 51,
+        "engine": "tesseract:eng",
+        "seconds": 2.825,
+        "words": 351,
+        "conf": 0.934957264957265,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": true,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 54,
+        "engine": "tesseract:eng",
+        "seconds": 4.073,
+        "words": 601,
+        "conf": 0.9275540765391015,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": false,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 57,
+        "engine": "tesseract:eng",
+        "seconds": 1.102,
+        "words": 204,
+        "conf": 0.913578431372549,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": false,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 60,
+        "engine": "tesseract:eng",
+        "seconds": 4.362,
+        "words": 678,
+        "conf": 0.8966519174041298,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": false,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 63,
+        "engine": "tesseract:eng",
+        "seconds": 4.192,
+        "words": 654,
+        "conf": 0.9217278287461774,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": true,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 66,
+        "engine": "tesseract:eng",
+        "seconds": 3.768,
+        "words": 601,
+        "conf": 0.938585690515807,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": true,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 69,
+        "engine": "tesseract:eng",
+        "seconds": 2.73,
+        "words": 466,
+        "conf": 0.9260515021459227,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": true,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 72,
+        "engine": "tesseract:eng",
+        "seconds": 2.725,
+        "words": 606,
+        "conf": 0.9335808580858085,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": false,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 75,
+        "engine": "tesseract:eng",
+        "seconds": 2.079,
+        "words": 332,
+        "conf": 0.9168373493975903,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": true,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 78,
+        "engine": "tesseract:eng",
+        "seconds": 1.574,
+        "words": 186,
+        "conf": 0.8391935483870968,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": false,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 81,
+        "engine": "tesseract:eng",
+        "seconds": 3.526,
+        "words": 542,
+        "conf": 0.9426752767527675,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": true,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 84,
+        "engine": "tesseract:eng",
+        "seconds": 2.646,
+        "words": 360,
+        "conf": 0.9375833333333334,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": true,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 87,
+        "engine": "tesseract:eng",
+        "seconds": 0.805,
+        "words": 87,
+        "conf": 0.9506896551724138,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": true,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 90,
+        "engine": "tesseract:eng",
+        "seconds": 2.843,
+        "words": 424,
+        "conf": 0.9121462264150944,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": true,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 93,
+        "engine": "tesseract:eng",
+        "seconds": 2.747,
+        "words": 439,
+        "conf": 0.9155808656036446,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": true,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 96,
+        "engine": "tesseract:eng",
+        "seconds": 1.127,
+        "words": 167,
+        "conf": 0.8791017964071857,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": true,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 99,
+        "engine": "tesseract:eng",
+        "seconds": 1.895,
+        "words": 205,
+        "conf": 0.9265365853658537,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": true,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 102,
+        "engine": "tesseract:eng",
+        "seconds": 2.308,
+        "words": 469,
+        "conf": 0.8856503198294243,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": false,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 105,
+        "engine": "tesseract:eng",
+        "seconds": 2.599,
+        "words": 442,
+        "conf": 0.93210407239819,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": true,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 108,
+        "engine": "tesseract:eng",
+        "seconds": 2.745,
+        "words": 465,
+        "conf": 0.9129462365591398,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": true,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 111,
+        "engine": "tesseract:eng",
+        "seconds": 1.972,
+        "words": 267,
+        "conf": 0.9143071161048689,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": false,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 114,
+        "engine": "tesseract:eng",
+        "seconds": 2.856,
+        "words": 467,
+        "conf": 0.9380299785867237,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": true,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 117,
+        "engine": "tesseract:eng",
+        "seconds": 2.521,
+        "words": 225,
+        "conf": 0.9292,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": true,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 120,
+        "engine": "tesseract:eng",
+        "seconds": 2.679,
+        "words": 390,
+        "conf": 0.9162820512820512,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": true,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 123,
+        "engine": "tesseract:eng",
+        "seconds": 3.417,
+        "words": 567,
+        "conf": 0.8904585537918871,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": true,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 126,
+        "engine": "tesseract:eng",
+        "seconds": 2.231,
+        "words": 303,
+        "conf": 0.9079537953795379,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": false,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 129,
+        "engine": "tesseract:eng",
+        "seconds": 2.206,
+        "words": 345,
+        "conf": 0.9341449275362319,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": true,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 132,
+        "engine": "tesseract:eng",
+        "seconds": 3.384,
+        "words": 565,
+        "conf": 0.9361415929203539,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": true,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 135,
+        "engine": "tesseract:eng",
+        "seconds": 1.049,
+        "words": 98,
+        "conf": 0.8622448979591837,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": false,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 138,
+        "engine": "tesseract:eng",
+        "seconds": 3.285,
+        "words": 544,
+        "conf": 0.9327941176470589,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": false,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 141,
+        "engine": "tesseract:eng",
+        "seconds": 1.877,
+        "words": 373,
+        "conf": 0.9325201072386059,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": false,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 144,
+        "engine": "tesseract:eng",
+        "seconds": 1.602,
+        "words": 259,
+        "conf": 0.9048262548262548,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": true,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 147,
+        "engine": "tesseract:eng",
+        "seconds": 4.27,
+        "words": 572,
+        "conf": 0.9400524475524477,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": true,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 150,
+        "engine": "tesseract:eng",
+        "seconds": 4.65,
+        "words": 498,
+        "conf": 0.9113253012048194,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": true,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 153,
+        "engine": "tesseract:eng",
+        "seconds": 3.842,
+        "words": 371,
+        "conf": 0.9085714285714286,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": true,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 156,
+        "engine": "tesseract:eng",
+        "seconds": 4.618,
+        "words": 525,
+        "conf": 0.9353714285714285,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": true,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 159,
+        "engine": "tesseract:eng",
+        "seconds": 4.831,
+        "words": 647,
+        "conf": 0.9380370942812983,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": false,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 162,
+        "engine": "tesseract:eng",
+        "seconds": 2.578,
+        "words": 363,
+        "conf": 0.8935537190082644,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": true,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 165,
+        "engine": "tesseract:eng",
+        "seconds": 2.246,
+        "words": 278,
+        "conf": 0.9117625899280576,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": false,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 174,
+        "engine": "tesseract:eng",
+        "seconds": 4.68,
+        "words": 674,
+        "conf": 0.9470771513353116,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": false,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 118,
+        "engine": "tesseract:eng",
+        "seconds": 2.928,
+        "words": 459,
+        "conf": 0.9366884531590414,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": true,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 119,
+        "engine": "tesseract:eng",
+        "seconds": 2.024,
+        "words": 330,
+        "conf": 0.9306363636363636,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": true,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 121,
+        "engine": "tesseract:eng",
+        "seconds": 2.707,
+        "words": 443,
+        "conf": 0.9243566591422122,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": true,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 122,
+        "engine": "tesseract:eng",
+        "seconds": 4.633,
+        "words": 731,
+        "conf": 0.9150478796169631,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": true,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 124,
+        "engine": "tesseract:eng",
+        "seconds": 2.902,
+        "words": 469,
+        "conf": 0.9100426439232409,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": false,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 125,
+        "engine": "tesseract:eng",
+        "seconds": 1.375,
+        "words": 153,
+        "conf": 0.9129411764705883,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": true,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 127,
+        "engine": "tesseract:eng",
+        "seconds": 2.734,
+        "words": 237,
+        "conf": 0.9287763713080168,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": false,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 128,
+        "engine": "tesseract:eng",
+        "seconds": 1.355,
+        "words": 203,
+        "conf": 0.8936453201970442,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": false,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 58,
+        "engine": "tesseract:eng",
+        "seconds": 2.963,
+        "words": 180,
+        "conf": 0.9142222222222222,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": true,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 59,
+        "engine": "tesseract:eng",
+        "seconds": 5.007,
+        "words": 514,
+        "conf": 0.9306809338521401,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": true,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 61,
+        "engine": "tesseract:eng",
+        "seconds": 4.601,
+        "words": 601,
+        "conf": 0.9337437603993344,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": true,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 62,
+        "engine": "tesseract:eng",
+        "seconds": 6.214,
+        "words": 800,
+        "conf": 0.944825,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": true,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 64,
+        "engine": "tesseract:eng",
+        "seconds": 3.664,
+        "words": 330,
+        "conf": 0.9143939393939394,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": true,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 65,
+        "engine": "tesseract:eng",
+        "seconds": 2.243,
+        "words": 286,
+        "conf": 0.9114685314685315,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": false,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 67,
+        "engine": "tesseract:eng",
+        "seconds": 2.837,
+        "words": 401,
+        "conf": 0.9297256857855362,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": true,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 68,
+        "engine": "tesseract:eng",
+        "seconds": 2.863,
+        "words": 277,
+        "conf": 0.9167870036101082,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": true,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 70,
+        "engine": "tesseract:eng",
+        "seconds": 3.385,
+        "words": 529,
+        "conf": 0.9344045368620039,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": true,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 71,
+        "engine": "tesseract:eng",
+        "seconds": 4.52,
+        "words": 628,
+        "conf": 0.9320700636942675,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": true,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 73,
+        "engine": "tesseract:eng",
+        "seconds": 5.455,
+        "words": 755,
+        "conf": 0.9390463576158941,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": true,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 74,
+        "engine": "tesseract:eng",
+        "seconds": 2.419,
+        "words": 297,
+        "conf": 0.9422558922558923,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": false,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 76,
+        "engine": "tesseract:eng",
+        "seconds": 3.567,
+        "words": 344,
+        "conf": 0.9173255813953489,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": true,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 77,
+        "engine": "tesseract:eng",
+        "seconds": 1.78,
+        "words": 138,
+        "conf": 0.908623188405797,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": true,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 79,
+        "engine": "tesseract:eng",
+        "seconds": 3.55,
+        "words": 481,
+        "conf": 0.8985862785862786,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": true,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 80,
+        "engine": "tesseract:eng",
+        "seconds": 3.91,
+        "words": 578,
+        "conf": 0.9349826989619378,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": false,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 82,
+        "engine": "tesseract:eng",
+        "seconds": 3.604,
+        "words": 539,
+        "conf": 0.9246753246753247,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": false,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 83,
+        "engine": "tesseract:eng",
+        "seconds": 2.661,
+        "words": 368,
+        "conf": 0.9101358695652173,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": true,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 85,
+        "engine": "tesseract:eng",
+        "seconds": 2.844,
+        "words": 506,
+        "conf": 0.8883992094861659,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": false,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 86,
+        "engine": "tesseract:eng",
+        "seconds": 3.066,
+        "words": 533,
+        "conf": 0.9406566604127581,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": true,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 88,
+        "engine": "tesseract:eng",
+        "seconds": 4.091,
+        "words": 463,
+        "conf": 0.9306263498920085,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": true,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 89,
+        "engine": "tesseract:eng",
+        "seconds": 2.382,
+        "words": 376,
+        "conf": 0.9359574468085107,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": true,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 91,
+        "engine": "tesseract:eng",
+        "seconds": 3.62,
+        "words": 647,
+        "conf": 0.9398763523956724,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": false,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 92,
+        "engine": "tesseract:eng",
+        "seconds": 3.367,
+        "words": 468,
+        "conf": 0.9194871794871794,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": true,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 94,
+        "engine": "tesseract:eng",
+        "seconds": 3.015,
+        "words": 440,
+        "conf": 0.9146363636363637,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": false,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 95,
+        "engine": "tesseract:eng",
+        "seconds": 1.461,
+        "words": 198,
+        "conf": 0.9134343434343434,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": true,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 97,
+        "engine": "tesseract:eng",
+        "seconds": 2.695,
+        "words": 249,
+        "conf": 0.8995983935742972,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": true,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 98,
+        "engine": "tesseract:eng",
+        "seconds": 3.188,
+        "words": 412,
+        "conf": 0.890873786407767,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": false,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 100,
+        "engine": "tesseract:eng",
+        "seconds": 2.822,
+        "words": 462,
+        "conf": 0.9109956709956709,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": true,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 101,
+        "engine": "tesseract:eng",
+        "seconds": 2.71,
+        "words": 415,
+        "conf": 0.9063373493975904,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": true,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 103,
+        "engine": "tesseract:eng",
+        "seconds": 1.441,
+        "words": 179,
+        "conf": 0.8963687150837988,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": true,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 104,
+        "engine": "tesseract:eng",
+        "seconds": 2.517,
+        "words": 382,
+        "conf": 0.9409424083769633,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": true,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 106,
+        "engine": "tesseract:eng",
+        "seconds": 4.16,
+        "words": 542,
+        "conf": 0.9321033210332104,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": true,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 107,
+        "engine": "tesseract:eng",
+        "seconds": 4.123,
+        "words": 593,
+        "conf": 0.9338785834738617,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": true,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 109,
+        "engine": "tesseract:eng",
+        "seconds": 5.645,
+        "words": 899,
+        "conf": 0.9055728587319244,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": true,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 110,
+        "engine": "tesseract:eng",
+        "seconds": 2.077,
+        "words": 264,
+        "conf": 0.9347348484848484,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": false,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 112,
+        "engine": "tesseract:eng",
+        "seconds": 4.219,
+        "words": 565,
+        "conf": 0.9339115044247788,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": true,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 113,
+        "engine": "tesseract:eng",
+        "seconds": 3.9,
+        "words": 613,
+        "conf": 0.9354486133768353,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": true,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 115,
+        "engine": "tesseract:eng",
+        "seconds": 3.292,
+        "words": 541,
+        "conf": 0.9337523105360443,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": false,
+        "trail": [
+          "tesseract:ok"
+        ]
+      },
+      {
+        "page_no": 116,
+        "engine": "tesseract:eng",
+        "seconds": 2.194,
+        "words": 289,
+        "conf": 0.9349134948096887,
+        "degenerate": false,
+        "ocr_geometry": "blocks",
+        "column_cut": false,
+        "trail": [
+          "tesseract:ok"
+        ]
+      }
+    ],
+    "ocr_sec_total": 344.36,
+    "ocr_sec_mean": 3.189,
+    "index_sample": {
+      "mode": "stride",
+      "pages_sampled": 60,
+      "pages_total": 447,
+      "stride": 6,
+      "cost_pages": 60
+    },
+    "pdf_producer": "Acrobat Distiller 15.0 (Windows)",
+    "column_cut_fire_frac": 0.708,
+    "furniture_blocks_removed": 0,
+    "furniture_strings": [],
+    "orphan_start_frac_pages": [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      0.0,
+      0.0385,
+      0.0,
+      0.0,
+      0.0,
+      0.0323,
+      0.0,
+      0.0606,
+      0.0,
+      0.0286,
+      0.1667,
+      0.037,
+      0.1,
+      0.0345,
+      0.0526,
+      0.0769,
+      0.0,
+      0.0833,
+      0.0,
+      0.0345,
+      0.0,
+      0.0,
+      0.0588,
+      0.125,
+      0.0,
+      0.0526,
+      0.0,
+      0.0,
+      0.1081,
+      0.15,
+      0.25,
+      0.0645,
+      0.0,
+      0.0,
+      0.037,
+      0.0,
+      0.0345,
+      0.1333,
+      0.0769,
+      0.025,
+      0.0417,
+      0.1333,
+      0.2105,
+      0.04,
+      0.0769,
+      0.1786,
+      0.1667,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0286,
+      0.0345,
+      0.0278,
+      0.0286,
+      0.0,
+      0.0,
+      0.0357,
+      0.0,
+      0.04,
+      0.0714,
+      0.0,
+      0.037,
+      0.0189,
+      0.0625,
+      0.0,
+      0.0,
+      0.0,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    "orphan_start_frac_pages_min_paragraphs": 2,
+    "n_words_note": "prose only; tables/charts in mda_blocks.json",
+    "blocks_quarantined": 2,
+    "words_quarantined": 10,
+    "wrong_language": {
+      "wrong_language_risk": false,
+      "devanagari_frac": 0.0,
+      "devanagari_hit": false,
+      "legacy_font_hit": false,
+      "windows_scored": 105,
+      "windows_fired": 0,
+      "worst_window": {
+        "offset": 6000,
+        "fired": false,
+        "english_word_frac": 0.2573,
+        "long_word_frac": 0.4733,
+        "rare_punct_freq": 0.0075,
+        "high_codepoint_freq": 0.0035,
+        "digit_embedded_frac": 0.0
+      }
+    },
+    "bilingual_heading_page": {
+      "bilingual_heading_page": false,
+      "heading_match": true,
+      "devanagari_frac": 0.0
+    }
+  },
+  "reasons": [
+    "source_shredded",
+    "span_truncated"
+  ],
+  "errors": [],
+  "pipeline_version": "0.1.0"
+}

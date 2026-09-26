@@ -127,7 +127,48 @@
         {"document_id": "INE003B01014_2011", "page_number": 10},
         {"document_id": "INE040A01034_2025", "page_number": 100}
       ]
+    },
+    "b_decisions": {
+      "ratification_source": "docs/governance/AUTHOR_RATIFICATION_2026-09-26.md",
+      "author": "Hariom Singh",
+      "ratification_date": "2026-09-26",
+      "execution_authorized": false,
+      "items": {
+        "B1": {
+          "status": "RATIFIED",
+          "decision": "broken_text -> OCR; legacy is a research attribute; REMAP is a registered research track"
+        },
+        "B2": {
+          "status": "NOT_APPLICABLE",
+          "condition": "while B1 stands",
+          "reopen_trigger": "a second operational route or signal is added"
+        },
+        "B3": {
+          "status": "DEFERRED",
+          "reopen_trigger": "a routing or Oracle claim is adopted"
+        },
+        "B4": {
+          "status": "DEFERRED",
+          "reopen_trigger": "a routing or Oracle claim is adopted",
+          "separate_document_gold_selector": "specified mechanically in Phase 5 from the predeclared roster"
+        },
+        "B5": {
+          "status": "DEFERRED",
+          "reopen_trigger": "a routing or Oracle claim is adopted"
+        },
+        "B6": {
+          "status": "RATIFIED",
+          "decision": "full independent double annotation on HOLDOUT; predeclared random overlap on VALIDATION"
+        },
+        "B7": {
+          "status": "DEFERRED",
+          "reopen_trigger": "the Q10 recipe is fixed and is order-sensitive"
+        },
+        "B8": {
+          "status": "RATIFIED",
+          "decision": "Q5 prediction-first hash-sealed custody sequence with Q9 exposure wording"
+        }
+      }
     }
   }
 }
-

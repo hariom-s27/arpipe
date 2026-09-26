@@ -1,0 +1,298 @@
+R1-FINAL EVIDENCE PRESERVATION MANIFEST (human-readable companion)
+==============================================================================
+Generated : 2026-09-25T22:44:53+00:00
+Archive   : docs/identity/evidence/r1-final/  (branch r1-final)
+Identity  : 383fa79228d48bf39401936090b9cbe9c5509e95
+Parent    : 28a67b63d890d8407fa9738a71ae37ad63148b73
+Digest    : de250c36a660d94a2e28b49b82860f77e130b04a6fdcfc3ebf444043f57ef203
+
+Preservation is not reproduction. No R1 execution was repeated.
+The authoritative record is r1-final-evidence-manifest.json.
+
+VERIFICATION
+------------------------------------------------------------------------------
+  source_files_snapshotted     593
+  files_copied                 254
+  files_verified               254
+  hash_mismatches              0
+  source_changes               0
+  missing_files                0
+  unexpected_files             0
+  section_22_key_hashes        14 / 14 MATCH
+
+PRESERVED ARTIFACTS BY CATEGORY
+------------------------------------------------------------------------------
+  DETERMINISM                  31
+  EXECUTION_ENVIRONMENT         3
+  GOVERNING_TRACK_A             5
+  HISTORICAL_BASELINE           4
+  HISTORICAL_COMPARISON       179
+  IDENTITY                     11
+  NEGATIVE_TESTS                2
+  SUPPORTING_EXECUTION         12
+  TEST_SUITE                    4
+  TRANSCRIPT                    3
+
+PRESERVED ARTIFACTS
+------------------------------------------------------------------------------
+9352b967c0c6dc4d30b850420b2ac92da1773caf4113c6578fd9642e8055d217     3388079  PRIVATE transcript/948b3666-670c-4ce4-951f-ff0d9a9b4562.jsonl
+83254985ff74503f191af2e6ab790775c50406ca11a5ca3b8abb2c0264e3a332       36006  PRIVATE transcript/tool-results/b3kn5lr57.txt
+7cb478081deca89749a28d6c2d3c0a060de43dd113570a4b7a61b22d33d05200       53240  PRIVATE transcript/tool-results/by6pyucg5.txt
+a062d1827005e089920f644513dfcbe0e363baf1f99185575603eccd639cea7f        7967  PUBLIC  historical-baseline/pm1_after_run.log
+5d8bed2aeb0af4c16e1bb86b61756b579eb4e1bdd43e9df47ccf79b678993552     1548426  PUBLIC  historical-baseline/pm1_after_run/manifest.jsonl
+27bd26944101ea35298b45c128771da4612b763b4026fc8d4d69cf92c255ac4e        7967  PUBLIC  historical-baseline/pm1_baseline_run.log
+a2d0243c7cd1b282ed002503c40891b6c9e9ef0a11fdb8741c792d5516fe370c     1312546  PUBLIC  historical-baseline/pm1_baseline_run/manifest.jsonl
+f8183a0d340e2630cef8b9884a1acc728c944197a126788548515aed6b327460         374  PUBLIC  r1-final-evidence/A1Commit.txt
+79b1bf807dbcd65710863dafb64cbe853422648db7bb1ef30109da1149d1dd7b        1507  PUBLIC  r1-final-evidence/A2Commit.txt
+7506ff124d39be96bf0f437cf96ede8db9376e94dadf78485e7371ff590aa812        2614  PUBLIC  r1-final-evidence/A3Commit.txt
+ac09ce4a6a2c9c994f4795c2ce13cb88b068ea5cbeb678f575221dc5677c3a52        3940  PUBLIC  r1-final-evidence/A4Commit.txt
+3b9b7c302c75d71ee01ca4b2daf4efa7a4fc50e52cf6b9c575f415496cf9fc8e        1639  PUBLIC  r1-final-evidence/A5AndSmokeCommit.txt
+3e97dc51b92e93f9ac173507387603a333489d93e732fa4b112a5ffd504b2662        5989  PUBLIC  r1-final-evidence/compare_outputs.py
+142990c9054b10b18cb895497e28ed7669f9a969d4af1c83e8627ba301df7bb8        2261  PUBLIC  r1-final-evidence/determinism-comparison.json
+e2bf31adef3711cdff684d1e97652a32f017dcbbe706a3c356bedc14e036a19b         424  PUBLIC  r1-final-evidence/environment0.txt
+742389262609c2d537d72d80d1f87e81af7e64477e14153c303aa044e60b92a4        2337  PUBLIC  r1-final-evidence/environment1.txt
+831bd3e712dbf53ff711e1bae3eeabcdc40ece1f55f3f30f2eda701ba96fae77     3986960  PUBLIC  r1-final-evidence/fit-inputs.json
+e9fc54826b42694f31c62b29a5850ce2f2a6605ba5a79797066373132a5f5329       24856  PUBLIC  r1-final-evidence/historical-comparison.json
+383de3efce3ebbfbd4e11ed6d2d0e2a9766574ca8a0a9c7f6c6daa5b64a13e29        9797  PUBLIC  r1-final-evidence/identityMaterial0.txt
+1f3370e04fb27a315c4adf9a3e10fb89f4e8d548c340782134ed002c82012835        1437  PUBLIC  r1-final-evidence/identityMaterial1.txt
+ce8356613b231d9f8e4ffba86da5a3a5d01ac475de8b8e137b49e29301ae0e30        2689  PUBLIC  r1-final-evidence/prepare_run.py
+e613eb85dedef358ba1eb1b5812744c70150829aeb79fc2cbe1898a17a7bb95f        2858  PUBLIC  r1-final-evidence/preregistration.json
+477ff7d8cda9398bb1c127a3e20da010187a5f3da2c2b66e771d00d3beb6a1e1        2958  PUBLIC  r1-final-evidence/preregistration.txt
+aed9cb31a408b13108ba4a86db04ea2a29d3e6cf59a3f3098f286a88ae659c8f          65  PUBLIC  r1-final-evidence/primary-batch.json
+5559710d86b709d93c5054b0d7963af24baf635034e836adeb5094e29f9c48b1         473  PUBLIC  r1-final-evidence/primary-logs/INE001F01019_2012.log
+9ad38eb0d9b0d437789447f8ed989380de248efdc859f294042a17cb8f940fa1         468  PUBLIC  r1-final-evidence/primary-logs/INE001F01019_2013.log
+0c90d5aeffd53c1020b91090093592a818d608075b974f0ebf2cc327530b4574         438  PUBLIC  r1-final-evidence/primary-logs/INE001F01019_2017.log
+f3df15a2532311b719676b0f18b65d5bae70eeed0f5dcb9b8c3f18e6bbb49875         457  PUBLIC  r1-final-evidence/primary-logs/INE001F01019_2018.log
+08555790165321d3f70de6ea578a7ae0e49a7aaaa26de92d9d7cb3a89b5d3a94         472  PUBLIC  r1-final-evidence/primary-logs/INE001F01019_2024.log
+9e39b29632a741b343d9cc73c2563e899aae4f74d99a83419f253726949e2a49         462  PUBLIC  r1-final-evidence/primary-logs/INE002A01018_2013.log
+7f07062df8e1efe2714971e92f438d65f5e1d2551d3edc105b854abeb2d529c6         479  PUBLIC  r1-final-evidence/primary-logs/INE002A01018_2018.log
+69012b469f8877f45b46e05b9a2578327e4bd0590d10fe15ab64a9940b228a84         460  PUBLIC  r1-final-evidence/primary-logs/INE002A01018_2025.log
+7009701a244a21561f6a97adfb7e68a1fd0350b3e1be2481c92d11c2ddfcb484         447  PUBLIC  r1-final-evidence/primary-logs/INE003B01014_2013.log
+4e772415655650f6281449d205b9de99c933e429bc8fde5c9da579acd01e0ced         480  PUBLIC  r1-final-evidence/primary-logs/INE003B01014_2024.log
+2a22f21160ef90cbbfa3a703905b3331c57d45ec8a2beb7420af4c6b5f85ff6c         481  PUBLIC  r1-final-evidence/primary-logs/INE003B01014_2025.log
+4882edb9d5637e04f6985ec55a2108964ce4b64ff88f00b982f18fb663f0db3b         486  PUBLIC  r1-final-evidence/primary-logs/INE004C01028_2017.log
+1c3e8fa4461633839c24105464679e038bec235fdbe9bc2b78f455dffa883f0a         472  PUBLIC  r1-final-evidence/primary-logs/INE004C01028_2025.log
+00f17274d7ef65b99a95f6656e52c6d75a89601b618687ad9175f27a95f3d05b         494  PUBLIC  r1-final-evidence/primary-logs/INE004E01016_2012.log
+338766d95723e8e9551f0b2ec42b59458cfb4f7a806e71259769cf0d7c9efc9b         473  PUBLIC  r1-final-evidence/primary-logs/INE004E01016_2024.log
+79be6a2839b6f80a465799eaf7e68f29e86b0bca5370913c6d39c1f1704c4e39         472  PUBLIC  r1-final-evidence/primary-logs/INE004Z01011_2025.log
+cd5fae6a91773ecbd2899ec39a4badb35e2dc3ec3feb01ed323eeb2471c9b36e         463  PUBLIC  r1-final-evidence/primary-logs/INE007A01025_2013.log
+2987d4eba5a0c932232d8923f1570e3d3b1395a9e0c485c99ecb05ad7e9cdf5c         482  PUBLIC  r1-final-evidence/primary-logs/INE007A01025_2017.log
+cfa1e08a8e409f880f0ec4e1986ad29e935975a416ad36232483706847edb081         463  PUBLIC  r1-final-evidence/primary-logs/INE007A01025_2018.log
+577be6024a4ac10f1c656dc8488f0db097322aff4490a5a6c1364dc53c219500         465  PUBLIC  r1-final-evidence/primary-logs/INE007A01025_2024.log
+c7a436e5e8b250a54b7ab7d6de3152aae93333e34466c5ef94aed239d4931fc6         449  PUBLIC  r1-final-evidence/primary-logs/INE008A01015_2012.log
+a03644b009e2fbc6ee6e57b102368223570909cf2fbaef500d002630bb1a6438         453  PUBLIC  r1-final-evidence/primary-logs/INE008A01015_2017.log
+2683ca87c0e42aa884e7cf791cb5833e2fc5dad5a1f09ad01cc77d2b15e0fc9b         445  PUBLIC  r1-final-evidence/primary-logs/INE008A01015_2024.log
+9b8e1b800df95d99a4550bd5761edf63704bf2d7c1f06fc0cd9c08896b52c227         451  PUBLIC  r1-final-evidence/primary-logs/INE00E101023_2024.log
+445cdc68a8eafac2fca95c804ace6aaceed9b5dd109d9785425c10d44b4bdb62         461  PUBLIC  r1-final-evidence/primary-logs/INE00FF01025_2025.log
+98d4172f284250749fa1b47f1592f90d534c6ddc18a4ef41c8256ff8b57c2864         464  PUBLIC  r1-final-evidence/primary-logs/INE00LO01017_2024.log
+34fb9df0b4fa937f71068fa57e3194a1df03e674f3582b223aced332b4fbf2e6         461  PUBLIC  r1-final-evidence/primary-logs/INE00LO01017_2025.log
+c14a29504eac38283a75e5cec9357900001e8e293bdad76fa6bd90fda442f8fb         452  PUBLIC  r1-final-evidence/primary-logs/INE040A01034_2012.log
+ea8869dea92a372760536687a42f3ad0423824a7e84f7f0ff0c7db9bd61ae531         452  PUBLIC  r1-final-evidence/primary-logs/INE040A01034_2013.log
+062886fb0659b00fa503fc8f95067cee8e2b469483586a1b158e93241f8c31e0         469  PUBLIC  r1-final-evidence/primary-logs/INE040A01034_2017.log
+fc040d2274127ef6feaa7c403c49343eb439da62a15c1c7f004019640671ad5d         471  PUBLIC  r1-final-evidence/primary-logs/INE040A01034_2018.log
+426243a821ae1b937b89f6f57fef969a6cc242d88c5f442f2fe6880d7b445018         469  PUBLIC  r1-final-evidence/primary-logs/INE040A01034_2024.log
+93cd22500ab242e6468ba305cce7378de154d7043735e6678cfda74e99139e9f         453  PUBLIC  r1-final-evidence/primary-logs/INE081A01020_2012.log
+318fcb3b0b7742cd33c1d3f070d4a9f010926f511b96f7e9d88a944fae594a9b         473  PUBLIC  r1-final-evidence/primary-logs/INE081A01020_2013.log
+b6bf3dd6ffb98a6f1eedd13686344ab6832d6a66591b882d8575d2d287333bfd         472  PUBLIC  r1-final-evidence/primary-logs/INE081A01020_2017.log
+7bc63e9c73bbde0667d5bcb51f5c6c457d3c180bcdb949d7a28ece1ac55d6729         454  PUBLIC  r1-final-evidence/primary-logs/INE081A01020_2018.log
+6c98f4aaa4ff5e3af0ccc57709e66d9d11fccb61de59431f8939233a705d4e03         454  PUBLIC  r1-final-evidence/primary-logs/INE081A01020_2024.log
+0adc15653ff9c2c816e13e5e530caa9bcfca020914b01f91a753bb5fde0e24c7         454  PUBLIC  r1-final-evidence/primary-logs/INE081A01020_2025.log
+439cd7d1c3bbceb3f900079f13a69eb2b69a66933a833a07718f1a0f6d14fdd8         445  PUBLIC  r1-final-evidence/primary-logs/INE151A01013_2012.log
+33b220f31999a027bd21a3436b917537ac9eb1ecb3f184fa8e3dbc9a0fa33a96         446  PUBLIC  r1-final-evidence/primary-logs/INE151A01013_2017.log
+c6baf7dd66a068a7fc64d93aed8f4c014f9a832eaacb13daf7793076ddcda69a         462  PUBLIC  r1-final-evidence/primary-logs/INE151A01013_2018.log
+03b153609fc18861ff5fc2ea1d50255506d5eb627df6fa0c395f01a352392f84         487  PUBLIC  r1-final-evidence/primary-logs/INE191H01014_2012.log
+e3b531a688723901b510aad05f41dc095e199861d66903d5fead24de4e6fb4bf         465  PUBLIC  r1-final-evidence/primary-logs/INE191H01014_2013.log
+c22d629290e256938353fe673a55d5941f50496f2671618c025bd0fe6a467a62         449  PUBLIC  r1-final-evidence/primary-logs/INE191H01014_2018.log
+3b452a4d9c7eaf17e81ea3ca1cc7361af71b4bfcbfea78729cdef61bc2fecf83         452  PUBLIC  r1-final-evidence/primary-logs/INE191H01014_2024.log
+4b1ea5fdf47911a2c4e79a6b6cbb2d168c388aa37761e189935c53151f699b9c         467  PUBLIC  r1-final-evidence/primary-logs/INE191H01014_2025.log
+09b4082017fb2adb627ed0e3d435ebd281aa575f837dceb6ae972cf3dc06c00a         512  PUBLIC  r1-final-evidence/primary-logs/INE192B01031_2012.log
+d2642605b029832387f2d5c6c1c1adb0c00d10414e1933dc765fa703947bcb7c         476  PUBLIC  r1-final-evidence/primary-logs/INE192B01031_2017.log
+099b6c9928670ddb2561ea0c3fddd324338d63011f585ea26e45da19deed19bc         460  PUBLIC  r1-final-evidence/primary-logs/INE761H01022_2013.log
+86a9f6910b5a8eed77edebd23ebb17176191cd5cc6a888c69a4e6e5d4fbc11b8         441  PUBLIC  r1-final-evidence/primary-logs/INE761H01022_2017.log
+e0e7172e9e67b36ca3b7546926eaa3647cbda2e55b19c0a36f626e957e09b662         441  PUBLIC  r1-final-evidence/primary-logs/INE761H01022_2018.log
+6df019e880dad9cca819d810263964e3ebb0babcfdd32409e902c4b4af0a02c1         456  PUBLIC  r1-final-evidence/primary-logs/INE761H01022_2024.log
+edb4156976f0e7b5df3ebd9249667737d404adaff50b88c0e14e84fb7c701b52         478  PUBLIC  r1-final-evidence/primary-logs/INE797F01020_2012.log
+ca4b669e93d863151b34da281712e48a5557290e7d75e0693faa6e0bf2e709d3         462  PUBLIC  r1-final-evidence/primary-logs/INE797F01020_2013.log
+be1cb10363ea9da2fb4a264a005e1a8e858f7a3297c35a2bcef24cebc6550f25         461  PUBLIC  r1-final-evidence/primary-logs/INE797F01020_2017.log
+1794ce807518dd5e636868e1f7cc5bd031a1acc0bcdf45888a2a30b7699934da         461  PUBLIC  r1-final-evidence/primary-logs/INE797F01020_2018.log
+3bdf1c860dbffd0236ae0a6a7866310eaff3d167a1da1d730d68f2aff00ea3b7         460  PUBLIC  r1-final-evidence/primary-logs/INE797F01020_2024.log
+3e17489dfa099e59f64620c8008b45ae19085b4e37312db3a21041c6b9fdbe1d         462  PUBLIC  r1-final-evidence/primary-logs/INE797F01020_2025.log
+87a998ef0024e7065099c27b6424cd59f2e910decabceaebc0b60af19bb00488         519  PUBLIC  r1-final-evidence/primary/INE001F01019_2012/execution.json
+14c9b096dfb515a83d5e2dadca681c868ae6e66386fc7c602f37be739c617b89        5548  PUBLIC  r1-final-evidence/primary/INE001F01019_2012/result.json
+3fb008e6f9d4566bf693aca43d0170c8636adc168f4859e354a68f5001fb7b44         514  PUBLIC  r1-final-evidence/primary/INE001F01019_2013/execution.json
+f3f4dbe68978d2f5834d44652290f6d630e8c77624090f895ec19a35b3584f5e        5614  PUBLIC  r1-final-evidence/primary/INE001F01019_2013/result.json
+3489264426a67c8ee98458b3e48ff202f29f9046395a49d848d59c52d3462365         469  PUBLIC  r1-final-evidence/primary/INE001F01019_2017/execution.json
+c1cfc9f52677ed355cd280e1d65224658f9b2308c7f7b86962706bc65e030df4        5382  PUBLIC  r1-final-evidence/primary/INE001F01019_2017/result.json
+94719c9b05543d60342b378c1b944a1c00d10ee8bf2ae151a884223e944792ce         498  PUBLIC  r1-final-evidence/primary/INE001F01019_2018/execution.json
+c74460a287f1cac75f364404d39b76d24ea60317166c36a7d33f827203843006        6123  PUBLIC  r1-final-evidence/primary/INE001F01019_2018/result.json
+4c4bba2249b33a3bf23df91f06d2caf711dd4f1cffaa0143ce8818029bf53294         518  PUBLIC  r1-final-evidence/primary/INE001F01019_2024/execution.json
+12cf17ca6f1b16e5ddfcc2a3fb91e7efaed78b084b24b4cf03acc269b365c81b        5805  PUBLIC  r1-final-evidence/primary/INE001F01019_2024/result.json
+f2a78c6e3bb8b23cb2a7abcb4bb2585276e0daddf4abb80537e8365df6dd3163         503  PUBLIC  r1-final-evidence/primary/INE002A01018_2013/execution.json
+1bf945273b88b02d6060c9230eeb624ca74d449306c399b54b9fec13b29e5c28        8179  PUBLIC  r1-final-evidence/primary/INE002A01018_2013/result.json
+af77ed8f5aff50cc10860ed4127124a21970be441302b99c52af34549dfd1386         525  PUBLIC  r1-final-evidence/primary/INE002A01018_2018/execution.json
+e85ae15d6e5c8ea313bf8028e47ca7e6af672007e54a15bb97760eadda912ba9       45009  PUBLIC  r1-final-evidence/primary/INE002A01018_2018/result.json
+3b58b56f23c263dd07d1ba5839717608ffcda333f96ba75287cce50b5086fa1b         501  PUBLIC  r1-final-evidence/primary/INE002A01018_2025/execution.json
+ed71dfc6c9f527804efee1839d202180e32f3cfb1184ec518bd18a1f08dbdb63        7560  PUBLIC  r1-final-evidence/primary/INE002A01018_2025/result.json
+230b2c058c98daaba06733f69377c22ef1075d515f1474ce932ae7db96ce4503         478  PUBLIC  r1-final-evidence/primary/INE003B01014_2013/execution.json
+d874719b9c621ef58e102d8bc78f1efaf7f098cedd951d68880d6272eb619ed8        5711  PUBLIC  r1-final-evidence/primary/INE003B01014_2013/result.json
+08f08b317fcffc2a51a28c94580a8378e2f56b290f86e5c61244fded01944b56         526  PUBLIC  r1-final-evidence/primary/INE003B01014_2024/execution.json
+d45809001eb1f89f9ab482f6f399cb03774dffffc772e4ca57eb5e34eb36f040        6990  PUBLIC  r1-final-evidence/primary/INE003B01014_2024/result.json
+33a9fd169f2511a4eac050d92f94dc9c74f311c2920890a4d79a8fbcec21ce74         527  PUBLIC  r1-final-evidence/primary/INE003B01014_2025/execution.json
+67f20dcf13b5e9b51457c06dac2e0efaa0ff46f6299e84595e260ea61552483f        6950  PUBLIC  r1-final-evidence/primary/INE003B01014_2025/result.json
+235e48d4c6e6623d962f6a008d88cbfbd7df36521d8c83e7e42da6e4f55fd244         537  PUBLIC  r1-final-evidence/primary/INE004C01028_2017/execution.json
+8cc25b4ed36df18c5fecbe3d6b4fbd5d9b3bfcdf78647b4e1926ffdc9e8b37c6        6295  PUBLIC  r1-final-evidence/primary/INE004C01028_2017/result.json
+4314e27f0b609db4a401c7c0c789efcbd896c6a83d546400c9df43f5399d9488         518  PUBLIC  r1-final-evidence/primary/INE004C01028_2025/execution.json
+83061ba97f397f2d7dcab9de522f645cd75ef962a6110e5d5a309f42b4778b22        5682  PUBLIC  r1-final-evidence/primary/INE004C01028_2025/result.json
+cdf04091a4f57dac3c172aed89b0c2d1b0abc028b2a28fbf8890306a834e5321         545  PUBLIC  r1-final-evidence/primary/INE004E01016_2012/execution.json
+aea7522c8bda1a97e87c712f9d9118b4d97b1646383725fa29f4206bd1a38c6f        5869  PUBLIC  r1-final-evidence/primary/INE004E01016_2012/result.json
+a9cd2f67f3beedffe6b68b9ac60275fa77aea65b1adcf1db76579eb57b5ac332         519  PUBLIC  r1-final-evidence/primary/INE004E01016_2024/execution.json
+72816817f75f6729c2d6c70886810519e059848c64a940aa2c997d464a02e5d3        6173  PUBLIC  r1-final-evidence/primary/INE004E01016_2024/result.json
+9211c3952b360d4266e8eaf8a1dfb46b2c83df2e83d990939569ac49de78ab16         518  PUBLIC  r1-final-evidence/primary/INE004Z01011_2025/execution.json
+02295f0080b9bc84239a4d064b1e88db4123a29bcac3b0bd5cbbf2c46d5d4150        6471  PUBLIC  r1-final-evidence/primary/INE004Z01011_2025/result.json
+cd7e7d3993988204d2b6379fe9b6ae6b714c011b9350606e9bf7ad5882d2ce11         509  PUBLIC  r1-final-evidence/primary/INE007A01025_2013/execution.json
+3444c6d69b817ad29f13003f70ff0d0bb3ba4e597e7846573dbcf37d6e9bf0cb        7912  PUBLIC  r1-final-evidence/primary/INE007A01025_2013/result.json
+5dbe6c23e897a3435e20af0940b7ca90c8054ff7b38e45c56c2438f2d2a6c88c         533  PUBLIC  r1-final-evidence/primary/INE007A01025_2017/execution.json
+8eacd07515cd545adcec83d436e4a66cce84f0e1f5d9232f28fdd14fd6000c0a        9030  PUBLIC  r1-final-evidence/primary/INE007A01025_2017/result.json
+8b94048ea489e76d06a0db90da2d1171316599444193c582d8fed26fc66f0639         509  PUBLIC  r1-final-evidence/primary/INE007A01025_2018/execution.json
+aeefc8d45c5b3bb37194ebbb3955041fa70eb0e8909fff0f6e3e5365d61e0d6d        8474  PUBLIC  r1-final-evidence/primary/INE007A01025_2018/result.json
+f71ce64a8522b821df85d8b5880690fea26cad008ddebb60fac283605123676e         511  PUBLIC  r1-final-evidence/primary/INE007A01025_2024/execution.json
+05df4e6231720cf570f752b6785a198d5ae5f103c8242f300755274c59b2816c       10818  PUBLIC  r1-final-evidence/primary/INE007A01025_2024/result.json
+4000e627f85298bb2c77090579090d9137edf6421aa3f1f489adeacc9c49fd31         490  PUBLIC  r1-final-evidence/primary/INE008A01015_2012/execution.json
+4ee21dcf2fbcfbc30e873f5df1afec368263286a1576951c92754816dfcfb78a       27134  PUBLIC  r1-final-evidence/primary/INE008A01015_2012/result.json
+23135f316b2f17dab639e948f10231f115926e1710456d0791a7e9bf5727a33a         494  PUBLIC  r1-final-evidence/primary/INE008A01015_2017/execution.json
+0f33aa1eba7a9e72bf4d664acd52168fad4c5d3481dc4a8f58c6f6b70c6c3eb5       10482  PUBLIC  r1-final-evidence/primary/INE008A01015_2017/result.json
+650bda6a3c0cb5b1a4c82f04dd3d5faf818e32c42971c1cfa8c3e631522e775a         496  PUBLIC  r1-final-evidence/primary/INE008A01015_2024/execution.json
+34a89e1e9bf7b591fdf93d00a731c1a3ab450f5dda80aca02f290b20dd32ceb6       13141  PUBLIC  r1-final-evidence/primary/INE008A01015_2024/result.json
+6e28494b9524c69f744ffffd367c3c99f35873e874c97dfd636aa208d4e96a4b         482  PUBLIC  r1-final-evidence/primary/INE00E101023_2024/execution.json
+32880c803b804b54f9c7c5805306685bc43764a816ef89e517bbe3dcb5daf734        7467  PUBLIC  r1-final-evidence/primary/INE00E101023_2024/result.json
+f0a1d0448df642f6c4baa11b56894ac63f7b2b9bd9f78d1ac381b61f4e915cf8         502  PUBLIC  r1-final-evidence/primary/INE00FF01025_2025/execution.json
+52d0c9b8f89e08b15cc598388c524743900735094cd717e5c58391138c68f846        8463  PUBLIC  r1-final-evidence/primary/INE00FF01025_2025/result.json
+30dcc7f8c5c2ec6906e33d0a24b2dc8c85393b979ac04573179940674363d1d9         505  PUBLIC  r1-final-evidence/primary/INE00LO01017_2024/execution.json
+6a615526e6124045dad4d663e80bc9527322540a26e5f95021cbb2fc892d0750        6786  PUBLIC  r1-final-evidence/primary/INE00LO01017_2024/result.json
+df666d1edf33329c7cef18bed2b0205921fff21e1835ebf3f5b475e8ea8d32f2         502  PUBLIC  r1-final-evidence/primary/INE00LO01017_2025/execution.json
+e186824781e75f532899ac75d1fbc65fcb3fc3c19b732c8f258548753a00dc93        8355  PUBLIC  r1-final-evidence/primary/INE00LO01017_2025/result.json
+f14e1baa00e6e532694f8d7dc00f85d58354e8b65a62762b940aab52c5cefcb5         493  PUBLIC  r1-final-evidence/primary/INE040A01034_2012/execution.json
+56306f5675fe83c9ea782948ef893f3c2fb08992e59b609a05f93c02240fd8ff        7201  PUBLIC  r1-final-evidence/primary/INE040A01034_2012/result.json
+d31a30cacc299afc1d26b68fa6667f8d962ad6617f9f2797f1b6342d6f1be9d2         493  PUBLIC  r1-final-evidence/primary/INE040A01034_2013/execution.json
+07560718ebb6da48db56e25d8a3786b2208f17916654c937f2ac7d423cc6759b        7395  PUBLIC  r1-final-evidence/primary/INE040A01034_2013/result.json
+c9466fb9f41d5fed7f4bea7c129b25a9e9d8939b33f5a43785d7136ca3917449         515  PUBLIC  r1-final-evidence/primary/INE040A01034_2017/execution.json
+e659b84f5909ea886654a15a25828c14554ae31d1938a3a77540aaa776c109a0        8284  PUBLIC  r1-final-evidence/primary/INE040A01034_2017/result.json
+f15dcf268b42f6f39da569eea0d8dda426f6ac0a0d36972d4d6b51bf9d73606a         517  PUBLIC  r1-final-evidence/primary/INE040A01034_2018/execution.json
+f834325f710f1bdc843350d2dd8fe024647de18b76da7650a4c6842b97203357       14374  PUBLIC  r1-final-evidence/primary/INE040A01034_2018/result.json
+726dd9bc99551de4fc8a1c2914e9fc5def364bcb54348bba1405ca1c141490b7         515  PUBLIC  r1-final-evidence/primary/INE040A01034_2024/execution.json
+8595cdcaf09ccc2386e41cca1ec29a11a2ef7d6fbee95c3818c470a87822d414       13606  PUBLIC  r1-final-evidence/primary/INE040A01034_2024/result.json
+e6239accef0e80d27f47ea6ea93d4551999dabb529f7428b4b9487d452f4bc57         494  PUBLIC  r1-final-evidence/primary/INE081A01020_2012/execution.json
+66cea96ca40dff5512c990e56f967fc92c8cca73bc07a9af2c04f9b3bb03f326        8504  PUBLIC  r1-final-evidence/primary/INE081A01020_2012/result.json
+7ba586aa60eabbbd823f0bb124ece15c8afbabced68158513166963564396537         519  PUBLIC  r1-final-evidence/primary/INE081A01020_2013/execution.json
+4c5a2ab81030479b2687ec6215747b14ea86f9f1097dc1ffd99e83ec95da6570        9101  PUBLIC  r1-final-evidence/primary/INE081A01020_2013/result.json
+d7febd881d95af8256cf6b4c36a7a53f86a73ed8064ebda8c38c4c0f27c59b9a         518  PUBLIC  r1-final-evidence/primary/INE081A01020_2017/execution.json
+4bade0ed52a8393216a3f1e68ad1c0f43d60fd382659cc4940bc0105b9647a1f       10133  PUBLIC  r1-final-evidence/primary/INE081A01020_2017/result.json
+7c3c9ef352d1081a92b0b3e5ce17e850cbea830ea0ec6aa70fe7d3d6d41687c6         495  PUBLIC  r1-final-evidence/primary/INE081A01020_2018/execution.json
+a1e5f7cbdaf52f6b139cafff6910a1a0dc998523d75559b663b2978339c4ab28       10962  PUBLIC  r1-final-evidence/primary/INE081A01020_2018/result.json
+b2cf24b775537f78fab2d2abd6dccda9f286fad32c3c7de8b16e189a40244cec         495  PUBLIC  r1-final-evidence/primary/INE081A01020_2024/execution.json
+acc0f1c248fa4adf1666f03653651194bba05076c7bb9e0f7f9d5d50c8611235       12668  PUBLIC  r1-final-evidence/primary/INE081A01020_2024/result.json
+c8dda015e76ec564ee47851c12e155780c8a2500ccf71f0beac66f9a46982edb         495  PUBLIC  r1-final-evidence/primary/INE081A01020_2025/execution.json
+3559bc2d4a5a1d521ac7c1ab58452ad7de6704dadb9fd92952a76d1d166bed70       12562  PUBLIC  r1-final-evidence/primary/INE081A01020_2025/result.json
+ddda43dfc03a68eac154326597a2c9b3e04351b2688f65606e442a97f67c577c         476  PUBLIC  r1-final-evidence/primary/INE151A01013_2012/execution.json
+c4f2a0ec3aa28a489a72a5458db788a3ae451ca48e5984b7ed448198ba2b7fb0        7118  PUBLIC  r1-final-evidence/primary/INE151A01013_2012/result.json
+f4e87ac202caecf2c1e512f15e75d9c6f67bebeb623ca434b51638f9ebad23b7         477  PUBLIC  r1-final-evidence/primary/INE151A01013_2017/execution.json
+c0468336917a97655a339eb854ffe7bf6e3bbd1274b608c6b6bd69d60c908a45        9030  PUBLIC  r1-final-evidence/primary/INE151A01013_2017/result.json
+4f1d1c8e84151736b7e0ad0f9f7ba5746b7680d5ed3098f96404c85f5d900ecc         503  PUBLIC  r1-final-evidence/primary/INE151A01013_2018/execution.json
+d62b478ce1979cdda9ae0ef3f2c221c0b4a6b390aa20a42c86106cb9cf86e73f        9785  PUBLIC  r1-final-evidence/primary/INE151A01013_2018/result.json
+f290f1351afa280f8ff207e8b422c096e2461370091e9dd4ad5ace509d85ab2a         538  PUBLIC  r1-final-evidence/primary/INE191H01014_2012/execution.json
+1e2262f0ec2ddba6694449720204b7cdd580f1f5bd4115e890f56cf40db7a2a9        6327  PUBLIC  r1-final-evidence/primary/INE191H01014_2012/result.json
+719726a7a81fa5711155f71129f142b87b4813253a7e56f897cace935acaf117         511  PUBLIC  r1-final-evidence/primary/INE191H01014_2013/execution.json
+bf43947806a27fae0bf6e95b2bd183dc723eb06e840b03508833457cabea9b71        6363  PUBLIC  r1-final-evidence/primary/INE191H01014_2013/result.json
+5186132813f867341e1ef23c42b0c3fe422fa47c7b0acbafbb14e27ac88fb080         490  PUBLIC  r1-final-evidence/primary/INE191H01014_2018/execution.json
+93f0889d262fd75d0e9e28aee0d2414b1f22c33182c4cceefdda8f33c10dcd9e        7908  PUBLIC  r1-final-evidence/primary/INE191H01014_2018/result.json
+8a91c5e427f47a4e8d4b09043ae9c12de1332fb9c302b375a887b82aed914353         493  PUBLIC  r1-final-evidence/primary/INE191H01014_2024/execution.json
+81ee1694d2428d1738dccaec8356eb7d7732308cbf9feb7cf7f69061a81a361f        7576  PUBLIC  r1-final-evidence/primary/INE191H01014_2024/result.json
+118bf70c49c25dfa973b9a4e6a28a2c7e073be2e9ec395ea0e2202d0ec9d01d0         513  PUBLIC  r1-final-evidence/primary/INE191H01014_2025/execution.json
+0fd4cda4cf9ffe626d526c3ab4e5ddb5d94425f1dbe0dca70764ed27c4e6da94       10678  PUBLIC  r1-final-evidence/primary/INE191H01014_2025/result.json
+d324f87c8e8c0ef8f456ccdfc1283e862a991ea492b4fadbcc38751150c76c2e         568  PUBLIC  r1-final-evidence/primary/INE192B01031_2012/execution.json
+6b7ed9cb6245046ee3a74e1eb86c5e15cd2d65c91e007927e4b0b746817c5492        7063  PUBLIC  r1-final-evidence/primary/INE192B01031_2012/result.json
+a2d430d7b5a10939093c2cac8e1abea0abcdd0302127b15625c791989201b6de         522  PUBLIC  r1-final-evidence/primary/INE192B01031_2017/execution.json
+c6e6beea5fe3a9ac280e736a87633bb1926d6595053fb62ce706da4afc88581d        8966  PUBLIC  r1-final-evidence/primary/INE192B01031_2017/result.json
+165afe27c8940cca5c4ca8d536511dc110725d84ebb131d36394078a8fb67a9e         501  PUBLIC  r1-final-evidence/primary/INE761H01022_2013/execution.json
+25d9235663c30112c806343ea84517a1a33304ebdabbe33d9a394ebbb9215f3c        6524  PUBLIC  r1-final-evidence/primary/INE761H01022_2013/result.json
+abb345faa7ab27fe87913f818d7be8ba245c30b7aa662e730e2259c5498f7c7b         472  PUBLIC  r1-final-evidence/primary/INE761H01022_2017/execution.json
+2c0165addff357fc69d426d8189d448ffcd0b3d8448ce36516ab673d285b6562        6598  PUBLIC  r1-final-evidence/primary/INE761H01022_2017/result.json
+2fd2a02ff8c1415aaf982457d120bf9285883f163be0781a83bcff2f440d0e46         472  PUBLIC  r1-final-evidence/primary/INE761H01022_2018/execution.json
+7c27443591ac15e649238987a41d6ebffa54b6c170bde346d0240ad34a6d57ad        6674  PUBLIC  r1-final-evidence/primary/INE761H01022_2018/result.json
+55c8f5225c4364b1fb9f570028caf8f6fb8788e1b00c29d174383baaed5dc1ef         497  PUBLIC  r1-final-evidence/primary/INE761H01022_2024/execution.json
+297d754d9ad3040aec34377a917968b31dfed37ce034a3582545fccf0a7fb6bd        7824  PUBLIC  r1-final-evidence/primary/INE761H01022_2024/result.json
+25c191d249f5bf8e218aa12b4b44366cb701405525b6d3145696ef438951ef00         524  PUBLIC  r1-final-evidence/primary/INE797F01020_2012/execution.json
+8fcc0da220fd65765860297fbe732f0e1309fe921bd254341541bd40c4b38045        6873  PUBLIC  r1-final-evidence/primary/INE797F01020_2012/result.json
+3b33b95239915866bc7ad0ff33e236905a4061eb964857eb86f8dab384549101         503  PUBLIC  r1-final-evidence/primary/INE797F01020_2013/execution.json
+8e1347b149199413ae4a7562e70f860ccf856a8ca0c97fe9fc93484c8e72e083        6499  PUBLIC  r1-final-evidence/primary/INE797F01020_2013/result.json
+97b4bfe5cc5a6cd7f251bcb76de33b1cca05b5d6e6c0292fa3bb1095c02b6047         502  PUBLIC  r1-final-evidence/primary/INE797F01020_2017/execution.json
+0f3071dc2a618d10702145e6334c34a22e67a430a9e96f6dad1a556cfd6bad7c        7886  PUBLIC  r1-final-evidence/primary/INE797F01020_2017/result.json
+4e25c7f3b20321d3babfe057daa86118a2abf2d8b241c2b5ee52d3bc5fec357c         502  PUBLIC  r1-final-evidence/primary/INE797F01020_2018/execution.json
+e31a69c9a1912f016c05682360804f0d159d427770b1f4e7d9955c08b559bf66        8000  PUBLIC  r1-final-evidence/primary/INE797F01020_2018/result.json
+76b2d61f370cfb68d537a165db423463ada713d05e038b3b2f48ff98258b6852         501  PUBLIC  r1-final-evidence/primary/INE797F01020_2024/execution.json
+e475204236955bf3f9975f6e6cb01e93f7150d756bb5647edc8e007d0193fe17        9098  PUBLIC  r1-final-evidence/primary/INE797F01020_2024/result.json
+610640095ad5d24ce17b0ec8a9a55a5fb28933c714ef189c614f713c4c9b1e02         503  PUBLIC  r1-final-evidence/primary/INE797F01020_2025/execution.json
+46cc444b7bf346605ae65891ed9d880a97187380961a41c8c8d5e1d60ae79a8f        7366  PUBLIC  r1-final-evidence/primary/INE797F01020_2025/result.json
+be5c3cc88b641f4a214aacfee5e88dae9bf911fbc0881e3921b32fef299c8175       14402  PUBLIC  r1-final-evidence/provenance-session.txt
+6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b           1  PUBLIC  r1-final-evidence/pytest-exit.txt
+437dfbdf992df953d264ecf9493c2bb0c793a0ddf4a25552bad16a7d7f49731a       64618  PUBLIC  r1-final-evidence/pytest-full.xml
+8865822942cebb327f88addb91b1a03180402548734df580bf0a39348041bdc0        1374  PUBLIC  r1-final-evidence/run_batch.py
+2248c6b3207f84825147312a2be1ba67b1d6cb34bed198b3fa7e3f6b6256787a        3153  PUBLIC  r1-final-evidence/run_document.py
+dd206466b01d9771e4c1956b82120f63e8423689a6bc5440111cba45061f630b          64  PUBLIC  r1-final-evidence/smoke-a-batch.json
+7f9eded7de6e842d95cf08228f18df03affd4478934074d559bc86ef52463f1a         469  PUBLIC  r1-final-evidence/smoke-a-logs/INE001F01019_2012.log
+5bae5ab3919a6815a4a4141195bc470d26c96f64eb65651e03bc49ddf49779ec         470  PUBLIC  r1-final-evidence/smoke-a-logs/INE001F01019_2013.log
+45d4b92c3d89bbb9638486b083b2f8dbc2ca642233ee6db2210c20a334ac9e72         437  PUBLIC  r1-final-evidence/smoke-a-logs/INE001F01019_2017.log
+45e53e3cdc851392e20a454100cbb75c9250111762d5230cc998dd72bb21774f         445  PUBLIC  r1-final-evidence/smoke-a-logs/INE008A01015_2024.log
+bdf7fb5da7cf83539f9a99cfa7bde07b1ae0fd280b7b82eaee177284726438c5         515  PUBLIC  r1-final-evidence/smoke-a/INE001F01019_2012/execution.json
+14c9b096dfb515a83d5e2dadca681c868ae6e66386fc7c602f37be739c617b89        5548  PUBLIC  r1-final-evidence/smoke-a/INE001F01019_2012/result.json
+6c4ce62be58a8986129dd33d8fc4327ca1cad860c154f5c598d4a51c183a83bb         516  PUBLIC  r1-final-evidence/smoke-a/INE001F01019_2013/execution.json
+f3f4dbe68978d2f5834d44652290f6d630e8c77624090f895ec19a35b3584f5e        5614  PUBLIC  r1-final-evidence/smoke-a/INE001F01019_2013/result.json
+7a637d2f27741b06a4b97cdf03886262478d0f7d653ffcaf68da7e65467dded4         468  PUBLIC  r1-final-evidence/smoke-a/INE001F01019_2017/execution.json
+c1cfc9f52677ed355cd280e1d65224658f9b2308c7f7b86962706bc65e030df4        5382  PUBLIC  r1-final-evidence/smoke-a/INE001F01019_2017/result.json
+bc21910e70fb4f5c2e1908bc8ca68e76c710e8687ffdcabdc7e1629def596259         496  PUBLIC  r1-final-evidence/smoke-a/INE008A01015_2024/execution.json
+34a89e1e9bf7b591fdf93d00a731c1a3ab450f5dda80aca02f290b20dd32ceb6       13141  PUBLIC  r1-final-evidence/smoke-a/INE008A01015_2024/result.json
+bb1b4166f907459722a70c18645193cd667aacf5b232fe1a449bc4536091381c          64  PUBLIC  r1-final-evidence/smoke-b-batch.json
+f2b734698da7f403c97e962c081dfdec1a4f63b56dfbab0c6121381743e75395         473  PUBLIC  r1-final-evidence/smoke-b-logs/INE001F01019_2012.log
+b5650d6bd08824434c6be14706e88dc12d20546cb354f8a0a7c7a424e0e31746         470  PUBLIC  r1-final-evidence/smoke-b-logs/INE001F01019_2013.log
+b9af062700c7c0180a23366a6508152cf09e3d2f203c93a5accad4ed06e4fec6         438  PUBLIC  r1-final-evidence/smoke-b-logs/INE001F01019_2017.log
+1a24672b2f47f465f2f63a2a8050f83d38dcc64be11cc54b2ab0a8b52707b55d         447  PUBLIC  r1-final-evidence/smoke-b-logs/INE008A01015_2024.log
+c8c59e2eb50e16ba8dabf480164aabce7d905417bcc31591ec987a245f2c3555         519  PUBLIC  r1-final-evidence/smoke-b/INE001F01019_2012/execution.json
+14c9b096dfb515a83d5e2dadca681c868ae6e66386fc7c602f37be739c617b89        5548  PUBLIC  r1-final-evidence/smoke-b/INE001F01019_2012/result.json
+51a602d7ba6aec631f02d44c9626c43210135a71fbbadc06211e616dfaa6c0d7         516  PUBLIC  r1-final-evidence/smoke-b/INE001F01019_2013/execution.json
+f3f4dbe68978d2f5834d44652290f6d630e8c77624090f895ec19a35b3584f5e        5614  PUBLIC  r1-final-evidence/smoke-b/INE001F01019_2013/result.json
+41657fbb74b2e9250ace80e9d59ccc2266476f7ac2ebab4720a726bbecaff507         469  PUBLIC  r1-final-evidence/smoke-b/INE001F01019_2017/execution.json
+c1cfc9f52677ed355cd280e1d65224658f9b2308c7f7b86962706bc65e030df4        5382  PUBLIC  r1-final-evidence/smoke-b/INE001F01019_2017/result.json
+da79811d4ac7454ca1e23a2549b021f217a38798ead0d72d31ca85c3d5dec600         498  PUBLIC  r1-final-evidence/smoke-b/INE008A01015_2024/execution.json
+34a89e1e9bf7b591fdf93d00a731c1a3ab450f5dda80aca02f290b20dd32ceb6       13141  PUBLIC  r1-final-evidence/smoke-b/INE008A01015_2024/result.json
+6af0a519a45e31b9f32d82075c377650e028da87f82dfbe30c273edf63b42745        3736  PUBLIC  scratchpad/build_universe.py
+fcd4b158cda62c0a42fc2286500dae6b2ffc796d997927479839c5f42aa3c163        8045  PUBLIC  scratchpad/compare_profiles.py
+1cae94f9c7a792a12d166b14b8f7fea5f406e67e41b9898edb29af8a0a016e14        2427  PUBLIC  scratchpad/comparison.json
+b732263472d3e6abe30a3291fd6fe54564f0691925ad267143eef6c833a7f4bf        4232  PUBLIC  scratchpad/environment_final.txt
+767e421257f5703d7790e39d2cf02f784c6506a4b0b54588c9ebfbb179ffc2c5       73972  PUBLIC  scratchpad/evidence_compact.json
+5ff6ccee268ff85108e6748249db67423bb31c57344a7a510bfc8e5306f55495        4085  PUBLIC  scratchpad/gen_identity.py
+8c14153e2c4862b201d91aa06a03269cfd1fbd0f0fe8e658143222fde128dd2a       24104  PUBLIC  scratchpad/identity_template.md
+ff99ed2bfb5ce8880c5dafd75fb90a2896cc216f6cad5268324bbd891f011471        9561  PUBLIC  scratchpad/identity_universe.json
+287aa8a1c114aa5074ecccc720ff2f0bb764319ca571fdb029e02abfc6961ada        4176  PUBLIC  scratchpad/negative_tests.out
+edff8050baea041cea5a43a91640ebed2df6bd21d2c71b2e4f6aa17499f781b9        6301  PUBLIC  scratchpad/negative_tests.sh
+e186824781e75f532899ac75d1fbc65fcb3fc3c19b732c8f258548753a00dc93        8355  PUBLIC  scratchpad/out-run-a/result.json
+8078aeed01ae6f0da9ec9ea3e8c179229ad11e2c9950274198dcccca6b7b962b         837  PUBLIC  scratchpad/out-run-a/summary.json
+e186824781e75f532899ac75d1fbc65fcb3fc3c19b732c8f258548753a00dc93        8355  PUBLIC  scratchpad/out-run-b/result.json
+fb40ecac5cc157dee68fbabc2c942f4251305412e2a6452ea7615556b8939f36         837  PUBLIC  scratchpad/out-run-b/summary.json
+317657f9632f9e617c5e5a144c0db393f1610920072990eca168ca5a76e45be6     7174860  PUBLIC  scratchpad/profile_base.json
+c908e4875c38d13cb440e27f259ec91521b4ba5005c7dfeb8ac63b36c5b6ac28        7472  PUBLIC  scratchpad/profile_base.log
+7d350ff0aad1165678668f91aa440bec308f1551f40f5658fa7bf9bc87121363     7174860  PUBLIC  scratchpad/profile_cand.json
+8cd12ffc1d340f84223b974615076d99d0a3a132d9f35ecf95500686dc6292d1        7474  PUBLIC  scratchpad/profile_cand.log
+41804798fcd389d63e1004ad810769d2754fe23a97c0015f99a85a1d5f394bbf        3500  PUBLIC  scratchpad/profile_docs.py
+50b74cc5424f2fead0053a9cbb65f9f8a9aacb5c7c2e9eda2e0139a1e936555d        1183  PUBLIC  scratchpad/run-a.log
+d551fd14bfce3cae5713f72374dc5080e5538cb639f7e2fafbbef20c64c06cf8        1183  PUBLIC  scratchpad/run-b.log
+c0f2dee0eb7911ffa16abefd9eaca88afce4b01c1409aaa297c9062c44c2a79d        3390  PUBLIC  scratchpad/run_pipeline_doc.py
+1861f8fcb03e869d90ed70c6e141740e9507fa21a105cc90cd0a0a19aee68110        1976  PUBLIC  scratchpad/suite_pin.txt
+8e7475f6b336f0fd73472002b62af6d591b4aedfbc3df7cae12f2eeaffd97a06       60979  PUBLIC  scratchpad/suite_pin.xml
+a1eb84a0006a8bf931f512cc980602e55c9fb62a2f0a0a2766e94cb07152725a       45550  PUBLIC  scratchpad/universe.json
+
+NOT PRESERVED (339 files, hashes retained for identification)
+------------------------------------------------------------------------------
+  EXCLUDED_BY_SCOPE / EXCLUDE                            68
+  EXCLUDED_BY_SCOPE / PRIVATE_ARCHIVE_REQUIRED          269
+  EXCLUDED_BY_SCOPE / PUBLIC_SAFE                         2
+  See OMISSION_REGISTER.md for the reasoned account.
