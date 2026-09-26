@@ -238,14 +238,35 @@ redacted.
 
 ## 6. Administrative status
 
-- R1 evidence recovered: **YES**
-- R1 evidence preservation: **PRESERVED_BUT_NOT_YET_DURABLE**
-- R1-REPRO required: **NO**
-- C2: **CONDITIONAL**
-- Track B: **UNRESOLVED / DEFERRED**
+Current author ratification dated 2026-09-26 is recorded in
+`docs/governance/AUTHOR_RATIFICATION_2026-09-26.md`. It authorizes this later
+administrative disposition without changing the historical preservation facts
+or upgrading the private preservation tier.
 
-"R1 closed" is not claimed and would not be correct. Administrative closure of
-the evidence chain is not scientific completion.
+| Item | Current authorized record |
+|---|---|
+| Claim A | `REPRODUCED` |
+| Claim B | `REPRODUCED_WITH_QUALIFICATION` |
+| Claim C | `REPRODUCED` |
+| Reproduction evidence | `docs/identity/evidence/r1-final/claim-reproduction-pa/` |
+| Evidence anchor | `53dcab40c374b499637ad3f68596549540ef1c42` |
+| Private transcript | `SUPPLEMENTARY` |
+| Private-copy status | `not yet` |
+| Administrative state | `CLOSED` |
 
-Next governance transition: D1 / D9 / C2 update, then Phase 5 — Gold Method
-Integration. Neither was begun by this task.
+Claim B's qualification is kept exactly:
+
+> The historical transcript identifies this fixture build and the two test
+> files (lines 703/708), and the later preservation manifest identifies the
+> surviving bytes. No contemporaneous per-fixture hash was recorded during the
+> historical execution. That temporal provenance limit remains. Current test
+> files were read from the recovered tree to use their unchanged hard-coded
+> sibling fixture path; all production imports were independently recorded
+> inside the pinned worktree. The original execution used production imports
+> from its `run-b` Git export.
+
+`CLOSED` means only that the authorized R1 administrative/reproduction task is
+closed. Private-copy status independently remains `not yet`: no approved
+private archive is claimed, the transcript is not claimed to be durably
+archived, and the historical `PRESERVED_BUT_NOT_YET_DURABLE` classification is
+not upgraded. Administrative closure is not scientific completion.
