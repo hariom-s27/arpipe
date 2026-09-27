@@ -94,6 +94,9 @@ ALLOWED_PHASE2_1_PATTERNS = [
     # CURRENT_DECISIONS 0c and SAP v0.1: exact scoring module and synthetic tests.
     re.compile(r"^tools/phase5/scoring/.+$"),
     re.compile(r"^tests/test_phase5_scoring.*\.py$"),
+    # CURRENT_DECISIONS 0c, PILOT_PLAN v0.1.1 §5–6: synthetic P5-C dry run only.
+    re.compile(r"^tools/phase5/pilot_dryrun/.+$"),
+    re.compile(r"^tests/test_phase5_pilot_dryrun[^/]*\.py$"),
     # Exact governance-closeout paths; no directory-wide exception.
     *(re.compile(rf"^{re.escape(path)}$") for path in GOVERNANCE_CLOSEOUT_ADMITTED_PATHS),
     # T0.4 Amendment 01: exact paths only.

@@ -1,0 +1,104 @@
+{
+  "agreement": {
+    "cohens_kappa": 0.5,
+    "exact_flag_agreement": {
+      "count": 4,
+      "denominator": 4,
+      "value": 1.0
+    },
+    "exact_reason_agreement": {
+      "count": 3,
+      "denominator": 4,
+      "value": 0.75
+    },
+    "exact_state_agreement": {
+      "count": 3,
+      "denominator": 4,
+      "value": 0.75
+    },
+    "pabak": 0.5,
+    "pair_count": 4,
+    "present_present": {
+      "count": 2,
+      "exact_end": {
+        "count": 2,
+        "denominator": 2,
+        "value": 1.0
+      },
+      "exact_full_span": {
+        "count": 1,
+        "denominator": 2,
+        "value": 0.5
+      },
+      "exact_start": {
+        "count": 1,
+        "denominator": 2,
+        "value": 0.5
+      },
+      "mean_iou": 0.8333333333333333,
+      "within_one_end": {
+        "count": 2,
+        "denominator": 2,
+        "value": 1.0
+      },
+      "within_one_start": {
+        "count": 2,
+        "denominator": 2,
+        "value": 1.0
+      }
+    },
+    "state_table_3x3": {
+      "ABSENT": {
+        "ABSENT": 1,
+        "AMBIGUOUS": 0,
+        "PRESENT": 0
+      },
+      "AMBIGUOUS": {
+        "ABSENT": 0,
+        "AMBIGUOUS": 0,
+        "PRESENT": 0
+      },
+      "PRESENT": {
+        "ABSENT": 1,
+        "AMBIGUOUS": 0,
+        "PRESENT": 2
+      }
+    }
+  },
+  "findings": [
+    "tools/phase5/annotator/make_bundle.py:36–40 ships an unfrozen-title placeholder; tools/phase5/annotator/annotator_core.py:477–496 has no title-list preflight in the direct sealing API. This synthetic runner adds an explicit temporary-workspace preflight; production tool code is unchanged.",
+    "tools/phase5/scoring/__init__.py:294–353 returns no gap-set Jaccard or non-comparable counts, although docs/phase5/SAP_v0_1.md:131–140 calls for both in raw A/B agreement. The dry run records only values this API actually returns."
+  ],
+  "label": "SYNTHETIC — not a result",
+  "record_hashes": {
+    "ANNOTATOR_A": {
+      "SYNTH_FIT_01": "587a5ff8dd7f13552636aa4724a137af6405bc2c80f092b12049dafbdfcf33f7",
+      "SYNTH_FIT_02": "51cf5a80583684e301ff7e66962534dfe789e23f229fe6a4a145a6ca89b21bfb",
+      "SYNTH_FIT_03": "ff7013ad6e4294bd447ae8ace0f56e1991fcc58cabd6d3fb5b14ffdde46531fb",
+      "SYNTH_FIT_04": "936010a3c605a554dd197a8d7bb971f0989c14a2cbc5a027498ddcf4709f1688"
+    },
+    "ANNOTATOR_B": {
+      "SYNTH_FIT_01": "36cbffa81e23f3f9bc5987598da6dfb979dbaf202b657787a2c5935715f68ef6",
+      "SYNTH_FIT_02": "3612da15b6ae534dd9fec71895ccd6397b8835a0f85aba39048c6714e1fbf01e",
+      "SYNTH_FIT_03": "1b8ba420a45e24b15d7e1084e94cdd1de4df497fc178146dbed7c2975a452b69",
+      "SYNTH_FIT_04": "586e62758674daa56682a9d747ff2daf35b5dba4d4a0358ff9556188dbefceed"
+    }
+  },
+  "soft_trigger_evaluation": {
+    "reason": "PILOT_PLAN v0.1/v0.1.1 §6 (identical in both; v0.1.1 changed only §3) states thresholds for the 10-document PILOT (e.g. presence disagreement on at least 2 of 10). They are not evaluated on 4 synthetic byte files; doing so would present a synthetic number as a trigger outcome.",
+    "status": "NOT_APPLICABLE"
+  },
+  "soft_triggers": [],
+  "steps": {
+    "ANNOTATOR_A_export_readback": "PASS",
+    "ANNOTATOR_A_records": "PASS",
+    "ANNOTATOR_B_export_readback": "PASS",
+    "ANNOTATOR_B_records": "PASS",
+    "bundle": "PASS",
+    "raw_ab_agreement": "PASS",
+    "report": "PASS",
+    "synthetic_inputs": "PASS",
+    "workspaces": "PASS"
+  },
+  "workspace_manifest_sha256": "ba8a25bcb7fccb32fb7872662386b74e1891939cbc560d6caa7efd6c0802d0f2"
+}
