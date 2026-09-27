@@ -18,6 +18,24 @@
 
 ---
 
+## 2026-09-27 (late evening): P5-S scoring and main-drift diagnosis
+- **Did (Codex, GPT-5.6 Sol Extra High):**
+  - P5-S → `phase5-scoring` (`c220017`). This chat re-tested it: base + 12 tests.
+  - Main-drift diagnosis report written (`docs/decisions/MAIN_DRIFT_DIAGNOSIS_2026-09-27.md`); the author pushes it.
+- **Found:**
+  - P5-S implements SAP §1–§8.
+  - OPEN, not implemented:
+    - the §7 interval method;
+    - the §8 empty/empty gap-set Jaccard;
+    - the direction of signed A/B differences;
+    - the non-comparable count definitions;
+    - the issuer map (supplied as an input);
+    - the prediction CSV layout (documented by the CLI, not the SAP).
+  - `main` differs from Phase 5 in 11 `arpipe/` files. `universe.py` (`ac0301d`, 17 Sep, a direct commit to main, −176 lines) **can change output**. `models.py`, `cli.py` and `fetch.py` are UNSURE.
+  - The `origin/main` archive gives 495 passed, 12 failed (some of it environment).
+- **Decided:** HOLDOUT must run on the R1 identity, not `main`. Resolving the drift on `main` is an author decision; the options are in the report.
+- **Remains:** push the drift report; author decisions (P5-A.1b 7 vs 4; drift option; SAP OPEN items before scoring); the title review.
+
 ## 2026-09-27 (late evening): duplicate versions compared
 - **Did:**
   - The Codex versions were pushed under their own names: `phase5-a1b-codex` (`9ec7732`) and `phase5-annotation-tool-codex` (`77443b7`).
