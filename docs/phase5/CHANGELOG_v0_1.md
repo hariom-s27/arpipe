@@ -190,3 +190,28 @@ governance ledger or snapshot was created.
 **PROPOSED.** To preserve the mandated one-commit history, the final commit SHA, push
 result, and remote SHA are reported in the execution report after the commit/push rather
 than added here through a second commit.
+
+## Errata v0.1.1 (P5-A.1b, 2026-09-27)
+
+**What.** Added `docs/phase5/PILOT_PLAN_v0_1_1.md`. It is a copy of
+`PILOT_PLAN_v0_1.md` with only section 3 (hard-proxy source) replaced.
+`PILOT_PLAN_v0_1.md` is byte-identical to `e1803fc`.
+
+**Why.** **VERIFIED.** The v0.1 §3 proxy tokens did not match the declared source.
+`condition_document_map_reconciled.csv` has 17 distinct `condition` values and the
+statuses `CANDIDATE` / `NOT_OBSERVED`. Only `legacy_font_candidate` matched a listed
+token exactly, so an exact-match selector would have kept one condition out of eight.
+
+**Change.** **PROPOSED.** Exact-equality rule on `condition` for `CANDIDATE` rows of
+the 32 roster IDs. Core set = `annexure_candidate`, `bilingual_candidate`,
+`hidden_text_candidate`, `legacy_font_candidate` (one-to-one counterparts of v0.1
+tokens). `broken_text`, `image_heavy`, `mixed_page_sizes`, `toc_absent` are dropped
+because the declared source has no counterpart.
+
+**Author choice pending.** Whether to add `devanagari_candidate`, `scanned` and
+`ocr_layer_candidate`. These are judgement mappings, not renamings, so the errata
+leaves them out of the operative set until the author records a choice in §3.
+
+**Non-actions.** **VERIFIED.** No roster membership, token count, digest, PILOT or
+RETEST selection was computed. Only the distinct `condition` and `status` values of
+the source were read. Status stays `DRAFT_PENDING_PILOT`.
