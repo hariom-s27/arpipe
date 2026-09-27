@@ -1,0 +1,1009 @@
+{
+  "verdict": "P5_B22_PASS_WITH_REVIEW_ITEMS",
+  "checks": [
+    {
+      "id": "G1",
+      "expected": {
+        "ledger_rows": 3215,
+        "frame_rows": 1,
+        "source_rows": 3216
+      },
+      "measured": {
+        "ledger_rows": 3215,
+        "frame_rows": 1,
+        "sum": 3216,
+        "source_rows": 3216
+      },
+      "status": "PASS"
+    },
+    {
+      "id": "G2",
+      "expected": {
+        "retained_field_differences": 0,
+        "only_removed_obs_id": "OBS_INE00FF01025_2015_p0000_BODY_occ1_dd9826bd",
+        "provenance_byte_copy": true,
+        "evidence_other_fields_differences": 0
+      },
+      "measured": {
+        "retained_field_differences": 0,
+        "removed_obs_ids": [
+          "OBS_INE00FF01025_2015_p0000_BODY_occ1_dd9826bd"
+        ],
+        "provenance_byte_copy": true,
+        "evidence_other_fields_differences": 0
+      },
+      "status": "PASS"
+    },
+    {
+      "id": "G3",
+      "expected": {
+        "documents": 60,
+        "manifest_hash_mismatches": 0
+      },
+      "measured": {
+        "documents": 60,
+        "manifest_hash_mismatches": {}
+      },
+      "status": "PASS"
+    },
+    {
+      "id": "G4",
+      "expected": {
+        "key_duplicates": 0,
+        "obs_id_duplicates": 0,
+        "out_of_range_pages": 0
+      },
+      "measured": {
+        "key_duplicates": 0,
+        "obs_id_duplicates": 0,
+        "out_of_range_pages": 0
+      },
+      "status": "PASS"
+    },
+    {
+      "id": "G5",
+      "expected": {
+        "rows": 259,
+        "types": {
+          "STRUCTURAL_TITLE_EVIDENCE": 258,
+          "FRAME_STATUS_EVIDENCE": 1
+        },
+        "missing_equivalent_conditional": 0,
+        "distinct_pngs": 146,
+        "png_hash_mismatches": 0
+      },
+      "measured": {
+        "rows": 259,
+        "types": {
+          "STRUCTURAL_TITLE_EVIDENCE": 258,
+          "FRAME_STATUS_EVIDENCE": 1
+        },
+        "missing_equivalent_conditional": 0,
+        "distinct_pngs": 146,
+        "png_hash_mismatches": 0
+      },
+      "status": "PASS"
+    },
+    {
+      "id": "G6",
+      "expected": {
+        "entries": 80,
+        "class_split": {
+          "EQUIVALENT": 21,
+          "CONDITIONAL": 12,
+          "NOT EQUIVALENT BUT CONFUSABLE": 47
+        }
+      },
+      "measured": {
+        "entries": 80,
+        "class_split": {
+          "EQUIVALENT": 21,
+          "CONDITIONAL": 12,
+          "NOT EQUIVALENT BUT CONFUSABLE": 47
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "id": "G7",
+      "expected": {
+        "EQUIVALENT": 150,
+        "CONDITIONAL": 66,
+        "NOT EQUIVALENT BUT CONFUSABLE": 2999
+      },
+      "measured": {
+        "NOT EQUIVALENT BUT CONFUSABLE": 2999,
+        "CONDITIONAL": 66,
+        "EQUIVALENT": 150
+      },
+      "status": "PASS"
+    },
+    {
+      "id": "G8",
+      "expected": {
+        "entries_reconciled": 80,
+        "each_has_match_level_and_class_status": true
+      },
+      "measured": {
+        "entries_reconciled": 80,
+        "match_level_counts": {
+          "L1": 26,
+          "L2": 25,
+          "NONE": 29
+        },
+        "class_status_counts": {
+          "AGREES": 40,
+          "CONFLICT": 11,
+          "NONE": 29
+        },
+        "overlap_entries": 24,
+        "unmatched_ledger_rows_by_class": {
+          "CONDITIONAL": 65,
+          "EQUIVALENT": 145,
+          "NOT EQUIVALENT BUT CONFUSABLE": 2941
+        },
+        "majority_ledger_class_split": {
+          "CONDITIONAL": 1,
+          "EQUIVALENT": 16,
+          "NONE": 29,
+          "NOT EQUIVALENT BUT CONFUSABLE": 34
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "id": "G9",
+      "expected": {
+        "blocking_hits": 0
+      },
+      "measured": {
+        "blocking_hits": 0,
+        "possible_hits": []
+      },
+      "status": "PASS"
+    },
+    {
+      "id": "G10",
+      "expected": {
+        "reproducible": true,
+        "historical_finding_recorded": true
+      },
+      "measured": {
+        "reproducible": true,
+        "F-V02-REPRO": "HISTORICAL: prior audit reported that v0.2 builder output differs from v0.2 .md; not re-run in P5-B.2.2 by design."
+      },
+      "status": "PASS"
+    },
+    {
+      "id": "G11",
+      "expected": {
+        "catalog_class_tags_counted": true,
+        "report_24_11_45_1_assessed": true
+      },
+      "measured": {
+        "catalog_tag_counts": {
+          "EQUIVALENT": 21,
+          "CONDITIONAL": 12,
+          "NOT EQUIVALENT BUT CONFUSABLE": 47,
+          "UNRESOLVED": 1
+        },
+        "p5_b2_report_counts": {
+          "EQUIVALENT": 24,
+          "CONDITIONAL": 11,
+          "NOT EQUIVALENT BUT CONFUSABLE": 45,
+          "UNRESOLVED": 1
+        },
+        "p5_b2_report_correct": false
+      },
+      "status": "PASS"
+    },
+    {
+      "id": "G12",
+      "expected": {
+        "zero_byte_files": 0
+      },
+      "measured": {
+        "zero_byte_files": []
+      },
+      "status": "PASS"
+    }
+  ],
+  "findings": {
+    "F-BUILDER-DRIFT": "RESOLVED AS K-I: expected list now taken from output/v0_2/HASHES_v0_2.txt; see K-I",
+    "F-V02-REPRO": "HISTORICAL: prior audit reported that v0.2 builder output differs from v0.2 .md; not re-run in P5-B.2.2 by design.",
+    "F-COUNTS": {
+      "catalog_tag_counts": {
+        "EQUIVALENT": 21,
+        "CONDITIONAL": 12,
+        "NOT EQUIVALENT BUT CONFUSABLE": 47,
+        "UNRESOLVED": 1
+      },
+      "p5_b2_report_counts": {
+        "EQUIVALENT": 24,
+        "CONDITIONAL": 11,
+        "NOT EQUIVALENT BUT CONFUSABLE": 45,
+        "UNRESOLVED": 1
+      },
+      "p5_b2_report_correct": false
+    }
+  },
+  "e3": {
+    "match_level_counts": {
+      "L1": 26,
+      "L2": 25,
+      "NONE": 29
+    },
+    "class_status_counts": {
+      "AGREES": 40,
+      "CONFLICT": 11,
+      "NONE": 29
+    },
+    "overlap_entries": 24,
+    "unmatched_ledger_rows_by_class": {
+      "CONDITIONAL": 65,
+      "EQUIVALENT": 145,
+      "NOT EQUIVALENT BUT CONFUSABLE": 2941
+    },
+    "majority_ledger_class_split": {
+      "CONDITIONAL": 1,
+      "EQUIVALENT": 16,
+      "NONE": 29,
+      "NOT EQUIVALENT BUT CONFUSABLE": 34
+    }
+  },
+  "review_entries": [
+    {
+      "entry_no": 1,
+      "title": "Management Discussion and Analysis",
+      "catalog_class": "EQUIVALENT",
+      "match_level": "L2",
+      "class_status": "AGREES",
+      "overlap": "TRUE",
+      "ledger_class_distribution": {
+        "EQUIVALENT": 2
+      }
+    },
+    {
+      "entry_no": 2,
+      "title": "Management Discussion & Analysis",
+      "catalog_class": "EQUIVALENT",
+      "match_level": "L2",
+      "class_status": "AGREES",
+      "overlap": "TRUE",
+      "ledger_class_distribution": {
+        "EQUIVALENT": 2
+      }
+    },
+    {
+      "entry_no": 3,
+      "title": "MANAGEMENT DISCUSSION AND ANALYSIS",
+      "catalog_class": "EQUIVALENT",
+      "match_level": "L2",
+      "class_status": "AGREES",
+      "overlap": "TRUE",
+      "ledger_class_distribution": {
+        "EQUIVALENT": 2
+      }
+    },
+    {
+      "entry_no": 4,
+      "title": "MANAGEMENT DISCUSSION & ANALYSIS",
+      "catalog_class": "EQUIVALENT",
+      "match_level": "L2",
+      "class_status": "AGREES",
+      "overlap": "TRUE",
+      "ledger_class_distribution": {
+        "EQUIVALENT": 2
+      }
+    },
+    {
+      "entry_no": 5,
+      "title": "Management Discussion and Analysis Report",
+      "catalog_class": "EQUIVALENT",
+      "match_level": "L2",
+      "class_status": "AGREES",
+      "overlap": "TRUE",
+      "ledger_class_distribution": {
+        "EQUIVALENT": 1
+      }
+    },
+    {
+      "entry_no": 6,
+      "title": "MANAGEMENT DISCUSSION AND ANALYSIS REPORT",
+      "catalog_class": "EQUIVALENT",
+      "match_level": "L2",
+      "class_status": "AGREES",
+      "overlap": "TRUE",
+      "ledger_class_distribution": {
+        "EQUIVALENT": 1
+      }
+    },
+    {
+      "entry_no": 7,
+      "title": "MANAGEMENT DISCUSSION AND ANALYSIS REPORT:",
+      "catalog_class": "EQUIVALENT",
+      "match_level": "L2",
+      "class_status": "AGREES",
+      "overlap": "TRUE",
+      "ledger_class_distribution": {
+        "EQUIVALENT": 1
+      }
+    },
+    {
+      "entry_no": 8,
+      "title": "Management's Discussion and Analysis",
+      "catalog_class": "EQUIVALENT",
+      "match_level": "L2",
+      "class_status": "CONFLICT",
+      "overlap": "TRUE",
+      "ledger_class_distribution": {
+        "NOT EQUIVALENT BUT CONFUSABLE": 1
+      }
+    },
+    {
+      "entry_no": 9,
+      "title": "Management’s Discussion and Analysis",
+      "catalog_class": "EQUIVALENT",
+      "match_level": "L2",
+      "class_status": "CONFLICT",
+      "overlap": "TRUE",
+      "ledger_class_distribution": {
+        "NOT EQUIVALENT BUT CONFUSABLE": 1
+      }
+    },
+    {
+      "entry_no": 10,
+      "title": "MANAGEMENT'S DISCUSSION AND ANALYSIS",
+      "catalog_class": "EQUIVALENT",
+      "match_level": "L2",
+      "class_status": "CONFLICT",
+      "overlap": "TRUE",
+      "ledger_class_distribution": {
+        "NOT EQUIVALENT BUT CONFUSABLE": 1
+      }
+    },
+    {
+      "entry_no": 11,
+      "title": "MANAGEMENT’S DISCUSSION AND ANALYSIS",
+      "catalog_class": "EQUIVALENT",
+      "match_level": "L2",
+      "class_status": "CONFLICT",
+      "overlap": "TRUE",
+      "ledger_class_distribution": {
+        "NOT EQUIVALENT BUT CONFUSABLE": 1
+      }
+    },
+    {
+      "entry_no": 12,
+      "title": "Management’s Discussion and Analysis Report",
+      "catalog_class": "EQUIVALENT",
+      "match_level": "NONE",
+      "class_status": "NONE",
+      "overlap": "FALSE",
+      "ledger_class_distribution": {}
+    },
+    {
+      "entry_no": 13,
+      "title": "MANAGEMENT'S DISCUSSION AND ANALYSIS REPORT",
+      "catalog_class": "EQUIVALENT",
+      "match_level": "NONE",
+      "class_status": "NONE",
+      "overlap": "FALSE",
+      "ledger_class_distribution": {}
+    },
+    {
+      "entry_no": 14,
+      "title": "MANAGEMENT DISCUSSIONS AND ANALYSIS",
+      "catalog_class": "EQUIVALENT",
+      "match_level": "NONE",
+      "class_status": "NONE",
+      "overlap": "FALSE",
+      "ledger_class_distribution": {}
+    },
+    {
+      "entry_no": 15,
+      "title": "MANAGEMENT DISCUSSIONS & ANALYSIS",
+      "catalog_class": "EQUIVALENT",
+      "match_level": "NONE",
+      "class_status": "NONE",
+      "overlap": "FALSE",
+      "ledger_class_distribution": {}
+    },
+    {
+      "entry_no": 16,
+      "title": "MANAGEMENT DISCUSSIONS AND ANALYSIS REPORT",
+      "catalog_class": "EQUIVALENT",
+      "match_level": "NONE",
+      "class_status": "NONE",
+      "overlap": "FALSE",
+      "ledger_class_distribution": {}
+    },
+    {
+      "entry_no": 17,
+      "title": "Management Discussion and Analysis 2011-12",
+      "catalog_class": "EQUIVALENT",
+      "match_level": "NONE",
+      "class_status": "NONE",
+      "overlap": "FALSE",
+      "ledger_class_distribution": {}
+    },
+    {
+      "entry_no": 18,
+      "title": "Management Discussion and Analysis 2012-13",
+      "catalog_class": "EQUIVALENT",
+      "match_level": "NONE",
+      "class_status": "NONE",
+      "overlap": "FALSE",
+      "ledger_class_distribution": {}
+    },
+    {
+      "entry_no": 21,
+      "title": "प्रबंध विवेचना एवं विश्लेषण",
+      "catalog_class": "EQUIVALENT",
+      "match_level": "NONE",
+      "class_status": "NONE",
+      "overlap": "FALSE",
+      "ledger_class_distribution": {}
+    },
+    {
+      "entry_no": 22,
+      "title": "Management Discussion and Analysis",
+      "catalog_class": "CONDITIONAL",
+      "match_level": "L2",
+      "class_status": "CONFLICT",
+      "overlap": "TRUE",
+      "ledger_class_distribution": {
+        "EQUIVALENT": 2
+      }
+    },
+    {
+      "entry_no": 23,
+      "title": "MANAGEMENT DISCUSSION AND ANALYSIS",
+      "catalog_class": "CONDITIONAL",
+      "match_level": "L2",
+      "class_status": "CONFLICT",
+      "overlap": "TRUE",
+      "ledger_class_distribution": {
+        "EQUIVALENT": 2
+      }
+    },
+    {
+      "entry_no": 24,
+      "title": "MANAGEMENT'S DISCUSSIONS AND ANALYSIS",
+      "catalog_class": "CONDITIONAL",
+      "match_level": "NONE",
+      "class_status": "NONE",
+      "overlap": "FALSE",
+      "ledger_class_distribution": {}
+    },
+    {
+      "entry_no": 25,
+      "title": "5. Management Discussion and Analysis",
+      "catalog_class": "CONDITIONAL",
+      "match_level": "L2",
+      "class_status": "CONFLICT",
+      "overlap": "TRUE",
+      "ledger_class_distribution": {
+        "EQUIVALENT": 2
+      }
+    },
+    {
+      "entry_no": 26,
+      "title": "34. Management Discussion and Analysis Report",
+      "catalog_class": "CONDITIONAL",
+      "match_level": "L2",
+      "class_status": "CONFLICT",
+      "overlap": "TRUE",
+      "ledger_class_distribution": {
+        "EQUIVALENT": 1
+      }
+    },
+    {
+      "entry_no": 27,
+      "title": "21. Management Discussion and Analysis Report:",
+      "catalog_class": "CONDITIONAL",
+      "match_level": "L2",
+      "class_status": "CONFLICT",
+      "overlap": "TRUE",
+      "ledger_class_distribution": {
+        "EQUIVALENT": 1
+      }
+    },
+    {
+      "entry_no": 28,
+      "title": "17. MANAGEMENT DISCUSSION AND ANALYSIS REPORT:",
+      "catalog_class": "CONDITIONAL",
+      "match_level": "L2",
+      "class_status": "CONFLICT",
+      "overlap": "TRUE",
+      "ledger_class_distribution": {
+        "EQUIVALENT": 1
+      }
+    },
+    {
+      "entry_no": 29,
+      "title": "J. MANAGEMENT'S DISCUSSION AND ANALYSIS REPORT",
+      "catalog_class": "CONDITIONAL",
+      "match_level": "NONE",
+      "class_status": "NONE",
+      "overlap": "FALSE",
+      "ledger_class_distribution": {}
+    },
+    {
+      "entry_no": 30,
+      "title": "Management Discussion and Analysis Report",
+      "catalog_class": "CONDITIONAL",
+      "match_level": "L2",
+      "class_status": "CONFLICT",
+      "overlap": "TRUE",
+      "ledger_class_distribution": {
+        "EQUIVALENT": 1
+      }
+    },
+    {
+      "entry_no": 31,
+      "title": "CORPORATE GOVERNANCE AND MANAGEMENT DISCUSSIONS & ANALYSIS",
+      "catalog_class": "CONDITIONAL",
+      "match_level": "NONE",
+      "class_status": "NONE",
+      "overlap": "FALSE",
+      "ledger_class_distribution": {}
+    },
+    {
+      "entry_no": 32,
+      "title": "Management Discussion & Analysis Report (MD&A Report) –",
+      "catalog_class": "CONDITIONAL",
+      "match_level": "NONE",
+      "class_status": "NONE",
+      "overlap": "FALSE",
+      "ledger_class_distribution": {}
+    },
+    {
+      "entry_no": 34,
+      "title": "Directors' Report",
+      "catalog_class": "NOT EQUIVALENT BUT CONFUSABLE",
+      "match_level": "L1",
+      "class_status": "AGREES",
+      "overlap": "TRUE",
+      "ledger_class_distribution": {
+        "NOT EQUIVALENT BUT CONFUSABLE": 4
+      }
+    },
+    {
+      "entry_no": 35,
+      "title": "DIRECTORS' REPORT",
+      "catalog_class": "NOT EQUIVALENT BUT CONFUSABLE",
+      "match_level": "L1",
+      "class_status": "AGREES",
+      "overlap": "TRUE",
+      "ledger_class_distribution": {
+        "NOT EQUIVALENT BUT CONFUSABLE": 4
+      }
+    },
+    {
+      "entry_no": 36,
+      "title": "Board’s Report",
+      "catalog_class": "NOT EQUIVALENT BUT CONFUSABLE",
+      "match_level": "L1",
+      "class_status": "AGREES",
+      "overlap": "TRUE",
+      "ledger_class_distribution": {
+        "NOT EQUIVALENT BUT CONFUSABLE": 2
+      }
+    },
+    {
+      "entry_no": 37,
+      "title": "BOARD’S REPORT",
+      "catalog_class": "NOT EQUIVALENT BUT CONFUSABLE",
+      "match_level": "L1",
+      "class_status": "AGREES",
+      "overlap": "TRUE",
+      "ledger_class_distribution": {
+        "NOT EQUIVALENT BUT CONFUSABLE": 2
+      }
+    },
+    {
+      "entry_no": 38,
+      "title": "Corporate Governance Report",
+      "catalog_class": "NOT EQUIVALENT BUT CONFUSABLE",
+      "match_level": "L1",
+      "class_status": "AGREES",
+      "overlap": "TRUE",
+      "ledger_class_distribution": {
+        "NOT EQUIVALENT BUT CONFUSABLE": 2
+      }
+    },
+    {
+      "entry_no": 39,
+      "title": "Report on Corporate Governance",
+      "catalog_class": "NOT EQUIVALENT BUT CONFUSABLE",
+      "match_level": "NONE",
+      "class_status": "NONE",
+      "overlap": "FALSE",
+      "ledger_class_distribution": {}
+    },
+    {
+      "entry_no": 40,
+      "title": "CORPORATE GOVERNANCE REPORT",
+      "catalog_class": "NOT EQUIVALENT BUT CONFUSABLE",
+      "match_level": "L1",
+      "class_status": "AGREES",
+      "overlap": "TRUE",
+      "ledger_class_distribution": {
+        "NOT EQUIVALENT BUT CONFUSABLE": 2
+      }
+    },
+    {
+      "entry_no": 41,
+      "title": "Auditors’ Certificate on Corporate Governance",
+      "catalog_class": "NOT EQUIVALENT BUT CONFUSABLE",
+      "match_level": "NONE",
+      "class_status": "NONE",
+      "overlap": "FALSE",
+      "ledger_class_distribution": {}
+    },
+    {
+      "entry_no": 44,
+      "title": "Chairman’s Statement",
+      "catalog_class": "NOT EQUIVALENT BUT CONFUSABLE",
+      "match_level": "NONE",
+      "class_status": "NONE",
+      "overlap": "FALSE",
+      "ledger_class_distribution": {}
+    },
+    {
+      "entry_no": 45,
+      "title": "Message from the Chairman",
+      "catalog_class": "NOT EQUIVALENT BUT CONFUSABLE",
+      "match_level": "NONE",
+      "class_status": "NONE",
+      "overlap": "FALSE",
+      "ledger_class_distribution": {}
+    },
+    {
+      "entry_no": 46,
+      "title": "Managing Director & CEO’s Message",
+      "catalog_class": "NOT EQUIVALENT BUT CONFUSABLE",
+      "match_level": "NONE",
+      "class_status": "NONE",
+      "overlap": "FALSE",
+      "ledger_class_distribution": {}
+    },
+    {
+      "entry_no": 49,
+      "title": "Business Model",
+      "catalog_class": "NOT EQUIVALENT BUT CONFUSABLE",
+      "match_level": "NONE",
+      "class_status": "NONE",
+      "overlap": "FALSE",
+      "ledger_class_distribution": {}
+    },
+    {
+      "entry_no": 50,
+      "title": "Value Creation",
+      "catalog_class": "NOT EQUIVALENT BUT CONFUSABLE",
+      "match_level": "NONE",
+      "class_status": "NONE",
+      "overlap": "FALSE",
+      "ledger_class_distribution": {}
+    },
+    {
+      "entry_no": 51,
+      "title": "Performance Highlights",
+      "catalog_class": "NOT EQUIVALENT BUT CONFUSABLE",
+      "match_level": "NONE",
+      "class_status": "NONE",
+      "overlap": "FALSE",
+      "ledger_class_distribution": {}
+    },
+    {
+      "entry_no": 52,
+      "title": "Key Performance Indicators",
+      "catalog_class": "NOT EQUIVALENT BUT CONFUSABLE",
+      "match_level": "NONE",
+      "class_status": "NONE",
+      "overlap": "FALSE",
+      "ledger_class_distribution": {}
+    },
+    {
+      "entry_no": 57,
+      "title": "Threats",
+      "catalog_class": "NOT EQUIVALENT BUT CONFUSABLE",
+      "match_level": "NONE",
+      "class_status": "NONE",
+      "overlap": "FALSE",
+      "ledger_class_distribution": {}
+    },
+    {
+      "entry_no": 61,
+      "title": "Internal Control Systems and their Adequacy",
+      "catalog_class": "NOT EQUIVALENT BUT CONFUSABLE",
+      "match_level": "NONE",
+      "class_status": "NONE",
+      "overlap": "FALSE",
+      "ledger_class_distribution": {}
+    },
+    {
+      "entry_no": 72,
+      "title": "Statement of Changes in Equity",
+      "catalog_class": "NOT EQUIVALENT BUT CONFUSABLE",
+      "match_level": "NONE",
+      "class_status": "NONE",
+      "overlap": "FALSE",
+      "ledger_class_distribution": {}
+    },
+    {
+      "entry_no": 73,
+      "title": "Notes to the Financial Statements",
+      "catalog_class": "NOT EQUIVALENT BUT CONFUSABLE",
+      "match_level": "NONE",
+      "class_status": "NONE",
+      "overlap": "FALSE",
+      "ledger_class_distribution": {}
+    },
+    {
+      "entry_no": 76,
+      "title": "Attendance Slip",
+      "catalog_class": "NOT EQUIVALENT BUT CONFUSABLE",
+      "match_level": "NONE",
+      "class_status": "NONE",
+      "overlap": "FALSE",
+      "ledger_class_distribution": {}
+    },
+    {
+      "entry_no": 77,
+      "title": "Proxy Form",
+      "catalog_class": "NOT EQUIVALENT BUT CONFUSABLE",
+      "match_level": "NONE",
+      "class_status": "NONE",
+      "overlap": "FALSE",
+      "ledger_class_distribution": {}
+    },
+    {
+      "entry_no": 78,
+      "title": "Route Map",
+      "catalog_class": "NOT EQUIVALENT BUT CONFUSABLE",
+      "match_level": "NONE",
+      "class_status": "NONE",
+      "overlap": "FALSE",
+      "ledger_class_distribution": {}
+    },
+    {
+      "entry_no": 80,
+      "title": "Company Information",
+      "catalog_class": "NOT EQUIVALENT BUT CONFUSABLE",
+      "match_level": "NONE",
+      "class_status": "NONE",
+      "overlap": "FALSE",
+      "ledger_class_distribution": {}
+    }
+  ],
+  "single_document_titles": [
+    {
+      "entry_no": 1,
+      "title": "Management Discussion and Analysis",
+      "catalog_class": "EQUIVALENT"
+    },
+    {
+      "entry_no": 2,
+      "title": "Management Discussion & Analysis",
+      "catalog_class": "EQUIVALENT"
+    },
+    {
+      "entry_no": 3,
+      "title": "MANAGEMENT DISCUSSION AND ANALYSIS",
+      "catalog_class": "EQUIVALENT"
+    },
+    {
+      "entry_no": 4,
+      "title": "MANAGEMENT DISCUSSION & ANALYSIS",
+      "catalog_class": "EQUIVALENT"
+    },
+    {
+      "entry_no": 5,
+      "title": "Management Discussion and Analysis Report",
+      "catalog_class": "EQUIVALENT"
+    },
+    {
+      "entry_no": 6,
+      "title": "MANAGEMENT DISCUSSION AND ANALYSIS REPORT",
+      "catalog_class": "EQUIVALENT"
+    },
+    {
+      "entry_no": 7,
+      "title": "MANAGEMENT DISCUSSION AND ANALYSIS REPORT:",
+      "catalog_class": "EQUIVALENT"
+    },
+    {
+      "entry_no": 8,
+      "title": "Management's Discussion and Analysis",
+      "catalog_class": "EQUIVALENT"
+    },
+    {
+      "entry_no": 9,
+      "title": "Management’s Discussion and Analysis",
+      "catalog_class": "EQUIVALENT"
+    },
+    {
+      "entry_no": 10,
+      "title": "MANAGEMENT'S DISCUSSION AND ANALYSIS",
+      "catalog_class": "EQUIVALENT"
+    },
+    {
+      "entry_no": 11,
+      "title": "MANAGEMENT’S DISCUSSION AND ANALYSIS",
+      "catalog_class": "EQUIVALENT"
+    },
+    {
+      "entry_no": 19,
+      "title": "Management Discussion and Analysis 2023-24",
+      "catalog_class": "EQUIVALENT"
+    },
+    {
+      "entry_no": 20,
+      "title": "Management Discussion and Analysis 2024-25",
+      "catalog_class": "EQUIVALENT"
+    },
+    {
+      "entry_no": 22,
+      "title": "Management Discussion and Analysis",
+      "catalog_class": "CONDITIONAL"
+    },
+    {
+      "entry_no": 23,
+      "title": "MANAGEMENT DISCUSSION AND ANALYSIS",
+      "catalog_class": "CONDITIONAL"
+    },
+    {
+      "entry_no": 25,
+      "title": "5. Management Discussion and Analysis",
+      "catalog_class": "CONDITIONAL"
+    },
+    {
+      "entry_no": 26,
+      "title": "34. Management Discussion and Analysis Report",
+      "catalog_class": "CONDITIONAL"
+    },
+    {
+      "entry_no": 27,
+      "title": "21. Management Discussion and Analysis Report:",
+      "catalog_class": "CONDITIONAL"
+    },
+    {
+      "entry_no": 28,
+      "title": "17. MANAGEMENT DISCUSSION AND ANALYSIS REPORT:",
+      "catalog_class": "CONDITIONAL"
+    },
+    {
+      "entry_no": 30,
+      "title": "Management Discussion and Analysis Report",
+      "catalog_class": "CONDITIONAL"
+    },
+    {
+      "entry_no": 33,
+      "title": "Business Environment",
+      "catalog_class": "CONDITIONAL"
+    },
+    {
+      "entry_no": 42,
+      "title": "Business Responsibility Report",
+      "catalog_class": "NOT EQUIVALENT BUT CONFUSABLE"
+    },
+    {
+      "entry_no": 47,
+      "title": "Message from MD & CEO",
+      "catalog_class": "NOT EQUIVALENT BUT CONFUSABLE"
+    },
+    {
+      "entry_no": 48,
+      "title": "Corporate Overview",
+      "catalog_class": "NOT EQUIVALENT BUT CONFUSABLE"
+    },
+    {
+      "entry_no": 54,
+      "title": "Indian Economy",
+      "catalog_class": "NOT EQUIVALENT BUT CONFUSABLE"
+    },
+    {
+      "entry_no": 55,
+      "title": "Macroeconomic and Industry Development",
+      "catalog_class": "NOT EQUIVALENT BUT CONFUSABLE"
+    },
+    {
+      "entry_no": 56,
+      "title": "Opportunities",
+      "catalog_class": "NOT EQUIVALENT BUT CONFUSABLE"
+    },
+    {
+      "entry_no": 58,
+      "title": "Risks and Concerns",
+      "catalog_class": "NOT EQUIVALENT BUT CONFUSABLE"
+    },
+    {
+      "entry_no": 59,
+      "title": "Risk Management",
+      "catalog_class": "NOT EQUIVALENT BUT CONFUSABLE"
+    },
+    {
+      "entry_no": 60,
+      "title": "Risks and Mitigation Strategies",
+      "catalog_class": "NOT EQUIVALENT BUT CONFUSABLE"
+    },
+    {
+      "entry_no": 62,
+      "title": "Financial Performance and Review",
+      "catalog_class": "NOT EQUIVALENT BUT CONFUSABLE"
+    },
+    {
+      "entry_no": 63,
+      "title": "Retail Banking",
+      "catalog_class": "NOT EQUIVALENT BUT CONFUSABLE"
+    },
+    {
+      "entry_no": 64,
+      "title": "Wholesale Banking",
+      "catalog_class": "NOT EQUIVALENT BUT CONFUSABLE"
+    },
+    {
+      "entry_no": 65,
+      "title": "Treasury",
+      "catalog_class": "NOT EQUIVALENT BUT CONFUSABLE"
+    },
+    {
+      "entry_no": 70,
+      "title": "Cash Flow Statement",
+      "catalog_class": "NOT EQUIVALENT BUT CONFUSABLE"
+    },
+    {
+      "entry_no": 71,
+      "title": "Consolidated Cash Flow Statement",
+      "catalog_class": "NOT EQUIVALENT BUT CONFUSABLE"
+    },
+    {
+      "entry_no": 74,
+      "title": "Schedules to the Financial Statements",
+      "catalog_class": "NOT EQUIVALENT BUT CONFUSABLE"
+    },
+    {
+      "entry_no": 75,
+      "title": "Notice of Annual General Meeting",
+      "catalog_class": "NOT EQUIVALENT BUT CONFUSABLE"
+    }
+  ],
+  "coverage": {
+    "viewed": 416,
+    "required": 1610,
+    "pct": 25.84,
+    "text_layer_only_equivalent_conditional_rows": 38,
+    "line": "Logged visual coverage of the underlying reading: 416/1610 contact sheets (25.84%); 38 EQUIVALENT/CONDITIONAL rows are text-layer-only.",
+    "columns": {
+      "viewed": "PROVENANCE_v0_2_2.csv:sheets_viewed_logged",
+      "required": "PROVENANCE_v0_2_2.csv:sheets_required",
+      "text_layer_only": "EVIDENCE_INDEX_v0_2_2.csv:page_provenance joined by obs_id to TITLE_EVIDENCE_LEDGER_v0_2_2.csv:assigned_class"
+    }
+  },
+  "leak_check": {
+    "blocking_count": 0,
+    "blocking_hits": [],
+    "possible_count": 0,
+    "possible_hits": [],
+    "company_names_loaded": 60,
+    "builder_text_changes": []
+  },
+  "read_only_flag_count": 10,
+  "v0_2_1_zero_byte_files": [
+    "build_title_equivalence_v0_2_1.py",
+    "METHOD_NOTE_v0_2_1.md",
+    "run_leak_check_v0_2_1.py",
+    "validate_integrity_v0_2_1.py"
+  ],
+  "attempt_blocked_folders": [
+    "v0_2_2_attempt1_blocked",
+    "v0_2_2_attempt2_blocked",
+    "v0_2_2_attempt3_blocked",
+    "v0_2_2_attempt4_blocked",
+    "v0_2_2_attempt5_blocked"
+  ],
+  "write_audit": null,
+  "nothing_running": null
+}
