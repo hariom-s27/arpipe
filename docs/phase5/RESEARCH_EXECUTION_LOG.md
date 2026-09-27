@@ -18,6 +18,17 @@
 
 ---
 
+## 2026-09-27 (late evening): duplicate work detected; lines merged
+- **Did:** this chat found that another Claude session (`session_01WQKd…`) had already pushed P5-A.1b (`3eb1041`), P5-T (`c0fa4c9`) and research R1 (`22c870a`). It did this while Codex was running the same P5-A.1b and P5-T tasks. `phase5-b-intake` was fast-forwarded to `22c870a`, so there is one log line.
+- **Found:**
+  - The Codex P5-A.1b push was rejected (non-fast-forward) because the remote branch already existed. Nothing was overwritten.
+  - The pushed P5-A.1b is careful: a core set of 4 exact conditions, with 3 extensions marked AUTHOR_CHOICE_PENDING.
+- **Decided:**
+  - Use the pushed P5-A.1b and P5-T.
+  - Stop the duplicate Codex runs and don't push them.
+  - Keep the Codex main-drift diagnosis and P5-S scoring; they are unique.
+- **Rule from now on:** one coordinating chat at a time. Every chat reads this log first and checks `git ls-remote` before starting a task.
+
 ## 2026-09-27 (late evening): independent tasks done in parallel; blocker research R1
 - **Did (Claude Code session; nothing on `main`):**
   - P5-A.1b errata → `phase5-a1b` `3eb1041`.
