@@ -18,6 +18,16 @@
 
 ---
 
+## 2026-09-27 (evening): parallel tasks set up; log moved
+- **Did:**
+  - Built the review page on the author's PC: 60 documents, 429 page images. The author is now reviewing.
+  - The log moved to `docs/phase5/` (`06c7357`), because `docs/` at the root breaks the path allowlist test (`test_phase2_1_semantic_conformance`).
+  - Full pytest on `phase5-b-intake` equals the base `e1803fc`: 423 passed, 17 skipped, 3 xfailed, and 2 environment failures (the cloud copy has no `live_store`).
+  - Wrote parallel prompts for P5-A.1b (pilot-token errata) and P5-T (annotation tool). Each runs in its own worktree and window.
+- **Found:** the P5-A.1b problem is confirmed from the repo. The §3 tokens don't match the source's 17 `condition` values; only `legacy_font_candidate` matches.
+- **Remains:** the author's title review, P5-A.1b, P5-T, A1–A5 signatures, and the K1 answer.
+- **Next:** the author reviews; in parallel, Codex runs P5-A.1b and P5-T. Then open PRs.
+
 ## 2026-09-27 (evening): P5-B.3 MD&A title pre-fill + review tool
 - **Did:**
   - Codex ran P5-B.3 in `D:\gold_blind`. It copied the MD&A title lines by code from each PDF's text layer (PyMuPDF 1.28.2), rendered the pages, and pre-filled the 60-document worksheet.
