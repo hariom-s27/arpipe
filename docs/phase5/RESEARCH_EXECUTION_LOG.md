@@ -18,6 +18,18 @@
 
 ---
 
+## 2026-09-28 (night): P5-C custodian merged; pilot dry run
+- **Did:**
+  - Custodian builder merged (PR #44, `bd3aae7`; 10 synthetic tests).
+  - Codex ran the P5-C dry run (`phase5-dryrun`, `073c054`): a synthetic end-to-end run of custodian → annotator → export → scoring.
+  - This chat changed the §6 trigger status from BLOCKED to NOT_APPLICABLE (`8bf6e66`). §6 is identical in v0.1 and v0.1.1, and its thresholds apply to the 10-document pilot, not to synthetic files.
+  - Tests on the main + dry-run merge: 559 passed, plus the same 10 pre-existing main-drift failures.
+- **Found (dry-run FINDINGS):**
+  - (1) The title-list freeze is enforced in the app layer only. `annotator_core.seal_raw_record` has no title-list check, so a script could seal records before the list is frozen.
+    - **Proposed:** move the check into the core (small P5-T follow-up).
+  - (2) `raw_ab_agreement` does not return the gap-set Jaccard or the non-comparable counts named in SAP §8. These are the known OPEN items; the SAP options memo is in progress.
+- **Remains:** merge `phase5-dryrun`; the SAP options memo; P5-T core title-list guard (follow-up); the title review CSV; the "7 vs 4" answer.
+
 ## 2026-09-27 (night): PR cleanup done
 - **Did:** the author used `gh`. PR #42 (last log entry) was merged. #37 and #39 were closed. #36 and #40 were auto-marked MERGED (their content arrived via #41).
 - **Found:**
