@@ -84,6 +84,10 @@ ALLOWED_PHASE2_1_PATTERNS = [
     # CURRENT_DECISIONS 0c + P5-A review D3: exact selector implementation/test only.
     re.compile(r"^tools/phase5/documentgold_selector\.py$"),
     re.compile(r"^tests/test_phase5_documentgold_selector\.py$"),
+    # CURRENT_DECISIONS 0c + GOLD_PROTOCOL v0.1 (workspace tooling): P5-T offline
+    # annotation tool and its synthetic tests only.
+    re.compile(r"^tools/phase5/annotator/[^/]+$"),
+    re.compile(r"^tests/test_phase5_annotator[^/]*\.py$"),
     # Exact governance-closeout paths; no directory-wide exception.
     *(re.compile(rf"^{re.escape(path)}$") for path in GOVERNANCE_CLOSEOUT_ADMITTED_PATHS),
     # T0.4 Amendment 01: exact paths only.
