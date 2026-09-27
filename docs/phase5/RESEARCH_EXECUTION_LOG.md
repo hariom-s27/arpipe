@@ -18,6 +18,19 @@
 
 ---
 
+## 2026-09-28 (night): dry run merged; SAP OPEN-items options memo
+- **Did:**
+  - PR #45 (dry run) and #46 (log) merged.
+  - Codex wrote `docs/phase5/research/SAP_OPEN_ITEMS_OPTIONS_2026-09-27.md` (`7252784`, docs only, no decisions).
+- **Found (proposed defaults, all AUTHOR_DECISION):**
+  - §7 interval: issuer-cluster bootstrap, as a sensitivity only; the census stays the headline.
+  - §8 empty/empty gap Jaccard: undefined, reported as a count.
+  - Signed differences: A minus B.
+  - Non-comparable pairs: defined per metric; span and gap metrics use PRESENT/PRESENT pairs.
+  - Prediction CSV: keep the current 7-column CLI format.
+- **Remains (author):** choose the SAP options; the title review CSV; "7 vs 4"; A1–A5.
+- **Remains (tooling, after the decisions):** add the §8 outputs to scoring; move the title-list guard into the annotator core.
+
 ## 2026-09-28 (night): P5-C custodian merged; pilot dry run
 - **Did:**
   - Custodian builder merged (PR #44, `bd3aae7`; 10 synthetic tests).
