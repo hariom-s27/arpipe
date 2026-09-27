@@ -18,6 +18,23 @@
 
 ---
 
+## 2026-09-27 (late evening): duplicate versions compared
+- **Did:**
+  - The Codex versions were pushed under their own names: `phase5-a1b-codex` (`9ec7732`) and `phase5-annotation-tool-codex` (`77443b7`).
+  - A mis-push (from the parent folder, into the thesis repo) was deleted by the author. ARPipe was untouched.
+  - Tested both P5-T versions in clean worktrees here.
+- **Found:**
+  - **P5-T:** `phase5-annotation-tool` (`c0fa4c9`, other chat) gives base + 34 tests.
+    - It has a deterministic bundle and an export lock that stops new records once the role is exported.
+    - It refuses to seal records while the title list is unfrozen.
+    - It documents its design choices, and it commits no built files.
+  - The Codex version gives base + 17 tests and commits `annotator_bundle.zip` (a build artifact).
+  - **P5-A.1b:** the versions differ only in the author choice (4 exact conditions + 3 pending, vs all 7). Both are otherwise correct and the tests equal the base.
+- **Decided (proposed):**
+  - Keep `phase5-annotation-tool` (`c0fa4c9`). Keep the Codex P5-T branch as reference only; do not merge it.
+  - For P5-A.1b, merge the version that matches the author's answer ("yes 7" → `phase5-a1b-codex`; "only 4" → `phase5-a1b`).
+- **Rule:** every command block starts with `cd <folder>` and `git remote get-url origin` before any push.
+
 ## 2026-09-27 (late evening): duplicate work detected; lines merged
 - **Did:** this chat found that another Claude session (`session_01WQKd…`) had already pushed P5-A.1b (`3eb1041`), P5-T (`c0fa4c9`) and research R1 (`22c870a`). It did this while Codex was running the same P5-A.1b and P5-T tasks. `phase5-b-intake` was fast-forwarded to `22c870a`, so there is one log line.
 - **Found:**
