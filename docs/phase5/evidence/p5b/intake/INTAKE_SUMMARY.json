@@ -1,0 +1,72 @@
+{
+  "catalog_reconciliation": {
+    "class_status": {
+      "AGREES": 40,
+      "CONFLICT": 11,
+      "NONE": 29
+    },
+    "entries": 80,
+    "match_level": {
+      "L1": 26,
+      "L2": 25,
+      "NONE": 29
+    }
+  },
+  "field_format_audit": {
+    "CONDITIONAL": {
+      "NO_QUOTE": 6,
+      "QUOTED_IN_NOTE": 60,
+      "mention_wording_flag": 32,
+      "visual_differs": 1,
+      "visual_equals_verbatim": 65
+    },
+    "EQUIVALENT": {
+      "CLEAN_QUOTED": 24,
+      "NO_QUOTE": 18,
+      "QUOTED_IN_NOTE": 108,
+      "mention_wording_flag": 9,
+      "visual_differs": 2,
+      "visual_equals_verbatim": 148
+    },
+    "NOT EQUIVALENT BUT CONFUSABLE": {
+      "CLEAN_QUOTED": 786,
+      "NO_QUOTE": 500,
+      "QUOTED_IN_NOTE": 1713,
+      "mention_wording_flag": 5,
+      "visual_differs": 15,
+      "visual_equals_verbatim": 2984
+    }
+  },
+  "hashes_file_sha256": "b7327ee3d9fd2ce2149b7f3dce325f3c710c889c9b7c2d01d7126cd63988b9ca",
+  "key_distinct_quoted_strings": 124,
+  "key_rows": 216,
+  "key_rows_without_quote": 24,
+  "package_files_bad": [],
+  "package_files_listed": 25,
+  "recheck": {
+    "class_counts": {
+      "CONDITIONAL": 66,
+      "EQUIVALENT": 150,
+      "NOT EQUIVALENT BUT CONFUSABLE": 2999
+    },
+    "documents": 60,
+    "evidence_distinct_png": 146,
+    "evidence_rows": 259,
+    "evidence_types": {
+      "FRAME_STATUS_EVIDENCE": 1,
+      "STRUCTURAL_TITLE_EVIDENCE": 258
+    },
+    "frame_rows": 1,
+    "key_duplicates": 0,
+    "ledger_rows": 3215,
+    "manifest_sha_mismatch": [],
+    "obs_id_duplicates": 0,
+    "pages_out_of_range": 0
+  },
+  "worksheet_documents": 60,
+  "worksheet_documents_without_key_rows": [
+    "INE004C01028_2017",
+    "INE004C01028_2025",
+    "INE00FF01025_2015"
+  ]
+}
