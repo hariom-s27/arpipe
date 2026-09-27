@@ -88,6 +88,9 @@ ALLOWED_PHASE2_1_PATTERNS = [
     # annotation tool and its synthetic tests only.
     re.compile(r"^tools/phase5/annotator/[^/]+$"),
     re.compile(r"^tests/test_phase5_annotator[^/]*\.py$"),
+    # CURRENT_DECISIONS 0c and SAP v0.1: exact scoring module and synthetic tests.
+    re.compile(r"^tools/phase5/scoring/.+$"),
+    re.compile(r"^tests/test_phase5_scoring.*\.py$"),
     # Exact governance-closeout paths; no directory-wide exception.
     *(re.compile(rf"^{re.escape(path)}$") for path in GOVERNANCE_CLOSEOUT_ADMITTED_PATHS),
     # T0.4 Amendment 01: exact paths only.
