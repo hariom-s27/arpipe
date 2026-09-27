@@ -190,3 +190,14 @@ governance ledger or snapshot was created.
 **PROPOSED.** To preserve the mandated one-commit history, the final commit SHA, push
 result, and remote SHA are reported in the execution report after the commit/push rather
 than added here through a second commit.
+
+## Errata v0.1.1
+
+**VERIFIED.** `PILOT_PLAN_v0_1_1.md` corrects only §3. The v0.1 proxy-token list
+included names absent from the declared reconciled map's `condition` column; only
+`legacy_font_candidate` matched exactly. The erratum specifies seven exact
+`condition` values on `CANDIDATE` rows restricted to the 32 roster IDs and excludes
+four unsupported tokens. `PILOT_PLAN_v0_1.md` remains byte-identical.
+
+**STATUS.** `DRAFT_PENDING_PILOT`. No PILOT or RETEST selection, ranking, or
+per-document proxy assignment was computed for this erratum.
