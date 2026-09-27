@@ -18,6 +18,16 @@
 
 ---
 
+## 2026-09-27 (night): integration branch
+- **Did:**
+  - The author pushed the drift report (`main-drift-diagnosis`, `9c92aad`).
+  - This chat built `phase5-integration` = `phase5-b-intake` + `phase5-annotation-tool` + `phase5-scoring` + `main-drift-diagnosis`. It resolved the one allowlist conflict (keeping both entries).
+  - Added `tests/test_phase5_scoring_interop.py`: records made by the annotator core, through its canonical bytes, are accepted by the scoring engine.
+- **Found:**
+  - Full pytest: 471 passed, 17 skipped, 3 xfailed, 2 environment failures. That is base 423 + 34 + 12 + 2.
+  - The annotator and the scoring engine agree on the record format (viewer 1-based pages are stored 0-based).
+- **Remains:** the P5-A.1b choice, then merge the chosen branch; one PR `phase5-integration → main`; the title review; the SAP OPEN items before any scoring.
+
 ## 2026-09-27 (late evening): P5-S scoring and main-drift diagnosis
 - **Did (Codex, GPT-5.6 Sol Extra High):**
   - P5-S → `phase5-scoring` (`c220017`). This chat re-tested it: base + 12 tests.
