@@ -18,6 +18,20 @@
 
 ---
 
+## 2026-09-27 (late evening): independent tasks done in parallel; blocker research R1
+- **Did (Claude Code session; nothing on `main`):**
+  - P5-A.1b errata → `phase5-a1b` `3eb1041`.
+  - P5-T annotation tool → `phase5-annotation-tool` `c0fa4c9` (34 synthetic tests, headless GUI run).
+  - Blocker research R1 + status record → `phase5-research-r1`.
+  - Re-verified: the intake pack is reproducible; the worksheet the author re-sent is byte-identical; the test baseline is 423 passed.
+- **Found:**
+  - The P5-A.1b mapping has only 4 exact one-to-one conditions; `devanagari_candidate`, `scanned` and `ocr_layer_candidate` are author choices.
+  - The regulation (Clause 49 IV(F), LODR Reg. 34(2)(e)) supports treating spelling variants as one title and supports embedding MD&A in the Directors' Report. It also treats MD&A and the Corporate Governance report as separate reports.
+  - Schema gap: no flag for MD&A embedded in a non-Directors'-Report section.
+  - Viewer: Acrobat's "Use logical page numbers" setting can be pinned; SumatraPDF has no such setting.
+- **Remains:** the author's title review; decisions T1–T5; the P5-A.1b extension choice; the P5-T design review; the viewer pin; A1–A5; K1; a visual check of `INE00LO01017_2015`.
+- **Next:** see `docs/phase5/WORK_STATUS_2026-09-27.md` §2–3.
+
 ## 2026-09-27 (evening): parallel tasks set up; log moved
 - **Did:**
   - Built the review page on the author's PC: 60 documents, 429 page images. The author is now reviewing.
