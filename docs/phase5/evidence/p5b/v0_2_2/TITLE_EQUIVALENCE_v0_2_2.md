@@ -1,0 +1,327 @@
+# TITLE_EQUIVALENCE_v0_2_2.md
+
+This list classifies titles only. Presence, boundaries, states and reason codes follow the Gold protocol.
+
+Produced without access to the ARPipe repository or its heading patterns.
+
+Produced by an isolated AI-assisted reading, combining PDF text extraction and contact-sheet viewing, of the 60 FIT DEVELOPMENT documents, without access to the ARPipe repository or its heading patterns; classes assigned by a rule script; pending independent human spot-verification.
+
+Logged visual coverage of the underlying reading: 416/1610 contact sheets (25.84%); 38 EQUIVALENT/CONDITIONAL rows are text-layer-only.
+
+Entries with match_level NONE or class_status CONFLICT are listed as found in the v0.2 catalog and require a rules-reviewer decision before use.
+
+## Curated catalog reconciliation
+
+### EQUIVALENT
+
+- `Management Discussion and Analysis` [single document — rules reviewer decides]
+  - **Class**: EQUIVALENT | **Match level**: L2 | **Class status**: AGREES | **Documents**: 1 | **TOC**: 1 | **BODY**: 1
+  - **Context**: Standard title; primary standalone section opener and TOC entry.
+- `Management Discussion & Analysis` [single document — rules reviewer decides]
+  - **Class**: EQUIVALENT | **Match level**: L2 | **Class status**: AGREES | **Documents**: 1 | **TOC**: 1 | **BODY**: 1
+  - **Context**: Ampersand variant; standalone section opener and TOC entry.
+- `MANAGEMENT DISCUSSION AND ANALYSIS` [single document — rules reviewer decides]
+  - **Class**: EQUIVALENT | **Match level**: L2 | **Class status**: AGREES | **Documents**: 1 | **TOC**: 1 | **BODY**: 1
+  - **Context**: All-caps standard title; standalone section opener and TOC entry.
+- `MANAGEMENT DISCUSSION & ANALYSIS` [single document — rules reviewer decides]
+  - **Class**: EQUIVALENT | **Match level**: L2 | **Class status**: AGREES | **Documents**: 1 | **TOC**: 1 | **BODY**: 1
+  - **Context**: All-caps ampersand variant; standalone section opener and TOC entry.
+- `Management Discussion and Analysis Report` [single document — rules reviewer decides]
+  - **Class**: EQUIVALENT | **Match level**: L2 | **Class status**: AGREES | **Documents**: 1 | **TOC**: 1 | **BODY**: 0
+  - **Context**: Standard title with Report suffix; standalone section opener and TOC entry.
+- `MANAGEMENT DISCUSSION AND ANALYSIS REPORT` [single document — rules reviewer decides]
+  - **Class**: EQUIVALENT | **Match level**: L2 | **Class status**: AGREES | **Documents**: 1 | **TOC**: 1 | **BODY**: 0
+  - **Context**: All-caps title with Report suffix; standalone section opener and TOC entry.
+- `MANAGEMENT DISCUSSION AND ANALYSIS REPORT:` [single document — rules reviewer decides]
+  - **Class**: EQUIVALENT | **Match level**: L2 | **Class status**: AGREES | **Documents**: 1 | **TOC**: 1 | **BODY**: 0
+  - **Context**: All-caps title with Report suffix and trailing colon; standalone body opener.
+- `Management's Discussion and Analysis` [single document — rules reviewer decides]
+  - **Class**: EQUIVALENT | **Match level**: L2 | **Class status**: CONFLICT | **Documents**: 1 | **TOC**: 0 | **BODY**: 1
+  - **Context**: Possessive form (straight quote); standalone section opener and TOC entry.
+- `Management’s Discussion and Analysis` [single document — rules reviewer decides]
+  - **Class**: EQUIVALENT | **Match level**: L2 | **Class status**: CONFLICT | **Documents**: 1 | **TOC**: 0 | **BODY**: 1
+  - **Context**: Possessive form (curly quote); standalone section opener and TOC entry.
+- `MANAGEMENT'S DISCUSSION AND ANALYSIS` [single document — rules reviewer decides]
+  - **Class**: EQUIVALENT | **Match level**: L2 | **Class status**: CONFLICT | **Documents**: 1 | **TOC**: 0 | **BODY**: 1
+  - **Context**: All-caps possessive form (straight quote); standalone section opener.
+- `MANAGEMENT’S DISCUSSION AND ANALYSIS` [single document — rules reviewer decides]
+  - **Class**: EQUIVALENT | **Match level**: L2 | **Class status**: CONFLICT | **Documents**: 1 | **TOC**: 0 | **BODY**: 1
+  - **Context**: All-caps possessive form (curly quote); standalone section opener.
+- `Management’s Discussion and Analysis Report`
+  - **Class**: EQUIVALENT | **Match level**: NONE | **Class status**: NONE | **Documents**: 0 | **TOC**: 0 | **BODY**: 0
+  - **Context**: Possessive form with Report suffix; standalone section opener.
+- `MANAGEMENT'S DISCUSSION AND ANALYSIS REPORT`
+  - **Class**: EQUIVALENT | **Match level**: NONE | **Class status**: NONE | **Documents**: 0 | **TOC**: 0 | **BODY**: 0
+  - **Context**: All-caps possessive form with Report suffix; standalone section opener.
+- `MANAGEMENT DISCUSSIONS AND ANALYSIS`
+  - **Class**: EQUIVALENT | **Match level**: NONE | **Class status**: NONE | **Documents**: 0 | **TOC**: 0 | **BODY**: 0
+  - **Context**: Plural Discussions; standalone body opening heading.
+- `MANAGEMENT DISCUSSIONS & ANALYSIS`
+  - **Class**: EQUIVALENT | **Match level**: NONE | **Class status**: NONE | **Documents**: 0 | **TOC**: 0 | **BODY**: 0
+  - **Context**: Plural Discussions with ampersand; standalone body opening heading.
+- `MANAGEMENT DISCUSSIONS AND ANALYSIS REPORT`
+  - **Class**: EQUIVALENT | **Match level**: NONE | **Class status**: NONE | **Documents**: 0 | **TOC**: 0 | **BODY**: 0
+  - **Context**: Plural Discussions with Report suffix; standalone body opening heading.
+- `Management Discussion and Analysis 2011-12`
+  - **Class**: EQUIVALENT | **Match level**: NONE | **Class status**: NONE | **Documents**: 0 | **TOC**: 0 | **BODY**: 0
+  - **Context**: Standalone TOC entry incorporating financial year.
+- `Management Discussion and Analysis 2012-13`
+  - **Class**: EQUIVALENT | **Match level**: NONE | **Class status**: NONE | **Documents**: 0 | **TOC**: 0 | **BODY**: 0
+  - **Context**: Standalone TOC entry incorporating financial year.
+- `Management Discussion and Analysis 2023-24` [single document — rules reviewer decides]
+  - **Class**: EQUIVALENT | **Match level**: L2 | **Class status**: AGREES | **Documents**: 1 | **TOC**: 0 | **BODY**: 1
+  - **Context**: Standalone body opener incorporating financial year.
+- `Management Discussion and Analysis 2024-25` [single document — rules reviewer decides]
+  - **Class**: EQUIVALENT | **Match level**: L2 | **Class status**: AGREES | **Documents**: 1 | **TOC**: 0 | **BODY**: 1
+  - **Context**: Standalone body opener incorporating financial year.
+- `प्रबंध विवेचना एवं विश्लेषण`
+  - **Class**: EQUIVALENT | **Match level**: NONE | **Class status**: NONE | **Documents**: 0 | **TOC**: 0 | **BODY**: 0
+  - **Context**: Standard Unicode Devanagari script; primary section opener and TOC entry in bilingual reports.
+### CONDITIONAL
+
+- `Management Discussion and Analysis` [single document — rules reviewer decides]
+  - **Class**: CONDITIONAL | **Match level**: L2 | **Class status**: CONFLICT | **Documents**: 1 | **TOC**: 1 | **BODY**: 1
+  - **Context**: Observable context: Heading appears as an embedded major subsection within the Directors’ Report; contains multi-page operational and financial review where no standalone MD&A section exists.
+- `MANAGEMENT DISCUSSION AND ANALYSIS` [single document — rules reviewer decides]
+  - **Class**: CONDITIONAL | **Match level**: L2 | **Class status**: CONFLICT | **Documents**: 1 | **TOC**: 1 | **BODY**: 1
+  - **Context**: Observable context: All-caps heading appears as an embedded major subsection within the Directors’ Report.
+- `MANAGEMENT'S DISCUSSIONS AND ANALYSIS`
+  - **Class**: CONDITIONAL | **Match level**: NONE | **Class status**: NONE | **Documents**: 0 | **TOC**: 0 | **BODY**: 0
+  - **Context**: Observable context: Possessive plural heading appears as an embedded major content-bearing subsection within the Directors’ Report.
+- `5. Management Discussion and Analysis` [single document — rules reviewer decides]
+  - **Class**: CONDITIONAL | **Match level**: L2 | **Class status**: CONFLICT | **Documents**: 1 | **TOC**: 1 | **BODY**: 1
+  - **Context**: Observable context: Numbered subsection heading within Directors’ Report followed immediately by a short referral sentence pointing to Annexure 2.
+- `34. Management Discussion and Analysis Report` [single document — rules reviewer decides]
+  - **Class**: CONDITIONAL | **Match level**: L2 | **Class status**: CONFLICT | **Documents**: 1 | **TOC**: 1 | **BODY**: 0
+  - **Context**: Observable context: Numbered subsection heading within Board’s Report containing a single referral sentence pointing to separate section.
+- `21. Management Discussion and Analysis Report:` [single document — rules reviewer decides]
+  - **Class**: CONDITIONAL | **Match level**: L2 | **Class status**: CONFLICT | **Documents**: 1 | **TOC**: 1 | **BODY**: 0
+  - **Context**: Observable context: Numbered subsection heading with trailing colon within Directors’ Report pointing to separate section.
+- `17. MANAGEMENT DISCUSSION AND ANALYSIS REPORT:` [single document — rules reviewer decides]
+  - **Class**: CONDITIONAL | **Match level**: L2 | **Class status**: CONFLICT | **Documents**: 1 | **TOC**: 1 | **BODY**: 0
+  - **Context**: Observable context: Numbered all-caps subsection heading with trailing colon within Directors’ Report pointing to separate section.
+- `J. MANAGEMENT'S DISCUSSION AND ANALYSIS REPORT`
+  - **Class**: CONDITIONAL | **Match level**: NONE | **Class status**: NONE | **Documents**: 0 | **TOC**: 0 | **BODY**: 0
+  - **Context**: Observable context: Lettered all-caps subsection heading within Directors’ Report containing statutory cross-reference statement.
+- `Management Discussion and Analysis Report` [single document — rules reviewer decides]
+  - **Class**: CONDITIONAL | **Match level**: L2 | **Class status**: CONFLICT | **Documents**: 1 | **TOC**: 1 | **BODY**: 0
+  - **Context**: Observable context: Subsection heading within Directors’ Report or Board’s Report containing referral sentence to separate annexure.
+- `CORPORATE GOVERNANCE AND MANAGEMENT DISCUSSIONS & ANALYSIS`
+  - **Class**: CONDITIONAL | **Match level**: NONE | **Class status**: NONE | **Documents**: 0 | **TOC**: 0 | **BODY**: 0
+  - **Context**: Observable context: Joint heading combining Corporate Governance and MD&A in Directors’ Report.
+- `Management Discussion & Analysis Report (MD&A Report) –`
+  - **Class**: CONDITIONAL | **Match level**: NONE | **Class status**: NONE | **Documents**: 0 | **TOC**: 0 | **BODY**: 0
+  - **Context**: Observable context: Cross-reference subsection heading within Corporate Governance Report.
+- `Business Environment` [single document — rules reviewer decides]
+  - **Class**: CONDITIONAL | **Match level**: L1 | **Class status**: AGREES | **Documents**: 1 | **TOC**: 1 | **BODY**: 0
+  - **Context**: Observable context: Appears as the top-level opening chapter heading of the operational review section where the section opens directly under Business Environment without a preceding Management Discussion and Analysis heading.
+### NOT EQUIVALENT BUT CONFUSABLE
+
+- `Directors' Report`
+  - **Class**: NOT EQUIVALENT BUT CONFUSABLE | **Match level**: L1 | **Class status**: AGREES | **Documents**: 3 | **TOC**: 1 | **BODY**: 3
+  - **Context**: Statutory report by the Board of Directors; independent corporate instrument distinct from MD&A.
+- `DIRECTORS' REPORT`
+  - **Class**: NOT EQUIVALENT BUT CONFUSABLE | **Match level**: L1 | **Class status**: AGREES | **Documents**: 3 | **TOC**: 1 | **BODY**: 3
+  - **Context**: All-caps statutory report heading.
+- `Board’s Report`
+  - **Class**: NOT EQUIVALENT BUT CONFUSABLE | **Match level**: L1 | **Class status**: AGREES | **Documents**: 2 | **TOC**: 0 | **BODY**: 2
+  - **Context**: Statutory report by the Board; distinct from MD&A.
+- `BOARD’S REPORT`
+  - **Class**: NOT EQUIVALENT BUT CONFUSABLE | **Match level**: L1 | **Class status**: AGREES | **Documents**: 2 | **TOC**: 0 | **BODY**: 2
+  - **Context**: All-caps statutory report heading.
+- `Corporate Governance Report`
+  - **Class**: NOT EQUIVALENT BUT CONFUSABLE | **Match level**: L1 | **Class status**: AGREES | **Documents**: 2 | **TOC**: 0 | **BODY**: 2
+  - **Context**: Statutory narrative section on board composition, committees, and compliance.
+- `Report on Corporate Governance`
+  - **Class**: NOT EQUIVALENT BUT CONFUSABLE | **Match level**: NONE | **Class status**: NONE | **Documents**: 0 | **TOC**: 0 | **BODY**: 0
+  - **Context**: Statutory corporate governance section heading.
+- `CORPORATE GOVERNANCE REPORT`
+  - **Class**: NOT EQUIVALENT BUT CONFUSABLE | **Match level**: L1 | **Class status**: AGREES | **Documents**: 2 | **TOC**: 0 | **BODY**: 2
+  - **Context**: All-caps corporate governance section heading.
+- `Auditors’ Certificate on Corporate Governance`
+  - **Class**: NOT EQUIVALENT BUT CONFUSABLE | **Match level**: NONE | **Class status**: NONE | **Documents**: 0 | **TOC**: 0 | **BODY**: 0
+  - **Context**: Auditor compliance certification; distinct from MD&A.
+- `Business Responsibility Report` [single document — rules reviewer decides]
+  - **Class**: NOT EQUIVALENT BUT CONFUSABLE | **Match level**: L1 | **Class status**: AGREES | **Documents**: 1 | **TOC**: 0 | **BODY**: 1
+  - **Context**: Statutory ESG / sustainability narrative distinct from MD&A.
+- `Business Responsibility and Sustainability Report`
+  - **Class**: NOT EQUIVALENT BUT CONFUSABLE | **Match level**: L1 | **Class status**: AGREES | **Documents**: 2 | **TOC**: 1 | **BODY**: 2
+  - **Context**: Statutory ESG report (BRSR).
+- `Chairman’s Statement`
+  - **Class**: NOT EQUIVALENT BUT CONFUSABLE | **Match level**: NONE | **Class status**: NONE | **Documents**: 0 | **TOC**: 0 | **BODY**: 0
+  - **Context**: Executive communication in front matter; voluntary narrative.
+- `Message from the Chairman`
+  - **Class**: NOT EQUIVALENT BUT CONFUSABLE | **Match level**: NONE | **Class status**: NONE | **Documents**: 0 | **TOC**: 0 | **BODY**: 0
+  - **Context**: Executive address in corporate overview.
+- `Managing Director & CEO’s Message`
+  - **Class**: NOT EQUIVALENT BUT CONFUSABLE | **Match level**: NONE | **Class status**: NONE | **Documents**: 0 | **TOC**: 0 | **BODY**: 0
+  - **Context**: Executive address; distinct from statutory MD&A.
+- `Message from MD & CEO` [single document — rules reviewer decides]
+  - **Class**: NOT EQUIVALENT BUT CONFUSABLE | **Match level**: L2 | **Class status**: AGREES | **Documents**: 1 | **TOC**: 1 | **BODY**: 0
+  - **Context**: Executive communication.
+- `Corporate Overview` [single document — rules reviewer decides]
+  - **Class**: NOT EQUIVALENT BUT CONFUSABLE | **Match level**: L1 | **Class status**: AGREES | **Documents**: 1 | **TOC**: 1 | **BODY**: 0
+  - **Context**: Introductory corporate profile in front matter.
+- `Business Model`
+  - **Class**: NOT EQUIVALENT BUT CONFUSABLE | **Match level**: NONE | **Class status**: NONE | **Documents**: 0 | **TOC**: 0 | **BODY**: 0
+  - **Context**: Strategic overview presentation.
+- `Value Creation`
+  - **Class**: NOT EQUIVALENT BUT CONFUSABLE | **Match level**: NONE | **Class status**: NONE | **Documents**: 0 | **TOC**: 0 | **BODY**: 0
+  - **Context**: Integrated reporting narrative.
+- `Performance Highlights`
+  - **Class**: NOT EQUIVALENT BUT CONFUSABLE | **Match level**: NONE | **Class status**: NONE | **Documents**: 0 | **TOC**: 0 | **BODY**: 0
+  - **Context**: Summary financial and operational metrics in front matter.
+- `Key Performance Indicators`
+  - **Class**: NOT EQUIVALENT BUT CONFUSABLE | **Match level**: NONE | **Class status**: NONE | **Documents**: 0 | **TOC**: 0 | **BODY**: 0
+  - **Context**: Executive summary dashboard.
+- `Global Economy`
+  - **Class**: NOT EQUIVALENT BUT CONFUSABLE | **Match level**: L2 | **Class status**: AGREES | **Documents**: 2 | **TOC**: 0 | **BODY**: 2
+  - **Context**: Subordinate subsection topic within operational review; not a section boundary.
+- `Indian Economy` [single document — rules reviewer decides]
+  - **Class**: NOT EQUIVALENT BUT CONFUSABLE | **Match level**: L2 | **Class status**: AGREES | **Documents**: 1 | **TOC**: 0 | **BODY**: 1
+  - **Context**: Subordinate macroeconomic subsection within MD&A.
+- `Macroeconomic and Industry Development` [single document — rules reviewer decides]
+  - **Class**: NOT EQUIVALENT BUT CONFUSABLE | **Match level**: L1 | **Class status**: AGREES | **Documents**: 1 | **TOC**: 0 | **BODY**: 1
+  - **Context**: Subordinate macroeconomic review subsection.
+- `Opportunities` [single document — rules reviewer decides]
+  - **Class**: NOT EQUIVALENT BUT CONFUSABLE | **Match level**: L2 | **Class status**: AGREES | **Documents**: 1 | **TOC**: 0 | **BODY**: 1
+  - **Context**: Subordinate review topic inside MD&A.
+- `Threats`
+  - **Class**: NOT EQUIVALENT BUT CONFUSABLE | **Match level**: NONE | **Class status**: NONE | **Documents**: 0 | **TOC**: 0 | **BODY**: 0
+  - **Context**: Subordinate review topic inside MD&A.
+- `Risks and Concerns` [single document — rules reviewer decides]
+  - **Class**: NOT EQUIVALENT BUT CONFUSABLE | **Match level**: L1 | **Class status**: AGREES | **Documents**: 1 | **TOC**: 0 | **BODY**: 1
+  - **Context**: Subordinate risk management subsection within MD&A.
+- `Risk Management` [single document — rules reviewer decides]
+  - **Class**: NOT EQUIVALENT BUT CONFUSABLE | **Match level**: L1 | **Class status**: AGREES | **Documents**: 1 | **TOC**: 0 | **BODY**: 1
+  - **Context**: Subordinate risk section or standalone operational risk narrative.
+- `Risks and Mitigation Strategies` [single document — rules reviewer decides]
+  - **Class**: NOT EQUIVALENT BUT CONFUSABLE | **Match level**: L2 | **Class status**: AGREES | **Documents**: 1 | **TOC**: 0 | **BODY**: 1
+  - **Context**: Subordinate subsection inside MD&A.
+- `Internal Control Systems and their Adequacy`
+  - **Class**: NOT EQUIVALENT BUT CONFUSABLE | **Match level**: NONE | **Class status**: NONE | **Documents**: 0 | **TOC**: 0 | **BODY**: 0
+  - **Context**: Subordinate internal controls subsection within MD&A.
+- `Financial Performance and Review` [single document — rules reviewer decides]
+  - **Class**: NOT EQUIVALENT BUT CONFUSABLE | **Match level**: L1 | **Class status**: AGREES | **Documents**: 1 | **TOC**: 0 | **BODY**: 1
+  - **Context**: Subordinate financial performance subsection within MD&A.
+- `Retail Banking` [single document — rules reviewer decides]
+  - **Class**: NOT EQUIVALENT BUT CONFUSABLE | **Match level**: L1 | **Class status**: AGREES | **Documents**: 1 | **TOC**: 0 | **BODY**: 1
+  - **Context**: Segment-specific subsection topic inside MD&A.
+- `Wholesale Banking` [single document — rules reviewer decides]
+  - **Class**: NOT EQUIVALENT BUT CONFUSABLE | **Match level**: L1 | **Class status**: AGREES | **Documents**: 1 | **TOC**: 0 | **BODY**: 1
+  - **Context**: Segment-specific subsection topic inside MD&A.
+- `Treasury` [single document — rules reviewer decides]
+  - **Class**: NOT EQUIVALENT BUT CONFUSABLE | **Match level**: L1 | **Class status**: AGREES | **Documents**: 1 | **TOC**: 0 | **BODY**: 1
+  - **Context**: Segment-specific subsection topic inside MD&A.
+- `Balance Sheet`
+  - **Class**: NOT EQUIVALENT BUT CONFUSABLE | **Match level**: L1 | **Class status**: AGREES | **Documents**: 6 | **TOC**: 1 | **BODY**: 6
+  - **Context**: Primary audited financial statement.
+- `Consolidated Balance Sheet`
+  - **Class**: NOT EQUIVALENT BUT CONFUSABLE | **Match level**: L1 | **Class status**: AGREES | **Documents**: 6 | **TOC**: 1 | **BODY**: 6
+  - **Context**: Primary audited consolidated financial statement.
+- `Statement of Profit and Loss`
+  - **Class**: NOT EQUIVALENT BUT CONFUSABLE | **Match level**: L1 | **Class status**: AGREES | **Documents**: 3 | **TOC**: 1 | **BODY**: 3
+  - **Context**: Audited financial statement.
+- `Consolidated Statement of Profit and Loss`
+  - **Class**: NOT EQUIVALENT BUT CONFUSABLE | **Match level**: L1 | **Class status**: AGREES | **Documents**: 4 | **TOC**: 0 | **BODY**: 4
+  - **Context**: Audited consolidated financial statement.
+- `Cash Flow Statement` [single document — rules reviewer decides]
+  - **Class**: NOT EQUIVALENT BUT CONFUSABLE | **Match level**: L1 | **Class status**: AGREES | **Documents**: 1 | **TOC**: 1 | **BODY**: 1
+  - **Context**: Audited financial statement.
+- `Consolidated Cash Flow Statement` [single document — rules reviewer decides]
+  - **Class**: NOT EQUIVALENT BUT CONFUSABLE | **Match level**: L1 | **Class status**: AGREES | **Documents**: 1 | **TOC**: 1 | **BODY**: 1
+  - **Context**: Audited consolidated financial statement.
+- `Statement of Changes in Equity`
+  - **Class**: NOT EQUIVALENT BUT CONFUSABLE | **Match level**: NONE | **Class status**: NONE | **Documents**: 0 | **TOC**: 0 | **BODY**: 0
+  - **Context**: Audited financial schedule.
+- `Notes to the Financial Statements`
+  - **Class**: NOT EQUIVALENT BUT CONFUSABLE | **Match level**: NONE | **Class status**: NONE | **Documents**: 0 | **TOC**: 0 | **BODY**: 0
+  - **Context**: Audited quantitative accounting disclosures.
+- `Schedules to the Financial Statements` [single document — rules reviewer decides]
+  - **Class**: NOT EQUIVALENT BUT CONFUSABLE | **Match level**: L1 | **Class status**: AGREES | **Documents**: 1 | **TOC**: 1 | **BODY**: 0
+  - **Context**: Accounting disclosure schedules.
+- `Notice of Annual General Meeting` [single document — rules reviewer decides]
+  - **Class**: NOT EQUIVALENT BUT CONFUSABLE | **Match level**: L1 | **Class status**: AGREES | **Documents**: 1 | **TOC**: 0 | **BODY**: 1
+  - **Context**: Shareholder meeting statutory notice.
+- `Attendance Slip`
+  - **Class**: NOT EQUIVALENT BUT CONFUSABLE | **Match level**: NONE | **Class status**: NONE | **Documents**: 0 | **TOC**: 0 | **BODY**: 0
+  - **Context**: Shareholder meeting administrative slip.
+- `Proxy Form`
+  - **Class**: NOT EQUIVALENT BUT CONFUSABLE | **Match level**: NONE | **Class status**: NONE | **Documents**: 0 | **TOC**: 0 | **BODY**: 0
+  - **Context**: Shareholder meeting statutory proxy form.
+- `Route Map`
+  - **Class**: NOT EQUIVALENT BUT CONFUSABLE | **Match level**: NONE | **Class status**: NONE | **Documents**: 0 | **TOC**: 0 | **BODY**: 0
+  - **Context**: Meeting venue navigation map.
+- `Shareholder Information`
+  - **Class**: NOT EQUIVALENT BUT CONFUSABLE | **Match level**: L1 | **Class status**: AGREES | **Documents**: 2 | **TOC**: 2 | **BODY**: 1
+  - **Context**: Administrative investor information.
+- `Company Information`
+  - **Class**: NOT EQUIVALENT BUT CONFUSABLE | **Match level**: NONE | **Class status**: NONE | **Documents**: 0 | **TOC**: 0 | **BODY**: 0
+  - **Context**: Corporate directory and registrar contacts.
+
+## Needs rules-reviewer decision
+
+- `Management Discussion and Analysis`
+- `Management Discussion & Analysis`
+- `MANAGEMENT DISCUSSION AND ANALYSIS`
+- `MANAGEMENT DISCUSSION & ANALYSIS`
+- `Management Discussion and Analysis Report`
+- `MANAGEMENT DISCUSSION AND ANALYSIS REPORT`
+- `MANAGEMENT DISCUSSION AND ANALYSIS REPORT:`
+- `Management's Discussion and Analysis`
+- `Management’s Discussion and Analysis`
+- `MANAGEMENT'S DISCUSSION AND ANALYSIS`
+- `MANAGEMENT’S DISCUSSION AND ANALYSIS`
+- `Management Discussion and Analysis 2023-24`
+- `Management Discussion and Analysis 2024-25`
+- `5. Management Discussion and Analysis`
+- `34. Management Discussion and Analysis Report`
+- `21. Management Discussion and Analysis Report:`
+- `17. MANAGEMENT DISCUSSION AND ANALYSIS REPORT:`
+- `Business Environment`
+- `Business Responsibility Report`
+- `Message from MD & CEO`
+- `Corporate Overview`
+- `Indian Economy`
+- `Macroeconomic and Industry Development`
+- `Opportunities`
+- `Risks and Concerns`
+- `Risk Management`
+- `Risks and Mitigation Strategies`
+- `Financial Performance and Review`
+- `Retail Banking`
+- `Wholesale Banking`
+- `Treasury`
+- `Cash Flow Statement`
+- `Consolidated Cash Flow Statement`
+- `Schedules to the Financial Statements`
+- `Notice of Annual General Meeting`
+- `Management’s Discussion and Analysis Report`
+- `MANAGEMENT'S DISCUSSION AND ANALYSIS REPORT`
+- `MANAGEMENT DISCUSSIONS AND ANALYSIS`
+- `MANAGEMENT DISCUSSIONS & ANALYSIS`
+- `MANAGEMENT DISCUSSIONS AND ANALYSIS REPORT`
+- `Management Discussion and Analysis 2011-12`
+- `Management Discussion and Analysis 2012-13`
+- `प्रबंध विवेचना एवं विश्लेषण`
+- `MANAGEMENT'S DISCUSSIONS AND ANALYSIS`
+- `J. MANAGEMENT'S DISCUSSION AND ANALYSIS REPORT`
+- `CORPORATE GOVERNANCE AND MANAGEMENT DISCUSSIONS & ANALYSIS`
+- `Management Discussion & Analysis Report (MD&A Report) –`
+- `Report on Corporate Governance`
+- `Auditors’ Certificate on Corporate Governance`
+- `Chairman’s Statement`
+- `Message from the Chairman`
+- `Managing Director & CEO’s Message`
+- `Business Model`
+- `Value Creation`
+- `Performance Highlights`
+- `Key Performance Indicators`
+- `Threats`
+- `Internal Control Systems and their Adequacy`
+- `Statement of Changes in Equity`
+- `Notes to the Financial Statements`
+- `Attendance Slip`
+- `Proxy Form`
+- `Route Map`
+- `Company Information`
