@@ -18,6 +18,18 @@
 
 ---
 
+## 2026-09-27 (night): PR cleanup done
+- **Did:** the author used `gh`. PR #42 (last log entry) was merged. #37 and #39 were closed. #36 and #40 were auto-marked MERGED (their content arrived via #41).
+- **Found:**
+  - `main` = `b8018fe`, no open PRs. It holds the stronger P5-T, P5-S, the interop test and the log. No conflict markers.
+  - Tests: 545 passed; 10 failures, the same pre-existing main-drift set.
+- **Remains:**
+  - P5-C custodian builder (Codex, still running; no commits yet, so no PR possible yet).
+  - SAP OPEN-items options memo (after custodian).
+  - Title review CSV.
+  - The P5-A.1b "7 vs 4" answer. Main currently has 4 + 3 pending.
+- **Rule:** only open the PRs this chat lists as ready. Overlapping branches are combined into one PR branch first.
+
 ## 2026-09-27 (night): PRs merged to main; PR-ready branch
 - **Did:**
   - The author merged PRs #33 (drift), #35 (b-intake), #34 (the **Codex** P5-T) and #38 (`phase5-a1b`, the 4 + 3-pending version) into main.
