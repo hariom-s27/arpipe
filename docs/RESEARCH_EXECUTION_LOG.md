@@ -1,0 +1,73 @@
+# ARPipe research execution log
+
+**Read this first in every new chat.** Newest entry is at the top. Each entry has four parts: **Did**, **Found/decided**, **Remains**, **Next**.
+- Detailed context: `claude/ARPIPE_MASTER_CONTEXT.md` in the "hari" project.
+- Governance: `docs/governance/CURRENT_DECISIONS.md`.
+
+## Standing rules (short)
+- **Phase 5 base:** Phase 5 work starts from `origin/phase5-a1` (`e1803fc`). `main` still differs in 11 `arpipe/` files. No HOLDOUT content anywhere.
+- **Blind work:** blind title work runs only in `D:\gold_blind`, which is not a git repo. There, use Python by full path (`C:\Program Files\Python314\python.exe`), no hidden or base64 code, and write only to that run's output folder. Hashes and counts come only from code output.
+- **Which tool for which task:**
+
+| Task | Best tool |
+|---|---|
+| Multi-step builds and audits with strict rules | Codex, GPT-5.6 Sol Extra High/Ultra; or Claude Code Opus |
+| Verification, repo intake, analysis, prompt writing, small mechanical tools | This Claude chat. It can fetch and push the repo, but can't reach `D:\` |
+| Running an already-written, hash-pinned script | Gemini 3.8 Flash (Antigravity) is OK |
+| Reading, judging or rewriting evidence | Not Gemini Flash |
+
+---
+
+## 2026-09-27 (evening): P5-B.3 MD&A title pre-fill + review tool
+- **Did:**
+  - Codex ran P5-B.3 in `D:\gold_blind`. It copied the MD&A title lines by code from each PDF's text layer (PyMuPDF 1.28.2), rendered the pages, and pre-filled the 60-document worksheet.
+  - This chat added `docs/phase5/evidence/p5b/review_tool/make_review_page.py`. It builds an offline review page: pre-fill, all candidate lines, page images, a link to open the PDF, answers that autosave, and "Download CSV". It was tested in a headless browser.
+- **Found:**
+  - `P5_B3_PASS`. V1–V7 PASS: 94/94 pre-filled titles found verbatim on their page; reproducible; 0 changes outside `output\p5b3`.
+  - 37 documents have a TOC and a body title, 20 only a body title, and 3 have no hit: `INE004C01028_2017`, `INE004E01016_2018`, and `INE00FF01025_2015` (the SEBI letter).
+  - Flags: MENTION_LIKE 24, MANY_HITS 13, HINT_DISAGREES 9, NO_TEXT_LAYER 0.
+- **Remains:** a human confirms or corrects all 60 (no-hit and flagged documents first), then decides the title rules, then freezes the blind title list.
+- **Next:** the author runs the review tool and fills in the answers, then sends `MDNA_TITLE_REVIEW_v0_1.csv`.
+
+## 2026-09-27 (evening): P5-B intake into the repo
+- **Did:**
+  - Package committed as `06261d1` (PR #32 → main `2fb2718`).
+  - This chat re-verified it independently and added `intake/` (`898e248`, branch `phase5-b-intake`). Contents: field-format audit, 216 key-row candidates, 124 quoted strings, and the 60-document worksheet.
+- **Found:**
+  - The package is intact (25/25 hashes; 3,215 + 1 rows; 60 documents; 259 evidence rows / 146 PNGs).
+  - **The ledger's heading fields are mostly AI notes, not verbatim headings.** Clean: EQUIVALENT 24/150, CONDITIONAL 0/66. Some key rows are *mentions*. The notes contain page references.
+- **Decided:**
+  - The ledger is structurally sound but **not** a title record, and must never go to annotators.
+  - The old catalog is a draft only.
+  - Take the pre-declared fallback: TOC + section openings, human-verified.
+- **Remains:** the human title review (see above).
+
+## 2026-09-27 (day): P5-B.2.2 clean rebuild (attempts 1–6)
+- **Did:** a series of Codex runs in `D:\gold_blind`.
+  - Attempt 1 was a re-typed hash.
+  - Attempt 2: the output folder wasn't empty.
+  - Attempt 3: the P5-B.2 chat report had wrong hashes for 4 v0.2 files. Fixed by using v0.2's own record (K-I).
+  - Attempt 4 started inventing a selection rule and was stopped.
+  - Attempt 5: a catalog entry couldn't be traced to the ledger.
+  - Attempt 6 (prompt v6): `P5_B22_PASS_WITH_REVIEW_ITEMS`.
+- **Found:**
+  - Frame-status row split out (3,215 + 1).
+  - Catalog tags 21/12/47 (+1); the earlier 24/11/45 and 28/6/46 were wrong.
+  - Visual coverage 416/1,610 = 25.84%.
+  - Catalog vs ledger: 29/80 titles with no match, 11 conflicts.
+- **Learned (process):**
+  - Open `D:\gold_blind` in its own VS Code window; the extension uses the window's folder.
+  - Deactivate the thesis venv.
+  - Never rename folders while a run is live.
+  - Hashes come only from files.
+
+## 2026-09-27 (morning): P5-A.1 and early P5-B
+- **Did:**
+  - P5-A.1: Gold method v0.1 (`e1803fc`, 425 tests passed, merged via PR #31).
+  - P5-B v0 → v0.1 → v0.2: the isolated AI title reading.
+  - v0.2.1 FAILED: 0-byte files.
+- **Open items:**
+  - K1 answer: did any P5-B work run in a Claude Code session in the thesis folder?
+  - P5-A.1b pilot-token errata.
+  - A1–A5 author signatures.
+  - P5-T annotation tool.
