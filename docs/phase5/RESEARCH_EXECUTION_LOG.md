@@ -18,6 +18,22 @@
 
 ---
 
+## 2026-09-27 (night): PRs merged to main; PR-ready branch
+- **Did:**
+  - The author merged PRs #33 (drift), #35 (b-intake), #34 (the **Codex** P5-T) and #38 (`phase5-a1b`, the 4 + 3-pending version) into main.
+  - PR #39 (`phase5-a1b-codex`) now conflicts and is not merged.
+  - This chat built `pr-phase5-to-main` (a fast-forward from main). It brings in `phase5-integration`: scoring, the interop test, the log, and the other chat's P5-T (`c0fa4c9`), which **replaces** the Codex P5-T files (`app.py`, `core.py`, the committed zip, its test).
+  - P5-C prep (custodian builder) is running in Codex from `phase5-integration`.
+- **Found:**
+  - `main` (and this branch) show 10 test failures. They are the **pre-existing main drift** (see the drift report); none are new.
+  - This branch: 545 passed. Main: 514 passed.
+  - Main's tests also rewrite `reports/annexure_audit.*`; restore those files with `git checkout -- reports/`.
+  - The Phase 5 line (`phase5-integration`) was NOT merged with main, so its `arpipe/` stays identical to R1.
+- **Decide (author):**
+  - Open and merge PR `pr-phase5-to-main → main`.
+  - Close PR #39 unless the answer is "yes 7" (a follow-up errata would then be needed).
+  - The drift option for main.
+
 ## 2026-09-27 (night): integration branch
 - **Did:**
   - The author pushed the drift report (`main-drift-diagnosis`, `9c92aad`).
