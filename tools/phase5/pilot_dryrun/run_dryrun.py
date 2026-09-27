@@ -131,8 +131,8 @@ def _report_markdown(result: dict) -> str:
         "- Presence difference: SYNTH_FIT_04 (A PRESENT, B ABSENT).",
         "", "## PILOT_PLAN §6 soft triggers", "",
     ])
-    if result["soft_trigger_evaluation"]["status"] == "BLOCKED":
-        rows.append(f"- BLOCKED: {result['soft_trigger_evaluation']['reason']}")
+    if result["soft_trigger_evaluation"]["status"] in ("BLOCKED", "NOT_APPLICABLE"):
+        rows.append(f"- {result['soft_trigger_evaluation']['status']}: {result['soft_trigger_evaluation']['reason']}")
     else:
         for trigger in result["soft_triggers"]:
             rows.append(f"- {trigger['name']}: {'WOULD FIRE' if trigger['would_fire'] else 'would not fire'} — {trigger['basis']}")
@@ -204,8 +204,8 @@ def run_dryrun(report_dir: Path, *, allow_synthetic_title_override: bool = False
             "agreement": agreement,
             "soft_triggers": [],
             "soft_trigger_evaluation": {
-                "status": "BLOCKED",
-                "reason": "The authorized PILOT_PLAN_v0_1_1.md §6 source is absent from this checkout; trigger thresholds cannot be inferred.",
+                "status": "NOT_APPLICABLE",
+                "reason": "PILOT_PLAN v0.1/v0.1.1 §6 (identical in both; v0.1.1 changed only §3) states thresholds for the 10-document PILOT (e.g. presence disagreement on at least 2 of 10). They are not evaluated on 4 synthetic byte files; doing so would present a synthetic number as a trigger outcome.",
             },
             "findings": [
                 "tools/phase5/annotator/make_bundle.py:36–40 ships an unfrozen-title placeholder; tools/phase5/annotator/annotator_core.py:477–496 has no title-list preflight in the direct sealing API. This synthetic runner adds an explicit temporary-workspace preflight; production tool code is unchanged.",

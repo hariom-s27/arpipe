@@ -36,7 +36,7 @@
 
 ## PILOT_PLAN §6 soft triggers
 
-- BLOCKED: The authorized PILOT_PLAN_v0_1_1.md §6 source is absent from this checkout; trigger thresholds cannot be inferred.
+- NOT_APPLICABLE: PILOT_PLAN v0.1/v0.1.1 §6 (identical in both; v0.1.1 changed only §3) states thresholds for the 10-document PILOT (e.g. presence disagreement on at least 2 of 10). They are not evaluated on 4 synthetic byte files; doing so would present a synthetic number as a trigger outcome.
 
 ## Test-only title-list handling
 
