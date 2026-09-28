@@ -223,6 +223,15 @@ divider or MD&A-own-contents start page and (ii) without pages recorded under
 `contains_csr_esg` (`D1_D7_DECISIONS_v0_1.md` §§1 D3, 6, and 7.2). Neither recomputation
 replaces the primary result.
 
+**PROPOSED (formula, added 2026-09-28; resolves the F5 OPEN item).**
+- (i) D3 sensitivity: replace the Gold start by `boundary_evidence.substantive_start_page`
+  (the first text page after a divider or MD&A-own-contents page) wherever it differs from
+  the Gold start; score with the §4 inclusive span IoU unchanged. Predictions are not altered.
+- (ii) CSR/ESG sensitivity: score by page sets. Let `X` = the Gold record's `csr_esg_pages`
+  plus its `gap_pages`; `G' = {g_s..g_e} \ X`, `P' = {p_s..p_e} \ X`;
+  `IoU' = |G' ∩ P'| / |G' ∪ P'|`. Documents without `contains_csr_esg` keep their §4 IoU.
+  If `G'` is empty the document is dropped from this sensitivity and counted.
+
 **PROPOSED.** Text-measure users receive `mdna_word_count` and `csr_esg_word_count` from
 the §7.3 post-seal derived file. Gold defines no word cut-off
 (`D1_D7_DECISIONS_v0_1.md` §7.3).

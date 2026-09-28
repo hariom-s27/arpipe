@@ -18,6 +18,17 @@
 
 ---
 
+## 2026-09-28 (morning): D1–D7 decided; schema v0.2 (F3) and protocol/SAP v0.2 (F5) merged
+- **Did:**
+  - Decisions: PR #50 (D1–D7 + D4 statutory list), #51 (A1–A5 + field specs), #52 (review fixes: stub without hand counting, robust broken-text test, `schema_version`, Hindi-only span, reversibility). File: `docs/phase5/decisions/D1_D7_DECISIONS_v0_1.md`.
+  - F3 (Codex GPT-5.6 Sol Extra High): PR #53 (`bf85ef2`). Gold schema v0.2: `NO_ENGLISH_MDA`, `EXTERNAL_REFERENCE_ONLY` (+ `HINDI_COPY` span allowed only there), `stub` (+ optional count), `contains_csr_esg` + `csr_esg_pages`, required `schema_version: "0.2"`; annotator core refuses to seal while the title list is unfrozen (test-only override); scoring picks the schema by `schema_version`.
+  - F5 (Codex, same model): PR #54 (`460e57d`). `GOLD_PROTOCOL_v0_2.md` (boundary hierarchy, Rules 1/3/5/7 updated, new Rules 10–12), `SAP_v0_2.md` (presence handling, exact and ±1 start, strata, §14 sensitivities), `CHANGELOG_v0_2.md`; bundle ships protocol v0.2.
+  - This chat re-verified both: v0.1 files byte-identical; Phase 5 tests 87 passed; 21 own adversarial schema records all behaved as specified. Full suite on the author's PC = the same 11 known failures + 11 new passes (569 passed).
+- **Found:**
+  - Tests on the author's PC must use `D:\sem_iitk\sem9\thesis\.venv\Scripts\python.exe`; a bare `python` in a new VS Code window lacks `rapidfuzz`/`yaml` (9 collection errors). All future prompts name this interpreter.
+  - F5 OPEN item (no formula for page-exclusion sensitivities) resolved as PROPOSED in SAP v0.2 §14: D3 via `substantive_start_page`; CSR/ESG via page-set IoU with CSR and gap pages removed.
+- **Remains:** §7.3 broken-text / word-count script + calibration on 60 FIT docs; title rules and title-list freeze; author items (7 vs 4, SAP options, A1–A5, K1); annotators; pilot draw.
+
 ## 2026-09-28 (morning): title review CSV final (v0.1, corrected)
 - **Did:** the author corrected the review after this chat's row check and page-by-page screenshot checks (HDFC ends, CRISIL 2017 start, Reliance 2018/2025, IDBI 2012, Mac Hotels, Modern Steels 2017, Craftsman 2025, Tata Steel 2024, PVR 2018, IDBI 2024).
   - Final `MDNA_TITLE_REVIEW_v0_1.csv`: 60 rows, 46,448 bytes, SHA-256 `2A362F03E284C51772987635D8F9EC8EED0AD857357FF0DD05E719570B61A60E` (supersedes `1374BBAA…`). Backup in `D:\gold_review_backup\`.
