@@ -23,7 +23,7 @@ from tools.phase5.annotator import export_role as export_mod
 from tools.phase5.annotator import make_bundle
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-SCHEMA_PATH = REPO_ROOT / "docs" / "phase5" / "gold_schema_v0_3.json"
+SCHEMA_PATH = REPO_ROOT / "docs" / "phase5" / "gold_schema_v0_4.json"
 FAKE_PDF = b"%SYNTHETIC-NOT-A-PDF%\n" * 7
 FAKE_SHA = hashlib.sha256(FAKE_PDF).hexdigest()
 N = 40
@@ -80,6 +80,12 @@ def present_form(**over) -> dict:
         # v0.3: both shared-page answers are required on PRESENT; ABSENT/AMBIGUOUS leave them null
         form.setdefault("start_page_shared", False)
         form.setdefault("end_page_shared", False)
+        # v0.4: a page marked shared needs anchor text; default one so existing PRESENT
+        # cases that set start/end_page_shared=True don't each have to supply it.
+        if form["start_page_shared"] is True:
+            form.setdefault("start_anchor_text", "Management's Discussion and Analysis")
+        if form["end_page_shared"] is True:
+            form.setdefault("end_anchor_text", "Corporate Governance Report")
     return form
 
 
@@ -252,6 +258,66 @@ def test_title_list_placeholder_blocks_seal_and_supersede_unless_explicitly_allo
             schema,
             "ws-" + "0" * 32,
         )
+
+
+# -- title-list seal guard (schema/protocol v0.4) --------------------------------
+
+def test_seal_guard_refuses_when_title_list_is_missing(bundle, schema):
+    records = bundle / "records"
+    (bundle / core.TITLE_LIST_PLACEHOLDER).unlink()
+    record = core.build_raw_record(present_form(), ctx())
+    with pytest.raises(core.AnnotatorError, match=re.escape(core.TITLE_LIST_FILENAME)):
+        core.seal_raw_record(records, record, schema)
+
+
+def test_seal_guard_refuses_when_manifest_is_missing(bundle, schema):
+    records = bundle / "records"
+    (bundle / core.TITLE_LIST_PLACEHOLDER).unlink()
+    (bundle / core.TITLE_LIST_FILENAME).write_text(
+        "Management's Discussion and Analysis\n", encoding="utf-8"
+    )
+    record = core.build_raw_record(present_form(), ctx())
+    with pytest.raises(core.AnnotatorError, match=re.escape(core.BUNDLE_MANIFEST_FILENAME)):
+        core.seal_raw_record(records, record, schema)
+
+
+def test_seal_guard_refuses_when_title_list_was_edited_after_bundling(bundle, schema):
+    records = bundle / "records"
+    (bundle / core.TITLE_LIST_PLACEHOLDER).unlink()
+    title_list = bundle / core.TITLE_LIST_FILENAME
+    title_list.write_text("Management's Discussion and Analysis\n", encoding="utf-8")
+    (bundle / core.BUNDLE_MANIFEST_FILENAME).write_text(
+        json.dumps({"bundle_format": 1, "title_list_sha256": core.sha256_file(title_list), "files": {}}),
+        encoding="utf-8",
+    )
+    title_list.write_text("Management's Discussion and Analysis - EDITED\n", encoding="utf-8")
+    record = core.build_raw_record(present_form(), ctx())
+    with pytest.raises(core.AnnotatorError, match="does not match"):
+        core.seal_raw_record(records, record, schema)
+
+
+def test_seal_guard_allows_sealing_with_a_correct_list_and_manifest(bundle, schema):
+    records = bundle / "records"
+    (bundle / core.TITLE_LIST_PLACEHOLDER).unlink()
+    title_list = bundle / core.TITLE_LIST_FILENAME
+    title_list.write_text("Management's Discussion and Analysis\n", encoding="utf-8")
+    (bundle / core.BUNDLE_MANIFEST_FILENAME).write_text(
+        json.dumps({"bundle_format": 1, "title_list_sha256": core.sha256_file(title_list), "files": {}}),
+        encoding="utf-8",
+    )
+    record = core.build_raw_record(present_form(), ctx())
+    path, digest = core.seal_raw_record(records, record, schema)
+    assert path.is_file()
+    assert core.sha256_file(path) == digest
+
+
+def test_seal_guard_override_still_bypasses_every_check(bundle, schema):
+    records = bundle / "records"
+    # Only the placeholder exists (no title list, no manifest); the override still seals.
+    record = core.build_raw_record(present_form(), ctx())
+    path, _ = core.seal_raw_record(records, record, schema, allow_unfrozen_title_list=True)
+    assert path.is_file()
+
 
 def test_seal_is_read_only_logged_and_not_overwritable(bundle, schema):
     records = bundle / "records"
@@ -435,12 +501,15 @@ def test_bundle_contains_exactly_allowed_files(tmp_path):
         names = sorted(zf.namelist())
     assert names == make_bundle.expected_entries()
     assert sorted(m[0] for m in manifest) == names
-    assert "annotator_bundle/gold_schema_v0_3.json" in names
+    assert "annotator_bundle/gold_schema_v0_4.json" in names
+    assert "annotator_bundle/gold_schema_v0_3.json" not in names
     assert "annotator_bundle/gold_schema_v0_2.json" not in names
     assert "annotator_bundle/gold_schema_v0_1.json" not in names
-    assert "annotator_bundle/GOLD_PROTOCOL_v0_3.md" in names
+    assert "annotator_bundle/GOLD_PROTOCOL_v0_4.md" in names
+    assert "annotator_bundle/GOLD_PROTOCOL_v0_3.md" not in names
     assert "annotator_bundle/GOLD_PROTOCOL_v0_2.md" not in names
     assert "annotator_bundle/GOLD_PROTOCOL_v0_1.md" not in names
+    assert "annotator_bundle/BUNDLE_MANIFEST.json" in names
     assert not any("arpipe/" in n.split("annotator_bundle/", 1)[1] for n in names)
     # deterministic
     out2 = tmp_path / "again.zip"
@@ -448,24 +517,76 @@ def test_bundle_contains_exactly_allowed_files(tmp_path):
     assert out.read_bytes() == out2.read_bytes()
 
 
-def test_bundle_ships_the_v0_3_files_under_the_names_the_core_loads(tmp_path):
+def test_bundle_manifest_records_null_title_hash_without_a_title_list(tmp_path):
+    out = tmp_path / "annotator_bundle.zip"
+    make_bundle.build_bundle(out)
+    with zipfile.ZipFile(out) as zf:
+        manifest = json.loads(zf.read(f"annotator_bundle/{make_bundle.MANIFEST_NAME}"))
+    assert manifest == {
+        "bundle_format": 1,
+        "title_list_sha256": None,
+        "files": manifest["files"],
+    }
+    assert make_bundle.PLACEHOLDER_NAME in manifest["files"]
+    assert make_bundle.TITLE_LIST_NAME not in manifest["files"]
+
+
+def test_bundle_with_title_list_ships_it_sealed_and_drops_the_placeholder(tmp_path):
+    title_list = tmp_path / "TITLE_EQUIVALENCE_v0.md"
+    title_list.write_text("Management's Discussion and Analysis: EQUIVALENT\n", encoding="utf-8")
+    digest = hashlib.sha256(title_list.read_bytes()).hexdigest()
+    out = tmp_path / "annotator_bundle.zip"
+    make_bundle.build_bundle(out, title_list=title_list, title_list_sha256=digest)
+    with zipfile.ZipFile(out) as zf:
+        names = sorted(zf.namelist())
+        manifest = json.loads(zf.read(f"annotator_bundle/{make_bundle.MANIFEST_NAME}"))
+        assert zf.read(f"annotator_bundle/{make_bundle.TITLE_LIST_NAME}") == title_list.read_bytes()
+    assert names == make_bundle.expected_entries(with_title_list=True)
+    assert f"annotator_bundle/{make_bundle.PLACEHOLDER_NAME}" not in names
+    assert manifest["title_list_sha256"] == digest
+    assert manifest["files"][make_bundle.TITLE_LIST_NAME] == digest
+    # deterministic
+    out2 = tmp_path / "again.zip"
+    make_bundle.build_bundle(out2, title_list=title_list, title_list_sha256=digest)
+    assert out.read_bytes() == out2.read_bytes()
+
+
+def test_bundle_refuses_a_wrong_title_list_sha256(tmp_path):
+    title_list = tmp_path / "TITLE_EQUIVALENCE_v0.md"
+    title_list.write_text("Management's Discussion and Analysis: EQUIVALENT\n", encoding="utf-8")
+    out = tmp_path / "annotator_bundle.zip"
+    with pytest.raises(ValueError, match="does not match"):
+        make_bundle.build_bundle(out, title_list=title_list, title_list_sha256="0" * 64)
+    assert not out.exists()
+
+
+def test_bundle_title_list_arguments_are_both_or_neither(tmp_path):
+    title_list = tmp_path / "TITLE_EQUIVALENCE_v0.md"
+    title_list.write_text("x\n", encoding="utf-8")
+    out = tmp_path / "annotator_bundle.zip"
+    with pytest.raises(ValueError, match="given together"):
+        make_bundle.build_bundle(out, title_list=title_list)
+    assert not out.exists()
+
+
+def test_bundle_ships_the_v0_4_files_under_the_names_the_core_loads(tmp_path):
     out = tmp_path / "annotator_bundle.zip"
     make_bundle.build_bundle(out)
     with zipfile.ZipFile(out) as zf:
         names = {n.split("/", 1)[1] for n in zf.namelist() if n.split("/", 1)[1]}
         assert {core.SCHEMA_FILENAME, core.PROTOCOL_FILENAME} <= names
         assert zf.read(f"annotator_bundle/{core.SCHEMA_FILENAME}") == SCHEMA_PATH.read_bytes()
-        protocol = REPO_ROOT / "docs" / "phase5" / "GOLD_PROTOCOL_v0_3.md"
+        protocol = REPO_ROOT / "docs" / "phase5" / "GOLD_PROTOCOL_v0_4.md"
         assert zf.read(f"annotator_bundle/{core.PROTOCOL_FILENAME}") == protocol.read_bytes()
 
 
-# -- shared start/end pages (schema v0.3, decisions 8.7) ---------------------------
+# -- shared start/end pages (schema v0.4, decisions 8.7, F6 anchor text) -----------
 
-def test_core_targets_schema_and_protocol_v0_3(schema):
-    assert core.SCHEMA_FILENAME == "gold_schema_v0_3.json"
-    assert core.PROTOCOL_FILENAME == "GOLD_PROTOCOL_v0_3.md"
+def test_core_targets_schema_and_protocol_v0_4(schema):
+    assert core.SCHEMA_FILENAME == "gold_schema_v0_4.json"
+    assert core.PROTOCOL_FILENAME == "GOLD_PROTOCOL_v0_4.md"
     record = core.build_raw_record(present_form(), ctx())
-    assert record["schema_version"] == "0.3"
+    assert record["schema_version"] == "0.4"
     assert core.validate_record(record, schema) == []
 
 
@@ -546,6 +667,7 @@ def test_absent_and_ambiguous_records_carry_null_shared_answers(schema):
         evidence = record["boundary_evidence"]
         assert evidence["start_page_shared"] is None and evidence["end_page_shared"] is None
         assert evidence["mixed_end_page"] is None
+        assert evidence["start_anchor_text"] is None and evidence["end_anchor_text"] is None
         assert not set(core.DERIVED_FLAGS) & set(record["flags"])
         assert core.validate_record(record, schema) == []
 
@@ -596,6 +718,49 @@ def test_derived_flags_are_schema_flags_the_core_sets_itself(schema):
     assert set(core.DERIVED_FLAGS) <= set(core.schema_enums(schema)["flags"])
 
 
+# -- anchor text on shared start/end pages (schema/protocol v0.4) ------------------
+
+def test_anchor_text_is_stored_stripped_when_the_page_is_shared(schema):
+    record = core.build_raw_record(
+        present_form(start_page_shared=True,
+                     start_anchor_text="  Management's Discussion and Analysis  "),
+        ctx(),
+    )
+    assert record["boundary_evidence"]["start_anchor_text"] == "Management's Discussion and Analysis"
+    assert core.validate_record(record, schema) == []
+
+
+@pytest.mark.parametrize("blank", ["", "   ", None])
+def test_empty_anchor_text_on_a_shared_page_is_refused(blank):
+    with pytest.raises(core.AnnotatorError, match="anchor text"):
+        core.build_raw_record(
+            present_form(end_page_shared=True, end_anchor_text=blank), ctx()
+        )
+
+
+def test_anchor_text_is_ignored_when_the_page_is_not_shared(schema):
+    record = core.build_raw_record(
+        present_form(end_page_shared=False, end_anchor_text="stray text nobody asked for"),
+        ctx(),
+    )
+    assert record["boundary_evidence"]["end_anchor_text"] is None
+    assert core.validate_record(record, schema) == []
+
+
+def test_absent_forces_mixed_end_page_and_anchors_null_even_if_the_form_sends_values(schema):
+    record = core.build_raw_record(
+        present_form(presence_state="ABSENT", presence_reason_code="NOT_AN_ANNUAL_REPORT",
+                     primary_span_viewer=None, boundary_evidence_viewer={},
+                     end_page_shared=True, end_anchor_text="stray anchor text"),
+        ctx(),
+    )
+    evidence = record["boundary_evidence"]
+    assert evidence["mixed_end_page"] is None
+    assert evidence["end_anchor_text"] is None
+    # still schema-invalid overall (ABSENT requires a null end_page_shared answer, §8.7)
+    assert core.validate_record(record, schema)
+
+
 def test_form_has_no_default_answer_and_present_is_refused_until_both_are_chosen(schema):
     tk = pytest.importorskip("tkinter")
     from tools.phase5.annotator import annotator_app as app
@@ -633,10 +798,17 @@ def test_form_has_no_default_answer_and_present_is_refused_until_both_are_chosen
         with pytest.raises(core.AnnotatorError, match="End page shared"):
             form._record()
         form.shared_vars["end_page_shared"].set("No")
+        # anchor text is also new in v0.4: required once the matching answer is Yes
+        assert form.anchor_vars["start_anchor_text"].get() == ""
+        with pytest.raises(core.AnnotatorError, match="anchor text"):
+            form._record()
+        form.anchor_vars["start_anchor_text"].set("Management's Discussion and Analysis")
         record = form._record()
         assert core.validate_record(record, schema) == []
         assert record["boundary_evidence"]["start_page_shared"] is True
         assert record["boundary_evidence"]["end_page_shared"] is False
+        assert record["boundary_evidence"]["start_anchor_text"] == "Management's Discussion and Analysis"
+        assert record["boundary_evidence"]["end_anchor_text"] is None
         assert "mixed_start_page" in record["flags"] and "mixed_end_page" not in record["flags"]
         # answers only apply to PRESENT: an ABSENT record gets nulls whatever is selected
         form.presence.set("ABSENT")
@@ -646,6 +818,20 @@ def test_form_has_no_default_answer_and_present_is_refused_until_both_are_chosen
         absent = form._record()
         assert absent["boundary_evidence"]["start_page_shared"] is None
         assert absent["boundary_evidence"]["end_page_shared"] is None
+        assert absent["boundary_evidence"]["start_anchor_text"] is None
+        assert absent["boundary_evidence"]["end_anchor_text"] is None
         assert core.validate_record(absent, schema) == []
     finally:
         root.destroy()
+
+
+def test_bundle_root_is_the_exe_folder_when_frozen_else_the_file_folder(monkeypatch):
+    pytest.importorskip("tkinter")  # annotator_app imports tkinter at module level
+    from tools.phase5.annotator import annotator_app as app
+
+    monkeypatch.setattr(app.sys, "frozen", True, raising=False)
+    monkeypatch.setattr(app.sys, "executable", str(Path("C:/pilot/annotator_app.exe")))
+    assert app._bundle_root() == Path("C:/pilot").resolve()
+
+    monkeypatch.delattr(app.sys, "frozen", raising=False)
+    assert app._bundle_root() == Path(app.__file__).resolve().parent

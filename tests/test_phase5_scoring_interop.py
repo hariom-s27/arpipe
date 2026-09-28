@@ -14,6 +14,7 @@ from tools.phase5.annotator import annotator_core as core
 from tools.phase5.scoring import NOT_ESTIMABLE, gold_schema_filename, raw_ab_agreement, score_documents
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
+SCHEMA_V0_4 = json.loads((REPO_ROOT / "docs" / "phase5" / "gold_schema_v0_4.json").read_text(encoding="utf-8"))
 SCHEMA = json.loads((REPO_ROOT / "docs" / "phase5" / "gold_schema_v0_3.json").read_text(encoding="utf-8"))
 SCHEMA_V0_2 = json.loads((REPO_ROOT / "docs" / "phase5" / "gold_schema_v0_2.json").read_text(encoding="utf-8"))
 SCHEMA_V0_1 = json.loads((REPO_ROOT / "docs" / "phase5" / "gold_schema_v0_1.json").read_text(encoding="utf-8"))
@@ -37,11 +38,14 @@ def _record(role: str, span_viewer: tuple[int, int], doc: str = "SYN-INTEROP-1",
         "primary_span_viewer": span_viewer,
         "boundary_evidence_viewer": {"heading_start_page": span_viewer[0], "last_content_page": span_viewer[1]},
         "start_page_shared": start_shared, "end_page_shared": end_shared,
+        # v0.4: a page marked shared needs anchor text (ignored otherwise).
+        "start_anchor_text": "Management's Discussion and Analysis" if start_shared else None,
+        "end_anchor_text": "Corporate Governance Report" if end_shared else None,
         "aids_used": ["PDF_VIEWER"], "search_queries": [], "search_usable": True,
         "no_repository_access_attested": True, "no_system_output_access_attested": True,
     }
     record = core.build_raw_record(form, ctx)
-    assert core.validate_record(record, SCHEMA) == []
+    assert core.validate_record(record, SCHEMA_V0_4) == []
     # round-trip through the sealed canonical bytes, as the custodian would receive them
     return json.loads(core.canonical_json_bytes(record).decode("utf-8"))
 
@@ -107,7 +111,7 @@ def test_v0_2_absent_reasons_feed_the_absent_presence_endpoint() -> None:
                 "completed_at": "2026-09-27T10:10:00+05:30",
             },
         )
-        assert core.validate_record(record, SCHEMA) == []
+        assert core.validate_record(record, SCHEMA_V0_4) == []
         records.append(record)
     predictions = {
         record["document_id"]: [
@@ -155,7 +159,7 @@ def test_annotator_records_disagreeing_span_still_scored() -> None:
     assert json.dumps(result, sort_keys=True)  # serialisable
 
 
-# -- schema v0.3 (decisions 8.7): shared start/end pages -----------------------------
+# -- schema v0.3/v0.4 (decisions 8.7; F6 anchor text): shared start/end pages --------
 
 def _absent_record(role: str, doc: str) -> dict:
     form = {
@@ -166,7 +170,7 @@ def _absent_record(role: str, doc: str) -> dict:
         "no_repository_access_attested": True, "no_system_output_access_attested": True,
     }
     record = core.build_raw_record(form, _ctx(role, doc))
-    assert core.validate_record(record, SCHEMA) == []
+    assert core.validate_record(record, SCHEMA_V0_4) == []
     return json.loads(core.canonical_json_bytes(record).decode("utf-8"))
 
 
@@ -175,9 +179,19 @@ def _valid_under(schema: dict, record: dict) -> bool:
     return not list(validator.iter_errors(record))
 
 
-def _as_v0_2(record: dict) -> dict:
-    """The same synthetic record as v0.2 wrote it: no shared-page answers, no mixed_start_page."""
+def _as_v0_3(record: dict) -> dict:
+    """The same synthetic v0.4 record as v0.3 wrote it: no anchor-text fields."""
     old = copy.deepcopy(record)
+    old["schema_version"] = "0.3"
+    for key in ("start_anchor_text", "end_anchor_text"):
+        old["boundary_evidence"].pop(key)
+    return old
+
+
+def _as_v0_2(record: dict) -> dict:
+    """The same synthetic record as v0.2 wrote it: no shared-page answers, no anchor
+    text, no mixed_start_page."""
+    old = _as_v0_3(record)
     old["schema_version"] = "0.2"
     for key in ("start_page_shared", "end_page_shared"):
         old["boundary_evidence"].pop(key)
@@ -205,28 +219,47 @@ def test_gold_schema_filename_dispatches_on_schema_version() -> None:
     assert gold_schema_filename({}) == "gold_schema_v0_1.json"
     assert gold_schema_filename({"schema_version": "0.2"}) == "gold_schema_v0_2.json"
     assert gold_schema_filename({"schema_version": "0.3"}) == "gold_schema_v0_3.json"
-    for unsupported in ("0.4", 0.3, None):
+    assert gold_schema_filename({"schema_version": "0.4"}) == "gold_schema_v0_4.json"
+    for unsupported in (0.3, None):
         with pytest.raises(ValueError):
             gold_schema_filename({"schema_version": unsupported})
 
 
-def test_v0_3_record_from_the_core_is_accepted_and_scored() -> None:
+def test_v0_4_record_from_the_core_is_accepted_and_scored() -> None:
     a = _record("ANNOTATOR_A", (5, 9), start_shared=True, end_shared=True)
     b = _record("ANNOTATOR_B", (5, 9), start_shared=True, end_shared=True)
-    assert a["schema_version"] == "0.3" and gold_schema_filename(a) == "gold_schema_v0_3.json"
-    assert _valid_under(SCHEMA, a) and _valid_under(SCHEMA, b)
+    assert a["schema_version"] == "0.4" and gold_schema_filename(a) == "gold_schema_v0_4.json"
+    assert _valid_under(SCHEMA_V0_4, a) and _valid_under(SCHEMA_V0_4, b)
+    assert a["boundary_evidence"]["start_anchor_text"] == "Management's Discussion and Analysis"
     assert raw_ab_agreement([a], [b])["exact_state_agreement"]["value"] == 1.0
     assert score_documents([a], {a["document_id"]: [_prediction(a, 4, 8)]})["primary"]["value"] == 1.0
 
 
-def test_v0_2_and_v0_1_records_remain_accepted_alongside_v0_3() -> None:
+def test_v0_3_record_remains_accepted_alongside_v0_4() -> None:
+    a = _as_v0_3(_record("ANNOTATOR_A", (5, 9), end_shared=True))
+    b = _as_v0_3(_record("ANNOTATOR_B", (5, 9), end_shared=True))
+    # a genuine v0.3 record: valid under its own schema, refused by v0.4 (no anchor fields)
+    assert _valid_under(SCHEMA, a) and _valid_under(SCHEMA, b)
+    assert not _valid_under(SCHEMA_V0_4, a)
+    assert a["schema_version"] == "0.3" and gold_schema_filename(a) == "gold_schema_v0_3.json"
+    result = raw_ab_agreement([a], [b])
+    assert result["exact_state_agreement"]["value"] == 1.0
+    # v0.3 still counts toward shared_page_agreement alongside v0.4 (unchanged from F3b)
+    assert result["shared_page_agreement"]["end_page_shared"] == {
+        "comparable_pairs": 1, "agreements": 1, "percent_agreement": 100.0,
+    }
+    scored = score_documents([a], {a["document_id"]: [_prediction(a, 4, 8)]})
+    assert scored["primary"]["value"] == 1.0
+
+
+def test_v0_2_and_v0_1_records_remain_accepted_alongside_v0_4() -> None:
     a = _record("ANNOTATOR_A", (5, 9), end_shared=True)
     b = _record("ANNOTATOR_B", (5, 9), end_shared=True)
     for downgrade, own_schema in ((_as_v0_2, SCHEMA_V0_2), (_as_v0_1, SCHEMA_V0_1)):
         old_a, old_b = downgrade(a), downgrade(b)
-        # genuine records of that version: valid under their own schema, refused by v0.3
+        # genuine records of that version: valid under their own schema, refused by v0.4
         assert _valid_under(own_schema, old_a) and _valid_under(own_schema, old_b)
-        assert not _valid_under(SCHEMA, old_a)
+        assert not _valid_under(SCHEMA_V0_4, old_a)
         result = raw_ab_agreement([old_a], [old_b])
         assert result["exact_state_agreement"]["value"] == 1.0
         assert result["shared_page_agreement"]["end_page_shared"] == {
@@ -234,6 +267,17 @@ def test_v0_2_and_v0_1_records_remain_accepted_alongside_v0_3() -> None:
         }
         scored = score_documents([old_a], {old_a["document_id"]: [_prediction(old_a, 4, 8)]})
         assert scored["primary"]["value"] == 1.0
+
+
+def test_scoring_refuses_a_v0_4_record_with_malformed_anchor_text() -> None:
+    record = _record("ANNOTATOR_A", (5, 9), start_shared=True)
+    record["boundary_evidence"]["start_anchor_text"] = "  "  # whitespace only, not stripped
+    with pytest.raises(ValueError, match="anchor text"):
+        score_documents([record], {})
+    unshared = _record("ANNOTATOR_A", (5, 9), "SYN-INTEROP-2")
+    unshared["boundary_evidence"]["end_anchor_text"] = "stray text on an unshared page"
+    with pytest.raises(ValueError, match="anchor text"):
+        score_documents([unshared], {})
 
 
 def test_shared_page_agreement_is_computed_on_comparable_present_pairs() -> None:

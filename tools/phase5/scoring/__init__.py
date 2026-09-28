@@ -1,7 +1,8 @@
 """Pure, standard-library SAP v0.1 scoring functions.
 
 Gold records use schema v0.1 when ``schema_version`` is absent, v0.2 when it is
-exactly ``"0.2"`` and v0.3 when it is exactly ``"0.3"``. Prediction rows use the SAP §3
+exactly ``"0.2"``, v0.3 when it is exactly ``"0.3"``, and v0.4 when it is exactly
+``"0.4"``. Prediction rows use the SAP §3
 fields ``document_id``, ``source_pdf_sha256``, ``disposition``, ``span``,
 ``reasons``, and ``physical_page_count``. Callers group rows by claimed document
 ID; the row's own document ID is still checked for identity.
@@ -23,10 +24,13 @@ STATUSES = (
 GOLD_SCHEMA_V0_1_FILENAME = "gold_schema_v0_1.json"
 GOLD_SCHEMA_V0_2_FILENAME = "gold_schema_v0_2.json"
 GOLD_SCHEMA_V0_3_FILENAME = "gold_schema_v0_3.json"
-# Decisions 8.7: the two Gold shared-page answers (boundary_evidence keys) of schema v0.3,
-# each with the flag that mirrors it.
+GOLD_SCHEMA_V0_4_FILENAME = "gold_schema_v0_4.json"
+# Decisions 8.7: the two Gold shared-page answers (boundary_evidence keys) of schema v0.3
+# (kept by v0.4), each with the flag that mirrors it.
 SHARED_PAGE_KEYS = ("start_page_shared", "end_page_shared")
 SHARED_PAGE_FLAGS = {"start_page_shared": "mixed_start_page", "end_page_shared": "mixed_end_page"}
+# Schema v0.4: the anchor-text field paired with each shared-page key above.
+ANCHOR_TEXT_KEYS = {"start_page_shared": "start_anchor_text", "end_page_shared": "end_anchor_text"}
 
 
 def gold_schema_filename(record: Mapping) -> str:
@@ -37,6 +41,8 @@ def gold_schema_filename(record: Mapping) -> str:
         return GOLD_SCHEMA_V0_2_FILENAME
     if record["schema_version"] == "0.3":
         return GOLD_SCHEMA_V0_3_FILENAME
+    if record["schema_version"] == "0.4":
+        return GOLD_SCHEMA_V0_4_FILENAME
     raise ValueError("Unsupported Gold schema_version")
 
 
@@ -106,7 +112,8 @@ def _validate_gold(record: Mapping) -> None:
     """SAP §1; Gold Schema §§2–3: block malformed scoring-relevant Gold."""
     try:
         schema_filename = gold_schema_filename(record)
-        is_v0_3 = schema_filename == GOLD_SCHEMA_V0_3_FILENAME
+        is_v0_4 = schema_filename == GOLD_SCHEMA_V0_4_FILENAME
+        is_v0_3 = is_v0_4 or schema_filename == GOLD_SCHEMA_V0_3_FILENAME  # v0.4 keeps v0.3's rules
         is_v0_2 = is_v0_3 or schema_filename == GOLD_SCHEMA_V0_2_FILENAME  # v0.3 keeps v0.2's rules
         doc_id = record["document_id"]
         source_hash = record["source_pdf_sha256"]
@@ -203,11 +210,21 @@ def _validate_gold(record: Mapping) -> None:
             raise ValueError("Invalid Gold shared-page answers")
         if any((SHARED_PAGE_FLAGS[key] in flags) != (evidence[key] is True) for key in SHARED_PAGE_KEYS):
             raise ValueError("Gold shared-page flags disagree with the answers")
+        if is_v0_4:
+            for shared_key, anchor_key in ANCHOR_TEXT_KEYS.items():
+                if anchor_key not in evidence:
+                    raise ValueError("v0.4 Gold is missing an anchor-text field")
+                anchor = evidence[anchor_key]
+                if evidence[shared_key] is True:
+                    if not isinstance(anchor, str) or not anchor.strip() or anchor != anchor.strip():
+                        raise ValueError("Invalid Gold anchor text for a shared page")
+                elif anchor is not None:
+                    raise ValueError("Gold anchor text must be null when the page is not shared")
 
 
 def _shared_answer(record: Mapping, key: str) -> bool | None:
-    """The Yes/No a v0.3 PRESENT record gives for ``key``; None where it carries none."""
-    if record.get("schema_version") != "0.3" or record["presence_state"] != "PRESENT":
+    """The Yes/No a v0.3/v0.4 PRESENT record gives for ``key``; None where it carries none."""
+    if record.get("schema_version") not in ("0.3", "0.4") or record["presence_state"] != "PRESENT":
         return None
     return record["boundary_evidence"][key]
 

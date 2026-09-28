@@ -16,7 +16,16 @@ import tkinter as tk
 from pathlib import Path
 from tkinter import filedialog, messagebox, simpledialog, ttk
 
-BUNDLE_ROOT = Path(__file__).resolve().parent
+
+def _bundle_root() -> Path:
+    """The folder the bundle's other files live in: the frozen exe's folder when run as
+    a packaged Windows .exe (``sys.frozen``), else this file's folder."""
+    if getattr(sys, "frozen", False):
+        return Path(sys.executable).resolve().parent
+    return Path(__file__).resolve().parent
+
+
+BUNDLE_ROOT = _bundle_root()
 try:  # package import (tests, repository)
     from . import annotator_core as core
 except ImportError:  # run as a script from the bundle folder
@@ -195,7 +204,9 @@ class AnnotatorApp:
             row(f"{label} (viewer page, optional)", ttk.Entry(f, textvariable=var))
 
         # Required Yes/No for PRESENT records; no default, so the annotator must choose.
+        # Each answer has its own anchor-text box, enabled only when that answer is Yes.
         self.shared_vars = {}
+        self.anchor_vars = {}
         for key, question in core.SHARED_PAGE_QUESTIONS:
             var = tk.StringVar()
             self.shared_vars[key] = var
@@ -204,6 +215,16 @@ class AnnotatorApp:
             ttk.Radiobutton(choice, text="No", value="No", variable=var).pack(
                 side="left", padx=8)
             row(f"{question}\n(required for PRESENT)", choice)
+            anchor_field = core.ANCHOR_TEXT_FIELDS[key]
+            anchor_var = tk.StringVar()
+            self.anchor_vars[anchor_field] = anchor_var
+            anchor_entry = ttk.Entry(f, textvariable=anchor_var, state="disabled")
+            row("Anchor text copied from that page\n(only when the answer above is Yes)", anchor_entry)
+
+            def _sync_anchor_state(*_args, var=var, entry=anchor_entry) -> None:
+                entry.configure(state="normal" if var.get() == "Yes" else "disabled")
+
+            var.trace_add("write", _sync_anchor_state)
         ttk.Label(
             f, foreground="blue",
             text="The mixed_start_page / mixed_end_page flags are set from these answers.",
@@ -312,6 +333,8 @@ class AnnotatorApp:
             "presence_state": self.presence.get(),
             "presence_reason_code": self.reason.get(),
             **shared,
+            "start_anchor_text": self.anchor_vars["start_anchor_text"].get(),
+            "end_anchor_text": self.anchor_vars["end_anchor_text"].get(),
             "primary_span_viewer": None if start is None else (start, end),
             "alternative_spans_viewer": self._span_lines(self.alt_text, typed=True),
             "gap_pages_viewer": core.parse_page_list(self.gaps.get()),

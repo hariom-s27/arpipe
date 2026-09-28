@@ -1,6 +1,6 @@
 # ARPipe Gold annotation bundle (offline)
 
-Status: DRAFT_PENDING_PILOT. Tool version p5t-0.1.0.
+Status: DRAFT_PENDING_PILOT. Tool version p5t-0.2.0.
 
 ## Before you start
 - Work on a computer folder that is **not** inside any code repository and has no
@@ -10,7 +10,9 @@ Status: DRAFT_PENDING_PILOT. Tool version p5t-0.1.0.
   the form opens but you cannot submit.
 - The custodian gives you `ASSIGNMENT.csv` (your documents) and the frozen title
   list. While `TITLE_LIST_NOT_YET_FROZEN.txt` is in this folder, nothing can be sealed.
-- Read `GOLD_PROTOCOL_v0_3.md`. It is the rulebook.
+- Read `GOLD_PROTOCOL_v0_4.md`. It is the rulebook.
+- Pilot viewer: Adobe Acrobat Reader (record the version). In Edit > Preferences >
+  Page Display, switch "Use logical page numbers" OFF.
 
 ## Pages: always the viewer's physical page, 1-based
 1. In your PDF viewer, **turn page labels off** so the page box shows 1, 2, 3 ...
@@ -21,6 +23,8 @@ Status: DRAFT_PENDING_PILOT. Tool version p5t-0.1.0.
    page labels are probably still on.
 
 ## Run
+Start: double-click `annotator_app.exe` if you were given one, otherwise run
+`python annotator_app.py`.
 ```
 python annotator_app.py
 ```
@@ -32,6 +36,13 @@ python annotator_app.py
    `records/HASH_LOG.txt`.
 4. A record is never overwritten. To correct one **before** the custodian exports your
    records, use **Supersede** with the old SHA-256 and a reason. Both files are kept.
+
+## Anchor text on shared start/end pages
+When you answer **Yes** to *Start page shared with another section?* or *End page
+shared with another section?*, the matching anchor-text box below it turns on: copy that
+page's heading line into it (the MD&A heading for a shared start page, the heading of the
+section that follows MD&A for a shared end page), from the text layer if you can, typed
+from the page image otherwise. Answer **No** and the box stays off and must stay blank.
 
 ## Permitted aids
 Only the pinned PDF viewer, its thumbnails, search, bookmarks, zoom/rotate and page

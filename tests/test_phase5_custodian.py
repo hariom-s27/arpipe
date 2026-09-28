@@ -73,7 +73,7 @@ def test_happy_path_builds_two_isolated_roles(synthetic_case, capsys):
     for role in builder.ROLES:
         workspace = out / role
         assert {p.name for p in workspace.iterdir()} == {
-            "README.md", "annotator_core.py", "pdfs", "assignment.csv", "records",
+            "README.md", "annotator_core.py", "pdfs", "ASSIGNMENT.csv", "records",
         }
         assert list((workspace / "records").iterdir()) == []
         assert annotator_core.workspace_refusals(workspace, workspace) == []
@@ -114,7 +114,7 @@ def test_validation_requires_explicit_flag(synthetic_case):
         run_build(synthetic_case, out)
     assert not out.exists()
     run_build(synthetic_case, out, allow_split="VALIDATION")
-    assert (out / "ANNOTATOR_A" / "assignment.csv").is_file()
+    assert (out / "ANNOTATOR_A" / "ASSIGNMENT.csv").is_file()
 
 
 def test_out_inside_fake_repository_is_refused(synthetic_case):
@@ -171,6 +171,22 @@ def test_assignment_is_accepted_by_annotator_core(synthetic_case):
     out = root / "workspaces"
     run_build(synthetic_case, out)
     for role in builder.ROLES:
-        assignment = annotator_core.load_assignment(out / role / "assignment.csv")
+        assignment = annotator_core.load_assignment(out / role / "ASSIGNMENT.csv")
         assert set(assignment) == {row["document_id"] for row in rows}
         assert all(assignment[row["document_id"]]["physical_page_count"] == 2 for row in rows)
+
+
+def test_bundle_manifest_json_does_not_collide_with_reserved_workspace_names(synthetic_case):
+    """A real bundle-shipped BUNDLE_MANIFEST.json (make_bundle.py) must reach the
+    workspace root untouched, exactly like README.md or annotator_core.py, and not be
+    treated as a reserved name collision (F6: it sits alongside the renamed ASSIGNMENT.csv)."""
+    root, _, pdf_dir, bundle, _ = synthetic_case
+    with zipfile.ZipFile(bundle, "a") as archive:
+        archive.writestr("annotator_bundle/BUNDLE_MANIFEST.json", '{"bundle_format": 1}\n')
+    out = root / "workspaces"
+    run_build(synthetic_case, out)
+    for role in builder.ROLES:
+        manifest_path = out / role / "BUNDLE_MANIFEST.json"
+        assert manifest_path.is_file()
+        assert manifest_path.read_text(encoding="utf-8") == '{"bundle_format": 1}\n'
+        assert (out / role / "ASSIGNMENT.csv").is_file()
