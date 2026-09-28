@@ -18,6 +18,37 @@
 
 ---
 
+## 2026-09-28 (evening): F3b merged: Gold schema v0.3, protocol v0.3, tool and scoring (decisions §8.7)
+- **Did:**
+  - F3b ran in Claude Code (Sonnet 5 Max). PR #63 (`c405dfe`, merge `48d386b`).
+  - Added `gold_schema_v0_3.json`, `GOLD_SCHEMA_v0_3.md` and `GOLD_PROTOCOL_v0_3.md`.
+  - Updated the annotator core and app, `make_bundle.py`, scoring, and three Phase 5 test files.
+  - The first run stopped (`BLOCKED:pilot_dryrun`): the dry-run runner built PRESENT forms without the new answers. This chat approved a 4-line fix to `run_dryrun.py` `_answer()`. It also had the stale protocol pointers corrected in `BUNDLE_README.md` and the `make_bundle.py` placeholder (v0.1 → v0.3).
+  - The committed `DRYRUN_REPORT.json`/`.md` were deliberately not regenerated. They remain the v0.2 dry-run record, and no test reads them.
+- **Verified here (after the merge, on `main` = `48d386b`):**
+  - The v0.1/v0.2 schema and protocol files and both `DRYRUN_REPORT` files are byte-identical to before.
+  - Phase 5 tests: 157 passed, 2 skipped.
+  - Author's PC, full suite: 11 failed (same names as the baseline), 640 passed (594 + 46 new).
+  - This chat's own 22 synthetic checks: 22/22 behaved as specified. They cover:
+    - refusal of None, "No", 0, 1, "false" and missing answers;
+    - flags or `mixed_end_page` supplied by the form are ignored;
+    - flag/answer mismatch in both directions;
+    - `mixed_end_page` null, or not equal to the end page, when the end page is shared;
+    - ABSENT records with answers refused (by the schema, at sealing);
+    - scoring refuses mismatched v0.3 Gold;
+    - `shared_page_agreement` counts only PRESENT/PRESENT pairs.
+- **Found/decided:**
+  - Two things the agent did beyond the task list are accepted:
+    - Rule 8 now points at the §4 shared-page definition.
+    - The app's `mixed_*` tick-boxes were removed, because the flags are now derived from the two answers.
+  - For v0.3 records, `exact_flag_agreement` now also reflects shared-page disagreements, because the derived `mixed_*` flags are in `flags`. This is expected, and should be noted when the SAP is revised.
+- **Remains (OPEN, not decided):**
+  - `boundary_evidence.mixed_end_page` is not enforced as null on ABSENT/AMBIGUOUS; the tool writes null.
+  - `TOOL_VERSION` is still `p5t-0.1.0`.
+  - The SAP needs wording for §8.7: a word count is analysed only when both answers are No; agreement on the two answers is descriptive.
+  - The schema doc's title line still says v0.1.
+  - Next steps: title rules + title-list freeze; optional LM-dictionary run; author items (7 vs 4, SAP options, A1–A5, K1, annotators); pilot draw.
+
 ## 2026-09-28 (afternoon): text-layer audit built, calibrated and frozen; shared-page fields decided
 - **Did:**
   - Audit v0.1 (PR #56, Codex) and v0.2 (PR #59, Gemini Flash; verified here). `tools/phase5/derived/text_layer_audit.py`, script SHA-256 `69e1d153…fafbdad70`.
