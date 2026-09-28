@@ -18,6 +18,37 @@
 
 ---
 
+## 2026-09-29 (night): scope decided; F6 built and verified; K1 answered
+- **Did:**
+  - Author decisions recorded as decisions §9:
+    - scope = MD&A location + text only; climate moves to a separate later pipeline;
+    - role = infrastructure;
+    - tokens 4; SAP 1=C, 2=B, 3=A, 4=A, 5=A; A1, A2, A4, A5 yes; A3 = 2 per issuer;
+    - pilot first, with the rules review after the pilot.
+  - K1 checked from the Claude Code, Codex and Gemini session records → **No**, with one metadata-only deviation (first Gemini P5-B session; see §9.2).
+  - Title list drafted (v0.2, project `claude/round3/TITLE_EQUIVALENCE_v0.md`): 96/96 recorded headings and 37/37 TOC/body pairs normalise. Spot-check rule fixed and 6 rows picked (`TITLE_RULES_CHECK_v0_1.md`).
+  - F6 (Claude Code, Sonnet 5 Max), branch `phase5-f6-bundle-v04` (`0fcc527`):
+    - schema/protocol v0.4, with anchor text on shared boundary pages;
+    - protocol §6 provenance fixed; Acrobat pin added;
+    - frozen title-list bundling (`--title-list/--title-list-sha256`, `BUNDLE_MANIFEST.json`);
+    - hash-checked seal guard;
+    - `.exe`-ready path resolver;
+    - custodian writes `ASSIGNMENT.csv`;
+    - scoring accepts v0.4;
+    - `TOOL_VERSION` p5t-0.2.0.
+- **Verified here:**
+  - v0–v0.3 schemas/protocols and `DRYRUN_REPORT.*` unchanged; Phase 5 tests 179 passed, 3 skipped.
+  - Author's PC full suite: the same 11 known failures, 663 passed (640 + 23 new).
+  - This chat's own 24 checks all pass. The seal guard refuses a wrong hash, an edited list, a missing list, a missing or corrupt manifest, the placeholder, and a deleted placeholder with a fake list; it seals a correctly frozen bundle. The anchor rules, the ABSENT nulling, the frozen-exe resolver and scoring all behave as specified.
+  - The agent disclosed one `python -c` use against the rules (stopped; covered by tests).
+- **Remains:**
+  - Ask Annotator B and the adjudicator; set the fallback date.
+  - Build the `.exe` (outside the thesis folder).
+  - Freeze the pilot title list (author signs) → commit the list and the review CSV → pilot bundle.
+  - Pilot draw.
+  - F7 adjudication tool.
+  - Two training PDFs (companies outside the corpus).
+
 ## 2026-09-28 (evening): F3b merged: Gold schema v0.3, protocol v0.3, tool and scoring (decisions §8.7)
 - **Did:**
   - F3b ran in Claude Code (Sonnet 5 Max). PR #63 (`c405dfe`, merge `48d386b`).
