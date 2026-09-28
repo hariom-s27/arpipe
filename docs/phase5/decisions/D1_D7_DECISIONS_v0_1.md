@@ -162,3 +162,23 @@ Run: audit v0.2 (script SHA-256 `69e1d153…fafbdad70`, PyMuPDF 1.28.2), input `
 - **One definition for both ends.** A boundary page is *shared* when the viewer page contains text from another section, ignoring running headers, footers and page numbers. This covers: (i) another section above or below on the same page; (ii) another section in the other column; (iii) the other half of a two-page spread.
 - **Schema v0.3 (v0.2 unchanged).** Add to `boundary_evidence` two booleans, `start_page_shared` and `end_page_shared`: **required and non-null on every PRESENT record** (null only on ABSENT/AMBIGUOUS). The annotation tool must force an explicit Yes/No, with no default. Consistency: `end_page_shared = true` ⇔ `boundary_evidence.mixed_end_page` = the primary end page and the `mixed_end_page` flag is set; `false` ⇔ `mixed_end_page` null and the flag absent. New flag `mixed_start_page` ⇔ `start_page_shared = true`. The protocol wording for `mixed_end_page` is replaced by the shared definition above, so both flags agree on spreads and columns.
 - **SAP.** A PAGE_LEVEL word count is analysed only when both `start_page_shared` and `end_page_shared` are false. Raw A/B agreement on both flags is reported (kappa or percent agreement, descriptive).
+
+## 9. Scope, pilot path and open author answers (DECIDED by author in the coordinating chat, 2026-09-28/29)
+Records: project docs `claude/round4/P1_START_HERE_PLAN.md`, `P4_YOUR_ANSWERS_EXPLAINED.md`, `K1_EVIDENCE_2026-09-29.md`, `claude/round3/METHOD_DECISION_2026-09-28.md` (whose climate parts are superseded by §9.1).
+
+### 9.1 Scope and role
+- **ARPipe's role (Phase 3 sheet D1): infrastructure with a bounded extraction claim** (sheet option B). C1 (page-span localisation) stays primary; C2 stays conditional (Phase 10 KEEP); C3 is not adopted.
+- **Phase 5 scope = MD&A location + MD&A text.** The climate measure (Q10) is built later, as a **separate climate pipeline** on ARPipe's text. The downstream climate check (C4; Phase 3 sheet D4; author D9) is **not part of Phase 5**; it moves to that pipeline, and its recipe is fixed there, before any HOLDOUT climate result.
+- **Text accuracy stays in scope:** Gold anchor text on shared boundary pages (schema v0.4, F6). At method freeze the SAP adds, as secondary measures, word-count error and token-overlap F1 between ARPipe text and the anchor-cut Gold text; page-span IoU stays primary (Q6).
+- **Later additions (fixed at method freeze or system freeze, not now):** a TOC reference method (main-contents entry → next entry; descriptive, not C2); LLM/API steps only as post-pilot experiments that must beat the pinned system on FIT/VALIDATION (pinned model and prompt, cached responses; an LLM is never an annotator or Gold); a panel fitness-for-use audit of n = 150 firm-years after system freeze (verify mode, never Gold).
+
+### 9.2 Answers to the open items
+- **Pilot hard-proxy tokens: 4** (the exact core set already on main). The 7-token branch `phase5-a1b-codex` is not merged.
+- **SAP options:** 1 = C (Student-t over the 9 issuer means, 8 df, as the one sensitivity interval; the headline stays the census); 2 = B (empty/empty gap Jaccard undefined, count reported); 3 = A (A − B); 4 = A (per metric); 5 = A (current 7-column prediction CSV).
+- **A1, A2, A4, A5: yes; A3 = 2 documents per issuer** (18), falling back to 1 if Annotator B's time is short. Formal signatures at method freeze.
+- **K1 = No (checked from session records).** No P5-B work ran in a Claude Code session in the thesis folder. One deviation is disclosed: the first Gemini P5-B session (2026-09-27, 01:30–03:44 IST) had the thesis folder as its working directory and ran eight read-only git/listing commands, which exposed repository metadata only. It opened no ARPipe code, patterns, labels or evaluation files. The P5-B output was rejected in any case. Evidence: `K1_EVIDENCE_2026-09-29.md`. **Rule:** blind-work agents are opened with the blind folder as their workspace root.
+
+### 9.3 Pilot path (pilot first; deviation from PILOT_PLAN v0.1.1 §1, which is PROPOSED)
+- The title list is frozen as a **pilot version** signed by the author. The independent rules review and the 6-row spot-check (rule fixed in `TITLE_RULES_CHECK_v0_1.md` §3.2) are done by the adjudicator **after the pilot and before any VALIDATION or HOLDOUT annotation**. Disclosed in the thesis.
+- People: Annotator A = author; Annotator B = a fellow with a commerce, accounting or CA background; adjudicator (also rules reviewer) = professor or a senior fellow, not A or B. Fallback: a paid commerce/CA student if nobody is confirmed by a date the author sets (**date OPEN**).
+- Pilot viewer: Adobe Acrobat Reader, "Use logical page numbers" OFF (protocol v0.4 §2).
