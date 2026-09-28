@@ -516,3 +516,119 @@ def test_gold_schema_versions_are_selected_by_schema_version_and_never_shared() 
                     assert not errors, f"v{owner} record rejected by its own schema: {errors}"
                 else:
                     assert errors, f"v{owner} record accepted by the v{version} schema"
+
+
+# F6 additions (schema v0.4, anchor text on shared start/end pages). Everything above
+# stays untouched; the v0.4 fixtures are derived from the v0.3 ones.
+V0_4_SCHEMA_PATH = REPO_ROOT / "docs" / "phase5" / "gold_schema_v0_4.json"
+
+
+def _v0_4_validator() -> Draft202012Validator:
+    schema = json.loads(V0_4_SCHEMA_PATH.read_text(encoding="utf-8"))
+    Draft202012Validator.check_schema(schema)
+    return Draft202012Validator(schema, format_checker=FormatChecker())
+
+
+def _v0_4_present(start_shared: bool = False, end_shared: bool = False) -> dict[str, object]:
+    record = _v0_3_present(start_shared=start_shared, end_shared=end_shared)
+    record["schema_version"] = "0.4"
+    evidence = record["boundary_evidence"]
+    assert isinstance(evidence, dict)
+    evidence["start_anchor_text"] = "Management's Discussion and Analysis" if start_shared else None
+    evidence["end_anchor_text"] = "Corporate Governance Report" if end_shared else None
+    return record
+
+
+def _v0_4_absent(reason: str = "NO_QUALIFYING_BODY_SECTION") -> dict[str, object]:
+    record = _v0_3_absent(reason)
+    record["schema_version"] = "0.4"
+    evidence = record["boundary_evidence"]
+    assert isinstance(evidence, dict)
+    evidence["start_anchor_text"] = None
+    evidence["end_anchor_text"] = None
+    return record
+
+
+def _v0_4_ambiguous() -> dict[str, object]:
+    record = _v0_3_ambiguous()
+    record["schema_version"] = "0.4"
+    evidence = record["boundary_evidence"]
+    assert isinstance(evidence, dict)
+    evidence["start_anchor_text"] = None
+    evidence["end_anchor_text"] = None
+    return record
+
+
+def test_gold_schema_v0_4_accepts_anchor_text_cases() -> None:
+    records = {
+        "PRESENT, neither page shared": _v0_4_present(),
+        "PRESENT, start shared with anchor": _v0_4_present(start_shared=True),
+        "PRESENT, end shared with anchor": _v0_4_present(end_shared=True),
+        "PRESENT, both shared with anchors": _v0_4_present(start_shared=True, end_shared=True),
+        "ABSENT, null anchors": _v0_4_absent(),
+        "ABSENT NO_ENGLISH_MDA, null anchors": _v0_4_absent("NO_ENGLISH_MDA"),
+        "AMBIGUOUS, null anchors": _v0_4_ambiguous(),
+    }
+    validator = _v0_4_validator()
+    for name, record in records.items():
+        errors = list(validator.iter_errors(record))
+        assert not errors, f"v0.4 pass record {name!r}: {errors}"
+
+
+def _changed_evidence(record: dict[str, object], **evidence: object) -> dict[str, object]:
+    boundary = record["boundary_evidence"]
+    assert isinstance(boundary, dict)
+    boundary.update(evidence)
+    return record
+
+
+def test_gold_schema_v0_4_rejects_bad_anchor_text() -> None:
+    must_fail = {
+        "start shared, null anchor": _changed_evidence(
+            _v0_4_present(start_shared=True), start_anchor_text=None),
+        "start shared, empty anchor": _changed_evidence(
+            _v0_4_present(start_shared=True), start_anchor_text=""),
+        "start shared, whitespace-only anchor": _changed_evidence(
+            _v0_4_present(start_shared=True), start_anchor_text="   "),
+        "start not shared, anchor present": _changed_evidence(
+            _v0_4_present(), start_anchor_text="Management's Discussion and Analysis"),
+        "end shared, null anchor": _changed_evidence(
+            _v0_4_present(end_shared=True), end_anchor_text=None),
+        "end not shared, anchor present": _changed_evidence(
+            _v0_4_present(), end_anchor_text="Corporate Governance Report"),
+        "ABSENT, start anchor present": _changed_evidence(
+            _v0_4_absent(), start_anchor_text="stray text"),
+        "AMBIGUOUS, end anchor present": _changed_evidence(
+            _v0_4_ambiguous(), end_anchor_text="stray text"),
+    }
+    validator = _v0_4_validator()
+    for name, record in must_fail.items():
+        assert list(validator.iter_errors(record)), f"v0.4 must-fail record {name!r} passed"
+
+
+def test_gold_schema_v0_4_requires_its_own_schema_version() -> None:
+    validator = _v0_4_validator()
+    for version in ("0.3", "0.5", None):
+        record = _v0_4_present()
+        if version is None:
+            record.pop("schema_version")
+        else:
+            record["schema_version"] = version
+        assert list(validator.iter_errors(record)), f"schema_version {version!r} accepted"
+
+
+def test_gold_schema_v0_4_versions_are_selected_by_schema_version_and_never_shared() -> None:
+    v0_4, v0_3, v0_2, v0_1 = _v0_4_present(), _v0_3_present(), _v0_2_present(), _v0_1_records()[0]
+    validators = {
+        "0.1": _v0_1_validator(), "0.2": _v0_2_validator(),
+        "0.3": _v0_3_validator(), "0.4": _v0_4_validator(),
+    }
+    records = {"0.1": [v0_1], "0.2": [v0_2], "0.3": [v0_3], "0.4": [v0_4]}
+    for owner, owned in records.items():
+        for record in owned:
+            for version, validator in validators.items():
+                errors = list(validator.iter_errors(record))
+                if version == owner:
+                    assert not errors, f"v{owner} record rejected by its own schema: {errors}"
+                else:
+                    assert errors, f"v{owner} record accepted by the v{version} schema"

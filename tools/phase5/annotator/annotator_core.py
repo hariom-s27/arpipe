@@ -3,8 +3,8 @@
 Standard library only, plus ``jsonschema`` for validation. This module has no GUI,
 no network code and no PDF rendering. It never imports anything from ``arpipe/``.
 
-Status: DRAFT_PENDING_PILOT. Implements GOLD_PROTOCOL v0.3 sections 2, 4, 7-9 and
-GOLD_SCHEMA v0.3 sections 1-3 for RAW records.
+Status: DRAFT_PENDING_PILOT. Implements GOLD_PROTOCOL v0.4 sections 2, 4, 7-9 and
+GOLD_SCHEMA v0.4 sections 1-3 for RAW records.
 
 Page convention (GOLD_PROTOCOL v0.1 section 2): annotators type the viewer's
 1-based physical page number (page labels disabled). The tool stores
@@ -24,22 +24,32 @@ import stat
 from pathlib import Path
 from typing import Any, Iterable
 
-TOOL_VERSION = "p5t-0.1.0"
-SCHEMA_FILENAME = "gold_schema_v0_3.json"
-PROTOCOL_FILENAME = "GOLD_PROTOCOL_v0_3.md"
+TOOL_VERSION = "p5t-0.2.0"
+SCHEMA_FILENAME = "gold_schema_v0_4.json"
+PROTOCOL_FILENAME = "GOLD_PROTOCOL_v0_4.md"
 VIEWER_PAGE_CONVENTION = "VIEWER_PHYSICAL_1_BASED_STORED_ZERO_BASED"
-# Decisions 8.7 / GOLD_PROTOCOL v0.3 section 4: two required Yes/No answers on every
+# Decisions 8.7 / GOLD_PROTOCOL v0.4 section 4: two required Yes/No answers on every
 # PRESENT record, and the flags the tool derives from them (never separate form inputs).
 SHARED_PAGE_QUESTIONS = (
     ("start_page_shared", "Start page shared with another section?"),
     ("end_page_shared", "End page shared with another section?"),
 )
 DERIVED_FLAGS = ("mixed_start_page", "mixed_end_page")
+# GOLD_PROTOCOL v0.4 section 4: the anchor text field paired with each shared-page answer.
+ANCHOR_TEXT_FIELDS = {
+    "start_page_shared": "start_anchor_text",
+    "end_page_shared": "end_anchor_text",
+}
 RAW_ROLES = ("ANNOTATOR_A", "ANNOTATOR_B")
 HASH_LOG_NAME = "HASH_LOG.txt"
 WORKSPACE_ID_NAME = "WORKSPACE_ID.txt"
 EXPORT_LOCK_NAME = "EXPORTED.lock"
 TITLE_LIST_PLACEHOLDER = "TITLE_LIST_NOT_YET_FROZEN.txt"
+# Title-list seal guard (GOLD_PROTOCOL v0.4 section 6): sealing requires the placeholder
+# gone, this accepted title list present, and BUNDLE_MANIFEST.json's recorded hash of it
+# to still match, so a list edited after bundling is caught.
+TITLE_LIST_FILENAME = "TITLE_EQUIVALENCE_v0.md"
+BUNDLE_MANIFEST_FILENAME = "BUNDLE_MANIFEST.json"
 ASSIGNMENT_COLUMNS = ["document_id", "source_pdf_sha256", "physical_page_count"]
 
 DOC_ID_RE = re.compile(r"^[A-Za-z0-9._-]+$")
@@ -233,6 +243,16 @@ def now_rfc3339() -> str:
     return _dt.datetime.now().astimezone().replace(microsecond=0).isoformat()
 
 
+def _anchor_text(value: Any, applies: bool, label: str) -> str | None:
+    """The stripped anchor text when ``applies``, else null (any value sent is ignored)."""
+    if not applies:
+        return None
+    text = (value or "").strip()
+    if not text:
+        raise AnnotatorError(f"{label}: type the heading line copied from the shared page.")
+    return text
+
+
 def build_raw_record(form: dict[str, Any], ctx: dict[str, Any]) -> dict[str, Any]:
     """Build a RAW record from viewer-page form input.
 
@@ -244,7 +264,10 @@ def build_raw_record(form: dict[str, Any], ctx: dict[str, Any]) -> dict[str, Any
     A PRESENT form must answer both ``start_page_shared`` and ``end_page_shared`` with
     True or False (no default). The ``mixed_start_page`` / ``mixed_end_page`` flags and
     ``boundary_evidence.mixed_end_page`` are set from those answers alone, so they cannot
-    disagree with them; values the form supplies for them are ignored.
+    disagree with them; values the form supplies for them are ignored. On a PRESENT record,
+    ``start_anchor_text`` / ``end_anchor_text`` are taken from the form (stripped, refused if
+    empty) exactly when the matching answer is True, else null; on any other presence_state
+    both anchors and ``mixed_end_page`` are forced null regardless of what the form sends.
     """
     n = int(ctx["physical_page_count"])
     if form.get("viewer_page_count") != n:
@@ -252,7 +275,8 @@ def build_raw_record(form: dict[str, Any], ctx: dict[str, Any]) -> dict[str, Any
             f"The viewer shows {form.get('viewer_page_count')} pages but the verified "
             f"PDF has {n}. Check page labels are disabled; do not continue until they match."
         )
-    if form.get("presence_state") == "PRESENT":
+    present = form.get("presence_state") == "PRESENT"
+    if present:
         for key, question in SHARED_PAGE_QUESTIONS:
             if not isinstance(form.get(key), bool):
                 raise AnnotatorError(f"{question} Answer Yes or No before you continue.")
@@ -262,6 +286,16 @@ def build_raw_record(form: dict[str, Any], ctx: dict[str, Any]) -> dict[str, Any
         for flag, shared in (("mixed_start_page", start_shared), ("mixed_end_page", end_shared))
         if shared is True
     }
+    anchor_text = {
+        "start_anchor_text": _anchor_text(
+            form.get("start_anchor_text"), present and start_shared is True,
+            "Start-page anchor text",
+        ),
+        "end_anchor_text": _anchor_text(
+            form.get("end_anchor_text"), present and end_shared is True,
+            "End-page anchor text",
+        ),
+    }
     primary = form.get("primary_span_viewer")
     primary_span = None if primary is None else _span(primary[0], primary[1], n, "primary span")
     be = form.get("boundary_evidence_viewer", {}) or {}
@@ -270,7 +304,7 @@ def build_raw_record(form: dict[str, Any], ctx: dict[str, Any]) -> dict[str, Any
         for flag, pages in (form.get("flag_pages_viewer") or {}).items()
     }
     record: dict[str, Any] = {
-        "schema_version": "0.3",
+        "schema_version": "0.4",
         "record_type": "RAW",
         "document_id": ctx["document_id"],
         "source_pdf_sha256": ctx["source_pdf_sha256"],
@@ -310,10 +344,14 @@ def build_raw_record(form: dict[str, Any], ctx: dict[str, Any]) -> dict[str, Any
                 be.get("next_section_heading_page"), n, "next section heading"
             ),
             "mixed_end_page": (
-                primary_span["end_page"] if end_shared is True and primary_span else None
+                primary_span["end_page"]
+                if present and end_shared is True and primary_span
+                else None
             ),
             "start_page_shared": start_shared,
             "end_page_shared": end_shared,
+            "start_anchor_text": anchor_text["start_anchor_text"],
+            "end_anchor_text": anchor_text["end_anchor_text"],
             "viewer_start_page_1based": None if primary is None else primary[0],
             "viewer_end_page_1based": None if primary is None else primary[1],
         },
@@ -461,6 +499,18 @@ def tool_invariant_errors(record: dict[str, Any]) -> list[str]:
     elif end_shared is False and mixed_end is not None:
         errors.append("boundary_evidence.mixed_end_page must be null when end_page_shared is false")
 
+    # GOLD_PROTOCOL v0.4 section 4: each shared-page answer agrees with its anchor text.
+    for answer_key, anchor_key in ANCHOR_TEXT_FIELDS.items():
+        answer, anchor = be.get(answer_key), be.get(anchor_key)
+        if answer is True:
+            if not isinstance(anchor, str) or anchor != anchor.strip() or not anchor:
+                errors.append(
+                    f"boundary_evidence.{anchor_key} must be a non-empty, stripped string "
+                    f"when {answer_key} is true"
+                )
+        elif anchor is not None:
+            errors.append(f"boundary_evidence.{anchor_key} must be null when {answer_key} is not true")
+
     ts = record.get("timestamps") or {}
     try:
         if _parse_ts(ts["completed_at"]) < _parse_ts(ts["started_at"]):
@@ -515,10 +565,40 @@ def _assert_not_exported(records_dir: Path, role: str) -> None:
 def _assert_title_list_frozen(
     records_dir: Path, allow_unfrozen_title_list: bool
 ) -> None:
-    placeholder = Path(records_dir).parent / TITLE_LIST_PLACEHOLDER
-    if placeholder.exists() and not allow_unfrozen_title_list:
+    """Title-list seal guard (GOLD_PROTOCOL v0.4 section 6).
+
+    Sealing is allowed only if the unfrozen placeholder is absent, the accepted title
+    list is present in the bundle root, and BUNDLE_MANIFEST.json's recorded hash of that
+    list still matches its current bytes (so a list edited after bundling is refused).
+    """
+    if allow_unfrozen_title_list:
+        return
+    bundle_root = Path(records_dir).parent
+    if (bundle_root / TITLE_LIST_PLACEHOLDER).exists():
         raise AnnotatorError(
             "The title list is not frozen yet, so records cannot be sealed."
+        )
+    title_list = bundle_root / TITLE_LIST_FILENAME
+    if not title_list.is_file():
+        raise AnnotatorError(
+            f"{TITLE_LIST_FILENAME} is missing from the bundle, so records cannot be sealed."
+        )
+    manifest_path = bundle_root / BUNDLE_MANIFEST_FILENAME
+    if not manifest_path.is_file():
+        raise AnnotatorError(
+            f"{BUNDLE_MANIFEST_FILENAME} is missing from the bundle, so records cannot be sealed."
+        )
+    try:
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError) as exc:
+        raise AnnotatorError(
+            f"{BUNDLE_MANIFEST_FILENAME} is not readable JSON, so records cannot be sealed."
+        ) from exc
+    recorded = manifest.get("title_list_sha256") if isinstance(manifest, dict) else None
+    if not isinstance(recorded, str) or recorded != sha256_file(title_list):
+        raise AnnotatorError(
+            f"{TITLE_LIST_FILENAME} does not match the hash sealed in "
+            f"{BUNDLE_MANIFEST_FILENAME}, so records cannot be sealed."
         )
 
 

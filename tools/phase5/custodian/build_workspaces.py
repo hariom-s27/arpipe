@@ -30,6 +30,10 @@ ROLES = ("ANNOTATOR_A", "ANNOTATOR_B")
 DOCUMENT_ID_RE = re.compile(r"^[A-Za-z0-9._-]+$")
 SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
 BUNDLE_ROOT = "annotator_bundle"
+# The workspace root files the custodian itself writes; a bundle member matching one of
+# these (case-insensitively) is refused as a collision. "ASSIGNMENT.csv" is the name the
+# app reads (annotator_core.ASSIGNMENT_COLUMNS); "BUNDLE_MANIFEST.json" is a bundle-shipped
+# payload file (make_bundle.py), not a reserved name, so it passes through untouched here.
 RESERVED_ROOT_NAMES = {"assignment.csv", "pdfs", "records", "WORKSPACE_MANIFEST.json"}
 
 
@@ -187,7 +191,7 @@ def build_workspaces(
                 shutil.copyfile(pdf_dir / name, destination)
                 if sha256_file(destination) != row["source_pdf_sha256"]:
                     raise WorkspaceBuildError(f"PDF changed during copy for {row['document_id']}")
-            (root / "assignment.csv").write_bytes(assignment)
+            (root / "ASSIGNMENT.csv").write_bytes(assignment)
             (root / "records").mkdir()
             refusals = annotator_core.workspace_refusals(root, root)
             if refusals:

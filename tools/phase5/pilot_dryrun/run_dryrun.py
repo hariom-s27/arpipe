@@ -24,7 +24,7 @@ from tools.phase5.scoring import raw_ab_agreement
 DOCUMENT_IDS = tuple(f"SYNTH_FIT_{number:02d}" for number in range(1, 5))
 ROLES = ("ANNOTATOR_A", "ANNOTATOR_B")
 FIXED_TIME = "2026-01-01T00:00:00+00:00"
-TITLE_OVERRIDE = "SYNTHETIC_TITLE_LIST_TEST_ONLY.txt"
+SYNTHETIC_TITLE_LIST_TEXT = "SYNTHETIC TEST ONLY: Management Discussion and Analysis\n"
 
 
 def _outside_repository(path: Path) -> Path:
@@ -53,15 +53,30 @@ def _write_roster(root: Path, split: str = "FIT") -> tuple[Path, Path]:
 
 
 def _apply_test_title_override(workspace: Path, *, enabled: bool) -> None:
+    """Satisfy the title-list seal guard in this TEMPORARY workspace only.
+
+    Removes the unfrozen placeholder, writes a synthetic TITLE_EQUIVALENCE_v0.md, and
+    replaces the placeholder-mode BUNDLE_MANIFEST.json (``title_list_sha256: null``,
+    shipped by ``make_bundle.build_bundle`` with no title-list arguments) with one whose
+    hash matches this synthetic list, exactly as ``--title-list``/``--title-list-sha256``
+    would produce. The real tools and repository title list are untouched.
+    """
     placeholder = workspace / make_bundle.PLACEHOLDER_NAME
     if not placeholder.is_file():
         raise ValueError("bundle title-list placeholder is missing")
     if not enabled:
         raise ValueError("synthetic title-list override must be passed explicitly")
     placeholder.unlink()
-    (workspace / TITLE_OVERRIDE).write_text(
-        "SYNTHETIC TEST ONLY: Management Discussion and Analysis\n",
-        encoding="utf-8", newline="\n",
+    title_list_bytes = SYNTHETIC_TITLE_LIST_TEXT.encode("utf-8")
+    title_list_sha256 = hashlib.sha256(title_list_bytes).hexdigest()
+    (workspace / make_bundle.TITLE_LIST_NAME).write_bytes(title_list_bytes)
+    manifest = {
+        "bundle_format": 1,
+        "title_list_sha256": title_list_sha256,
+        "files": {make_bundle.TITLE_LIST_NAME: title_list_sha256},
+    }
+    (workspace / make_bundle.MANIFEST_NAME).write_bytes(
+        (json.dumps(manifest, sort_keys=True, indent=2, ensure_ascii=True) + "\n").encode("utf-8")
     )
 
 
@@ -73,6 +88,8 @@ def _answer(document_id: str, role: str) -> dict:
         "primary_span_viewer": (2, 4),
         "start_page_shared": False,
         "end_page_shared": False,
+        "start_anchor_text": None,
+        "end_anchor_text": None,
         "viewer_name": "Synthetic viewer",
         "viewer_version": "1",
         "no_repository_access_attested": True,
@@ -167,7 +184,7 @@ def run_dryrun(report_dir: Path, *, allow_synthetic_title_override: bool = False
         for role in ROLES:
             workspace = workspace_root / role
             _apply_test_title_override(workspace, enabled=allow_synthetic_title_override)
-            assignment = annotator_core.load_assignment(workspace / "assignment.csv")
+            assignment = annotator_core.load_assignment(workspace / "ASSIGNMENT.csv")
             schema = annotator_core.load_schema(workspace)
             protocol_hash = annotator_core.protocol_version_hash(workspace)
             records_dir = workspace / "records"
