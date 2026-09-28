@@ -774,6 +774,7 @@ def test_form_has_no_default_answer_and_present_is_refused_until_both_are_chosen
         doc = {"document_id": "SYN-DOC-1", "source_pdf_sha256": FAKE_SHA, "physical_page_count": N}
         form = app.AnnotatorApp.__new__(app.AnnotatorApp)  # only the form: no dialogs, no workspace
         form.root, form.role, form.workspace_id = root, "ANNOTATOR_A", "ws-" + "0" * 32
+        form.role_from_file = False
         form.assignment, form.enums, form.schema = {"SYN-DOC-1": doc}, core.schema_enums(schema), schema
         form.protocol_hash, form.started_at, form.doc = "a" * 64, "2026-09-27T10:00:00+05:30", doc
         form._build()
@@ -821,6 +822,138 @@ def test_form_has_no_default_answer_and_present_is_refused_until_both_are_chosen
         assert absent["boundary_evidence"]["start_anchor_text"] is None
         assert absent["boundary_evidence"]["end_anchor_text"] is None
         assert core.validate_record(absent, schema) == []
+    finally:
+        root.destroy()
+
+
+
+# -- role per folder (F7) ----------------------------------------------------------
+
+def test_read_role_file_absent_returns_none(tmp_path):
+    assert core.read_role_file(tmp_path) is None
+
+
+@pytest.mark.parametrize("role", core.RAW_ROLES)
+def test_read_role_file_valid_returns_role(tmp_path, role):
+    (tmp_path / core.ROLE_FILENAME).write_text(role + "\n", encoding="utf-8")
+    assert core.read_role_file(tmp_path) == role
+
+
+@pytest.mark.parametrize(
+    "content", ["", "ANNOTATOR_C\n", "ANNOTATOR_A\nANNOTATOR_B\n", "  \n\n", "annotator_a\n"]
+)
+def test_read_role_file_invalid_is_refused(tmp_path, content):
+    (tmp_path / core.ROLE_FILENAME).write_text(content, encoding="utf-8")
+    with pytest.raises(core.AnnotatorError, match=re.escape(core.ROLE_FILENAME)):
+        core.read_role_file(tmp_path)
+
+
+def test_ask_role_uses_role_file_without_prompting(tmp_path, monkeypatch):
+    pytest.importorskip("tkinter")
+    from tools.phase5.annotator import annotator_app as app
+
+    monkeypatch.setattr(app, "BUNDLE_ROOT", tmp_path)
+    (tmp_path / core.ROLE_FILENAME).write_text("ANNOTATOR_B\n", encoding="utf-8")
+
+    def _fail_prompt(*_a, **_kw):
+        raise AssertionError("must not prompt when ROLE.txt is present")
+
+    monkeypatch.setattr(app.simpledialog, "askstring", _fail_prompt)
+    form = app.AnnotatorApp.__new__(app.AnnotatorApp)
+    form.root = None
+    assert form._ask_role() == ("ANNOTATOR_B", True)
+
+
+def test_ask_role_falls_through_to_prompt_when_no_role_file(tmp_path, monkeypatch):
+    pytest.importorskip("tkinter")
+    from tools.phase5.annotator import annotator_app as app
+
+    monkeypatch.setattr(app, "BUNDLE_ROOT", tmp_path)
+    monkeypatch.setattr(app.simpledialog, "askstring", lambda *_a, **_kw: "ANNOTATOR_A")
+    form = app.AnnotatorApp.__new__(app.AnnotatorApp)
+    form.root = None
+    assert form._ask_role() == ("ANNOTATOR_A", False)
+
+
+def test_ask_role_rejects_an_invalid_prompt_answer(tmp_path, monkeypatch):
+    pytest.importorskip("tkinter")
+    from tools.phase5.annotator import annotator_app as app
+
+    monkeypatch.setattr(app, "BUNDLE_ROOT", tmp_path)
+    monkeypatch.setattr(app.simpledialog, "askstring", lambda *_a, **_kw: "nope")
+    form = app.AnnotatorApp.__new__(app.AnnotatorApp)
+    form.root = None
+    with pytest.raises(core.AnnotatorError, match="ANNOTATOR_A or ANNOTATOR_B"):
+        form._ask_role()
+
+
+# -- window geometry and layout (F7) -----------------------------------------------
+
+def test_fit_geometry_keeps_defaults_on_a_large_screen():
+    from tools.phase5.annotator import annotator_app as app
+
+    assert app._fit_geometry(1920, 1080) == ((1100, 800), (900, 600))
+
+
+def test_fit_geometry_shrinks_to_a_small_screen():
+    from tools.phase5.annotator import annotator_app as app
+
+    assert app._fit_geometry(800, 500) == ((800, 500), (800, 500))
+
+
+def test_layout_wraps_labels_and_has_dual_scrollbars(schema):
+    tk = pytest.importorskip("tkinter")
+    from tkinter import ttk
+    from tools.phase5.annotator import annotator_app as app
+
+    try:
+        root = tk.Tk()
+    except tk.TclError:
+        pytest.skip("no display available for tkinter")
+    root.withdraw()
+    try:
+        doc = {"document_id": "SYN-DOC-1", "source_pdf_sha256": FAKE_SHA, "physical_page_count": N}
+        form = app.AnnotatorApp.__new__(app.AnnotatorApp)
+        form.root, form.role, form.role_from_file = root, "ANNOTATOR_A", False
+        form.workspace_id = "ws-" + "0" * 32
+        form.assignment, form.enums, form.schema = {"SYN-DOC-1": doc}, core.schema_enums(schema), schema
+        form.protocol_hash, form.started_at, form.doc = "a" * 64, "2026-09-27T10:00:00+05:30", doc
+        form._build()
+        assert isinstance(form.canvas, tk.Canvas)
+        assert form.canvas.cget("xscrollcommand") and form.canvas.cget("yscrollcommand")
+        assert str(form.hbar.cget("orient")) == "horizontal"
+        assert str(form.vbar.cget("orient")) == "vertical"
+        labels = [w for w in form.form.winfo_children() if isinstance(w, ttk.Label)]
+        assert labels, "expected at least one prompt label"
+        assert all(int(str(w.cget("wraplength"))) == app.LABEL_WRAP_PX for w in labels)
+        assert form.form.winfo_parent() == str(form.canvas)  # the form frame is inside the canvas
+        assert form.form.grid_columnconfigure(1)["weight"] == 1
+    finally:
+        root.destroy()
+
+
+def test_role_label_shows_set_by_this_folder_only_when_from_a_role_file(schema):
+    tk = pytest.importorskip("tkinter")
+    from tkinter import ttk
+    from tools.phase5.annotator import annotator_app as app
+
+    try:
+        root = tk.Tk()
+    except tk.TclError:
+        pytest.skip("no display available for tkinter")
+    root.withdraw()
+    try:
+        doc = {"document_id": "SYN-DOC-1", "source_pdf_sha256": FAKE_SHA, "physical_page_count": N}
+        form = app.AnnotatorApp.__new__(app.AnnotatorApp)
+        form.root, form.role, form.role_from_file = root, "ANNOTATOR_B", True
+        form.workspace_id = "ws-" + "0" * 32
+        form.assignment, form.enums, form.schema = {"SYN-DOC-1": doc}, core.schema_enums(schema), schema
+        form.protocol_hash, form.started_at, form.doc = "a" * 64, "2026-09-27T10:00:00+05:30", doc
+        form._build()
+        texts = [
+            str(w.cget("text")) for w in form.form.winfo_children() if isinstance(w, ttk.Label)
+        ]
+        assert any("Role: ANNOTATOR_B (set by this folder)" in t for t in texts)
     finally:
         root.destroy()
 

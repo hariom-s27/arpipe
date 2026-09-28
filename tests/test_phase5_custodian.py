@@ -73,7 +73,7 @@ def test_happy_path_builds_two_isolated_roles(synthetic_case, capsys):
     for role in builder.ROLES:
         workspace = out / role
         assert {p.name for p in workspace.iterdir()} == {
-            "README.md", "annotator_core.py", "pdfs", "ASSIGNMENT.csv", "records",
+            "README.md", "annotator_core.py", "pdfs", "ASSIGNMENT.csv", "records", "ROLE.txt",
         }
         assert list((workspace / "records").iterdir()) == []
         assert annotator_core.workspace_refusals(workspace, workspace) == []
@@ -174,6 +174,84 @@ def test_assignment_is_accepted_by_annotator_core(synthetic_case):
         assignment = annotator_core.load_assignment(out / role / "ASSIGNMENT.csv")
         assert set(assignment) == {row["document_id"] for row in rows}
         assert all(assignment[row["document_id"]]["physical_page_count"] == 2 for row in rows)
+
+
+# -- exe and ROLE.txt (F7) ----------------------------------------------------------
+
+def test_role_txt_is_always_written(synthetic_case):
+    root, roster, pdf_dir, bundle, _ = synthetic_case
+    out = root / "workspaces"
+    run_build(synthetic_case, out)
+    for role in builder.ROLES:
+        assert (out / role / "ROLE.txt").read_text(encoding="utf-8") == role + "\n"
+
+
+def test_exe_is_copied_and_hashed_into_both_workspaces(synthetic_case):
+    root, roster, pdf_dir, bundle, _ = synthetic_case
+    exe = root / "annotator_app.exe"
+    exe_bytes = b"synthetic exe payload, not a real executable\n"
+    exe.write_bytes(exe_bytes)
+    exe_sha256 = hashlib.sha256(exe_bytes).hexdigest()
+    out = root / "workspaces"
+    assert builder.main([
+        "--roster", str(roster), "--pdf-dir", str(pdf_dir),
+        "--bundle", str(bundle), "--out", str(out),
+        "--roles", "ANNOTATOR_A,ANNOTATOR_B",
+        "--exe", str(exe), "--exe-sha256", exe_sha256,
+    ]) == 0
+    manifest = json.loads((out / "WORKSPACE_MANIFEST.json").read_bytes())
+    manifest_by_path = {(entry["role"], entry["path"]): entry for entry in manifest}
+    for role in builder.ROLES:
+        destination = out / role / "annotator_app.exe"
+        assert destination.read_bytes() == exe_bytes
+        entry = manifest_by_path[(role, f"{role}/annotator_app.exe")]
+        assert entry["sha256"] == exe_sha256
+        assert entry["bytes"] == len(exe_bytes)
+
+
+def test_wrong_exe_sha256_is_refused_without_output(synthetic_case):
+    root, roster, pdf_dir, bundle, _ = synthetic_case
+    exe = root / "annotator_app.exe"
+    exe.write_bytes(b"synthetic exe payload\n")
+    out = root / "workspaces"
+    with pytest.raises(builder.WorkspaceBuildError, match="does not match"):
+        builder.build_workspaces(
+            roster, pdf_dir, bundle, out, exe=exe, exe_sha256="0" * 64,
+        )
+    assert not out.exists()
+
+
+def test_exe_and_exe_sha256_must_be_given_together(synthetic_case):
+    root, roster, pdf_dir, bundle, _ = synthetic_case
+    exe = root / "annotator_app.exe"
+    exe.write_bytes(b"synthetic exe payload\n")
+    out = root / "workspaces"
+    with pytest.raises(builder.WorkspaceBuildError, match="together"):
+        builder.build_workspaces(roster, pdf_dir, bundle, out, exe=exe)
+    assert not out.exists()
+    with pytest.raises(builder.WorkspaceBuildError, match="together"):
+        builder.build_workspaces(roster, pdf_dir, bundle, out, exe_sha256="0" * 64)
+    assert not out.exists()
+
+
+def test_without_exe_no_exe_is_written_but_role_txt_still_is(synthetic_case):
+    root, roster, pdf_dir, bundle, _ = synthetic_case
+    out = root / "workspaces"
+    run_build(synthetic_case, out)
+    for role in builder.ROLES:
+        assert not (out / role / "annotator_app.exe").exists()
+        assert (out / role / "ROLE.txt").is_file()
+
+
+@pytest.mark.parametrize("reserved_name", ["ROLE.txt", "role.txt", "annotator_app.exe", "ANNOTATOR_APP.EXE"])
+def test_bundle_member_colliding_with_role_or_exe_name_is_refused(synthetic_case, reserved_name):
+    root, _, pdf_dir, bundle, _ = synthetic_case
+    with zipfile.ZipFile(bundle, "a") as archive:
+        archive.writestr(f"annotator_bundle/{reserved_name}", "collision\n")
+    out = root / "workspaces"
+    with pytest.raises(builder.WorkspaceBuildError, match="collides"):
+        run_build(synthetic_case, out)
+    assert not out.exists()
 
 
 def test_bundle_manifest_json_does_not_collide_with_reserved_workspace_names(synthetic_case):

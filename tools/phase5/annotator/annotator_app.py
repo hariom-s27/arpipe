@@ -41,6 +41,20 @@ BOUNDARY_KEYS = [
     ("last_content_page", "Last content page"),
     ("next_section_heading_page", "Next section heading page"),
 ]
+# F7 layout: every prompt label wraps instead of stretching the label column, so the
+# input column (grid column 1, weight=1) stays visible without horizontal hunting.
+LABEL_WRAP_PX = 380
+WINDOW_SIZE = (1100, 800)
+WINDOW_MINSIZE = (900, 600)
+
+
+def _fit_geometry(
+    screen_w: int, screen_h: int
+) -> tuple[tuple[int, int], tuple[int, int]]:
+    """Clamp the desired window size/minsize to a screen smaller than either."""
+    width, height = min(WINDOW_SIZE[0], screen_w), min(WINDOW_SIZE[1], screen_h)
+    minwidth, minheight = min(WINDOW_MINSIZE[0], width), min(WINDOW_MINSIZE[1], height)
+    return (width, height), (minwidth, minheight)
 
 
 def _opt_int(text: str, label: str) -> int | None:
@@ -65,6 +79,9 @@ class AnnotatorApp:
     def __init__(self, root: tk.Tk) -> None:
         self.root = root
         root.title(f"ARPipe Gold annotation ({core.TOOL_VERSION}) - offline")
+        (size, minsize) = _fit_geometry(root.winfo_screenwidth(), root.winfo_screenheight())
+        root.geometry(f"{size[0]}x{size[1]}")
+        root.minsize(*minsize)
         core.assert_workspace_isolated(BUNDLE_ROOT, Path.cwd())
         self.workspace_id = core.load_or_create_workspace_id(RECORDS_DIR)
         self.schema = core.load_schema(BUNDLE_ROOT)
@@ -73,47 +90,72 @@ class AnnotatorApp:
         if not ASSIGNMENT_PATH.exists():
             raise core.AnnotatorError("ASSIGNMENT.csv is missing from the bundle folder.")
         self.assignment = core.load_assignment(ASSIGNMENT_PATH)
-        self.role = self._ask_role()
+        self.role, self.role_from_file = self._ask_role()
         self.doc: dict | None = None
         self.started_at: str | None = None
         self._build()
 
     # -- set-up ---------------------------------------------------------------
-    def _ask_role(self) -> str:
+    def _ask_role(self) -> tuple[str, bool]:
+        role = core.read_role_file(BUNDLE_ROOT)
+        if role is not None:
+            return role, True
         role = simpledialog.askstring(
             "Role", "Type your role exactly: ANNOTATOR_A or ANNOTATOR_B", parent=self.root
         )
         if role not in core.RAW_ROLES:
             raise core.AnnotatorError("Role must be ANNOTATOR_A or ANNOTATOR_B.")
-        return role
+        return role, False
 
     def _build(self) -> None:
         outer = ttk.Frame(self.root)
         outer.pack(fill="both", expand=True)
-        canvas = tk.Canvas(outer, width=900, height=760)
-        bar = ttk.Scrollbar(outer, orient="vertical", command=canvas.yview)
+        outer.rowconfigure(0, weight=1)
+        outer.columnconfigure(0, weight=1)
+        canvas = tk.Canvas(outer)
+        vbar = ttk.Scrollbar(outer, orient="vertical", command=canvas.yview)
+        hbar = ttk.Scrollbar(outer, orient="horizontal", command=canvas.xview)
+        self.canvas, self.vbar, self.hbar = canvas, vbar, hbar
         self.form = ttk.Frame(canvas)
         self.form.bind("<Configure>", lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
-        canvas.create_window((0, 0), window=self.form, anchor="nw")
-        canvas.configure(yscrollcommand=bar.set)
-        canvas.pack(side="left", fill="both", expand=True)
-        bar.pack(side="right", fill="y")
+        canvas_window = canvas.create_window((0, 0), window=self.form, anchor="nw")
+
+        def _sync_canvas_width(event: object) -> None:
+            canvas.itemconfigure(
+                canvas_window, width=max(event.width, self.form.winfo_reqwidth())
+            )
+
+        canvas.bind("<Configure>", _sync_canvas_width)
+        canvas.configure(yscrollcommand=vbar.set, xscrollcommand=hbar.set)
+        canvas.grid(row=0, column=0, sticky="nsew")
+        vbar.grid(row=0, column=1, sticky="ns")
+        hbar.grid(row=1, column=0, sticky="ew")
+
+        def _on_mousewheel(event: object) -> None:
+            canvas.yview_scroll(int(-1 * (event.delta / 120)), "units")
+
+        canvas.bind_all("<MouseWheel>", _on_mousewheel)
         f = self.form
+
+        def _label(text: str, **kw: object) -> ttk.Label:
+            return ttk.Label(f, text=text, wraplength=LABEL_WRAP_PX, justify="left", **kw)
+
         r = 0
 
         def row(label: str, widget: tk.Widget) -> None:
             nonlocal r
-            ttk.Label(f, text=label).grid(row=r, column=0, sticky="nw", padx=6, pady=3)
+            _label(label).grid(row=r, column=0, sticky="nw", padx=6, pady=3)
             widget.grid(row=r, column=1, sticky="we", padx=6, pady=3)
             r += 1
 
         if PLACEHOLDER.exists():
-            ttk.Label(
-                f, foreground="red",
-                text="Title list NOT frozen yet: you may explore the form but cannot submit.",
+            _label(
+                "Title list NOT frozen yet: you may explore the form but cannot submit.",
+                foreground="red",
             ).grid(row=r, column=0, columnspan=2, sticky="w", padx=6)
             r += 1
-        ttk.Label(f, text=f"Role: {self.role}    Workspace: {self.workspace_id}").grid(
+        role_note = " (set by this folder)" if self.role_from_file else ""
+        _label(f"Role: {self.role}{role_note}    Workspace: {self.workspace_id}").grid(
             row=r, column=0, columnspan=2, sticky="w", padx=6)
         r += 1
 
@@ -134,8 +176,10 @@ class AnnotatorApp:
         row("Viewer version", ttk.Entry(f, textvariable=self.viewer_version))
         row("Page count shown by viewer", ttk.Entry(f, textvariable=self.viewer_count))
         self.page_hint = tk.StringVar(value="viewer page X = stored index X-1")
-        ttk.Label(f, textvariable=self.page_hint, foreground="blue").grid(
-            row=r, column=1, sticky="w", padx=6)
+        ttk.Label(
+            f, textvariable=self.page_hint, foreground="blue",
+            wraplength=LABEL_WRAP_PX, justify="left",
+        ).grid(row=r, column=1, sticky="w", padx=6)
         r += 1
 
         self.presence = tk.StringVar()
@@ -225,9 +269,9 @@ class AnnotatorApp:
                 entry.configure(state="normal" if var.get() == "Yes" else "disabled")
 
             var.trace_add("write", _sync_anchor_state)
-        ttk.Label(
-            f, foreground="blue",
-            text="The mixed_start_page / mixed_end_page flags are set from these answers.",
+        _label(
+            "The mixed_start_page / mixed_end_page flags are set from these answers.",
+            foreground="blue",
         ).grid(row=r, column=1, sticky="w", padx=6)
         r += 1
 

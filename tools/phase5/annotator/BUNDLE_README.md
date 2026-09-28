@@ -1,5 +1,8 @@
 # ARPipe Gold annotation bundle (offline)
 
+**Start: open your folder and double-click `annotator_app.exe` (do not start it from a
+terminal that is inside another project). Your role is set by this folder.**
+
 Status: DRAFT_PENDING_PILOT. Tool version p5t-0.2.0.
 
 ## Before you start
