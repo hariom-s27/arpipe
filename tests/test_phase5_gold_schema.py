@@ -367,3 +367,152 @@ def test_gold_schema_v0_2_rejects_new_must_fail_cases() -> None:
     ]
     for index, record in enumerate(records):
         assert list(validator.iter_errors(record)), f"v0.2 must-fail record {index} passed"
+
+
+# F3b additions (schema v0.3, decisions 8.7). Everything above stays untouched; the v0.3
+# fixtures are derived from the v0.2 ones.
+V0_3_SCHEMA_PATH = REPO_ROOT / "docs" / "phase5" / "gold_schema_v0_3.json"
+
+
+def _v0_3_validator() -> Draft202012Validator:
+    schema = json.loads(V0_3_SCHEMA_PATH.read_text(encoding="utf-8"))
+    Draft202012Validator.check_schema(schema)
+    return Draft202012Validator(schema, format_checker=FormatChecker())
+
+
+def _v0_3_present(start_shared: bool = False, end_shared: bool = False) -> dict[str, object]:
+    record = _v0_2_present()
+    record["schema_version"] = "0.3"
+    evidence, flags = record["boundary_evidence"], record["flags"]
+    assert isinstance(evidence, dict) and isinstance(flags, list)
+    evidence["start_page_shared"] = start_shared
+    evidence["end_page_shared"] = end_shared
+    if start_shared:
+        flags.append("mixed_start_page")
+    if end_shared:
+        flags.append("mixed_end_page")
+        evidence["mixed_end_page"] = 9  # the primary end page of the synthetic record
+    return record
+
+
+def _v0_3_absent(reason: str = "NO_QUALIFYING_BODY_SECTION") -> dict[str, object]:
+    record = _v0_2_absent(reason)
+    record["schema_version"] = "0.3"
+    evidence = record["boundary_evidence"]
+    assert isinstance(evidence, dict)
+    evidence["start_page_shared"] = None
+    evidence["end_page_shared"] = None
+    return record
+
+
+def _v0_3_ambiguous() -> dict[str, object]:
+    record = _v0_1_records()[1]
+    record["schema_version"] = "0.3"
+    evidence = record["boundary_evidence"]
+    assert isinstance(evidence, dict)
+    evidence["mixed_end_page"] = None
+    evidence["start_page_shared"] = None
+    evidence["end_page_shared"] = None
+    return record
+
+
+def _changed(
+    record: dict[str, object], *, add_flags: tuple[str, ...] = (), drop: tuple[str, ...] = (),
+    **evidence: object,
+) -> dict[str, object]:
+    """``record`` with extra flags, dropped boundary_evidence keys and changed values."""
+    boundary, flags = record["boundary_evidence"], record["flags"]
+    assert isinstance(boundary, dict) and isinstance(flags, list)
+    boundary.update(evidence)
+    for key in drop:
+        boundary.pop(key)
+    flags.extend(add_flags)
+    return record
+
+
+def test_gold_schema_v0_3_accepts_shared_page_cases() -> None:
+    records = {
+        "PRESENT, neither page shared": _v0_3_present(),
+        "PRESENT, start shared": _v0_3_present(start_shared=True),
+        "PRESENT, end shared": _v0_3_present(end_shared=True),
+        "PRESENT, both shared": _v0_3_present(start_shared=True, end_shared=True),
+        "ABSENT, null answers": _v0_3_absent(),
+        "ABSENT NO_ENGLISH_MDA, null answers": _v0_3_absent("NO_ENGLISH_MDA"),
+        "AMBIGUOUS, null answers": _v0_3_ambiguous(),
+    }
+    validator = _v0_3_validator()
+    for name, record in records.items():
+        errors = list(validator.iter_errors(record))
+        assert not errors, f"v0.3 pass record {name!r}: {errors}"
+
+
+def _v0_3_must_fail_records() -> dict[str, dict[str, object]]:
+    return {
+        # PRESENT needs two real booleans
+        "PRESENT, null start answer": _changed(_v0_3_present(), start_page_shared=None),
+        "PRESENT, null end answer": _changed(_v0_3_present(), end_page_shared=None),
+        "PRESENT, start answer missing": _changed(_v0_3_present(), drop=("start_page_shared",)),
+        "PRESENT, end answer missing": _changed(_v0_3_present(), drop=("end_page_shared",)),
+        "PRESENT, both answers missing": _changed(
+            _v0_3_present(), drop=("start_page_shared", "end_page_shared")),
+        "PRESENT, string answer": _changed(_v0_3_present(), end_page_shared="No"),
+        "PRESENT, integer answer": _changed(_v0_3_present(), start_page_shared=0),
+        # ABSENT and AMBIGUOUS need two nulls
+        "ABSENT, start answer false": _changed(_v0_3_absent(), start_page_shared=False),
+        "ABSENT, end answer true": _changed(_v0_3_absent(), end_page_shared=True),
+        "ABSENT, answers missing": _changed(
+            _v0_3_absent(), drop=("start_page_shared", "end_page_shared")),
+        "AMBIGUOUS, start answer true": _changed(_v0_3_ambiguous(), start_page_shared=True),
+        "AMBIGUOUS, end answer false": _changed(_v0_3_ambiguous(), end_page_shared=False),
+        # flag present <-> answer true, both directions, both flags
+        "mixed_start_page flag, start answer false": _changed(
+            _v0_3_present(), add_flags=("mixed_start_page",)),
+        "start answer true, no mixed_start_page flag": _changed(
+            _v0_3_present(), start_page_shared=True),
+        "mixed_end_page flag, end answer false": _changed(
+            _v0_3_present(), add_flags=("mixed_end_page",)),
+        "end answer true, no mixed_end_page flag": _changed(
+            _v0_3_present(), end_page_shared=True),
+        "mixed_start_page flag on AMBIGUOUS": _changed(
+            _v0_3_ambiguous(), add_flags=("mixed_start_page",)),
+        "mixed_end_page flag on ABSENT": _changed(
+            _v0_3_absent(), add_flags=("mixed_end_page",)),
+    }
+
+
+def test_gold_schema_v0_3_rejects_bad_shared_page_answers_and_flag_mismatches() -> None:
+    validator = _v0_3_validator()
+    for name, record in _v0_3_must_fail_records().items():
+        assert list(validator.iter_errors(record)), f"v0.3 must-fail record {name!r} passed"
+
+
+def test_gold_schema_v0_3_requires_its_own_schema_version() -> None:
+    validator = _v0_3_validator()
+    for version in ("0.2", "0.4", None):
+        record = _v0_3_present()
+        if version is None:
+            record.pop("schema_version")
+        else:
+            record["schema_version"] = version
+        assert list(validator.iter_errors(record)), f"schema_version {version!r} accepted"
+
+
+def test_gold_schema_versions_are_selected_by_schema_version_and_never_shared() -> None:
+    v0_3, v0_2, v0_1 = _v0_3_present(), _v0_2_present(), _v0_1_records()[0]
+    # v0.2's `mixed_end_page` is an ordinary flag, valid without any shared-page answer
+    v0_2_mixed_end = _v0_2_present()
+    v0_2_mixed_end["flags"] = ["noncontiguous_hull", "mixed_end_page"]
+    mixed_end_evidence = v0_2_mixed_end["boundary_evidence"]
+    assert isinstance(mixed_end_evidence, dict)
+    mixed_end_evidence["mixed_end_page"] = 9
+
+    validators = {"0.1": _v0_1_validator(), "0.2": _v0_2_validator(), "0.3": _v0_3_validator()}
+    records = {"0.1": [v0_1], "0.2": [v0_2, v0_2_mixed_end], "0.3": [v0_3]}
+    for owner, owned in records.items():
+        for record in owned:
+            for version, validator in validators.items():
+                errors = list(validator.iter_errors(record))
+                if version == owner:
+                    assert not errors, f"v{owner} record rejected by its own schema: {errors}"
+                else:
+                    assert errors, f"v{owner} record accepted by the v{version} schema"

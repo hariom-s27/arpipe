@@ -30,14 +30,14 @@ BUNDLE_SOURCES = {
     "annotator_app.py": HERE / "annotator_app.py",
     "export_role.py": HERE / "export_role.py",
     "README.md": HERE / "BUNDLE_README.md",
-    "gold_schema_v0_2.json": REPO_ROOT / "docs" / "phase5" / "gold_schema_v0_2.json",
-    "GOLD_PROTOCOL_v0_2.md": REPO_ROOT / "docs" / "phase5" / "GOLD_PROTOCOL_v0_2.md",
+    "gold_schema_v0_3.json": REPO_ROOT / "docs" / "phase5" / "gold_schema_v0_3.json",
+    "GOLD_PROTOCOL_v0_3.md": REPO_ROOT / "docs" / "phase5" / "GOLD_PROTOCOL_v0_3.md",
 }
 PLACEHOLDER_NAME = "TITLE_LIST_NOT_YET_FROZEN.txt"
 PLACEHOLDER_TEXT = (
     "The annotator-facing MD&A title list is not frozen yet.\n"
     "Do not start annotating. The custodian replaces this file with the accepted\n"
-    "title list after the author freezes it (GOLD_PROTOCOL v0.1 section 6).\n"
+    "title list after the author freezes it (GOLD_PROTOCOL v0.3 section 6).\n"
 )
 RECORDS_DIR_ENTRY = "records/"
 

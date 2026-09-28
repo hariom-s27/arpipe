@@ -3,8 +3,8 @@
 Standard library only, plus ``jsonschema`` for validation. This module has no GUI,
 no network code and no PDF rendering. It never imports anything from ``arpipe/``.
 
-Status: DRAFT_PENDING_PILOT. Implements GOLD_PROTOCOL v0.1 sections 2, 7-9 and
-GOLD_SCHEMA v0.2 sections 1-3 for RAW records.
+Status: DRAFT_PENDING_PILOT. Implements GOLD_PROTOCOL v0.3 sections 2, 4, 7-9 and
+GOLD_SCHEMA v0.3 sections 1-3 for RAW records.
 
 Page convention (GOLD_PROTOCOL v0.1 section 2): annotators type the viewer's
 1-based physical page number (page labels disabled). The tool stores
@@ -25,9 +25,16 @@ from pathlib import Path
 from typing import Any, Iterable
 
 TOOL_VERSION = "p5t-0.1.0"
-SCHEMA_FILENAME = "gold_schema_v0_2.json"
-PROTOCOL_FILENAME = "GOLD_PROTOCOL_v0_2.md"
+SCHEMA_FILENAME = "gold_schema_v0_3.json"
+PROTOCOL_FILENAME = "GOLD_PROTOCOL_v0_3.md"
 VIEWER_PAGE_CONVENTION = "VIEWER_PHYSICAL_1_BASED_STORED_ZERO_BASED"
+# Decisions 8.7 / GOLD_PROTOCOL v0.3 section 4: two required Yes/No answers on every
+# PRESENT record, and the flags the tool derives from them (never separate form inputs).
+SHARED_PAGE_QUESTIONS = (
+    ("start_page_shared", "Start page shared with another section?"),
+    ("end_page_shared", "End page shared with another section?"),
+)
+DERIVED_FLAGS = ("mixed_start_page", "mixed_end_page")
 RAW_ROLES = ("ANNOTATOR_A", "ANNOTATOR_B")
 HASH_LOG_NAME = "HASH_LOG.txt"
 WORKSPACE_ID_NAME = "WORKSPACE_ID.txt"
@@ -233,6 +240,11 @@ def build_raw_record(form: dict[str, Any], ctx: dict[str, Any]) -> dict[str, Any
     ``ctx`` holds what the tool knows: document_id, source_pdf_sha256,
     physical_page_count, annotator_role, workspace_id, protocol_version_hash,
     started_at, and optionally completed_at.
+
+    A PRESENT form must answer both ``start_page_shared`` and ``end_page_shared`` with
+    True or False (no default). The ``mixed_start_page`` / ``mixed_end_page`` flags and
+    ``boundary_evidence.mixed_end_page`` are set from those answers alone, so they cannot
+    disagree with them; values the form supplies for them are ignored.
     """
     n = int(ctx["physical_page_count"])
     if form.get("viewer_page_count") != n:
@@ -240,6 +252,16 @@ def build_raw_record(form: dict[str, Any], ctx: dict[str, Any]) -> dict[str, Any
             f"The viewer shows {form.get('viewer_page_count')} pages but the verified "
             f"PDF has {n}. Check page labels are disabled; do not continue until they match."
         )
+    if form.get("presence_state") == "PRESENT":
+        for key, question in SHARED_PAGE_QUESTIONS:
+            if not isinstance(form.get(key), bool):
+                raise AnnotatorError(f"{question} Answer Yes or No before you continue.")
+    start_shared, end_shared = form.get("start_page_shared"), form.get("end_page_shared")
+    derived_flags = {
+        flag
+        for flag, shared in (("mixed_start_page", start_shared), ("mixed_end_page", end_shared))
+        if shared is True
+    }
     primary = form.get("primary_span_viewer")
     primary_span = None if primary is None else _span(primary[0], primary[1], n, "primary span")
     be = form.get("boundary_evidence_viewer", {}) or {}
@@ -248,7 +270,7 @@ def build_raw_record(form: dict[str, Any], ctx: dict[str, Any]) -> dict[str, Any
         for flag, pages in (form.get("flag_pages_viewer") or {}).items()
     }
     record: dict[str, Any] = {
-        "schema_version": "0.2",
+        "schema_version": "0.3",
         "record_type": "RAW",
         "document_id": ctx["document_id"],
         "source_pdf_sha256": ctx["source_pdf_sha256"],
@@ -263,7 +285,7 @@ def build_raw_record(form: dict[str, Any], ctx: dict[str, Any]) -> dict[str, Any
         "gap_pages": sorted(
             {viewer_to_stored(p, n, "gap page") for p in (form.get("gap_pages_viewer") or [])}
         ),
-        "flags": sorted(set(form.get("flags") or [])),
+        "flags": sorted((set(form.get("flags") or []) - set(DERIVED_FLAGS)) | derived_flags),
         "stub_word_count": form.get("stub_word_count"),
         "csr_esg_pages": sorted(
             {
@@ -287,7 +309,11 @@ def build_raw_record(form: dict[str, Any], ctx: dict[str, Any]) -> dict[str, Any
             "next_section_heading_page": _opt_page(
                 be.get("next_section_heading_page"), n, "next section heading"
             ),
-            "mixed_end_page": _opt_page(be.get("mixed_end_page"), n, "mixed end"),
+            "mixed_end_page": (
+                primary_span["end_page"] if end_shared is True and primary_span else None
+            ),
+            "start_page_shared": start_shared,
+            "end_page_shared": end_shared,
             "viewer_start_page_1based": None if primary is None else primary[0],
             "viewer_end_page_1based": None if primary is None else primary[1],
         },
@@ -330,7 +356,7 @@ def _parse_ts(value: str) -> _dt.datetime:
 
 
 def tool_invariant_errors(record: dict[str, Any]) -> list[str]:
-    """Numeric and cross-field checks GOLD_SCHEMA v0.2 assigns to the tool."""
+    """Numeric and cross-field checks GOLD_SCHEMA v0.3 assigns to the tool."""
     errors: list[str] = []
     try:
         n = int(record["structured_provenance"]["physical_page_count"])
@@ -416,6 +442,24 @@ def tool_invariant_errors(record: dict[str, Any]) -> list[str]:
                 errors.append(f"flag_pages[{flag!r}] must be sorted")
             if any(not 0 <= p < n for p in pages if isinstance(p, int)):
                 errors.append(f"flag_pages[{flag!r}] outside the document")
+
+    # Decisions 8.7: each shared-page answer, its mixed_* flag and mixed_end_page agree.
+    for answer_key, flag in (
+        ("start_page_shared", "mixed_start_page"),
+        ("end_page_shared", "mixed_end_page"),
+    ):
+        answer = be.get(answer_key)
+        if isinstance(answer, bool) and (flag in flags) != answer:
+            errors.append(f"flag {flag!r} must be set exactly when {answer_key} is true")
+    end_shared, mixed_end = be.get("end_page_shared"), be.get("mixed_end_page")
+    if end_shared is True:
+        if not isinstance(primary, dict) or mixed_end != primary.get("end_page"):
+            errors.append(
+                "boundary_evidence.mixed_end_page must equal the primary end page "
+                "when end_page_shared is true"
+            )
+    elif end_shared is False and mixed_end is not None:
+        errors.append("boundary_evidence.mixed_end_page must be null when end_page_shared is false")
 
     ts = record.get("timestamps") or {}
     try:

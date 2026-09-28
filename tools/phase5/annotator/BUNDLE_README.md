@@ -10,7 +10,7 @@ Status: DRAFT_PENDING_PILOT. Tool version p5t-0.1.0.
   the form opens but you cannot submit.
 - The custodian gives you `ASSIGNMENT.csv` (your documents) and the frozen title
   list. While `TITLE_LIST_NOT_YET_FROZEN.txt` is in this folder, nothing can be sealed.
-- Read `GOLD_PROTOCOL_v0_1.md`. It is the rulebook.
+- Read `GOLD_PROTOCOL_v0_3.md`. It is the rulebook.
 
 ## Pages: always the viewer's physical page, 1-based
 1. In your PDF viewer, **turn page labels off** so the page box shows 1, 2, 3 ...

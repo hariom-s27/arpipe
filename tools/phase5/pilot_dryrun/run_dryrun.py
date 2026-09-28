@@ -71,6 +71,8 @@ def _answer(document_id: str, role: str) -> dict:
         "presence_state": "PRESENT",
         "presence_reason_code": "BODY_QUALIFYING_TITLE",
         "primary_span_viewer": (2, 4),
+        "start_page_shared": False,
+        "end_page_shared": False,
         "viewer_name": "Synthetic viewer",
         "viewer_version": "1",
         "no_repository_access_attested": True,
@@ -81,6 +83,8 @@ def _answer(document_id: str, role: str) -> dict:
             presence_state="ABSENT",
             presence_reason_code="NO_QUALIFYING_BODY_SECTION",
             primary_span_viewer=None,
+            start_page_shared=None,
+            end_page_shared=None,
         )
     elif document_id == DOCUMENT_IDS[2] and role == "ANNOTATOR_B":
         form["primary_span_viewer"] = (3, 4)
