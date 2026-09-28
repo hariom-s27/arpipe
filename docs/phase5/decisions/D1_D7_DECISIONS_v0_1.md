@@ -141,3 +141,10 @@ On the FIT recalibration rerun, over the documents expected CLEAN or PARTIAL (i.
 - `max_bad_char_share` = max(0.05, 2 × the highest bad_char_share among them)
 - `min_latin_word_share` = min(0.50, 0.5 × the lowest latin_word_share among them)
 The resulting values are written into SAP v0.2 and the script defaults **before any VALIDATION or HOLDOUT document is scored**. With 3 positives in FIT, the thesis states that the detector is only lightly tested and reports it separately on VALIDATION and HOLDOUT.
+
+### 8.5 Clarifications (DECIDED 2026-09-28, before the rerun)
+- **Clean set per check (§8.4).** Body check: clean = every FIT document whose body is not broken, i.e. all except Span 2018 (`INE004E01016_2018`); Jubilant 2013 and Gujarat Cotex 2017 have clean bodies and count as clean here. Heading check: the expected positives are the 3 listed (Span 2018, Jubilant 2013, Gujarat Cotex 2017).
+- **Expected rerun values (stated in advance):** `min_latin_word_share` ≈ 0.40 (half of the lowest clean value, currently 0.796); `max_bad_char_share` likely stays 0.05 once Reliance 2018 is measured on a text page. Any other outcome is checked before the numbers are recorded.
+- **`start_page_shared` validation.** In the same rerun, compare the computed flag with the review's mid-page-start labels (FIT notes). If decorative banners or photos above a full-page heading cause false "shared" flags, replace the 20% rule by "real body text (excluding running headers and page furniture) appears above the heading" before any VALIDATION use.
+- **`end_page_shared` source.** Schema v0.2 requires `boundary_evidence.mixed_end_page` on every record (page or null). Rule: end_page_shared = (mixed_end_page is not null). The protocol tells annotators that null means "the end page is not shared".
+- **Word list.** The Loughran–McDonald Master Dictionary (a versioned finance word list), with its version and file SHA-256 recorded in the output header. The script accepts either a one-word-per-line file or the dictionary CSV (column `Word`).
