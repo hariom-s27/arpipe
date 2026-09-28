@@ -431,6 +431,8 @@ def test_bundle_contains_exactly_allowed_files(tmp_path):
     assert sorted(m[0] for m in manifest) == names
     assert "annotator_bundle/gold_schema_v0_2.json" in names
     assert "annotator_bundle/gold_schema_v0_1.json" not in names
+    assert "annotator_bundle/GOLD_PROTOCOL_v0_2.md" in names
+    assert "annotator_bundle/GOLD_PROTOCOL_v0_1.md" not in names
     assert not any("arpipe/" in n.split("annotator_bundle/", 1)[1] for n in names)
     # deterministic
     out2 = tmp_path / "again.zip"

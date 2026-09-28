@@ -31,7 +31,7 @@ BUNDLE_SOURCES = {
     "export_role.py": HERE / "export_role.py",
     "README.md": HERE / "BUNDLE_README.md",
     "gold_schema_v0_2.json": REPO_ROOT / "docs" / "phase5" / "gold_schema_v0_2.json",
-    "GOLD_PROTOCOL_v0_1.md": REPO_ROOT / "docs" / "phase5" / "GOLD_PROTOCOL_v0_1.md",
+    "GOLD_PROTOCOL_v0_2.md": REPO_ROOT / "docs" / "phase5" / "GOLD_PROTOCOL_v0_2.md",
 }
 PLACEHOLDER_NAME = "TITLE_LIST_NOT_YET_FROZEN.txt"
 PLACEHOLDER_TEXT = (
