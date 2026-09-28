@@ -97,6 +97,9 @@ ALLOWED_PHASE2_1_PATTERNS = [
     # CURRENT_DECISIONS 0c, PILOT_PLAN v0.1.1 §5–6: synthetic P5-C dry run only.
     re.compile(r"^tools/phase5/pilot_dryrun/.+$"),
     re.compile(r"^tests/test_phase5_pilot_dryrun[^/]*\.py$"),
+    # CURRENT_DECISIONS 0c, D1_D7 §7.3
+    re.compile(r"^tools/phase5/derived/.+$"),
+    re.compile(r"^tests/test_phase5_derived[^/]*\.py$"),
     # Exact governance-closeout paths; no directory-wide exception.
     *(re.compile(rf"^{re.escape(path)}$") for path in GOVERNANCE_CLOSEOUT_ADMITTED_PATHS),
     # T0.4 Amendment 01: exact paths only.
