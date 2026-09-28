@@ -1,6 +1,7 @@
 """Pure, standard-library SAP v0.1 scoring functions.
 
-Gold records are the v0.1 JSON-schema records. Prediction rows use the SAP §3
+Gold records use schema v0.1 when ``schema_version`` is absent and v0.2 when it
+is exactly ``"0.2"``. Prediction rows use the SAP §3
 fields ``document_id``, ``source_pdf_sha256``, ``disposition``, ``span``,
 ``reasons``, and ``physical_page_count``. Callers group rows by claimed document
 ID; the row's own document ID is still checked for identity.
@@ -19,6 +20,17 @@ STATUSES = (
     "NO_OUTPUT", "DUPLICATE", "IDENTITY_INVALID", "QUARANTINE",
     "NOT_LOCATED", "TYPE_INVALID", "ORDER_INVALID", "RANGE_INVALID", "VALID",
 )
+GOLD_SCHEMA_V0_1_FILENAME = "gold_schema_v0_1.json"
+GOLD_SCHEMA_V0_2_FILENAME = "gold_schema_v0_2.json"
+
+
+def gold_schema_filename(record: Mapping) -> str:
+    """Select one Gold schema from the record version; never try another."""
+    if "schema_version" not in record:
+        return GOLD_SCHEMA_V0_1_FILENAME
+    if record["schema_version"] == "0.2":
+        return GOLD_SCHEMA_V0_2_FILENAME
+    raise ValueError("Unsupported Gold schema_version")
 
 
 def _integer(value: object) -> bool:
@@ -86,6 +98,8 @@ def inclusive_iou(prediction_span: Mapping, gold_span: Mapping) -> float:
 def _validate_gold(record: Mapping) -> None:
     """SAP §1; Gold Schema §§2–3: block malformed scoring-relevant Gold."""
     try:
+        schema_filename = gold_schema_filename(record)
+        is_v0_2 = schema_filename == GOLD_SCHEMA_V0_2_FILENAME
         doc_id = record["document_id"]
         source_hash = record["source_pdf_sha256"]
         state = record["presence_state"]
@@ -115,10 +129,24 @@ def _validate_gold(record: Mapping) -> None:
             raise ValueError("PRESENT Gold needs one valid primary span")
     elif primary is not None:
         raise ValueError("Non-PRESENT Gold cannot have a primary span")
-    if state == "ABSENT" and (alternatives or admissible or gaps or ambiguity_code != "NONE" or reason not in (
-            "NO_QUALIFYING_BODY_SECTION", "TOC_ONLY", "POINTER_ONLY", "CONFUSABLE_SECTION_ONLY",
-            "NOT_AN_ANNUAL_REPORT")):
-        raise ValueError("ABSENT Gold cannot have alternative or admissible spans")
+    if state == "ABSENT":
+        absent_reasons = {
+            "NO_QUALIFYING_BODY_SECTION", "TOC_ONLY", "POINTER_ONLY",
+            "CONFUSABLE_SECTION_ONLY", "NOT_AN_ANNUAL_REPORT",
+        }
+        if is_v0_2:
+            absent_reasons.update({"NO_ENGLISH_MDA", "EXTERNAL_REFERENCE_ONLY"})
+        hindi_only = is_v0_2 and reason == "NO_ENGLISH_MDA"
+        alternatives_invalid = (
+            any(
+                not isinstance(span, Mapping) or span.get("type") != "HINDI_COPY"
+                for span in alternatives
+            )
+            if hindi_only else bool(alternatives)
+        )
+        if (alternatives_invalid or admissible or gaps or ambiguity_code != "NONE"
+                or reason not in absent_reasons):
+            raise ValueError("Invalid ABSENT Gold spans or reason")
     if state == "AMBIGUOUS" and (not admissible or ambiguity_code == "NONE" or reason not in (
             "PRESENCE_UNRESOLVABLE", "START_UNRESOLVABLE", "END_UNRESOLVABLE",
             "SPAN_UNRESOLVABLE", "TITLE_CONTEXT_UNRESOLVABLE")):
@@ -130,6 +158,33 @@ def _validate_gold(record: Mapping) -> None:
         raise ValueError("Invalid Gold gap pages")
     if gaps and (primary is None or any(not primary["start_page"] < page < primary["end_page"] for page in gaps)):
         raise ValueError("Gold gap must be strictly inside the primary hull")
+    if not is_v0_2 and (
+        "stub_word_count" in record
+        or "csr_esg_pages" in record
+        or {"stub", "contains_csr_esg"} & set(flags)
+    ):
+        raise ValueError("v0.1 Gold contains a v0.2-only field or flag")
+    if is_v0_2:
+        stub_count = record.get("stub_word_count")
+        if (stub_count is not None
+                and (not _integer(stub_count) or stub_count < 0 or "stub" not in flags)):
+            raise ValueError("Invalid Gold stub_word_count")
+        if state != "PRESENT" and ({"stub", "contains_csr_esg"} & set(flags)):
+            raise ValueError("stub and contains_csr_esg require PRESENT Gold")
+        csr_pages = record.get("csr_esg_pages", [])
+        if (not isinstance(csr_pages, list)
+                or any(not _integer(page) or page < 0 for page in csr_pages)
+                or len(csr_pages) != len(set(csr_pages))
+                or bool(csr_pages) != ("contains_csr_esg" in flags)):
+            raise ValueError("Invalid Gold csr_esg_pages")
+        if csr_pages and (
+            primary is None
+            or any(not primary["start_page"] <= page <= primary["end_page"] for page in csr_pages)
+            or any(page in gaps for page in csr_pages)
+        ):
+            raise ValueError(
+                "Gold CSR/ESG page must be inside the primary span and outside gaps"
+            )
 
 
 def _ratio(numerator: int | float, denominator: int) -> float | str:
@@ -229,7 +284,11 @@ def score_documents(gold_records: Sequence[Mapping], predictions: Mapping[str, S
             start_errors.append(ps - gs)
             end_errors.append(pe - ge)
             if (inclusive_iou(pred_span, gold["primary_span"]) == 0
-                    and any(inclusive_iou(pred_span, alt) > 0 for alt in gold["alternative_spans"])):
+                    and any(
+                        alt.get("type") != "HINDI_COPY"
+                        and inclusive_iou(pred_span, alt) > 0
+                        for alt in gold["alternative_spans"]
+                    )):
                 alternative_only += 1
         if state == "AMBIGUOUS":
             if status == "VALID":
