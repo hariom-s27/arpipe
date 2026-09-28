@@ -18,6 +18,26 @@
 
 ---
 
+## 2026-09-28 (early morning): the 60-document title review finished
+- **Did:**
+  - The author reviewed all 60 FIT documents in `review.html`, checking each with this chat. The export is `MDNA_TITLE_REVIEW_v0_1.csv`, saved in `D:\gold_blind\output\p5b3\review\`.
+    - 60 rows; 43,813 bytes; written 28-09-2026 06:26:50.
+    - SHA-256 `1374BBAAFEAEF6587BC386578011CF175066B63685B91B0F40026022699BB7DA`.
+  - A backup copy is at `D:\gold_review_backup\`, with the same hash. It is deliberately **outside** the thesis folder.
+  - Saved `claude/round3/REVIEW_LEARNINGS_60_FIT_DOCS.md`: rules, the D1–D7 open decisions, title facts, pipeline improvements and issuer series.
+  - Saved `REVIEW_NOTES_TEMPLATE.md`. Updated `MDNA_START_END_CHECKLIST.md` with the heading-style test and the content test.
+- **Found:**
+  - The TOC page number is the reliable start signal. Pre-fill misses came mostly from wrapped titles, pointers taken as the BODY, running headers, decorative headings and broken text layers.
+  - The TOC and body titles often differ ("and"/"&", "'s", "Report", year).
+  - The end of MD&A inside the Directors' Report needs a style or content test (HDFC).
+- **Decided (rule):** Gold files never go inside `D:\sem_iitk\sem9\thesis`, where agents can read them. The working copy stays in `D:\gold_blind` and the backup in `D:\gold_review_backup`. The CSV enters the repo only as one planned commit, after it is checked and D1–D7 are decided.
+- **Remains:**
+  - The author attaches the CSV to this chat.
+  - Open checks: CRISIL 2017 start, the HDFC ends, Tata Steel 2024, the PVR 2018 and IDBI 2024 in-between pages, Modern Steels 2017.
+  - D1–D7 decisions.
+  - "7 vs 4"; SAP options; A1–A5; K1.
+- **Next:** validate the CSV; count the patterns; draft the title rules; freeze the title list.
+
 ## 2026-09-28 (night): dry run merged; SAP OPEN-items options memo
 - **Did:**
   - PR #45 (dry run) and #46 (log) merged.
