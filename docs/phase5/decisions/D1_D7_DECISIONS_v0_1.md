@@ -10,7 +10,7 @@ Applies to: title rules + Gold protocol. Does NOT by itself change the frozen re
 | D3 | Divider / MD&A own-contents page is the start | only if it names MD&A alone. SAP reports exact-start and ±1-page start |
 | D4 | Inside Directors' Report: end before the first statutory item *after* MD&A begins | closed list of statutory items (s.134(3) / Accounts Rules r.8). Shared topic (e.g. internal controls) stays in MD&A only if under an MD&A heading |
 | D5 | TOC grouping does not decide which report a page belongs to | annotator note |
-| D6 | Keep CSR pages (Welspun 2012) | flag `CONTAINS_CSR` so climate-word counts can exclude those pages |
+| D6 | Keep CSR pages (Welspun 2012) | flag `CONTAINS_CSR` so climate-word counts can exclude those pages → renamed `contains_csr_esg` with a page list, see §6–§7 |
 | D7 | Exclude only the Board's-report "Subsidiary Companies" section (r.8(1)) | subsidiary discussion inside a standalone MD&A stays in |
 
 ## 2. Boundary hierarchy (ties D4, D6, D7 together)
@@ -40,11 +40,11 @@ New findings from the check:
 - **Cosmetic data issue:** `INE004C01028_2017` has `REVIEWER_toc_source = TYPED` with no TOC title/page (should be blank). Fixing it changes the hash → either fix now as v0.1.1 or record as a known quirk in the commit message. Check schema/intake won't reject it.
 - F4 (pointer to outside the report): no FIT row has this. Rule stays a priori.
 
-## 4. Follow-ups (remaining)
-- F1a Author: eyeball Reliance 2018 p43 (names MD&A alone?); get Modern Steels 2024 word count; decide CSR vs CSR+ESG flag scope; decide the `toc_source` quirk.
-- F2 Write the D4 closed statutory-item list.
+## 4. Follow-ups (status updated 2026-09-28: F1a, F2, F4 DONE in §5–§6; F3 in progress; F5 open)
+- ~~F1a~~ DONE (§5, §6). Author: eyeball Reliance 2018 p43 (names MD&A alone?); get Modern Steels 2024 word count; decide CSR vs CSR+ESG flag scope; decide the `toc_source` quirk.
+- ~~F2~~ DONE (§5, §6 item 16). Write the D4 closed statutory-item list.
 - F3 Schema/tool: add ABSENT reason `NO_ENGLISH_MDA`; flags `STUB`(word_count), `CONTAINS_CSR` (optional `EMBEDDED_IN_DR`). Needs schema version bump + P5-T annotator update + tests.
-- F4 Decide: pointer target outside the report (e.g. website) → which outcome/reason code? (a priori; no FIT case)
+- ~~F4~~ DONE (§6: `EXTERNAL_REFERENCE_ONLY`). Decide: pointer target outside the report (e.g. website) → which outcome/reason code? (a priori; no FIT case)
 - F5 Protocol: correct N1; add the §2 hierarchy; add the no-body-heading start line; SAP sensitivity with/without D3-divider and D6-CSR pages.
 - Then: freeze title list; commit CSV as one planned commit.
 ## 5. F1a answers and F2 list (added 2026-09-28, coordinating chat)
@@ -90,15 +90,30 @@ Tie-break list (topics that appear in both MD&A and the Board's report): interna
 ## 7. Field specifications for the schema update (F3)
 ### 7.1 New ABSENT reason codes
 - `NO_ENGLISH_MDA`: the report has an MD&A only in a language other than English (D1). The Hindi copy of a bilingual report is recorded as an alternative span of type `HINDI_COPY` (already in v0.1); the primary span is always the English copy.
+  - **Hindi-only (decided 2026-09-28):** v0.1 forbids any span on ABSENT. v0.2 makes one exception: ABSENT + `NO_ENGLISH_MDA` may carry alternative spans of type `HINDI_COPY` (and only that type), so the page location is kept. All other ABSENT records still have no spans.
 - `EXTERNAL_REFERENCE_ONLY`: the report only points outside itself for MD&A (F4).
 
 ### 7.2 New annotator fields
-- `stub` (flag) + `stub_word_count` (integer ≥ 0): required together. `stub` means the MD&A body is under 250 words (Loughran–McDonald convention); word count excludes the heading. Only allowed when `presence_state = PRESENT`.
+- `stub` (flag): the annotator ticks it when the MD&A is visibly short (**at most about one page of body text**). Annotators do **not** count words. Only allowed when `presence_state = PRESENT`.
+- `stub_word_count` (integer ≥ 0 or null): **optional**; filled by hand only when the text layer is broken (the script in §7.3 cannot count). Not required by the flag.
+- The word count for every PRESENT span is computed by the §7.3 script, so downstream users apply their own cut-off (250 words, Loughran–McDonald; 450, Colak & Mai). No cut-off is part of Gold.
 - `contains_csr_esg` (flag) + `csr_esg_pages` (array of unique 0-based page integers): required together. Every page must lie inside `primary_span` (start ≤ p ≤ end) and must not be in `gap_pages`. Purpose: text measures can drop exactly these pages. Only allowed when `presence_state = PRESENT`.
 
 ### 7.3 BROKEN_TEXT: computed by code, not by the annotator
 Deterministic, per document, computed after Gold is sealed from the Gold record + the PDF text layer (PyMuPDF), stored in a separate derived file (not in the annotator record):
 - `heading_in_text_layer` = the normalised Gold body title (casefold; "&"→"and"; drop "'s", "report", year suffixes, item/annexure labels; collapse whitespace and remove spaces) is a substring of the normalised text of the Gold start page, with the same normalisation. For a title wrapped over lines, joining the lines is covered by the space removal.
-- `text_layer_broken` = on the start page, the share of characters that are U+FFFD, private-use (U+E000–U+F8FF) or control characters is > 5%, **or** fewer than 50% of whitespace-separated tokens of length ≥ 3 are purely ASCII-alphabetic.
+- `text_layer_broken` = on the start page, the share of characters that are U+FFFD, private-use (U+E000–U+F8FF) or control characters is > 5%, **or** fewer than 50% of the *counted* tokens are real Latin words, where:
+  - tokens are split on whitespace and have leading/trailing punctuation stripped ("Company," → "Company", "(CSR)" → "CSR");
+  - tokens containing any digit are **not counted** ("1,234.56", "FY2024");
+  - tokens made only of non-Latin letters (e.g. Devanagari headers) are **not counted**;
+  - of the remaining tokens with length ≥ 3, a "real Latin word" is purely ASCII letters, optionally with internal apostrophes or hyphens.
+- **Calibration before use:** run once on the 60 FIT documents; it must flag the 8 documents the review marked as broken text and no clean ones. Adjust only the thresholds, record the result, then freeze the rule before any HOLDOUT use.
+- The same script also records `mdna_word_count` for every PRESENT span (all pages start..end, minus gap pages; `csr_esg_word_count` separately).
 - `BROKEN_TEXT` = `text_layer_broken`. `HEADING_NOT_IN_TEXT_LAYER` = not `heading_in_text_layer` (covers decorative / image headings too). SAP reports both as strata.
 - The existing annotator flag `legacy_or_corrupted_boundary_heading` stays as the annotator's own observation; agreement between it and the computed `BROKEN_TEXT` is reported, not enforced.
+
+### 7.4 Record version field
+- v0.2 records carry a new required field `schema_version` with the constant value `"0.2"`. Records without it are v0.1. Scoring and tools pick the schema from this field; they never try both.
+
+### 7.5 Keeping contested rules reversible
+- Where D3, D4 or D7 decided a boundary, annotators also record the other admissible boundary as an alternative span of type `BOUNDARY_ALTERNATIVE` (already in v0.1). A later change to those rules, before HOLDOUT scoring, then means switching spans, not re-annotating. After HOLDOUT scoring a rule change is reported only as a sensitivity result.
