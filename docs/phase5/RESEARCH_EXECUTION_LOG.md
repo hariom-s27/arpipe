@@ -18,6 +18,37 @@
 
 ---
 
+## 2026-09-29 (early morning): F7 pilot-ready built and verified; .exe built; draw digest decided
+- **Did:**
+  - `.exe` built from main `0450456` (Python 3.14.3, PyInstaller 6.22.3, jsonschema 4.26.0; in `D:\gold_tools\exe_build`), SHA-256 `44DD37BC2ED9763BE78E1B84D34DDA9EA42A94B440F9F0A00D7D715D9CB77159`.
+    - It starts, and its isolation check correctly refused a launch from inside the repo.
+    - The form's input column was pushed off-screen by a long label → fixed in F7.
+    - This `.exe` is superseded; rebuild after the F7 merge.
+  - F7 (Claude Code, Sonnet 5 Extra High), branch `phase5-f7-pilot-ready` (`9b928bb`):
+    - form layout: wrapped labels, scroll area with both scrollbars, window size fitted to the screen;
+    - role set by `ROLE.txt`;
+    - `tools/phase5/pilot_draw.py` (PILOT_PLAN v0.1.1 §2–§4, 4-token core set);
+    - `tools/phase5/stage_pdfs.py` (copy from `live_store`, hash-verified);
+    - custodian `--exe/--exe-sha256` and `ROLE.txt`;
+    - README start banner.
+  - Decisions §9.4: issuer-level draw digests = `SHA-256(domain || 0x00 || company_id)`.
+- **Verified here:**
+  - Phase 5 tests 220 passed. The 2 failures are GUI geometry tests that import tkinter, which is absent on this Linux box; they pass on the author's PC.
+  - Author's PC full suite: the same 11 known failures, plus 48 new passing tests.
+  - The agent found why 3 of the known failures happen: `--basetemp` sits inside the repo, so the isolation check trips. It is a test-setup artifact, not a tool bug.
+  - This chat's own 22 checks all pass on synthetic data:
+    - frame (HOLDOUT, DEVELOPMENT and _MISSING excluded);
+    - pair tie broken by a **hand-computed** digest;
+    - hard flag only from core CANDIDATE rows on pair members (devanagari and NOT_OBSERVED ignored);
+    - hard-issuer reservation, fill by issuer digest, retest disjoint (10 + 6);
+    - deterministic; out-dir inside the repo refused; fewer than 5 issuers refused;
+    - staging copies and verifies;
+    - `ROLE.txt` valid/invalid handling.
+- **Remains:**
+  - Merge F7 → rebuild the `.exe` → author freezes the pilot title list → bundle with the list → run the draw (once) → stage PDFs → build the A/B workspaces with the `.exe`.
+  - F8 adjudication tool.
+  - Minor follow-up: make the 2 geometry tests skip when tkinter is missing.
+
 ## 2026-09-29 (night): scope decided; F6 built and verified; K1 answered
 - **Did:**
   - Author decisions recorded as decisions §9:
