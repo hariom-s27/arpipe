@@ -240,3 +240,130 @@ def test_gold_schema_v0_1_rejects_all_must_fail_records() -> None:
     assert len(records) >= 6
     for index, record in enumerate(records):
         assert list(validator.iter_errors(record)), f"must-fail record {index} passed"
+
+
+# F3 additions are isolated from the unchanged v0.1 fixtures and tests above.
+V0_2_SCHEMA_PATH = REPO_ROOT / "docs" / "phase5" / "gold_schema_v0_2.json"
+
+
+def _v0_2_validator() -> Draft202012Validator:
+    schema = json.loads(V0_2_SCHEMA_PATH.read_text(encoding="utf-8"))
+    Draft202012Validator.check_schema(schema)
+    return Draft202012Validator(schema, format_checker=FormatChecker())
+
+
+def _v0_2_present() -> dict[str, object]:
+    import copy
+
+    record = copy.deepcopy(_v0_1_records()[0])
+    record["schema_version"] = "0.2"
+    return record
+
+
+def _v0_2_absent(reason: str) -> dict[str, object]:
+    record = _v0_2_present()
+    record["presence_state"] = "ABSENT"
+    record["presence_reason_code"] = reason
+    record["primary_span"] = None
+    record["alternative_spans"] = []
+    record["gap_pages"] = []
+    record["flags"] = []
+    record["boundary_evidence"] = {
+        "heading_start_page": None,
+        "substantive_start_page": None,
+        "last_content_page": None,
+        "next_section_heading_page": None,
+        "mixed_end_page": None,
+    }
+    return record
+
+
+def test_gold_schema_v0_2_accepts_new_synthetic_cases() -> None:
+    import copy
+
+    stub_with_count = _v0_2_present()
+    stub_with_count["flags"] = ["noncontiguous_hull", "stub"]
+    stub_with_count["stub_word_count"] = 91
+
+    stub_without_count = _v0_2_present()
+    stub_without_count["flags"] = ["noncontiguous_hull", "stub"]
+
+    csr = _v0_2_present()
+    csr["flags"] = ["noncontiguous_hull", "contains_csr_esg"]
+    csr["csr_esg_pages"] = [5, 6]
+
+    no_english_without_span = _v0_2_absent("NO_ENGLISH_MDA")
+    no_english_with_hindi = copy.deepcopy(no_english_without_span)
+    no_english_with_hindi["alternative_spans"] = [
+        {"start_page": 10, "end_page": 12, "type": "HINDI_COPY"}
+    ]
+    external_only = _v0_2_absent("EXTERNAL_REFERENCE_ONLY")
+
+    validator = _v0_2_validator()
+    records = [
+        stub_with_count,
+        stub_without_count,
+        csr,
+        no_english_without_span,
+        no_english_with_hindi,
+        external_only,
+    ]
+    for index, record in enumerate(records):
+        errors = list(validator.iter_errors(record))
+        assert not errors, f"v0.2 pass record {index}: {errors}"
+
+
+def test_gold_schema_v0_2_rejects_new_must_fail_cases() -> None:
+    import copy
+
+    count_without_stub = _v0_2_present()
+    count_without_stub["stub_word_count"] = 91
+
+    csr_flag_without_pages = _v0_2_present()
+    csr_flag_without_pages["flags"] = ["noncontiguous_hull", "contains_csr_esg"]
+    csr_flag_without_pages["csr_esg_pages"] = []
+
+    csr_pages_without_flag = _v0_2_present()
+    csr_pages_without_flag["csr_esg_pages"] = [5]
+
+    stub_absent = _v0_2_absent("NO_ENGLISH_MDA")
+    stub_absent["flags"] = ["stub"]
+
+    csr_absent = _v0_2_absent("EXTERNAL_REFERENCE_ONLY")
+    csr_absent["flags"] = ["contains_csr_esg"]
+    csr_absent["csr_esg_pages"] = [5]
+
+    present_with_no_english = _v0_2_present()
+    present_with_no_english["presence_reason_code"] = "NO_ENGLISH_MDA"
+
+    present_with_external = _v0_2_present()
+    present_with_external["presence_reason_code"] = "EXTERNAL_REFERENCE_ONLY"
+
+    no_english_with_wrong_span = _v0_2_absent("NO_ENGLISH_MDA")
+    no_english_with_wrong_span["alternative_spans"] = [
+        {"start_page": 10, "end_page": 12, "type": "OTHER_LANGUAGE_COPY"}
+    ]
+
+    other_absent_with_hindi = _v0_2_absent("TOC_ONLY")
+    other_absent_with_hindi["alternative_spans"] = [
+        {"start_page": 10, "end_page": 12, "type": "HINDI_COPY"}
+    ]
+
+    missing_version = copy.deepcopy(_v0_2_present())
+    missing_version.pop("schema_version")
+
+    validator = _v0_2_validator()
+    records = [
+        count_without_stub,
+        csr_flag_without_pages,
+        csr_pages_without_flag,
+        stub_absent,
+        csr_absent,
+        present_with_no_english,
+        present_with_external,
+        no_english_with_wrong_span,
+        other_absent_with_hindi,
+        missing_version,
+    ]
+    for index, record in enumerate(records):
+        assert list(validator.iter_errors(record)), f"v0.2 must-fail record {index} passed"

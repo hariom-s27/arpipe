@@ -21,7 +21,7 @@ from tools.phase5.annotator import export_role as export_mod
 from tools.phase5.annotator import make_bundle
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-SCHEMA_PATH = REPO_ROOT / "docs" / "phase5" / "gold_schema_v0_1.json"
+SCHEMA_PATH = REPO_ROOT / "docs" / "phase5" / "gold_schema_v0_2.json"
 FAKE_PDF = b"%SYNTHETIC-NOT-A-PDF%\n" * 7
 FAKE_SHA = hashlib.sha256(FAKE_PDF).hexdigest()
 N = 40
@@ -38,6 +38,9 @@ def bundle(tmp_path: Path) -> Path:
     root.mkdir()
     shutil.copy(SCHEMA_PATH, root / core.SCHEMA_FILENAME)
     (root / core.PROTOCOL_FILENAME).write_text("synthetic protocol\n", encoding="utf-8")
+    (root / core.TITLE_LIST_PLACEHOLDER).write_text(
+        "synthetic title-list placeholder\n", encoding="utf-8"
+    )
     (root / "records").mkdir()
     return root
 
@@ -96,6 +99,23 @@ def test_absent_and_ambiguous_records_valid(schema):
     assert core.validate_record(amb, schema) == []
 
 
+def test_absent_no_english_mda_keeps_hindi_copy_span(schema):
+    record = core.build_raw_record(
+        present_form(
+            presence_state="ABSENT",
+            presence_reason_code="NO_ENGLISH_MDA",
+            primary_span_viewer=None,
+            alternative_spans_viewer=[(10, 14, "HINDI_COPY")],
+            boundary_evidence_viewer={},
+        ),
+        ctx(),
+    )
+    assert record["alternative_spans"] == [
+        {"start_page": 9, "end_page": 13, "type": "HINDI_COPY"}
+    ]
+    assert core.validate_record(record, schema) == []
+
+
 @pytest.mark.parametrize(
     "over",
     [
@@ -126,6 +146,38 @@ def test_tool_invariants(schema):
     assert any("completed_at" in e for e in core.validate_record(late, schema))
     stray = core.build_raw_record(present_form(flag_pages_viewer={"annexure": [11]}), ctx())
     assert any("not in flags" in e for e in core.validate_record(stray, schema))
+
+
+def test_csr_esg_viewer_pages_are_stored_zero_based(schema):
+    record = core.build_raw_record(
+        present_form(
+            flags=["contains_csr_esg"],
+            csr_esg_pages_viewer=[10, 12, 14],
+        ),
+        ctx(),
+    )
+    assert record["csr_esg_pages"] == [9, 11, 13]
+    assert core.validate_record(record, schema) == []
+
+
+def test_csr_esg_page_outside_primary_span_is_refused(schema):
+    record = core.build_raw_record(
+        present_form(flags=["contains_csr_esg"], csr_esg_pages_viewer=[15]),
+        ctx(),
+    )
+    assert any("outside primary_span" in error for error in core.validate_record(record, schema))
+
+
+def test_csr_esg_page_cannot_also_be_a_gap(schema):
+    record = core.build_raw_record(
+        present_form(
+            flags=["contains_csr_esg", "noncontiguous_hull"],
+            csr_esg_pages_viewer=[12],
+            gap_pages_viewer=[12],
+        ),
+        ctx(),
+    )
+    assert any("also gap_pages" in error for error in core.validate_record(record, schema))
 
 
 def test_submit_refused_without_jsonschema(schema, monkeypatch):
@@ -170,10 +222,37 @@ def test_parse_page_list():
 
 # -- sealing, overwrite refusal, supersession -----------------------------------
 
+def test_title_list_placeholder_blocks_seal_and_supersede_unless_explicitly_allowed(
+    bundle, schema
+):
+    records = bundle / "records"
+    record = core.build_raw_record(present_form(), ctx())
+    with pytest.raises(core.AnnotatorError, match="title list is not frozen"):
+        core.seal_raw_record(records, record, schema)
+
+    _, old_sha = core.seal_raw_record(
+        records, record, schema, allow_unfrozen_title_list=True
+    )
+    replacement = core.build_raw_record(
+        present_form(primary_span_viewer=(10, 15), boundary_evidence_viewer={}),
+        ctx(),
+    )
+    with pytest.raises(core.AnnotatorError, match="title list is not frozen"):
+        core.supersede(
+            records,
+            old_sha,
+            replacement,
+            "synthetic correction",
+            schema,
+            "ws-" + "0" * 32,
+        )
+
 def test_seal_is_read_only_logged_and_not_overwritable(bundle, schema):
     records = bundle / "records"
     record = core.build_raw_record(present_form(), ctx())
-    path, digest = core.seal_raw_record(records, record, schema)
+    path, digest = core.seal_raw_record(
+        records, record, schema, allow_unfrozen_title_list=True
+    )
     assert path.name == f"SYN-DOC-1__ANNOTATOR_A__{digest[:8]}.json"
     assert hashlib.sha256(path.read_bytes()).hexdigest() == digest
     assert not path.stat().st_mode & stat.S_IWUSR
@@ -181,21 +260,46 @@ def test_seal_is_read_only_logged_and_not_overwritable(bundle, schema):
     again = core.build_raw_record(present_form(primary_span_viewer=(10, 15),
                                                boundary_evidence_viewer={}), ctx())
     with pytest.raises(core.AnnotatorError, match="already exists"):
-        core.seal_raw_record(records, again, schema)
+        core.seal_raw_record(records, again, schema, allow_unfrozen_title_list=True)
     # the other role is independent
-    core.seal_raw_record(records, core.build_raw_record(present_form(), ctx("ANNOTATOR_B")), schema)
+    core.seal_raw_record(
+        records,
+        core.build_raw_record(present_form(), ctx("ANNOTATOR_B")),
+        schema,
+        allow_unfrozen_title_list=True,
+    )
 
 
 def test_supersede_keeps_original_and_references_old_hash(bundle, schema):
     records = bundle / "records"
-    first, old_sha = core.seal_raw_record(records, core.build_raw_record(present_form(), ctx()), schema)
+    first, old_sha = core.seal_raw_record(
+        records,
+        core.build_raw_record(present_form(), ctx()),
+        schema,
+        allow_unfrozen_title_list=True,
+    )
     original_bytes = first.read_bytes()
     replacement = core.build_raw_record(
         present_form(primary_span_viewer=(10, 15), boundary_evidence_viewer={}), ctx())
     with pytest.raises(core.AnnotatorError, match="reason"):
-        core.supersede(records, old_sha, replacement, "  ", schema, "ws-" + "0" * 32)
+        core.supersede(
+            records,
+            old_sha,
+            replacement,
+            "  ",
+            schema,
+            "ws-" + "0" * 32,
+            allow_unfrozen_title_list=True,
+        )
     new_path, new_sha, note_path, note_sha = core.supersede(
-        records, old_sha, replacement, "end page misread", schema, "ws-" + "0" * 32)
+        records,
+        old_sha,
+        replacement,
+        "end page misread",
+        schema,
+        "ws-" + "0" * 32,
+        allow_unfrozen_title_list=True,
+    )
     assert first.read_bytes() == original_bytes
     note = json.loads(note_path.read_text(encoding="utf-8"))
     assert note["superseded_raw_sha256"] == old_sha
@@ -205,13 +309,19 @@ def test_supersede_keeps_original_and_references_old_hash(bundle, schema):
         core.supersede(records, old_sha,
                        core.build_raw_record(present_form(primary_span_viewer=(10, 16),
                                                           boundary_evidence_viewer={}), ctx()),
-                       "again", schema, "ws-" + "0" * 32)
+                       "again", schema, "ws-" + "0" * 32,
+                       allow_unfrozen_title_list=True)
 
 
 def test_export_locks_role_and_manifest_matches(bundle, schema, tmp_path):
     records = bundle / "records"
     core.load_or_create_workspace_id(records)
-    _, digest = core.seal_raw_record(records, core.build_raw_record(present_form(), ctx()), schema)
+    _, digest = core.seal_raw_record(
+        records,
+        core.build_raw_record(present_form(), ctx()),
+        schema,
+        allow_unfrozen_title_list=True,
+    )
     out = tmp_path / "A.zip"
     manifest = export_mod.export_role(records, "ANNOTATOR_A", out)
     names = [m[0] for m in manifest]
@@ -221,12 +331,21 @@ def test_export_locks_role_and_manifest_matches(bundle, schema, tmp_path):
         assert sorted(zf.namelist()) == sorted(names)
     with pytest.raises(core.AnnotatorError, match="exported"):
         core.seal_raw_record(
-            records, core.build_raw_record(present_form(), ctx(doc="SYN-DOC-2")), schema)
+            records,
+            core.build_raw_record(present_form(), ctx(doc="SYN-DOC-2")),
+            schema,
+            allow_unfrozen_title_list=True,
+        )
 
 
 def test_export_detects_tampering(bundle, schema, tmp_path):
     records = bundle / "records"
-    path, _ = core.seal_raw_record(records, core.build_raw_record(present_form(), ctx()), schema)
+    path, _ = core.seal_raw_record(
+        records,
+        core.build_raw_record(present_form(), ctx()),
+        schema,
+        allow_unfrozen_title_list=True,
+    )
     path.chmod(0o644)
     path.write_bytes(path.read_bytes() + b" ")
     with pytest.raises(core.AnnotatorError, match="HASH_LOG"):
@@ -310,6 +429,8 @@ def test_bundle_contains_exactly_allowed_files(tmp_path):
         names = sorted(zf.namelist())
     assert names == make_bundle.expected_entries()
     assert sorted(m[0] for m in manifest) == names
+    assert "annotator_bundle/gold_schema_v0_2.json" in names
+    assert "annotator_bundle/gold_schema_v0_1.json" not in names
     assert not any("arpipe/" in n.split("annotator_bundle/", 1)[1] for n in names)
     # deterministic
     out2 = tmp_path / "again.zip"

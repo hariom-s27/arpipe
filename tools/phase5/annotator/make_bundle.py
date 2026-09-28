@@ -30,7 +30,7 @@ BUNDLE_SOURCES = {
     "annotator_app.py": HERE / "annotator_app.py",
     "export_role.py": HERE / "export_role.py",
     "README.md": HERE / "BUNDLE_README.md",
-    "gold_schema_v0_1.json": REPO_ROOT / "docs" / "phase5" / "gold_schema_v0_1.json",
+    "gold_schema_v0_2.json": REPO_ROOT / "docs" / "phase5" / "gold_schema_v0_2.json",
     "GOLD_PROTOCOL_v0_1.md": REPO_ROOT / "docs" / "phase5" / "GOLD_PROTOCOL_v0_1.md",
 }
 PLACEHOLDER_NAME = "TITLE_LIST_NOT_YET_FROZEN.txt"

@@ -44,6 +44,15 @@ def _opt_int(text: str, label: str) -> int | None:
     return int(text)
 
 
+def _opt_nonnegative_int(text: str, label: str) -> int | None:
+    text = (text or "").strip()
+    if not text:
+        return None
+    if not text.isdigit():
+        raise core.AnnotatorError(f"{label}: enter a non-negative whole number")
+    return int(text)
+
+
 class AnnotatorApp:
     def __init__(self, root: tk.Tk) -> None:
         self.root = root
@@ -151,6 +160,16 @@ class AnnotatorApp:
             ttk.Checkbutton(flag_box, text=flag, variable=var).grid(
                 row=i // 3, column=i % 3, sticky="w")
         row("Flags", flag_box)
+        self.stub_word_count = tk.StringVar()
+        row(
+            "Stub word count (optional; only with stub flag)",
+            ttk.Entry(f, textvariable=self.stub_word_count),
+        )
+        self.csr_esg_pages = tk.StringVar()
+        row(
+            "CSR/ESG pages (viewer; e.g. 14, 16-17)",
+            ttk.Entry(f, textvariable=self.csr_esg_pages),
+        )
         self.flag_pages_text = tk.Text(f, height=3, width=60)
         row("Flag pages\n(one per line: flag: 12, 14-15)", self.flag_pages_text)
 
@@ -273,6 +292,10 @@ class AnnotatorApp:
             "alternative_spans_viewer": self._span_lines(self.alt_text, typed=True),
             "gap_pages_viewer": core.parse_page_list(self.gaps.get()),
             "flags": [k for k, v in self.flag_vars.items() if v.get()],
+            "stub_word_count": _opt_nonnegative_int(
+                self.stub_word_count.get(), "stub word count"
+            ),
+            "csr_esg_pages_viewer": core.parse_page_list(self.csr_esg_pages.get()),
             "flag_pages_viewer": flag_pages,
             "ambiguity_code": self.ambiguity.get(),
             "admissible_spans_viewer": self._span_lines(self.adm_text, typed=False),

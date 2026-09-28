@@ -4,7 +4,7 @@ Standard library only, plus ``jsonschema`` for validation. This module has no GU
 no network code and no PDF rendering. It never imports anything from ``arpipe/``.
 
 Status: DRAFT_PENDING_PILOT. Implements GOLD_PROTOCOL v0.1 sections 2, 7-9 and
-GOLD_SCHEMA v0.1 sections 1-3 for RAW records.
+GOLD_SCHEMA v0.2 sections 1-3 for RAW records.
 
 Page convention (GOLD_PROTOCOL v0.1 section 2): annotators type the viewer's
 1-based physical page number (page labels disabled). The tool stores
@@ -25,13 +25,14 @@ from pathlib import Path
 from typing import Any, Iterable
 
 TOOL_VERSION = "p5t-0.1.0"
-SCHEMA_FILENAME = "gold_schema_v0_1.json"
+SCHEMA_FILENAME = "gold_schema_v0_2.json"
 PROTOCOL_FILENAME = "GOLD_PROTOCOL_v0_1.md"
 VIEWER_PAGE_CONVENTION = "VIEWER_PHYSICAL_1_BASED_STORED_ZERO_BASED"
 RAW_ROLES = ("ANNOTATOR_A", "ANNOTATOR_B")
 HASH_LOG_NAME = "HASH_LOG.txt"
 WORKSPACE_ID_NAME = "WORKSPACE_ID.txt"
 EXPORT_LOCK_NAME = "EXPORTED.lock"
+TITLE_LIST_PLACEHOLDER = "TITLE_LIST_NOT_YET_FROZEN.txt"
 ASSIGNMENT_COLUMNS = ["document_id", "source_pdf_sha256", "physical_page_count"]
 
 DOC_ID_RE = re.compile(r"^[A-Za-z0-9._-]+$")
@@ -247,6 +248,7 @@ def build_raw_record(form: dict[str, Any], ctx: dict[str, Any]) -> dict[str, Any
         for flag, pages in (form.get("flag_pages_viewer") or {}).items()
     }
     record: dict[str, Any] = {
+        "schema_version": "0.2",
         "record_type": "RAW",
         "document_id": ctx["document_id"],
         "source_pdf_sha256": ctx["source_pdf_sha256"],
@@ -262,6 +264,13 @@ def build_raw_record(form: dict[str, Any], ctx: dict[str, Any]) -> dict[str, Any
             {viewer_to_stored(p, n, "gap page") for p in (form.get("gap_pages_viewer") or [])}
         ),
         "flags": sorted(set(form.get("flags") or [])),
+        "stub_word_count": form.get("stub_word_count"),
+        "csr_esg_pages": sorted(
+            {
+                viewer_to_stored(p, n, "CSR/ESG page")
+                for p in (form.get("csr_esg_pages_viewer") or [])
+            }
+        ),
         "ambiguity_code": form.get("ambiguity_code", "NONE"),
         "admissible_spans": [
             _span(s, e, n, "admissible span")
@@ -321,7 +330,7 @@ def _parse_ts(value: str) -> _dt.datetime:
 
 
 def tool_invariant_errors(record: dict[str, Any]) -> list[str]:
-    """Numeric and cross-field checks GOLD_SCHEMA v0.1 section 3 assigns to the tool."""
+    """Numeric and cross-field checks GOLD_SCHEMA v0.2 assigns to the tool."""
     errors: list[str] = []
     try:
         n = int(record["structured_provenance"]["physical_page_count"])
@@ -353,6 +362,26 @@ def tool_invariant_errors(record: dict[str, Any]) -> list[str]:
             bad = [g for g in gaps if not (isinstance(lo, int) and lo < g < hi)]
             if bad:
                 errors.append(f"gap_pages {bad} are not strictly inside the hull {lo}..{hi}")
+
+    csr_pages = record.get("csr_esg_pages") or []
+    if isinstance(csr_pages, list) and csr_pages:
+        if not isinstance(primary, dict):
+            errors.append("csr_esg_pages need a primary span")
+        else:
+            lo, hi = primary.get("start_page"), primary.get("end_page")
+            outside = [
+                page
+                for page in csr_pages
+                if isinstance(page, int)
+                and not (isinstance(lo, int) and isinstance(hi, int) and lo <= page <= hi)
+            ]
+            if outside:
+                errors.append(
+                    f"csr_esg_pages {outside} are outside primary_span {lo}..{hi}"
+                )
+        in_gaps = [page for page in csr_pages if page in gaps]
+        if in_gaps:
+            errors.append(f"csr_esg_pages {in_gaps} are also gap_pages")
 
     be = record.get("boundary_evidence") or {}
     for key in (
@@ -439,6 +468,16 @@ def _assert_not_exported(records_dir: Path, role: str) -> None:
         )
 
 
+def _assert_title_list_frozen(
+    records_dir: Path, allow_unfrozen_title_list: bool
+) -> None:
+    placeholder = Path(records_dir).parent / TITLE_LIST_PLACEHOLDER
+    if placeholder.exists() and not allow_unfrozen_title_list:
+        raise AnnotatorError(
+            "The title list is not frozen yet, so records cannot be sealed."
+        )
+
+
 def existing_records(records_dir: Path, document_id: str, role: str) -> list[Path]:
     folder = _role_dir(records_dir, role)
     if not folder.is_dir():
@@ -475,12 +514,17 @@ def _write_sealed(folder: Path, filename: str, data: bytes, records_dir: Path) -
 
 
 def seal_raw_record(
-    records_dir: Path, record: dict[str, Any], schema: dict[str, Any]
+    records_dir: Path,
+    record: dict[str, Any],
+    schema: dict[str, Any],
+    *,
+    allow_unfrozen_title_list: bool = False,
 ) -> tuple[Path, str]:
     """Validate, write canonical JSON read-only, and log its SHA-256.
 
     Refuses a second record for the same document and role; use ``supersede``.
     """
+    _assert_title_list_frozen(records_dir, allow_unfrozen_title_list)
     errors = validate_record(record, schema)
     if errors:
         raise AnnotatorError("Record is not valid:\n- " + "\n- ".join(errors))
@@ -504,12 +548,15 @@ def supersede(
     reason: str,
     schema: dict[str, Any],
     workspace_id: str,
+    *,
+    allow_unfrozen_title_list: bool = False,
 ) -> tuple[Path, str, Path, str]:
     """Seal a replacement raw record plus a supersession record naming the old hash.
 
     The original record's bytes and hash stay in place (GOLD_SCHEMA v0.1 section 1).
     Returns (new_record_path, new_sha, supersession_path, supersession_sha).
     """
+    _assert_title_list_frozen(records_dir, allow_unfrozen_title_list)
     if not reason or not reason.strip():
         raise AnnotatorError("A supersession needs a written reason.")
     role = new_record["annotator_role"]
