@@ -34,7 +34,13 @@ BUNDLE_ROOT = "annotator_bundle"
 # these (case-insensitively) is refused as a collision. "ASSIGNMENT.csv" is the name the
 # app reads (annotator_core.ASSIGNMENT_COLUMNS); "BUNDLE_MANIFEST.json" is a bundle-shipped
 # payload file (make_bundle.py), not a reserved name, so it passes through untouched here.
-RESERVED_ROOT_NAMES = {"assignment.csv", "pdfs", "records", "WORKSPACE_MANIFEST.json"}
+# "ROLE.txt" (always written) and "annotator_app.exe" (written when --exe is given) are
+# F7 additions.
+RESERVED_ROOT_NAMES = {
+    "assignment.csv", "pdfs", "records", "WORKSPACE_MANIFEST.json", "role.txt", "annotator_app.exe",
+}
+EXE_NAME = "annotator_app.exe"
+ROLE_FILE_NAME = "ROLE.txt"
 
 
 class WorkspaceBuildError(ValueError):
@@ -155,12 +161,28 @@ def _manifest_bytes(out: Path) -> bytes:
 def build_workspaces(
     roster: Path, pdf_dir: Path, bundle: Path, out: Path,
     roles: tuple[str, ...] = ROLES, allow_split: str | None = None,
+    exe: Path | None = None, exe_sha256: str | None = None,
 ) -> str:
-    """Build both role folders and return the manifest's SHA-256 digest."""
+    """Build both role folders and return the manifest's SHA-256 digest.
+
+    ``exe``/``exe_sha256`` must be given together or not at all; a mismatch between
+    the actual hash of ``exe`` and ``exe_sha256`` is refused before anything is
+    written. When given, ``annotator_app.exe`` is copied into every role workspace
+    root. ``ROLE.txt`` (naming that role) is always written into every role workspace
+    root, whether or not ``exe`` is given.
+    """
     if tuple(roles) != ROLES:
         raise WorkspaceBuildError("roles must be ANNOTATOR_A,ANNOTATOR_B")
     if allow_split not in (None, "VALIDATION"):
         raise WorkspaceBuildError("only VALIDATION may be allowed in addition to FIT")
+    if (exe is None) != (exe_sha256 is None):
+        raise WorkspaceBuildError("--exe and --exe-sha256 must be given together")
+    if exe is not None:
+        actual_exe_sha256 = sha256_file(Path(exe))
+        if actual_exe_sha256 != exe_sha256:
+            raise WorkspaceBuildError(
+                f"--exe-sha256 does not match the sha256 of --exe ({actual_exe_sha256})"
+            )
     out = _check_out(Path(out))
     rows = _read_roster(Path(roster), allow_split)
     pdf_dir = Path(pdf_dir)
@@ -193,6 +215,12 @@ def build_workspaces(
                     raise WorkspaceBuildError(f"PDF changed during copy for {row['document_id']}")
             (root / "ASSIGNMENT.csv").write_bytes(assignment)
             (root / "records").mkdir()
+            (root / ROLE_FILE_NAME).write_bytes((role + "\n").encode("utf-8"))
+            if exe is not None:
+                destination = root / EXE_NAME
+                shutil.copyfile(exe, destination)
+                if sha256_file(destination) != actual_exe_sha256:
+                    raise WorkspaceBuildError(f"exe changed during copy for {role}")
             refusals = annotator_core.workspace_refusals(root, root)
             if refusals:
                 raise WorkspaceBuildError("annotator workspace isolation refusal: " + "; ".join(refusals))
@@ -213,11 +241,14 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--out", required=True, type=Path)
     parser.add_argument("--roles", required=True)
     parser.add_argument("--allow-split", choices=["VALIDATION"])
+    parser.add_argument("--exe", type=Path, help="annotator_app.exe to copy into each role workspace")
+    parser.add_argument("--exe-sha256", help="sha256 of --exe; both or neither must be given")
     args = parser.parse_args(argv)
     try:
         digest = build_workspaces(
             args.roster, args.pdf_dir, args.bundle, args.out,
             tuple(args.roles.split(",")), args.allow_split,
+            args.exe, args.exe_sha256,
         )
     except (OSError, ValueError, csv.Error, zipfile.BadZipFile) as exc:
         parser.exit(1, f"refused: {exc}\n")

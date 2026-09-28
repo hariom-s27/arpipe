@@ -41,6 +41,10 @@ ANCHOR_TEXT_FIELDS = {
     "end_page_shared": "end_anchor_text",
 }
 RAW_ROLES = ("ANNOTATOR_A", "ANNOTATOR_B")
+# F7: a bundle root may fix the role for its folder (custodian/build_workspaces.py
+# always writes one). One line, exactly ANNOTATOR_A or ANNOTATOR_B; anything else in
+# the file is a refusal, not a fall-through to the prompt.
+ROLE_FILENAME = "ROLE.txt"
 HASH_LOG_NAME = "HASH_LOG.txt"
 WORKSPACE_ID_NAME = "WORKSPACE_ID.txt"
 EXPORT_LOCK_NAME = "EXPORTED.lock"
@@ -118,6 +122,23 @@ def assert_workspace_isolated(bundle_root: Path, cwd: Path | None = None) -> Non
         raise AnnotatorError(
             "The tool will not start in this location:\n- " + "\n- ".join(reasons)
         )
+
+
+def read_role_file(bundle_root: Path) -> str | None:
+    """Return the role fixed by ``ROLE.txt`` in the bundle root, or ``None`` if absent.
+
+    Refuses (rather than falling through to the prompt) if the file exists but does
+    not contain exactly one non-blank line equal to ``ANNOTATOR_A`` or ``ANNOTATOR_B``.
+    """
+    path = Path(bundle_root) / ROLE_FILENAME
+    if not path.exists():
+        return None
+    lines = [ln.strip() for ln in path.read_text(encoding="utf-8").splitlines() if ln.strip()]
+    if len(lines) != 1 or lines[0] not in RAW_ROLES:
+        raise AnnotatorError(
+            f"{ROLE_FILENAME} must contain exactly one line, ANNOTATOR_A or ANNOTATOR_B."
+        )
+    return lines[0]
 
 
 def load_or_create_workspace_id(records_dir: Path) -> str:
