@@ -18,6 +18,19 @@
 
 ---
 
+## 2026-09-28 (afternoon): text-layer audit built, calibrated and frozen; shared-page fields decided
+- **Did:**
+  - Audit v0.1 (PR #56, Codex) and v0.2 (PR #59, Gemini Flash; verified here). `tools/phase5/derived/text_layer_audit.py`, script SHA-256 `69e1d153…fafbdad70`.
+  - FIT calibration run twice in `D:\gold_blind` (input `fb1df75e…`; v0.1 output `B3AE60CF…`, identical across two Pythons; v0.2 output `9C021464…`).
+  - Decisions §8 (PR #57), §8.5 (PR #58), §8.6 frozen thresholds (PR #60), §8.7 shared pages (PR #61).
+- **Found:**
+  - The earlier "8 broken-text docs" was a keyword over-count. The real positives are Span 2018 (broken body) and Jubilant 2013 / Gujarat Cotex 2017 (legacy-font heading only).
+  - Frozen by the pre-registered §8.4 rule: `max_bad_char_share` 0.1207, `min_latin_word_share` 0.3980 → 3/3 found, 0 false positives. Runs pass these on the command line; script defaults unchanged.
+  - The computed `start_page_shared` (20% rule) failed: 21 of 31 flags wrong → human field instead (§8.7).
+- **Remains:**
+  - F3b: schema v0.3 + protocol v0.3 + tool + scoring (`start_page_shared`/`end_page_shared` required booleans). Worktree `phase5-schema-v03` at `299200a`; prompt in project `claude/round3/NEXT_CODEX_F3B_SCHEMA_v0_3.md`.
+  - Title rules + title-list freeze; optional LM-dictionary run; author items (7 vs 4, SAP options, A1–A5, K1, annotators); pilot draw.
+
 ## 2026-09-28 (morning): D1–D7 decided; schema v0.2 (F3) and protocol/SAP v0.2 (F5) merged
 - **Did:**
   - Decisions: PR #50 (D1–D7 + D4 statutory list), #51 (A1–A5 + field specs), #52 (review fixes: stub without hand counting, robust broken-text test, `schema_version`, Hindi-only span, reversibility). File: `docs/phase5/decisions/D1_D7_DECISIONS_v0_1.md`.
