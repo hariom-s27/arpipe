@@ -1,5 +1,5 @@
 # D1–D7 author decisions (v0.1)
-Date: 2026-09-28. Status: DECIDED by author (in chat). Evidence: `claude/round3/D1_D7_LITERATURE_CHECK.md`.
+Date: 2026-09-28. Status: DECIDED by author (in chat); §6–§7 added 2026-09-28. Evidence: `claude/round3/D1_D7_LITERATURE_CHECK.md`.
 Applies to: title rules + Gold protocol. Does NOT by itself change the frozen review CSV (`2A362F03…`); see §3.
 
 ## 1. Decisions
@@ -71,5 +71,34 @@ Any of these headings, met after MD&A begins, ends an embedded MD&A:
 13. Significant and material orders by regulators or courts; frauds reported by auditors
 14. Corporate governance report (reference); business responsibility (and sustainability) report (reference)
 15. "Other statutory disclosures"; acknowledgement / appreciation; conclusion; Board sign-off
+16. IBC applications / one-time-settlement differences (r.8(5)(xi)–(xii)); compliance with secretarial standards; credit rating (as a DR item) — added by A3, §6
 
 Tie-break: a topic in both lists (internal controls, financial performance) stays in MD&A only when it sits under an MD&A-labelled heading or block.
+
+## 6. Amendments A1–A5 and open answers (DECIDED by author, 2026-09-28)
+Author line: "CSR_ESG yes; F4 OK; A1–A3 yes; BROKEN_TEXT keep".
+- **CSR/ESG:** one flag `contains_csr_esg` (replaces D6's `CONTAINS_CSR`), covering CSR, ESG and integrated-reporting "natural capital" blocks inside MD&A. FIT rows: Welspun 2012, IDBI 2017, Tata Communications 2017, IDBI 2024, HDFC 2018.
+- **F4:** MD&A given only outside the report (e.g. "available on our website") → ABSENT, reason `EXTERNAL_REFERENCE_ONLY`.
+- **A1:** risk management policy (s.134(3)(n)) → **tie-break list**: under an MD&A heading or block it stays in MD&A; as a separate Board's-report item it ends MD&A.
+- **A2:** financial summary / highlights (r.8(5)(i)) → **tie-break list**.
+- **A3:** added to the ending list (§5, item 16): IBC applications pending and one-time-settlement valuation differences (r.8(5)(xi)–(xii)); compliance with secretarial standards; credit rating (as a Directors' Report item).
+- **A4:** `BROKEN_TEXT` kept, defined by code (§7.3).
+- **A5:** nothing to fix: the merged commit message names the row by ID only.
+
+Tie-break list (topics that appear in both MD&A and the Board's report): internal controls / internal financial controls; financial performance / financial summary / highlights; risk management. Each stays in MD&A only under an MD&A-labelled heading or block.
+
+## 7. Field specifications for the schema update (F3)
+### 7.1 New ABSENT reason codes
+- `NO_ENGLISH_MDA`: the report has an MD&A only in a language other than English (D1). The Hindi copy of a bilingual report is recorded as an alternative span of type `HINDI_COPY` (already in v0.1); the primary span is always the English copy.
+- `EXTERNAL_REFERENCE_ONLY`: the report only points outside itself for MD&A (F4).
+
+### 7.2 New annotator fields
+- `stub` (flag) + `stub_word_count` (integer ≥ 0): required together. `stub` means the MD&A body is under 250 words (Loughran–McDonald convention); word count excludes the heading. Only allowed when `presence_state = PRESENT`.
+- `contains_csr_esg` (flag) + `csr_esg_pages` (array of unique 0-based page integers): required together. Every page must lie inside `primary_span` (start ≤ p ≤ end) and must not be in `gap_pages`. Purpose: text measures can drop exactly these pages. Only allowed when `presence_state = PRESENT`.
+
+### 7.3 BROKEN_TEXT: computed by code, not by the annotator
+Deterministic, per document, computed after Gold is sealed from the Gold record + the PDF text layer (PyMuPDF), stored in a separate derived file (not in the annotator record):
+- `heading_in_text_layer` = the normalised Gold body title (casefold; "&"→"and"; drop "'s", "report", year suffixes, item/annexure labels; collapse whitespace and remove spaces) is a substring of the normalised text of the Gold start page, with the same normalisation. For a title wrapped over lines, joining the lines is covered by the space removal.
+- `text_layer_broken` = on the start page, the share of characters that are U+FFFD, private-use (U+E000–U+F8FF) or control characters is > 5%, **or** fewer than 50% of whitespace-separated tokens of length ≥ 3 are purely ASCII-alphabetic.
+- `BROKEN_TEXT` = `text_layer_broken`. `HEADING_NOT_IN_TEXT_LAYER` = not `heading_in_text_layer` (covers decorative / image headings too). SAP reports both as strata.
+- The existing annotator flag `legacy_or_corrupted_boundary_heading` stays as the annotator's own observation; agreement between it and the computed `BROKEN_TEXT` is reported, not enforced.
