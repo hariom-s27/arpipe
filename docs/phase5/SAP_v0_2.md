@@ -239,3 +239,5 @@ the §7.3 post-seal derived file. Gold defines no word cut-off
 **PROPOSED.** Before HOLDOUT scoring, a change to D3, D4, or D7 switches the primary to
 the recorded `BOUNDARY_ALTERNATIVE` span. After HOLDOUT scoring, the changed rule is
 reported only as a sensitivity result (`D1_D7_DECISIONS_v0_1.md` §7.5).
+
+**DECIDED (2026-09-28, `D1_D7_DECISIONS_v0_1.md` §8.6; before any VALIDATION or HOLDOUT scoring).** The text-layer audit runs with `--max-bad-char-share 0.1207 --min-latin-word-share 0.3980` (computed by the pre-registered §8.4 rule on FIT). Strata reported: `text_layer_broken`, `heading_in_text_layer = false`, and their union `broken_text_group`, each with its own count. With 3 positives in FIT the detector is only lightly tested; results on VALIDATION and HOLDOUT are reported separately. The computed `start_page_shared` is not used. Word counts (`PAGE_LEVEL`) are analysed only for standalone MD&As whose Gold `mixed_end_page` is null.
