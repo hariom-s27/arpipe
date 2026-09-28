@@ -18,6 +18,17 @@
 
 ---
 
+## 2026-09-28 (morning): title review CSV final (v0.1, corrected)
+- **Did:** the author corrected the review after this chat's row check and page-by-page screenshot checks (HDFC ends, CRISIL 2017 start, Reliance 2018/2025, IDBI 2012, Mac Hotels, Modern Steels 2017, Craftsman 2025, Tata Steel 2024, PVR 2018, IDBI 2024).
+  - Final `MDNA_TITLE_REVIEW_v0_1.csv`: 60 rows, 46,448 bytes, SHA-256 `2A362F03E284C51772987635D8F9EC8EED0AD857357FF0DD05E719570B61A60E` (supersedes `1374BBAA…`). Backup in `D:\gold_review_backup\`.
+- **Found (checked by script):**
+  - 59 Y + 1 NOT_AR. Every Y row has a start and an end; start <= end in all 59; no placeholders left.
+  - 38 have a TOC title, 58 a body title. Of 37 with both, only 14 match exactly; 33 match after normalising (and/&, 's, Discussions, Report, year, Annexure/item labels).
+  - Pre-fill accepted: TOC 22/38, body 34/58; the rest were typed.
+  - Notes mention: annexure 19, inside the Directors' Report 15, running headers 12, wrapped titles 10, spreads 8, broken text layer 8, decorative heading 7, bilingual 3; 12 rows carry an UNSURE flag.
+  - HDFC rule: MD&A ends before the first statutory Directors' Report item (content test), in all five years.
+- **Remains:** author decisions D1–D7 (see `REVIEW_LEARNINGS_60_FIT_DOCS.md`); then freeze the title list and commit the CSV; "7 vs 4"; SAP options; A1–A5; K1.
+
 ## 2026-09-28 (early morning): the 60-document title review finished
 - **Did:**
   - The author reviewed all 60 FIT documents in `review.html`, checking each with this chat. The export is `MDNA_TITLE_REVIEW_v0_1.csv`, saved in `D:\gold_blind\output\p5b3\review\`.
