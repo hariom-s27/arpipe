@@ -117,3 +117,27 @@ Deterministic, per document, computed after Gold is sealed from the Gold record 
 
 ### 7.5 Keeping contested rules reversible
 - Where D3, D4 or D7 decided a boundary, annotators also record the other admissible boundary as an alternative span of type `BOUNDARY_ALTERNATIVE` (already in v0.1). A later change to those rules, before HOLDOUT scoring, then means switching spans, not re-annotating. After HOLDOUT scoring a rule change is reported only as a sensitivity result.
+
+## 8. Text-layer audit v0.2 rules and threshold rule (DECIDED 2026-09-28, before the recalibration rerun)
+Evidence: FIT calibration v0.1 (`claude/round3/TEXT_AUDIT_CALIBRATION_v0_1.md`; output SHA-256 `B3AE60CF…F785A105`). At v0.1 defaults the body check gave one false positive (Reliance 2018, start page = MD&A own-contents page, bad share 0.060) and missed the two legacy-font-heading documents, which only the heading check caught.
+
+### 8.1 Two checks on two pages
+- **Heading check** (`heading_in_text_layer`): on the Gold start page, as in §7.3.
+- **Body-quality check** (`text_layer_broken`): on the **quality page** = the first page in start..end (excluding gap pages) with **at least 50 tokens of length ≥ 3 counted before any quality filtering** (after edge-punctuation stripping only; digits and non-Latin tokens still count toward the 50). If no page reaches 50, use the start page and record `quality_page_fallback = true`. Output `quality_page_0based`.
+- Shares (`bad_char_share`, `latin_word_share`) are computed on the quality page with the §7.3 definitions.
+
+### 8.2 Reporting
+- Report `heading_in_text_layer`, `text_layer_broken` and their union `BROKEN_TEXT` (= broken OR heading not found; NA = not flagged). The SAP reports each signal's own count as well as the union: legacy-font headings, image-only headings and garbage body text are different failure types.
+- Report-only column `dictionary_word_share` (share of quality-page kept tokens that are in a pinned English word list, supplied by `--wordlist`, SHA-256 recorded in the output header; NA if no list is given). It does **not** feed any flag.
+
+### 8.3 Word-count scope
+- Every count carries `word_count_scope = PAGE_LEVEL`.
+- `start_page_shared`: computed. The y-position of the first text line matching the heading; shared if it lies below 20% of the page height; NA if the heading is not found.
+- `end_page_shared`: taken from the Gold record (`boundary_evidence.mixed_end_page` / `mixed_end_page` flag, already in schema v0.2) via an input column; NA if not supplied.
+- The SAP uses word counts only when both shared values are false; stubs and shared-page sections use hand counts if needed. `csr_esg_word_count` is meaningful only when CSR/ESG pages are supplied.
+
+### 8.4 Threshold rule (fixed now; the rerun only fills in the numbers)
+On the FIT recalibration rerun, over the documents expected CLEAN or PARTIAL (i.e. all except the three expected BROKEN):
+- `max_bad_char_share` = max(0.05, 2 × the highest bad_char_share among them)
+- `min_latin_word_share` = min(0.50, 0.5 × the lowest latin_word_share among them)
+The resulting values are written into SAP v0.2 and the script defaults **before any VALIDATION or HOLDOUT document is scored**. With 3 positives in FIT, the thesis states that the detector is only lightly tested and reports it separately on VALIDATION and HOLDOUT.
