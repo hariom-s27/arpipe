@@ -6,9 +6,11 @@ bytes, and all documents are synthetic.
 
 from __future__ import annotations
 
+import copy
 import csv
 import hashlib
 import json
+import re
 import shutil
 import stat
 import zipfile
@@ -21,7 +23,7 @@ from tools.phase5.annotator import export_role as export_mod
 from tools.phase5.annotator import make_bundle
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-SCHEMA_PATH = REPO_ROOT / "docs" / "phase5" / "gold_schema_v0_2.json"
+SCHEMA_PATH = REPO_ROOT / "docs" / "phase5" / "gold_schema_v0_3.json"
 FAKE_PDF = b"%SYNTHETIC-NOT-A-PDF%\n" * 7
 FAKE_SHA = hashlib.sha256(FAKE_PDF).hexdigest()
 N = 40
@@ -74,6 +76,10 @@ def present_form(**over) -> dict:
         "no_system_output_access_attested": True,
     }
     form.update(over)
+    if form["presence_state"] == "PRESENT":
+        # v0.3: both shared-page answers are required on PRESENT; ABSENT/AMBIGUOUS leave them null
+        form.setdefault("start_page_shared", False)
+        form.setdefault("end_page_shared", False)
     return form
 
 
@@ -429,12 +435,217 @@ def test_bundle_contains_exactly_allowed_files(tmp_path):
         names = sorted(zf.namelist())
     assert names == make_bundle.expected_entries()
     assert sorted(m[0] for m in manifest) == names
-    assert "annotator_bundle/gold_schema_v0_2.json" in names
+    assert "annotator_bundle/gold_schema_v0_3.json" in names
+    assert "annotator_bundle/gold_schema_v0_2.json" not in names
     assert "annotator_bundle/gold_schema_v0_1.json" not in names
-    assert "annotator_bundle/GOLD_PROTOCOL_v0_2.md" in names
+    assert "annotator_bundle/GOLD_PROTOCOL_v0_3.md" in names
+    assert "annotator_bundle/GOLD_PROTOCOL_v0_2.md" not in names
     assert "annotator_bundle/GOLD_PROTOCOL_v0_1.md" not in names
     assert not any("arpipe/" in n.split("annotator_bundle/", 1)[1] for n in names)
     # deterministic
     out2 = tmp_path / "again.zip"
     make_bundle.build_bundle(out2)
     assert out.read_bytes() == out2.read_bytes()
+
+
+def test_bundle_ships_the_v0_3_files_under_the_names_the_core_loads(tmp_path):
+    out = tmp_path / "annotator_bundle.zip"
+    make_bundle.build_bundle(out)
+    with zipfile.ZipFile(out) as zf:
+        names = {n.split("/", 1)[1] for n in zf.namelist() if n.split("/", 1)[1]}
+        assert {core.SCHEMA_FILENAME, core.PROTOCOL_FILENAME} <= names
+        assert zf.read(f"annotator_bundle/{core.SCHEMA_FILENAME}") == SCHEMA_PATH.read_bytes()
+        protocol = REPO_ROOT / "docs" / "phase5" / "GOLD_PROTOCOL_v0_3.md"
+        assert zf.read(f"annotator_bundle/{core.PROTOCOL_FILENAME}") == protocol.read_bytes()
+
+
+# -- shared start/end pages (schema v0.3, decisions 8.7) ---------------------------
+
+def test_core_targets_schema_and_protocol_v0_3(schema):
+    assert core.SCHEMA_FILENAME == "gold_schema_v0_3.json"
+    assert core.PROTOCOL_FILENAME == "GOLD_PROTOCOL_v0_3.md"
+    record = core.build_raw_record(present_form(), ctx())
+    assert record["schema_version"] == "0.3"
+    assert core.validate_record(record, schema) == []
+
+
+@pytest.mark.parametrize(("key", "question"), core.SHARED_PAGE_QUESTIONS)
+@pytest.mark.parametrize("answer", [None, "Yes", "No", 1, 0])
+def test_present_form_without_a_yes_no_answer_is_refused(key, question, answer):
+    with pytest.raises(core.AnnotatorError, match=re.escape(question)):
+        core.build_raw_record(present_form(**{key: answer}), ctx())
+
+
+@pytest.mark.parametrize(("key", "question"), core.SHARED_PAGE_QUESTIONS)
+def test_present_form_missing_an_answer_key_is_refused(key, question):
+    form = present_form()
+    del form[key]
+    with pytest.raises(core.AnnotatorError, match=re.escape(question)):
+        core.build_raw_record(form, ctx())
+
+
+def test_end_page_shared_sets_mixed_end_page_field_and_flag(schema):
+    record = core.build_raw_record(present_form(end_page_shared=True), ctx())
+    evidence = record["boundary_evidence"]
+    assert evidence["end_page_shared"] is True and evidence["start_page_shared"] is False
+    assert evidence["mixed_end_page"] == record["primary_span"]["end_page"] == 13
+    assert "mixed_end_page" in record["flags"]
+    assert "mixed_start_page" not in record["flags"]
+    assert core.validate_record(record, schema) == []
+
+
+def test_end_page_not_shared_leaves_mixed_end_page_null_and_no_flag(schema):
+    record = core.build_raw_record(present_form(end_page_shared=False), ctx())
+    assert record["boundary_evidence"]["end_page_shared"] is False
+    assert record["boundary_evidence"]["mixed_end_page"] is None
+    assert "mixed_end_page" not in record["flags"]
+    assert core.validate_record(record, schema) == []
+
+
+def test_start_page_shared_sets_mixed_start_page_flag(schema):
+    record = core.build_raw_record(present_form(start_page_shared=True), ctx())
+    assert record["boundary_evidence"]["start_page_shared"] is True
+    assert "mixed_start_page" in record["flags"]
+    assert "mixed_end_page" not in record["flags"]
+    assert record["boundary_evidence"]["mixed_end_page"] is None
+    assert core.validate_record(record, schema) == []
+
+
+def test_both_pages_shared_sets_both_flags(schema):
+    record = core.build_raw_record(
+        present_form(start_page_shared=True, end_page_shared=True), ctx())
+    assert {"mixed_start_page", "mixed_end_page"} <= set(record["flags"])
+    assert record["boundary_evidence"]["mixed_end_page"] == 13
+    assert core.validate_record(record, schema) == []
+
+
+def test_flags_and_mixed_end_page_come_only_from_the_answers(schema):
+    # Values a form supplies for the derived fields cannot make them disagree with the answers.
+    record = core.build_raw_record(
+        present_form(
+            flags=["mixed_start_page", "mixed_end_page", "stub"],
+            boundary_evidence_viewer={"heading_start_page": 10, "mixed_end_page": 12},
+        ),
+        ctx(),
+    )
+    assert record["flags"] == ["stub"]
+    assert record["boundary_evidence"]["mixed_end_page"] is None
+    assert core.validate_record(record, schema) == []
+
+
+def test_absent_and_ambiguous_records_carry_null_shared_answers(schema):
+    absent = core.build_raw_record(
+        present_form(presence_state="ABSENT", presence_reason_code="NOT_AN_ANNUAL_REPORT",
+                     primary_span_viewer=None, boundary_evidence_viewer={}), ctx())
+    ambiguous = core.build_raw_record(
+        present_form(presence_state="AMBIGUOUS", presence_reason_code="START_UNRESOLVABLE",
+                     ambiguity_code="START_UNRESOLVABLE", primary_span_viewer=None,
+                     admissible_spans_viewer=[(10, 14), (11, 14)],
+                     boundary_evidence_viewer={}), ctx())
+    for record in (absent, ambiguous):
+        evidence = record["boundary_evidence"]
+        assert evidence["start_page_shared"] is None and evidence["end_page_shared"] is None
+        assert evidence["mixed_end_page"] is None
+        assert not set(core.DERIVED_FLAGS) & set(record["flags"])
+        assert core.validate_record(record, schema) == []
+
+
+@pytest.mark.parametrize("key", [key for key, _ in core.SHARED_PAGE_QUESTIONS])
+@pytest.mark.parametrize("answer", [True, False])
+def test_absent_record_with_a_shared_answer_is_refused(schema, key, answer):
+    record = core.build_raw_record(
+        present_form(presence_state="ABSENT", presence_reason_code="NOT_AN_ANNUAL_REPORT",
+                     primary_span_viewer=None, boundary_evidence_viewer={}, **{key: answer}),
+        ctx())
+    assert core.validate_record(record, schema)
+
+
+def test_tool_invariants_check_mixed_end_page_against_the_answer():
+    shared = core.build_raw_record(present_form(end_page_shared=True), ctx())
+    assert core.tool_invariant_errors(shared) == []
+    for wrong in (12, None):
+        moved = copy.deepcopy(shared)
+        moved["boundary_evidence"]["mixed_end_page"] = wrong
+        assert any("must equal the primary end page" in e
+                   for e in core.tool_invariant_errors(moved)), wrong
+    unshared = core.build_raw_record(present_form(end_page_shared=False), ctx())
+    assert core.tool_invariant_errors(unshared) == []
+    unshared["boundary_evidence"]["mixed_end_page"] = 13
+    assert any("must be null" in e for e in core.tool_invariant_errors(unshared))
+
+
+@pytest.mark.parametrize(
+    ("answer_key", "flag"),
+    [("start_page_shared", "mixed_start_page"), ("end_page_shared", "mixed_end_page")],
+)
+def test_tool_invariants_couple_each_flag_to_its_answer(schema, answer_key, flag):
+    shared = core.build_raw_record(present_form(**{answer_key: True}), ctx())
+    assert core.validate_record(shared, schema) == []
+    shared["flags"].remove(flag)
+    assert any(flag in e for e in core.tool_invariant_errors(shared))
+    assert core.validate_record(shared, schema)
+    unshared = core.build_raw_record(present_form(**{answer_key: False}), ctx())
+    assert core.validate_record(unshared, schema) == []
+    unshared["flags"].append(flag)
+    assert any(flag in e for e in core.tool_invariant_errors(unshared))
+    assert core.validate_record(unshared, schema)
+
+
+def test_derived_flags_are_schema_flags_the_core_sets_itself(schema):
+    assert set(core.DERIVED_FLAGS) == {"mixed_start_page", "mixed_end_page"}
+    assert set(core.DERIVED_FLAGS) <= set(core.schema_enums(schema)["flags"])
+
+
+def test_form_has_no_default_answer_and_present_is_refused_until_both_are_chosen(schema):
+    tk = pytest.importorskip("tkinter")
+    from tools.phase5.annotator import annotator_app as app
+
+    try:
+        root = tk.Tk()
+    except tk.TclError:
+        pytest.skip("no display available for tkinter")
+    root.withdraw()
+    try:
+        doc = {"document_id": "SYN-DOC-1", "source_pdf_sha256": FAKE_SHA, "physical_page_count": N}
+        form = app.AnnotatorApp.__new__(app.AnnotatorApp)  # only the form: no dialogs, no workspace
+        form.root, form.role, form.workspace_id = root, "ANNOTATOR_A", "ws-" + "0" * 32
+        form.assignment, form.enums, form.schema = {"SYN-DOC-1": doc}, core.schema_enums(schema), schema
+        form.protocol_hash, form.started_at, form.doc = "a" * 64, "2026-09-27T10:00:00+05:30", doc
+        form._build()
+        for var, value in (
+            (form.doc_var, "SYN-DOC-1"), (form.viewer_name, "SyntheticViewer"),
+            (form.viewer_version, "1.0"), (form.viewer_count, str(N)),
+            (form.presence, "PRESENT"), (form.reason, "BODY_QUALIFYING_TITLE"),
+            (form.p_start, "10"), (form.p_end, "14"),
+            (form.att_repo, True), (form.att_output, True),
+        ):
+            var.set(value)
+
+        # derived flags and the old free-text entry are gone from the form
+        assert not set(core.DERIVED_FLAGS) & set(form.flag_vars)
+        assert "mixed_end_page" not in form.boundary_vars
+        # no default: nothing is selected, so PRESENT is refused
+        assert [v.get() for v in form.shared_vars.values()] == ["", ""]
+        assert form._form()["start_page_shared"] is None
+        with pytest.raises(core.AnnotatorError, match="Answer Yes or No"):
+            form._record()
+        form.shared_vars["start_page_shared"].set("Yes")
+        with pytest.raises(core.AnnotatorError, match="End page shared"):
+            form._record()
+        form.shared_vars["end_page_shared"].set("No")
+        record = form._record()
+        assert core.validate_record(record, schema) == []
+        assert record["boundary_evidence"]["start_page_shared"] is True
+        assert record["boundary_evidence"]["end_page_shared"] is False
+        assert "mixed_start_page" in record["flags"] and "mixed_end_page" not in record["flags"]
+        # answers only apply to PRESENT: an ABSENT record gets nulls whatever is selected
+        form.presence.set("ABSENT")
+        form.reason.set("NOT_AN_ANNUAL_REPORT")
+        form.p_start.set("")
+        form.p_end.set("")
+        absent = form._record()
+        assert absent["boundary_evidence"]["start_page_shared"] is None
+        assert absent["boundary_evidence"]["end_page_shared"] is None
+        assert core.validate_record(absent, schema) == []
+    finally:
+        root.destroy()

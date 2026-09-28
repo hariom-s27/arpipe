@@ -1,7 +1,7 @@
 """Pure, standard-library SAP v0.1 scoring functions.
 
-Gold records use schema v0.1 when ``schema_version`` is absent and v0.2 when it
-is exactly ``"0.2"``. Prediction rows use the SAP §3
+Gold records use schema v0.1 when ``schema_version`` is absent, v0.2 when it is
+exactly ``"0.2"`` and v0.3 when it is exactly ``"0.3"``. Prediction rows use the SAP §3
 fields ``document_id``, ``source_pdf_sha256``, ``disposition``, ``span``,
 ``reasons``, and ``physical_page_count``. Callers group rows by claimed document
 ID; the row's own document ID is still checked for identity.
@@ -22,6 +22,11 @@ STATUSES = (
 )
 GOLD_SCHEMA_V0_1_FILENAME = "gold_schema_v0_1.json"
 GOLD_SCHEMA_V0_2_FILENAME = "gold_schema_v0_2.json"
+GOLD_SCHEMA_V0_3_FILENAME = "gold_schema_v0_3.json"
+# Decisions 8.7: the two Gold shared-page answers (boundary_evidence keys) of schema v0.3,
+# each with the flag that mirrors it.
+SHARED_PAGE_KEYS = ("start_page_shared", "end_page_shared")
+SHARED_PAGE_FLAGS = {"start_page_shared": "mixed_start_page", "end_page_shared": "mixed_end_page"}
 
 
 def gold_schema_filename(record: Mapping) -> str:
@@ -30,6 +35,8 @@ def gold_schema_filename(record: Mapping) -> str:
         return GOLD_SCHEMA_V0_1_FILENAME
     if record["schema_version"] == "0.2":
         return GOLD_SCHEMA_V0_2_FILENAME
+    if record["schema_version"] == "0.3":
+        return GOLD_SCHEMA_V0_3_FILENAME
     raise ValueError("Unsupported Gold schema_version")
 
 
@@ -99,7 +106,8 @@ def _validate_gold(record: Mapping) -> None:
     """SAP §1; Gold Schema §§2–3: block malformed scoring-relevant Gold."""
     try:
         schema_filename = gold_schema_filename(record)
-        is_v0_2 = schema_filename == GOLD_SCHEMA_V0_2_FILENAME
+        is_v0_3 = schema_filename == GOLD_SCHEMA_V0_3_FILENAME
+        is_v0_2 = is_v0_3 or schema_filename == GOLD_SCHEMA_V0_2_FILENAME  # v0.3 keeps v0.2's rules
         doc_id = record["document_id"]
         source_hash = record["source_pdf_sha256"]
         state = record["presence_state"]
@@ -185,6 +193,23 @@ def _validate_gold(record: Mapping) -> None:
             raise ValueError(
                 "Gold CSR/ESG page must be inside the primary span and outside gaps"
             )
+    if is_v0_3:
+        evidence = record.get("boundary_evidence")
+        if not isinstance(evidence, Mapping) or any(key not in evidence for key in SHARED_PAGE_KEYS):
+            raise ValueError("v0.3 Gold is missing a shared-page answer")
+        answers = [evidence[key] for key in SHARED_PAGE_KEYS]
+        if (any(type(answer) is not bool for answer in answers) if state == "PRESENT"
+                else any(answer is not None for answer in answers)):
+            raise ValueError("Invalid Gold shared-page answers")
+        if any((SHARED_PAGE_FLAGS[key] in flags) != (evidence[key] is True) for key in SHARED_PAGE_KEYS):
+            raise ValueError("Gold shared-page flags disagree with the answers")
+
+
+def _shared_answer(record: Mapping, key: str) -> bool | None:
+    """The Yes/No a v0.3 PRESENT record gives for ``key``; None where it carries none."""
+    if record.get("schema_version") != "0.3" or record["presence_state"] != "PRESENT":
+        return None
+    return record["boundary_evidence"][key]
 
 
 def _ratio(numerator: int | float, denominator: int) -> float | str:
@@ -351,7 +376,12 @@ def census_summary(scored: Mapping, issuer_by_document: Mapping[str, str]) -> di
 
 
 def raw_ab_agreement(raw_a: Sequence[Mapping], raw_b: Sequence[Mapping]) -> dict:
-    """SAP §8: agreement on paired immutable raw records, before adjudication."""
+    """SAP §8: agreement on paired immutable raw records, before adjudication.
+
+    ``shared_page_agreement`` is descriptive (decisions 8.7): for each shared-page answer,
+    the PRESENT/PRESENT pairs in which both records carry it (schema v0.3), how many agree,
+    and the percent agreement (0-100).
+    """
     def index(records: Sequence[Mapping], role: str) -> dict:
         result = {}
         for record in records:
@@ -372,6 +402,7 @@ def raw_ab_agreement(raw_a: Sequence[Mapping], raw_b: Sequence[Mapping]) -> dict
         {"start_page": 0, "end_page": 0}, {"start_page": 0, "end_page": 0}
     )})
     reason_matches = flag_matches = 0
+    shared_pairs, shared_matches = Counter(), Counter()
     for doc_id in sorted(a):
         ar, br = a[doc_id], b[doc_id]
         if (ar["source_pdf_sha256"] != br["source_pdf_sha256"]
@@ -384,6 +415,11 @@ def raw_ab_agreement(raw_a: Sequence[Mapping], raw_b: Sequence[Mapping]) -> dict
         if sa == sb == "PRESENT":
             pp_iou.append(inclusive_iou(ar["primary_span"], br["primary_span"]))
             pp_indicators.update(_indicators(ar["primary_span"], br["primary_span"]))
+            for key in SHARED_PAGE_KEYS:
+                answer_a, answer_b = _shared_answer(ar, key), _shared_answer(br, key)
+                if answer_a is not None and answer_b is not None:
+                    shared_pairs[key] += 1
+                    shared_matches[key] += answer_a == answer_b
     n = len(a)
     exact = sum(table[state][state] for state in STATES)
     observed = _ratio(exact, n)
@@ -409,6 +445,14 @@ def raw_ab_agreement(raw_a: Sequence[Mapping], raw_b: Sequence[Mapping]) -> dict
         },
         "exact_reason_agreement": {"count": reason_matches, "denominator": n, "value": _ratio(reason_matches, n)},
         "exact_flag_agreement": {"count": flag_matches, "denominator": n, "value": _ratio(flag_matches, n)},
+        "shared_page_agreement": {
+            key: {
+                "comparable_pairs": shared_pairs[key],
+                "agreements": shared_matches[key],
+                "percent_agreement": _ratio(100 * shared_matches[key], shared_pairs[key]),
+            }
+            for key in SHARED_PAGE_KEYS
+        },
     }
 
 

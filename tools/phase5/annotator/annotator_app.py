@@ -31,7 +31,6 @@ BOUNDARY_KEYS = [
     ("substantive_start_page", "Substantive start page"),
     ("last_content_page", "Last content page"),
     ("next_section_heading_page", "Next section heading page"),
-    ("mixed_end_page", "Mixed end page"),
 ]
 
 
@@ -154,7 +153,9 @@ class AnnotatorApp:
 
         flag_box = ttk.Frame(f)
         self.flag_vars = {}
-        for i, flag in enumerate(self.enums["flags"]):
+        # mixed_start_page / mixed_end_page come from the shared-page answers below.
+        tickable = [flag for flag in self.enums["flags"] if flag not in core.DERIVED_FLAGS]
+        for i, flag in enumerate(tickable):
             var = tk.BooleanVar()
             self.flag_vars[flag] = var
             ttk.Checkbutton(flag_box, text=flag, variable=var).grid(
@@ -192,6 +193,22 @@ class AnnotatorApp:
             var = tk.StringVar()
             self.boundary_vars[key] = var
             row(f"{label} (viewer page, optional)", ttk.Entry(f, textvariable=var))
+
+        # Required Yes/No for PRESENT records; no default, so the annotator must choose.
+        self.shared_vars = {}
+        for key, question in core.SHARED_PAGE_QUESTIONS:
+            var = tk.StringVar()
+            self.shared_vars[key] = var
+            choice = ttk.Frame(f)
+            ttk.Radiobutton(choice, text="Yes", value="Yes", variable=var).pack(side="left")
+            ttk.Radiobutton(choice, text="No", value="No", variable=var).pack(
+                side="left", padx=8)
+            row(f"{question}\n(required for PRESENT)", choice)
+        ttk.Label(
+            f, foreground="blue",
+            text="The mixed_start_page / mixed_end_page flags are set from these answers.",
+        ).grid(row=r, column=1, sticky="w", padx=6)
+        r += 1
 
         aid_box = ttk.Frame(f)
         self.aid_vars = {}
@@ -282,12 +299,19 @@ class AnnotatorApp:
             flag, _, pages = line.partition(":")
             flag_pages[flag.strip()] = core.parse_page_list(pages)
         count = self.viewer_count.get().strip()
+        present = self.presence.get() == "PRESENT"
+        # None = unanswered; the core refuses a PRESENT record until both are Yes/No.
+        shared = {
+            key: {"Yes": True, "No": False}.get(self.shared_vars[key].get()) if present else None
+            for key, _ in core.SHARED_PAGE_QUESTIONS
+        }
         return {
             "viewer_page_count": int(count) if count.isdigit() else None,
             "viewer_name": self.viewer_name.get().strip(),
             "viewer_version": self.viewer_version.get().strip(),
             "presence_state": self.presence.get(),
             "presence_reason_code": self.reason.get(),
+            **shared,
             "primary_span_viewer": None if start is None else (start, end),
             "alternative_spans_viewer": self._span_lines(self.alt_text, typed=True),
             "gap_pages_viewer": core.parse_page_list(self.gaps.get()),
