@@ -27,6 +27,7 @@ INPUT_COLUMNS = [
     "csr_esg_pages",
     "split",
 ]
+INPUT_COLUMNS_WITH_END_SHARED = [*INPUT_COLUMNS, "end_page_shared"]
 RESULT_COLUMNS = [
     "document_id",
     "pdf_sha256",
@@ -39,6 +40,13 @@ RESULT_COLUMNS = [
     "kept_token_count",
     "mdna_word_count",
     "csr_esg_word_count",
+    "quality_page_0based",
+    "quality_page_fallback",
+    "broken_text_group",
+    "dictionary_word_share",
+    "start_page_shared",
+    "end_page_shared",
+    "word_count_scope",
 ]
 DOCUMENT_ID_RE = re.compile(r"[A-Za-z0-9._-]+\Z")
 ASCII_LATIN_WORD_RE = re.compile(r"[A-Za-z]+(?:['-][A-Za-z]+)*\Z")
@@ -66,6 +74,7 @@ class InputRow:
     gap_pages: tuple[int, ...]
     csr_esg_pages: tuple[int, ...]
     split: str
+    end_page_shared: str = ""
 
 
 def _sha256_bytes(payload: bytes) -> str:
@@ -126,10 +135,12 @@ def _read_input(path: Path, author_approved: bool) -> list[InputRow]:
     try:
         with stream:
             reader = csv.DictReader(stream, strict=True)
-            if reader.fieldnames != INPUT_COLUMNS:
+            if reader.fieldnames != INPUT_COLUMNS and reader.fieldnames != INPUT_COLUMNS_WITH_END_SHARED:
                 raise TextLayerAuditError("input columns do not match the required schema")
+            has_end_shared = reader.fieldnames == INPUT_COLUMNS_WITH_END_SHARED
+            required_cols = INPUT_COLUMNS_WITH_END_SHARED if has_end_shared else INPUT_COLUMNS
             for line_no, raw in enumerate(reader, start=2):
-                if None in raw or any(raw[column] is None for column in INPUT_COLUMNS):
+                if None in raw or any(raw[column] is None for column in required_cols):
                     raise TextLayerAuditError(f"input line {line_no}: malformed row")
                 document_id = raw["document_id"].strip()
                 if DOCUMENT_ID_RE.fullmatch(document_id) is None:
@@ -148,6 +159,11 @@ def _read_input(path: Path, author_approved: bool) -> list[InputRow]:
                     raise TextLayerAuditError(f"input line {line_no}: invalid split for {document_id}")
                 if split == "HOLDOUT" and not author_approved:
                     raise TextLayerAuditError(f"HOLDOUT row refused without author approval: {document_id}")
+                end_page_shared = ""
+                if has_end_shared:
+                    end_page_shared = raw["end_page_shared"].strip()
+                    if end_page_shared not in {"Y", "N", ""}:
+                        raise TextLayerAuditError(f"input line {line_no}: invalid end_page_shared for {document_id}")
                 rows.append(
                     InputRow(
                         document_id=document_id,
@@ -157,6 +173,7 @@ def _read_input(path: Path, author_approved: bool) -> list[InputRow]:
                         gap_pages=gap_pages,
                         csr_esg_pages=csr_esg_pages,
                         split=split,
+                        end_page_shared=end_page_shared,
                     )
                 )
     except (csv.Error, UnicodeError) as exc:
@@ -257,6 +274,103 @@ def count_words(text: str) -> int:
     )
 
 
+def count_raw_tokens(text: str) -> int:
+    """Count whitespace tokens that, after stripping edge punctuation, have length >= 3."""
+    count = 0
+    for raw_token in text.split():
+        token = _strip_edge_punctuation(raw_token)
+        if len(token) >= 3:
+            count += 1
+    return count
+
+
+def check_start_page_shared(page: pymupdf.Page, body_title: str) -> bool | str:
+    """Determine whether the heading on the start page starts below 20% of page height."""
+    if not body_title.strip():
+        return "NA"
+    normalized_title = normalize_heading(body_title)
+    if not normalized_title:
+        return "NA"
+
+    page_dict = page.get_text("dict")
+    lines_with_pos: list[tuple[str, float]] = []
+    for block in page_dict.get("blocks", []):
+        for line in block.get("lines", []):
+            line_text = "".join(span.get("text", "") for span in line.get("spans", []))
+            line_top = float(line["bbox"][1])
+            lines_with_pos.append((line_text, line_top))
+
+    num_lines = len(lines_with_pos)
+    for i in range(num_lines):
+        line_i = lines_with_pos[i][0]
+        if normalized_title in normalize_heading(line_i):
+            return lines_with_pos[i][1] > 0.20 * page.rect.height
+        if i + 1 < num_lines:
+            combo_2 = f"{line_i} {lines_with_pos[i + 1][0]}"
+            if normalized_title in normalize_heading(combo_2):
+                return lines_with_pos[i][1] > 0.20 * page.rect.height
+        if i + 2 < num_lines:
+            combo_3 = f"{line_i} {lines_with_pos[i + 1][0]} {lines_with_pos[i + 2][0]}"
+            if normalized_title in normalize_heading(combo_3):
+                return lines_with_pos[i][1] > 0.20 * page.rect.height
+    return "NA"
+
+
+def compute_broken_text_group(
+    text_layer_broken: bool | str,
+    heading_in_text_layer: bool | str,
+) -> bool | str:
+    """Combine text layer broken and heading signals into a unified broken group."""
+    if text_layer_broken is True or heading_in_text_layer is False:
+        return True
+    if text_layer_broken is False and (heading_in_text_layer is True or heading_in_text_layer == "NA"):
+        return False
+    if text_layer_broken == "NO_TEXT" and heading_in_text_layer is not False:
+        return "NO_TEXT"
+    raise TextLayerAuditError(
+        f"unexpected broken combination: text_layer_broken={text_layer_broken}, "
+        f"heading_in_text_layer={heading_in_text_layer}"
+    )
+
+
+def _load_wordlist(path: Path) -> set[str]:
+    try:
+        content = path.read_text(encoding="utf-8-sig")
+    except OSError as exc:
+        raise TextLayerAuditError("cannot read wordlist file") from exc
+    except UnicodeDecodeError as exc:
+        raise TextLayerAuditError("wordlist file is not valid UTF-8") from exc
+
+    lines = content.splitlines()
+    if not lines:
+        return set()
+
+    first_line = lines[0]
+    words: set[str] = set()
+    if "," in first_line:
+        header_cells = next(csv.reader([first_line]), [])
+        word_col_idx = None
+        for idx, cell in enumerate(header_cells):
+            if cell.strip().casefold() == "word":
+                word_col_idx = idx
+                break
+        if word_col_idx is not None:
+            reader = csv.reader(lines[1:])
+            for row in reader:
+                if len(row) > word_col_idx:
+                    cleaned = row[word_col_idx].strip().casefold()
+                    if cleaned:
+                        words.add(cleaned)
+            return words
+
+    # Otherwise read one word per line
+    for line in lines:
+        cleaned = line.strip().casefold()
+        if cleaned:
+            words.add(cleaned)
+    return words
+
+
 def _validate_pages(row: InputRow, page_count: int) -> None:
     referenced = (row.start_page, row.end_page, *row.gap_pages, *row.csr_esg_pages)
     if any(page < 0 or page >= page_count for page in referenced):
@@ -275,6 +389,7 @@ def _process_row(
     pdf_dir: Path,
     max_bad_char_share: float,
     min_latin_word_share: float,
+    wordlist_set: set[str] | None,
 ) -> dict[str, object]:
     pdf_path = pdf_dir / f"{row.document_id}.pdf"
     if not pdf_path.is_file():
@@ -286,6 +401,8 @@ def _process_row(
         raise TextLayerAuditError(f"cannot open PDF for {row.document_id}") from exc
     try:
         _validate_pages(row, document.page_count)
+        start_page_obj = document.load_page(row.start_page)
+        start_page_shared = check_start_page_shared(start_page_obj, row.body_title)
         page_text: dict[int, str] = {}
         pages_needed = set(range(row.start_page, row.end_page + 1)) | set(row.csr_esg_pages)
         for page_number in sorted(pages_needed):
@@ -304,12 +421,40 @@ def _process_row(
         heading_in_text_layer = "NA"
     else:
         heading_in_text_layer = bool(normalized_title) and normalized_title in normalize_heading(start_text)
+
+    gap_set = set(row.gap_pages)
+    quality_page = row.start_page
+    quality_page_fallback = True
+    for page in range(row.start_page, row.end_page + 1):
+        if page in gap_set:
+            continue
+        if count_raw_tokens(page_text[page]) >= 50:
+            quality_page = page
+            quality_page_fallback = False
+            break
+
+    quality_text = page_text[quality_page]
     broken, bad_share, latin_share, kept_count = audit_start_page_text(
-        start_text,
+        quality_text,
         max_bad_char_share,
         min_latin_word_share,
     )
-    gap_set = set(row.gap_pages)
+    quality_kept = _kept_tokens(quality_text)
+    if wordlist_set is None or not quality_kept:
+        dictionary_word_share: float | str = "NA"
+    else:
+        dict_match = sum(token.casefold() in wordlist_set for token in quality_kept)
+        dictionary_word_share = dict_match / len(quality_kept)
+
+    broken_text_group = compute_broken_text_group(broken, heading_in_text_layer)
+
+    if row.end_page_shared == "Y":
+        end_page_shared: bool | str = True
+    elif row.end_page_shared == "N":
+        end_page_shared = False
+    else:
+        end_page_shared = "NA"
+
     mdna_word_count = sum(
         count_words(page_text[page])
         for page in range(row.start_page, row.end_page + 1)
@@ -328,6 +473,13 @@ def _process_row(
         "kept_token_count": kept_count,
         "mdna_word_count": mdna_word_count,
         "csr_esg_word_count": csr_esg_word_count,
+        "quality_page_0based": quality_page,
+        "quality_page_fallback": quality_page_fallback,
+        "broken_text_group": broken_text_group,
+        "dictionary_word_share": dictionary_word_share,
+        "start_page_shared": start_page_shared,
+        "end_page_shared": end_page_shared,
+        "word_count_scope": "PAGE_LEVEL",
     }
 
 
@@ -345,6 +497,7 @@ def _csv_bytes(header: dict[str, object], documents: list[dict[str, object]]) ->
     stream = io.StringIO(newline="")
     writer = csv.writer(stream, lineterminator="\n")
     writer.writerow(["header_key", "header_value"])
+    writer.writerow(["audit_version", header["audit_version"]])
     writer.writerow(["script_sha256", header["script_sha256"]])
     writer.writerow(["pymupdf_version", header["pymupdf_version"]])
     thresholds = header["thresholds"]
@@ -352,6 +505,7 @@ def _csv_bytes(header: dict[str, object], documents: list[dict[str, object]]) ->
     writer.writerow(["max_bad_char_share", _csv_scalar(thresholds["max_bad_char_share"])])
     writer.writerow(["min_latin_word_share", _csv_scalar(thresholds["min_latin_word_share"])])
     writer.writerow(["input_sha256", header["input_sha256"]])
+    writer.writerow(["wordlist_sha256", _csv_scalar(header["wordlist_sha256"])])
     writer.writerow([])
     writer.writerow(RESULT_COLUMNS)
     for document in documents:
@@ -373,6 +527,7 @@ def run_audit(
     *,
     max_bad_char_share: float = 0.05,
     min_latin_word_share: float = 0.50,
+    wordlist: Path | None = None,
     author_approved: bool = False,
 ) -> tuple[dict[str, object], list[dict[str, object]]]:
     """Validate, derive, and write deterministic audit artifacts."""
@@ -389,14 +544,23 @@ def run_audit(
     rows = _read_input(input_csv, author_approved)
     if not pdf_dir.is_dir():
         raise TextLayerAuditError("PDF directory does not exist")
+    wordlist_sha256: str | None = None
+    wordlist_set: set[str] | None = None
+    if wordlist is not None:
+        wordlist_path = Path(wordlist)
+        if not wordlist_path.is_file():
+            raise TextLayerAuditError(f"wordlist file does not exist: {wordlist_path}")
+        wordlist_sha256 = _sha256_file(wordlist_path)
+        wordlist_set = _load_wordlist(wordlist_path)
     documents = sorted(
         (
-            _process_row(row, pdf_dir, max_bad_char_share, min_latin_word_share)
+            _process_row(row, pdf_dir, max_bad_char_share, min_latin_word_share, wordlist_set)
             for row in rows
         ),
         key=lambda document: str(document["document_id"]),
     )
     header: dict[str, object] = {
+        "audit_version": "0.2",
         "script_sha256": _sha256_file(Path(__file__)),
         "pymupdf_version": str(pymupdf.VersionBind),
         "thresholds": {
@@ -404,6 +568,7 @@ def run_audit(
             "min_latin_word_share": min_latin_word_share,
         },
         "input_sha256": _sha256_bytes(input_payload),
+        "wordlist_sha256": wordlist_sha256,
     }
     csv_payload = _csv_bytes(header, documents)
     json_payload = _json_bytes(header, documents)
@@ -423,6 +588,7 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--out", required=True, type=Path)
     parser.add_argument("--max-bad-char-share", type=float, default=0.05)
     parser.add_argument("--min-latin-word-share", type=float, default=0.50)
+    parser.add_argument("--wordlist", type=Path, default=None)
     parser.add_argument("--i-have-author-approval", action="store_true")
     return parser
 
@@ -436,6 +602,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             args.out,
             max_bad_char_share=args.max_bad_char_share,
             min_latin_word_share=args.min_latin_word_share,
+            wordlist=args.wordlist,
             author_approved=args.i_have_author_approval,
         )
     except TextLayerAuditError as exc:
