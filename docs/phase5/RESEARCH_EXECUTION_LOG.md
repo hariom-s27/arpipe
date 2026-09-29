@@ -18,6 +18,49 @@
 
 ---
 
+## 2026-09-29 (late afternoon): pilot drawn; A/B folders built and zipped
+- **Did:**
+  - Title list v0.2 frozen for the pilot (decisions §9.5; PR #69, main `fcc1ae7`).
+    - Git blob `9f01105e714e8c32cb6a076472cebcb00433145b`.
+    - LF SHA-256 `0c0caa07c91014228b299da88343a37e12a949d82ee3f11bedcfc5f3c5d9e39e`, which equals the local hash.
+  - `.exe` rebuilt after the F7 merge, from main `bed1f46` (Python 3.14.3, PyInstaller 6.22.3, jsonschema 4.26.0).
+    - SHA-256 `18213fb9d195ee273731c2135f9caac9d5cf07d9aa070767dd38ead7dd1b1604`.
+    - It supersedes `44DD37BC…`.
+  - Pilot build run **once** from worktree `phase5-pilot` (detached at `fcc1ae7`), output in `D:\gold_blind\pilot`.
+
+    | Output | SHA-256 |
+    |---|---|
+    | `pilot_bundle.zip` | `a83e2182bf5a4414f8632f0562d5cde107a652206051e3015fcfe033bfe18cf0` |
+    | `BUNDLE_MANIFEST.json` | `f588c7d8773dd6ba4411c9ef24305489868040be91e45845df022a8fc0963c07` |
+    | `DRAW_REPORT.json` | `278bdec919c3f144fed765da5095a3402ef0d7eae018654651dd143acff222cf` |
+    | `PILOT_ROSTER.csv` | `b4f1d35dd90f784a775efe4561e8410d7b434bead889656b91747c70dd4f9fdb` |
+    | `RETEST_ROSTER.csv` | `91ff25208268a7e7b2a8f4132b4b157e56ff255d267cb2124d7d034f63099ec4` |
+    | `WORKSPACE_MANIFEST.json` | `51238b4cfce4b8b6f3b91728574165f40ea46a2e81979240c05f18752f3c4a32` |
+
+    - Draw: 10 pilot documents / 5 issuers, 6 retest documents / 3 issuers.
+    - 10 PDFs staged and hash-verified.
+  - Two annotator guides (markdown) added to both workspaces; project `claude/round4/`.
+    - `HOW_TO_ANNOTATE_GUIDE.md`: the steps.
+    - `FORM_FIELD_GUIDE_WITH_EXAMPLE.md`: every field, with an **invented** example report. Real pilot documents are never used as examples.
+  - Final zips (the guides are included; `records` is empty in both):
+
+    | Zip | SHA-256 |
+    |---|---|
+    | `ANNOTATOR_A.zip` | `3ce340f82b0a1c714e6592fb4d18f6f6f3a3f97860d7883222f752b07bfbacb4` |
+    | `ANNOTATOR_B.zip` | `25276ff719efe5c434f3b132547d5dffd89db2faa2a9dfef0691e0c0a621c770` |
+
+    Earlier zips without the guides are superseded.
+  - Test in the B workspace: role shown, PDF verified (69 pages), nothing sealed.
+- **Decided:**
+  - Keep the Windows `.exe`; no HTML tool, since all annotators use Windows.
+  - Output format from this chat: `.md` files until the author asks for PDF.
+- **Remains:**
+  - Record who is A and B (if two fellows, the professor adjudicates).
+  - Send the zips.
+  - Log PR in the repo.
+  - F8: adjudication tool; a friendly message when the `.exe` runs outside a bundle; skip the geometry tests when tkinter is missing.
+  - After the pilot: rules review and 6-row spot-check; SAP text-metric wording; main-drift decision; review-CSV commit at method freeze.
+
 ## 2026-09-29 (afternoon): pilot title list frozen; fixed .exe built
 - **Did:**
   - Rebuilt `.exe` from main `bed1f46`, SHA-256 `18213FB9D195EE273731C2135F9CAAC9D5CF07D9AA070767DD38EAD7DD1B1604` (supersedes `44DD37BC…`).
