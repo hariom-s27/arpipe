@@ -186,3 +186,9 @@ Records: project docs `claude/round4/P1_START_HERE_PLAN.md`, `P4_YOUR_ANSWERS_EX
 ### 9.4 Pilot-draw digest reading (DECIDED 2026-09-29, before any real draw)
 - PILOT_PLAN_v0_1_1 §4 gives the pair-domain preimage exactly. It names the hard-issuer, issuer and retest-issuer domains but no field list. **Decision:** each issuer-level digest is `SHA-256(domain || 0x00 || company_id)`, as implemented in `tools/phase5/pilot_draw.py` (F7) and recorded in every `DRAW_REPORT.json`. Pair rule as implemented: the documents at the issuer's minimum and maximum fiscal year, with a tie at a boundary year broken by the lowest pair digest over (company_id, fiscal_year, document_id). It is recorded here before the real draw, so the selection cannot be steered.
 - The draw runs once, into a folder outside the repository (`D:\gold_blind\pilot\draw`). Its `DRAW_REPORT.json` and roster hashes are recorded in the log.
+
+### 9.5 Pilot title list frozen (DECIDED 2026-09-29; merging this change is the author's sign-off)
+- `docs/phase5/TITLE_EQUIVALENCE_v0.md`, pilot version v0.2. Git blob `9f01105e714e8c32cb6a076472cebcb00433145b`; SHA-256 with LF line endings `0c0caa07c91014228b299da88343a37e12a949d82ee3f11bedcfc5f3c5d9e39e`. The SHA-256 of the exact file shipped in the pilot bundle (which depends on the checkout's line endings) is recorded in the log when the bundle is built. The bundle manifest and the seal guard enforce that value.
+- Content = the v0.2 draft (project `claude/round3/TITLE_EQUIVALENCE_v0.md`), with only the status line changed to "frozen for the pilot".
+- Rules review and the 6-row spot-check (`TITLE_RULES_CHECK_v0_1.md` §3.2, §5) by the adjudicator after the pilot, before VALIDATION/HOLDOUT (§9.3). Any change after the pilot creates a new version, re-hashed.
+- The author's review CSV (`2A362F03…`) stays outside the repository for now. Its planned single commit is deferred to the method freeze; it is not needed for the pilot.
