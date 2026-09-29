@@ -18,6 +18,15 @@
 
 ---
 
+## 2026-09-29 (afternoon): pilot title list frozen; fixed .exe built
+- **Did:**
+  - Rebuilt `.exe` from main `bed1f46`, SHA-256 `18213FB9D195EE273731C2135F9CAAC9D5CF07D9AA070767DD38EAD7DD1B1604` (supersedes `44DD37BC…`).
+    - Verified on the author's PC: role set by `ROLE.txt`, input column visible, labels wrapped, scrollbars.
+    - It must run from inside a bundle folder; running it from `dist` fails with a missing-schema error (F8: friendlier message).
+  - Annotator guide PDF for B (4 pages, no answers or IDs) prepared in the project chat.
+  - Pilot title list committed as `docs/phase5/TITLE_EQUIVALENCE_v0.md` (decisions §9.5).
+- **Next:** build the pilot bundle with the list → run the draw once → stage the PDFs → build the A/B workspaces with the `.exe` → record the draw, roster, bundle and manifest hashes here.
+
 ## 2026-09-29 (early morning): F7 pilot-ready built and verified; .exe built; draw digest decided
 - **Did:**
   - `.exe` built from main `0450456` (Python 3.14.3, PyInstaller 6.22.3, jsonschema 4.26.0; in `D:\gold_tools\exe_build`), SHA-256 `44DD37BC2ED9763BE78E1B84D34DDA9EA42A94B440F9F0A00D7D715D9CB77159`.
