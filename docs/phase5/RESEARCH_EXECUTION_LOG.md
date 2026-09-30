@@ -18,6 +18,34 @@
 
 ---
 
+## 2026-10-01 (night): Annotator B records returned; roles; clarifications; F8 prompt
+- **Did:**
+  - **Roles (pilot):** the author annotated the **ANNOTATOR_B** folder; a fellow annotates **ANNOTATOR_A** (still in progress). This swaps the plan's roles (author = A). The folder label is only a label, so the analysis uses the real people:
+    - the "independent annotator" sensitivity (SAP §8) is the fellow's records;
+    - the adjudicator must be neither the author nor the fellow (professor or a second fellow): **to be named**.
+  - B records sealed in `D:\annotation_test\ANNOTATOR_B` (unzipped copy of the B workspace).
+    - 10/10 records, 10 `HASH_LOG` lines, no supersessions.
+    - Returned zip `D:\gold_blind\pilot\returned\records_ANNOTATOR_B.zip`, SHA-256 `29177e0a545dac267162ab4e6efce431fdae4aee448ce725062cdc566093d23c`.
+    - Backup in `D:\gold_review_backup\pilot_returned\`.
+  - B notes file `NOTES_ANNOTATOR_B.txt` copied. The author states it is incomplete and informal: **not used for any result**. Timing comes from record timestamps.
+  - Pilot deviations, recorded:
+    - viewer = Microsoft Edge 153.0.4234.48 instead of the Acrobat pin (Edge's page box is physical by design);
+    - B records carry the Edge *revision* code in `viewer_version` (cosmetic);
+    - several general rule clarifications were given to B during annotation (list: project `claude/round4/PILOT_CLARIFICATIONS_FOR_ALL_ANNOTATORS.md`) and must be sent to A before A finishes, so both work from the same rules;
+    - `DECISION_WALKTHROUGH_ALL_OPTIONS.md` (all form options, including Rule 12 alternative spans) was issued mid-pilot.
+  - This chat declined to fill or check answers for any pilot report (the independence rule). It gave only general rule text.
+  - F8 prompt written (project `claude/round4/NEXT_F8_COMPARE_ADJUDICATE_PROMPT.md`):
+    - `pilot_compare.py` (integrity checks, SAP §8 agreement, §6 triggers, adjudication sheet);
+    - `adjudicate.py` (sealed ADJUDICATED records);
+    - annotator p5t-0.2.1 fixes (friendly errors, version/page hints, outside-bundle message, tkinter skip), for **after** the pilot only.
+- **Pilot findings to review (post-pilot, with the professor):**
+  - statutory-like sub-headings ("Share Capital", "Reserves") inside an MD&A with its own heading;
+  - the CSR/ESG block definition;
+  - an optional TOC field (TOC lists MD&A? / TOC title);
+  - the confusing raw schema error message;
+  - users subtracting 1 from page numbers.
+- **Next:** send the clarifications to A → A returns records → run F8 tools on the two zips → the adjudicator decides → trigger check → rules review with the professor.
+
 ## 2026-09-29 (late afternoon): pilot drawn; A/B folders built and zipped
 - **Did:**
   - Title list v0.2 frozen for the pilot (decisions §9.5; PR #69, main `fcc1ae7`).
