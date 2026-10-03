@@ -18,6 +18,20 @@
 
 ---
 
+## 2026-10-03 (morning): Annotator A records returned; supersession policy fixed before comparison
+- **Did:**
+  - A (fellow) sealed records in `D:\annotation_test\ANNOTATOR_A`. All 10 roster documents are covered: 12 files = 10 raw records + 1 replacement raw record + 1 supersession record (`INE004C01028_2018`). `HASH_LOG` has 12 lines. No notes file.
+  - A zip: `D:\gold_blind\pilot\returned\records_ANNOTATOR_A.zip`, SHA-256 `be7ceb8244c729a01e4cb3c71f645d0f52959b00d3b8a89e45799170607a5d86`. Backup in `D:\gold_review_backup\pilot_returned\`.
+  - B zip re-hashed: `29177e0a545dac267162ab4e6efce431fdae4aee448ce725062cdc566093d23c` (unchanged since sealing).
+- **Decided (author, 2026-10-03 07:44 IST, before any A/B comparison was run or any record was opened for comparison):**
+  - **Supersession policy = replacement.** For `INE004C01028_2018`, A's replacement record (sealed with a written reason, before comparison, as protocol §9 allows) is primary.
+  - A's original record is reported alongside as a sensitivity. Both are kept and hashed; the pilot report states the difference and A's reason.
+  - F8 `pilot_compare.py` is run with `--supersession-policy replacement` (primary) and once with `first` (sensitivity).
+- **Disclosed:**
+  - On 2026-10-02 the author (Annotator B) saw one screenshot of A's partly filled form (`INE004C01028_2018`) when A asked for help with a form error. B's 10 records had been sealed on 2026-10-01, so they are unaffected. Help to A was limited to form rules (required fields, Parent section only with the embedded flag, attestation tick); no pages or flags were suggested.
+  - A used the Brave browser PDF viewer (B used Edge). Physical page numbering is identical, and the tool verifies the page count.
+- **Next:** verify F8 → run the comparison on the two zips → adjudication sheet to the adjudicator → seal the adjudicated records → pilot report.
+
 ## 2026-10-01 (night): Annotator B records returned; roles; clarifications; F8 prompt
 - **Did:**
   - **Roles (pilot):** the author annotated the **ANNOTATOR_B** folder; a fellow annotates **ANNOTATOR_A** (still in progress). This swaps the plan's roles (author = A). The folder label is only a label, so the analysis uses the real people:
