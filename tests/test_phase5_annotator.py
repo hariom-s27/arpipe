@@ -890,12 +890,14 @@ def test_ask_role_rejects_an_invalid_prompt_answer(tmp_path, monkeypatch):
 # -- window geometry and layout (F7) -----------------------------------------------
 
 def test_fit_geometry_keeps_defaults_on_a_large_screen():
+    pytest.importorskip("tkinter")
     from tools.phase5.annotator import annotator_app as app
 
     assert app._fit_geometry(1920, 1080) == ((1100, 800), (900, 600))
 
 
 def test_fit_geometry_shrinks_to_a_small_screen():
+    pytest.importorskip("tkinter")
     from tools.phase5.annotator import annotator_app as app
 
     assert app._fit_geometry(800, 500) == ((800, 500), (800, 500))

@@ -24,7 +24,7 @@ import stat
 from pathlib import Path
 from typing import Any, Iterable
 
-TOOL_VERSION = "p5t-0.2.0"
+TOOL_VERSION = "p5t-0.2.1"
 SCHEMA_FILENAME = "gold_schema_v0_4.json"
 PROTOCOL_FILENAME = "GOLD_PROTOCOL_v0_4.md"
 VIEWER_PAGE_CONVENTION = "VIEWER_PHYSICAL_1_BASED_STORED_ZERO_BASED"
@@ -210,13 +210,23 @@ def verify_pdf(path: Path, expected_sha256: str) -> str:
     return actual
 
 
+def require_bundle_file(path: Path) -> Path:
+    """Explain a missing bundle file without exposing a startup traceback."""
+    if not path.is_file():
+        raise AnnotatorError(
+            f"{path.name} is missing from the annotation folder; "
+            "start annotator_app.exe from inside your annotation folder."
+        )
+    return path
+
+
 def load_schema(bundle_root: Path) -> dict[str, Any]:
-    with open(Path(bundle_root) / SCHEMA_FILENAME, encoding="utf-8") as handle:
+    with open(require_bundle_file(Path(bundle_root) / SCHEMA_FILENAME), encoding="utf-8") as handle:
         return json.load(handle)
 
 
 def protocol_version_hash(bundle_root: Path) -> str:
-    return sha256_file(Path(bundle_root) / PROTOCOL_FILENAME)
+    return sha256_file(require_bundle_file(Path(bundle_root) / PROTOCOL_FILENAME))
 
 
 def schema_enums(schema: dict[str, Any]) -> dict[str, list[str]]:
@@ -541,22 +551,75 @@ def tool_invariant_errors(record: dict[str, Any]) -> list[str]:
     return errors
 
 
+def _friendly_schema_error(err: Any, record: dict[str, Any]) -> str:
+    """One short instruction per problem, naming the form box when known."""
+    path = tuple(err.absolute_path)
+    field = path[0] if path else "<record>"
+    flags = record.get("flags") if isinstance(record.get("flags"), list) else []
+    state = record.get("presence_state")
+    mapped = {
+        "ambiguity_code": (
+            state in ("PRESENT", "ABSENT") and record.get("ambiguity_code") != "NONE",
+            "Ambiguity code: choose NONE for PRESENT or ABSENT.",
+        ),
+        "annexure_identity": (
+            "annexure" in flags and not record.get("annexure_identity"),
+            "Annexure identity: type the printed identity, or untick annexure.",
+        ),
+        "parent_section": (
+            "embedded_in_directors_report" in flags and not record.get("parent_section"),
+            "Parent section: type the parent heading, or untick embedded_in_directors_report.",
+        ),
+        "csr_esg_pages": (
+            "contains_csr_esg" in flags and not record.get("csr_esg_pages"),
+            "CSR/ESG pages: enter the viewer pages, or untick contains_csr_esg.",
+        ),
+        "gap_pages": (
+            "noncontiguous_hull" in flags and not record.get("gap_pages"),
+            "Gap pages: enter the gap viewer pages, or untick noncontiguous_hull.",
+        ),
+        "admissible_spans": (
+            state != "AMBIGUOUS" and bool(record.get("admissible_spans")),
+            "Admissible spans: clear this box for PRESENT or ABSENT; use it only for AMBIGUOUS.",
+        ),
+        "presence_state": (
+            "stub" in flags and state != "PRESENT",
+            "Flags (stub): untick stub, or choose PRESENT if there is an MD&A body.",
+        ),
+    }
+    if field in mapped and mapped[field][0]:
+        return mapped[field][1]
+    label = "/".join(str(part) for part in path) or "<record>"
+    # JSON Schema messages can embed the invalid object: keep the fallback bounded.
+    message = " ".join(err.message.split())
+    if len(message) > 180:
+        message = message[:177] + "..."
+    return f"{label}: {message}"
+
+
 def validate_record(record: dict[str, Any], schema: dict[str, Any]) -> list[str]:
-    """Schema errors plus tool invariants. Raises SchemaUnavailable without jsonschema."""
+    """Short schema errors plus tool invariants; validation requirements are unchanged."""
     try:
         import jsonschema  # noqa: PLC0415 - optional at open time, required at submit
     except ImportError as exc:  # pragma: no cover - exercised via monkeypatch
         raise SchemaUnavailable(
             "jsonschema is not installed, so records cannot be validated or submitted."
         ) from exc
+    # Select the declared record branch. The root oneOf otherwise prints the entire
+    # record and adds irrelevant errors from the other role's branch.
+    selected_schema = dict(schema)
+    if "rawRecord" in schema.get("$defs", {}) and "adjudicatedRecord" in schema["$defs"]:
+        selected_schema.pop("oneOf", None)
+        kind = "adjudicatedRecord" if record.get("record_type") == "ADJUDICATED" else "rawRecord"
+        selected_schema["$ref"] = f"#/$defs/{kind}"
     validator = jsonschema.Draft202012Validator(
-        schema, format_checker=jsonschema.FormatChecker()
+        selected_schema, format_checker=jsonschema.FormatChecker()
     )
-    errors = [
-        f"schema: {'/'.join(str(p) for p in err.absolute_path) or '<record>'}: {err.message}"
-        for err in sorted(validator.iter_errors(record), key=lambda e: list(e.absolute_path))
-    ]
-    return errors + tool_invariant_errors(record)
+    schema_errors = sorted(validator.iter_errors(record), key=lambda e: tuple(str(p) for p in e.absolute_path))
+    errors = list(dict.fromkeys(_friendly_schema_error(err, record) for err in schema_errors))
+    # Invariants assume schema-typed fields; malformed collections should be reported,
+    # not passed to numerical checks that would crash on them.
+    return errors if errors else tool_invariant_errors(record)
 
 
 # ---------------------------------------------------------------------------
