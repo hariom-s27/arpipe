@@ -44,6 +44,8 @@ BOUNDARY_KEYS = [
 # F7 layout: every prompt label wraps instead of stretching the label column, so the
 # input column (grid column 1, weight=1) stays visible without horizontal hunting.
 LABEL_WRAP_PX = 380
+PAGE_ENTRY_HINT = "type exactly what the viewer shows; the tool subtracts 1"
+VIEWER_VERSION_HINT = "(copy the version number, e.g. Edge: first line of edge://version)"
 WINDOW_SIZE = (1100, 800)
 WINDOW_MINSIZE = (900, 600)
 
@@ -82,14 +84,14 @@ class AnnotatorApp:
         (size, minsize) = _fit_geometry(root.winfo_screenwidth(), root.winfo_screenheight())
         root.geometry(f"{size[0]}x{size[1]}")
         root.minsize(*minsize)
+        for filename in (core.SCHEMA_FILENAME, core.PROTOCOL_FILENAME, "ASSIGNMENT.csv"):
+            core.require_bundle_file(BUNDLE_ROOT / filename)
         core.assert_workspace_isolated(BUNDLE_ROOT, Path.cwd())
-        self.workspace_id = core.load_or_create_workspace_id(RECORDS_DIR)
         self.schema = core.load_schema(BUNDLE_ROOT)
         self.enums = core.schema_enums(self.schema)
         self.protocol_hash = core.protocol_version_hash(BUNDLE_ROOT)
-        if not ASSIGNMENT_PATH.exists():
-            raise core.AnnotatorError("ASSIGNMENT.csv is missing from the bundle folder.")
         self.assignment = core.load_assignment(ASSIGNMENT_PATH)
+        self.workspace_id = core.load_or_create_workspace_id(RECORDS_DIR)
         self.role, self.role_from_file = self._ask_role()
         self.doc: dict | None = None
         self.started_at: str | None = None
@@ -173,8 +175,8 @@ class AnnotatorApp:
         self.viewer_version = tk.StringVar()
         self.viewer_count = tk.StringVar()
         row("Viewer name", ttk.Entry(f, textvariable=self.viewer_name))
-        row("Viewer version", ttk.Entry(f, textvariable=self.viewer_version))
-        row("Page count shown by viewer", ttk.Entry(f, textvariable=self.viewer_count))
+        row(f"Viewer version\n{VIEWER_VERSION_HINT}", ttk.Entry(f, textvariable=self.viewer_version))
+        row(f"Page count shown by viewer\n{PAGE_ENTRY_HINT}", ttk.Entry(f, textvariable=self.viewer_count))
         self.page_hint = tk.StringVar(value="viewer page X = stored index X-1")
         ttk.Label(
             f, textvariable=self.page_hint, foreground="blue",
@@ -194,15 +196,15 @@ class AnnotatorApp:
         ttk.Label(span, text=" to ").pack(side="left")
         ttk.Entry(span, width=8, textvariable=self.p_end).pack(side="left")
         ttk.Label(span, text="  (viewer pages; blank if not PRESENT)").pack(side="left")
-        row("Primary span", span)
+        row(f"Primary span\n{PAGE_ENTRY_HINT}", span)
         for var in (self.p_start, self.p_end):
             var.trace_add("write", lambda *_: self._update_hint())
 
         self.alt_text = tk.Text(f, height=3, width=60)
         row("Alternative spans\n(one per line: start-end TYPE)\nTYPE in: "
-            + ", ".join(self.enums["alternative_span_type"]), self.alt_text)
+            + ", ".join(self.enums["alternative_span_type"]) + f"\n{PAGE_ENTRY_HINT}", self.alt_text)
         self.gaps = tk.StringVar()
-        row("Gap pages (e.g. 14, 16-17)", ttk.Entry(f, textvariable=self.gaps))
+        row(f"Gap pages (e.g. 14, 16-17)\n{PAGE_ENTRY_HINT}", ttk.Entry(f, textvariable=self.gaps))
 
         flag_box = ttk.Frame(f)
         self.flag_vars = {}
@@ -221,17 +223,17 @@ class AnnotatorApp:
         )
         self.csr_esg_pages = tk.StringVar()
         row(
-            "CSR/ESG pages (viewer; e.g. 14, 16-17)",
+            f"CSR/ESG pages (viewer; e.g. 14, 16-17)\n{PAGE_ENTRY_HINT}",
             ttk.Entry(f, textvariable=self.csr_esg_pages),
         )
         self.flag_pages_text = tk.Text(f, height=3, width=60)
-        row("Flag pages\n(one per line: flag: 12, 14-15)", self.flag_pages_text)
+        row(f"Flag pages\n(one per line: flag: 12, 14-15)\n{PAGE_ENTRY_HINT}", self.flag_pages_text)
 
         self.ambiguity = tk.StringVar(value="NONE")
         row("Ambiguity code", ttk.Combobox(f, textvariable=self.ambiguity, state="readonly",
                                            values=self.enums["ambiguity_code"]))
         self.adm_text = tk.Text(f, height=3, width=60)
-        row("Admissible spans\n(AMBIGUOUS only; one per line: start-end)", self.adm_text)
+        row(f"Admissible spans\n(AMBIGUOUS only; one per line: start-end)\n{PAGE_ENTRY_HINT}", self.adm_text)
         self.parent_section = tk.StringVar()
         row("Parent section (if embedded)", ttk.Entry(f, textvariable=self.parent_section))
         self.annexure_identity = tk.StringVar()
@@ -245,7 +247,7 @@ class AnnotatorApp:
         for key, label in BOUNDARY_KEYS:
             var = tk.StringVar()
             self.boundary_vars[key] = var
-            row(f"{label} (viewer page, optional)", ttk.Entry(f, textvariable=var))
+            row(f"{label} (viewer page, optional)\n{PAGE_ENTRY_HINT}", ttk.Entry(f, textvariable=var))
 
         # Required Yes/No for PRESENT records; no default, so the annotator must choose.
         # Each answer has its own anchor-text box, enabled only when that answer is Yes.
@@ -288,7 +290,7 @@ class AnnotatorApp:
         self.search_usable = tk.BooleanVar()
         row("Viewer search usable", ttk.Checkbutton(f, variable=self.search_usable))
         self.bookmarks = tk.StringVar()
-        row("Bookmark pages (viewer)", ttk.Entry(f, textvariable=self.bookmarks))
+        row(f"Bookmark pages (viewer)\n{PAGE_ENTRY_HINT}", ttk.Entry(f, textvariable=self.bookmarks))
         self.att_repo = tk.BooleanVar()
         self.att_output = tk.BooleanVar()
         row("I had no repository access", ttk.Checkbutton(f, variable=self.att_repo))
@@ -423,7 +425,7 @@ class AnnotatorApp:
             messagebox.showerror("Check", str(exc))
             return
         if errors:
-            messagebox.showerror("Check", "\n".join(errors[:25]))
+            messagebox.showerror("Check", "\n".join(errors))
         else:
             messagebox.showinfo("Check", "Record is valid. Nothing was saved.")
 
