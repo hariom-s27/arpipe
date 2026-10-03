@@ -18,6 +18,39 @@
 
 ---
 
+## 2026-10-03 (morning): F8 merged; pilot A/B comparison run; boundary trigger FIRED
+- **Did:**
+  - F8 (Codex GPT-6.1 Sol Extra High): PR #73 (`6ae07a1`, merge `cb7ed9f`) added:
+    - `tools/phase5/pilot_compare.py` and `tools/phase5/adjudicate.py`;
+    - annotator p5t-0.2.1 fixes (not deployed in the pilot);
+    - 87 new synthetic tests.
+  - The first attempt was BLOCKED because the full suite reads the HOLDOUT manifest and real PDFs. The agent was limited to Phase 5 tests, and the author ran the full suite.
+  - **Verified here after the merge (the merge happened before verification):**
+    - only tools/tests changed (no `arpipe/`, `dataset/`, `docs/`);
+    - Phase 5 tests 302 passed, 15 skipped (the GUI tests now skip without tkinter);
+    - code read: integrity checks, the supersession chain, reuse of `raw_ab_agreement`, sheet read-only check, the attest flag, sealing.
+  - **Author PC full suite:** 801 passed, 18 skipped, 8 failed. All 8 are historic-immutability checks on `arpipe/` (known `main` drift); no Phase 5 or F8 failure. (The earlier 3 basetemp-related failures no longer occur.)
+  - **Comparison inputs:** A zip `be7ceb82…` and B zip `29177e0a…`, extracted to `D:\gold_blind\pilot\compare_inputs\`. Roster: `PILOT_ROSTER.csv` (`b4f1d35d…`).
+  - **Outputs:**
+
+    | Run | `PILOT_COMPARISON.json` | `PILOT_COMPARISON.md` | `ADJUDICATION_SHEET.csv` |
+    |---|---|---|---|
+    | Primary (`--supersession-policy replacement`), `D:\gold_blind\pilot\compare_primary` | `aff0fc729242c166242af5631106b643e37c1acb33245dc3bed190af0b891aa8` | `bb648bd4ebf167a3e6ce9e7f7d599200cf9cff056efe8694dbe6b846d95a6729` | `0a1137823b06e798e59ea14f4aca8efdb3e8aa8aa7013a7be3cf458be116976c` |
+    | Sensitivity (`first`), `compare_first` | `0933c42d365e97ea5278972050f70d165658d900e730ea0b1a0d8ca59f04d003` | `12d0605358dcb133b81ffd2661bb9c2fe9d699a5f595db69b6f4a68bdeb78be6` | `d3cf420b16c9f74f4d41e27f06a3914fb0b4611b0ece058022a9f2ee69d39f4b` |
+
+- **Result (PILOT_PLAN §6 triggers; identical under both supersession policies):**
+  - 10/10 documents paired; none missing;
+  - presence disagreement **0** of 10 (threshold 2): **NOT_FIRED**;
+  - start or end differs by more than one page: **4** of 10 (threshold 3): **FIRED** → action `REVISE` the applicable boundary rule before RETEST;
+  - schema-invalid records 0: NOT_FIRED;
+  - information barrier and title intake: `NEEDS_HUMAN_CHECK`.
+- **Next:**
+  - adjudication of all 10 (brief: project `claude/round4/ADJUDICATOR_BRIEF_PILOT.md`), whose `adj_cause` values identify which boundary rule to revise;
+  - professor rules review (Q4, Q8, Q16);
+  - revise the rule text (protocol v0.5, consistently, no document-specific exceptions);
+  - **predeclare the RETEST thresholds for 6 documents before the retest** (PILOT_PLAN states thresholds for 10 only: OPEN);
+  - RETEST on the 6 reserved documents.
+
 ## 2026-10-03 (morning): Annotator A records returned; supersession policy fixed before comparison
 - **Did:**
   - A (fellow) sealed records in `D:\annotation_test\ANNOTATOR_A`. All 10 roster documents are covered: 12 files = 10 raw records + 1 replacement raw record + 1 supersession record (`INE004C01028_2018`). `HASH_LOG` has 12 lines. No notes file.
